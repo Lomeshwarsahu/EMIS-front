@@ -1,0 +1,1229 @@
+<section class="bg-light ">
+  <div class="container-fluid vh-100 d-flex flex-column">
+    <!-- new code -->
+
+    <div class="row ">
+      <header class="header text-white  py-3 p-0 m-0 bg-successs bg-primary border rounded ">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center">
+          <!-- Left Logo -->
+          <div class="col-12 col-md-3">
+
+            <div class="header-logo-container d-flex justify-content-center justify-content-md-start flex-shrink-0">
+              <img src="assets\images\cg-govt.png" alt="Left Logo" class="header-logo img-fluid"
+                style="max-height: 60px;">
+            </div>
+          </div>
+
+          <!-- Title Section -->
+          <div class="col-12 col-md-6">
+            <div class="header-title text-center flex-grow-1 mx-md-3 my-2 my-md-0">
+              <h1 class="cgmsctitle text-white fs-5 fw-bold mb-1">Department of Health & Family Welfare
+                Chhattisgarh</h1>
+              <h1 class="cgmsctitle text-white fs-5 fw-bold mb-1">Chhattisgarh Medical Services Corporation Ltd.</h1>
+              <p class="collector-title text-white fs-6 fw-bold mb-1">
+              </p>
+              <p class="sub-title text-white small m-0">
+                Equipment Management Information System
+              </p>
+            </div>
+          </div>
+
+          <!-- Right Logo -->
+          <div class="col-12 col-md-3">
+            <div class="header-logo-container d-flex justify-content-center justify-content-md-end flex-shrink-0">
+              <img src="assets/images/cgmsc-logo.png" alt="Right Logo" class="header-logo img-fluid"
+                style="max-height: 60px;">
+            </div>
+          </div>
+        </div>
+
+      </header>
+      <!-- <div class="card">
+    <strong>
+    The Vendor Registration Portal of Chhattisgarh Medical Services Corporation Limited (CGMSCL) is a secure, transparent, and fully digital platform designed to facilitate seamless registration, empanelment, and management of vendors supplying drugs, medical consumables, surgical items and equipmentto the Government of Chhattisgarh.
+    The portal aims to enhance ease of doing business, promote fair competition, and ensure timely and quality procurement for public health institutions across the state.
+  </strong>
+   </div> -->
+    </div>
+    <!-- Main Content -->
+    <div class="container-fluid pb-3">
+      <div class="row">
+
+        <div class="col-lg-4 col-md-12 col-12 ">
+        <!-- <div class="col-lg-4 col-md-12 col-12 "> -->
+          <div class="d-flex flex-column">
+            <div class=" mb-2">
+              <ul class="nav" id="publicReportsTab" role="tablist">
+              </ul>
+
+              <div class="tab-content mt-2" id="publicReportsTabContent">
+                <div class="tab-pane fade show active" id="drugs" role="tabpanel" aria-labelledby="drugs-tab">
+                  <div class="card">
+                    <div class="card-header bg-successs bg-primary text-white">
+                      <strong>
+                        Circulars and Manuals
+                      </strong>
+                    </div>
+                    <div class="card-body">
+                      <ul>
+                        <li style="color: blue;">
+                          <a style="cursor: pointer;" target="_blank"
+                            (click)="Manualssliddesk('')">
+                          Manual for Stock Entry & Progress status of COVID 19 Related 4 Equipment
+                            <i style="color:rgb(250, 22, 41)" class="bi bi-hand-index-thumb-fill"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="nav" id="myTab" role="tablist">
+            </ul>
+            <!-- <div class="tab-content mt-3">
+
+              <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+                <div class="card">
+                  <div class="card-header bg-success text-white">
+                    <strong>About</strong>
+                  </div>
+                  <div class="card-body">
+                    <p>
+
+                      <span>
+                        <strong> Objectives:-</strong>
+                        <ul>
+                          <li>To create a single-window digital system for vendor onboarding.</li>
+                          <li>To ensure transparency, accountability, and traceability in procurement.</li>
+                          <li>To maintain an authenticated vendor database for CGMSCL.</li>
+                          <li>To reduce paperwork and processing time through end-to-end online workflows.</li>
+                          <li>To facilitate compliance with statutory, technical, and quality requirements.</li>
+
+                        </ul>
+
+                      </span>
+
+                      <span *ngIf="!showFullText">
+                        ... <a href="javascript:void(0)" (click)="toggleText()">Read More</a>
+                      </span>
+
+                      <span *ngIf="showFullText" style="text-decoration: solid;">
+                        <strong>Portal Highlights:-</strong>
+                        <ul>
+                          <li>Online Vendor Registration & Renewal.</li>
+                          <li>Category-wise Empanelment (Drugs, Consumables, Equipment, Services, etc.).</li>
+                          <li>Document Upload & Validation.
+                            <ul>
+                              <li>Manufacturing / Wholesale Licenses.</li>
+                              <li>GST, PAN, MSME, BIS / CDSCO / MDR compliance.</li>
+                              <li>Quality certifications and undertakings.</li>
+                            </ul>
+                          </li>
+                          <li>Real-time Status Tracking of applications.</li>
+                          <li>Vendor Profile Management and updates.</li>
+                          <li>Integration with Tendering & E-Procurement Systems.</li>
+
+                        </ul>
+                        <strong>Benefits:-</strong>
+                        <div class="table-responsive">
+                          <table class="table table-bordered table-striped align-middle  shadow-sm">
+
+                            <thead class="table-dark">
+                              <tr class="text-center">
+                                <th scope="col">Benefits to Vendors</th>
+                                <th scope="col">Benefits to CGMSCL & Government</th>
+                              </tr>
+                            </thead>
+
+                            <tbody>
+                              <tr>
+                                <td>Transparent and time-bound registration process.</td>
+                                <td>Creation of a credible, verified vendor base.</td>
+                              </tr>
+
+                              <tr>
+                                <td>Reduced physical interface and paperwork.</td>
+                                <td>Better compliance monitoring and supplier performance tracking.</td>
+                              </tr>
+
+                              <tr>
+                                <td>Single registration usable across multiple tenders (as applicable).</td>
+                                <td>Reduced risk of fraudulent or non-compliant suppliers.</td>
+                              </tr>
+
+                              <tr>
+                                <td>Faster bid participation and eligibility verification.</td>
+                                <td>Alignment with GFR, state procurement rules, and e-Governance initiatives.</td>
+                              </tr>
+
+                              <tr>
+                                <td>Improved communication and notifications.</td>
+                                <td>_</td>
+                              </tr>
+                            </tbody>
+
+                          </table>
+                        </div>
+
+                        <br /><br />
+                        <a href="javascript:void(0)" (click)="toggleText()">Read Less</a>
+                      </span>
+                    </p>
+
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-pane fade" id="manuals" role="tabpanel" aria-labelledby="manuals-tab">
+                <div class="card">
+                  <div class="card-header bg-success text-white "><strong>PDF Manual Downloads</strong></div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li>1. वेयरहाउस को इंडेंट एवं दवा प्राप्ति हेतु महत्वपूर्ण निर्देश (Important Instruction for
+                        Indent
+                        to Warehouse/Receipts)
+                        <a href="assets\docs\Important_Instruction.pdf" target="_blank">
+                          <i style="color: red;" class="bi bi-file-pdf"></i>
+                        </a>
+                      </li>
+                      <li>
+                        2. एम.आई.एस. उपयोग करने हेतु एप्लीकेशन गाइड Detailed Documentation of Application
+                        <a href="assets\docs\AAM_Manual.pdf" target="_blank">
+                          <i style="color: red;" class="bi bi-file-pdf"></i>
+                        </a>
+                      </li>
+                      <li>
+                        3. Essential Drug List for District Hospital 2021
+                        <a href="https://dpdmis.in/DPDMISStock/pdf/EDL_2021_17122021.pdf" target="_blank">
+                          <i style="color: red;" class="bi bi-file-pdf"></i>
+                        </a>
+                      </li>
+
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+              <div class="tab-pane fade " id="tutorials" role="tabpanel" aria-labelledby="tutorials-tab">
+                <div class="card mb-4">
+                  <div class="card-header bg-success text-white"><strong>Download APK</strong></div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li>
+                        1. Download “औषधि दर्पण” Android Mobile App.
+
+                        <a href="assets\apk\Dpdmis.apk" target="_blank">
+                          <i style="color: green;" class="bi bi-android2"></i>
+                        </a>
+                      </li>
+                      <li>
+                        2. Download “Door Delivery Transport” Android Mobile App.
+
+                        <a href="assets\apk\DoorDeliveryTransport.apk" target="_blank">
+                          <i style="color: green;" class="bi bi-android2"></i>
+                        </a>
+                      </li>
+                      <li>
+                        3. Download “Courier Transport” Android Mobile App.
+                        <a href="assets\apk\CourierParcelTracking.apk" target="_blank">
+                          <i style="color: green;" class="bi bi-android2"></i>
+                        </a>
+                      </li>
+                      <li>
+                        4. Download “Nirman Darpan Progress” Android Mobile App
+                        <a href="assets\apk\Nirman-darpan-progress.apk" target="_blank">
+                          <i style="color: green;" class="bi bi-android2"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+            </div> -->
+
+
+
+            <div class="modal fade" id="itemDetailsModal" tabindex="-1" aria-labelledby="itemDetailsModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="itemDetailsModalLabel">Item Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p><strong>Facility Name:</strong> {{ selectedWarehouse?.facilityname }}</p>
+                    <p><strong>Number of Items:</strong> {{ selectedWarehouse?.nositems }}</p>
+                    <p><strong>Drop Date:</strong> {{ selectedWarehouse?.dropdate }}</p>
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <!-- <div class="col-md-4 p-2">
+          <div class="card border-white shadow rounded-3 overflow-hidden"
+            style="aspect-ratio: 1/1; background-color: #f8f9fa;">
+            <h4 class="text-center text-success text-bold  ">Process for Registration</h4>
+
+            <img src="assets/images/vendor r imge.jpeg" alt="Vendor Registration Portal" class="card-img img-fluid pb-5"
+              style="width: 100%; height: 100%; object-fit: contain; object-position: center;" />
+          </div>
+        </div> -->
+        <!-- <div class="col-lg-4 col-md-12 col-12 p-2 order-first order-lg-last"> -->
+        <div class="col-lg-4 col-md-12 col-12 p-2 order-first order-lg-last">
+
+
+          <div class="d-flex justify-content-end align-items-center">
+
+            <div class="card shadow login-card w-100 ">
+              <div class="card-header text-white d-flex align-items-center">
+
+
+                <ul class="nav nav-tabs card-header-tabs flex-grow-1" id="loginTabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="cgmscl-tab" data-bs-toggle="tab" data-bs-target="#cgmscl" type="button"
+                      role="tab" aria-controls="cgmscl" aria-selected="false">
+                      ADMIN
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link " id="login-tab" data-bs-toggle="tab" data-bs-target="#DME"
+                      type="button" role="tab" aria-controls="login" aria-selected="true" (click)="getallusers('4')">
+                      DME
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link " id="login-tab" data-bs-toggle="tab" data-bs-target="#DHS"
+                      type="button" role="tab" aria-controls="login" aria-selected="true">
+                      DHS/AYUSH
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link " id="login-tab" data-bs-toggle="tab" data-bs-target="#SUPPLIER"
+                      type="button" role="tab" aria-controls="login" aria-selected="true">
+                       SUPPLIER
+                    </button>
+                  </li>
+
+                
+
+                </ul>
+                <!-- <button
+                routerLink="/Registration" 
+                class="btn btn-outline-success ms-3"
+                data-bs-toggle="tab"
+                data-bs-target="#signup"
+                type="button">
+                New Registration 
+              </button> -->
+
+              </div>
+
+              <div class="card-body tab-content" id="loginTabsContent">
+                <div class="tab-pane fade " id="login" role="tabpanel" aria-labelledby="login-tab">
+                  <form #adminLoginForm="ngForm" (ngSubmit)="adminLoginForm.valid && handleLogin()">
+                    <div class="mb-3">
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span>
+                        <ng-select [items]="adminDropdownList" bindLabel="textfield" bindValue="emailid"
+                          [(ngModel)]="emailid" (change)="onUserChange($event)" name="emailid" #emailidField="ngModel"
+                          [placeholder]="!emailid ? 'Choose Supplier' : ''" [searchable]="true" [clearable]="true"
+                          [appendTo]="'body'" required class="form-control">
+                        </ng-select>
+                      </div>
+                      <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                        class="text-danger mt-1">
+                        Please select a supplier.
+                      </div>
+                    </div>
+                    <div class="mb-3 position-relative">
+                      <label for="pwd" class="form-label">Password</label>
+
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                        [(ngModel)]="pwd" placeholder="Enter Password" required>
+
+                      <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                        (click)="togglePassword()">
+                      </i>
+                    </div>
+                    <div class="mb-3">
+                      <label for="captcha" class="form-label">CAPTCHA</label>
+                      <div class="d-flex align-items-center">
+                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText"
+                          style="user-select: none;">{{ captcha }}</span>
+
+                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
+                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                        </button>
+                      </div>
+
+                      <input type="text" class="form-control" id="captcha" #captchaInput placeholder="Enter CAPTCHA"
+                        required>
+                      <div *ngIf="otpField.invalid && (otpField.dirty || otpField.touched)" class="text-danger">
+                        OTP is required.
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-successs btn-primary text-white w-100 mb-3"
+                      [disabled]="adminLoginForm.invalid">Login</button>
+                  </form>
+                </div>
+                <div class="tab-pane fade" id="warehouse" role="tabpanel" aria-labelledby="warehouse-tab">
+                  <form #warehouseForm="ngForm" (ngSubmit)="warehouseForm.valid && handleWarehouseLogin()">
+                    <div class="mb-3">
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span>
+                        <ng-select [items]="wHDropdownList" bindLabel="textfield" bindValue="emailid"
+                          [(ngModel)]="emailid" (change)="onUserChangeWarehouse($event)" name="emailid"
+                          #emailidField="ngModel" [placeholder]="!emailid ? 'Choose Warehouse' : ''" [searchable]="true"
+                          [clearable]="true" [appendTo]="'body'" required class="form-control">
+                        </ng-select>
+                      </div>
+                      <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                        class="text-danger">
+                        Please select a warehouse.
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <button type="button" class="btn btn-success btn-sm" (click)="sendOTP()">Generate OTP</button>
+                      <input type="text" id="otpInput" class="form-control" maxlength="6" [(ngModel)]="otp" name="otp"
+                        #otpField="ngModel" placeholder="Enter OTP" required>
+
+                      <div *ngIf="otpField.invalid && (otpField.dirty || otpField.touched)" class="text-danger">
+                        OTP is required.
+                      </div>
+                    </div>
+
+
+
+
+                    <div class="mb-3 position-relative">
+                      <label for="pwd" class="form-label">Password</label>
+                      <input type="{{ isPasswordVisible ? 'text' : 'password' }}" class="form-control" id="pwd"
+                        name="pwd" [(ngModel)]="pwd" #pwdField="ngModel" required>
+                      <i class="fa" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePassword()"
+                        style="position: absolute; right: 15px; top: 35px; cursor: pointer;">
+                      </i>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-successs btn-primary text-white w-100" [disabled]="warehouseForm.invalid">Login to
+                      Warehouse</button>
+                  </form>
+
+                </div>
+                  <!--  Admin loging-->
+
+                <div class="tab-pane fade show active" id="cgmscl" role="tabpanel" aria-labelledby="cgmscl-tab">
+                  <form #cgmsclForm="ngForm" (ngSubmit)="cgmsclForm.valid && handleCgmsclLogin1()">
+                    <div class="mb-3">
+                      <label for="emailid" class="form-label">Select User</label>
+                      <div class="filter-field d-flex gap-4 align-items-center">
+                    
+                        <div class="form-check">
+                          <!-- <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="0"
+                            [(ngModel)]="selectedStatus" (change)="onStatusChange()"> -->
+                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="0"
+                            [(ngModel)]="selectedStatus" (change)="getallusers('1')">
+                          <label class="form-check-label" for="exampleRadios1">
+                            ADMINISTRATOR
+                          </label>
+                        </div>
+                    
+                        <div class="form-check">
+                          <!-- <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="1"
+                            [(ngModel)]="selectedStatus" (change)="onStatusChange()"> -->
+                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="1"
+                            [(ngModel)]="selectedStatus" (change)="getallusers('2')">
+                          <label class="form-check-label" for="exampleRadios2">
+                            DIRECTORATE
+                          </label>
+                        </div>
+                    
+                        <div class="form-check">
+                          <!-- <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="2"
+                            [(ngModel)]="selectedStatus" (change)="onStatusChange()"> -->
+                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="2"
+                            [(ngModel)]="selectedStatus" (change)="getallusers('3')">
+                          <label class="form-check-label" for="exampleRadios3">
+                            CGMSCL
+                          </label>
+                        </div>
+                    
+                      </div>
+                    </div>
+                    <ng-container *ngIf="selectedStatus == '0'">
+                    <div class="mb-3">
+                      <label for="emailid" class="form-label">User ID</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span>
+                        <!-- <ng-select [items]="cgmsclDropdownList" bindLabel="textfield" bindValue="emailid"
+                          [(ngModel)]="emailid" (change)="onUserChangeCgmscl($event)" name="emailid"
+                          #emailidField="ngModel" [placeholder]="!emailid ? 'Choose CGMSCL User' : ''"
+                          [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
+                        </ng-select> -->
+                        <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id"
+                          [(ngModel)]="emailid" (change)="onUserChangeCgmscl($event)" name="user_id"
+                          #emailidField="ngModel" [placeholder]="!emailid ? 'Choose CGMSCL User' : ''"
+                          [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
+                        </ng-select>
+                      </div>
+                      <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                        class="text-danger">
+                        Please select a User.
+                      </div>
+                    </div>
+                    <!-- <div class="mb-3">
+                      <label class="form-label">OTP</label>
+
+                      <div class="input-group">
+                        <input type="text" id="otpInput" class="form-control" maxlength="5" [(ngModel)]="otp" name="otp"
+                          #otpField="ngModel" placeholder="Enter OTP" required />
+
+                        <button type="button" class="btn btn-success" (click)="sendOTP()">
+                          Get OTP
+                        </button>
+                      </div>
+
+                      <div *ngIf="otpField.invalid && (otpField.dirty || otpField.touched)" class="text-danger">
+                        OTP is required.
+                      </div>
+                    </div> -->
+                    <div class="mb-3 position-relative">
+                      <label for="pwd" class="form-label">Password</label>
+
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                        [(ngModel)]="pwd" placeholder="Enter Password" required>
+
+                      <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                        (click)="togglePassword()">
+                      </i>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-successs btn-primary tex-white w-100" [disabled]="cgmsclForm.invalid">Login</button>
+                    </ng-container>
+                    <ng-container *ngIf="selectedStatus == '1'">
+                    
+                    <div class="mb-3">
+                      <label for="emailid" class="form-label">User ID</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span>
+                        <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id"
+                          [(ngModel)]="emailid" (change)="onUserChangeCgmscl($event)" name="user_id"
+                          #emailidField="ngModel" [placeholder]="!emailid ? 'Select Directorate' : ''"
+                          [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
+                        </ng-select>
+                      </div>
+                      <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                        class="text-danger">
+                        Please select a User.
+                      </div>
+                    </div>
+                    <!-- <div class="mb-3">
+                      <label class="form-label">OTP</label>
+
+                      <div class="input-group">
+                        <input type="text" id="otpInput" class="form-control" maxlength="5" [(ngModel)]="otp" name="otp"
+                          #otpField="ngModel" placeholder="Enter OTP" required />
+
+                        <button type="button" class="btn btn-success" (click)="sendOTP()">
+                          Get OTP
+                        </button>
+                      </div>
+
+                      <div *ngIf="otpField.invalid && (otpField.dirty || otpField.touched)" class="text-danger">
+                        OTP is required.
+                      </div>
+                    </div> -->
+                    <div class="mb-3 position-relative">
+                      <label for="pwd" class="form-label">Password</label>
+
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                        [(ngModel)]="pwd" placeholder="Enter Password" required>
+
+                      <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                        (click)="togglePassword()">
+                      </i>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-successs btn-primary tex-white w-100" [disabled]="cgmsclForm.invalid">Login</button>
+                    </ng-container>
+                    <ng-container *ngIf="selectedStatus == '2'">
+                    <div class="mb-3">
+                      <label for="emailid" class="form-label">User ID</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span>
+                        <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id"
+                          [(ngModel)]="emailid" (change)="onUserChangeCgmscl($event)" name="user_id"
+                          #emailidField="ngModel" [placeholder]="!emailid ? 'Choose User' : ''"
+                          [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
+                        </ng-select>
+                      </div>
+                      <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                        class="text-danger">
+                        Please select a User.
+                      </div>
+                    </div>
+                    <!-- <div class="mb-3">
+                      <label class="form-label">OTP</label>
+
+                      <div class="input-group">
+                        <input type="text" id="otpInput" class="form-control" maxlength="5" [(ngModel)]="otp" name="otp"
+                          #otpField="ngModel" placeholder="Enter OTP" required />
+
+                        <button type="button" class="btn btn-success" (click)="sendOTP()">
+                          Get OTP
+                        </button>
+                      </div>
+
+                      <div *ngIf="otpField.invalid && (otpField.dirty || otpField.touched)" class="text-danger">
+                        OTP is required.
+                      </div>
+                    </div> -->
+                    <div class="mb-3 position-relative">
+                      <label for="pwd" class="form-label">Password</label>
+
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                        [(ngModel)]="pwd" placeholder="Enter Password" required>
+
+                      <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                        (click)="togglePassword()">
+                      </i>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-successs btn-primary tex-white w-100" [disabled]="cgmsclForm.invalid">Login</button>
+                    </ng-container>
+
+                  </form>
+
+                </div>
+                  <!--  DME loging-->
+                <div class="tab-pane fade" id="DME" role="tabpanel" aria-labelledby="infrastructure-tab">
+                  <form #infrastructureForm="ngForm"
+                    (ngSubmit)="infrastructureForm.valid && handleInfrastructureLogin()">
+                    <div class="mb-3">
+                        Medical College /Hospital Login
+                    </div>
+                    <div class="mb-3">
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span>
+                        <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id"
+                          [(ngModel)]="id" (change)="onUserChangeInfrastructure($event)" name="user_id" #idField="ngModel"
+                          [placeholder]="!id ? 'Select Medical College/Hospital' : ''" [searchable]="true" [clearable]="true"
+                          [appendTo]="'body'" required class="form-control">
+
+                        </ng-select>
+                      </div>
+
+                      <div *ngIf="idField.invalid && (idField.dirty || idField.touched)" class="text-danger">
+                        Please select an engineer.
+                      </div>
+                    </div>
+                      <div class="mb-3">
+
+                      <label for="pwd" class="form-label">User Id</label>
+                      <div class="input-group">
+                        <!-- <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span> -->
+                        <input  type="text" class="form-control"
+                          id="id" name="id" [(ngModel)]="pwd" #pwdField="ngModel" required>
+                       
+                      </div>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div> 
+                     <div class="mb-3 position-relative">
+                      <label for="pwd" class="form-label">Password</label>
+
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                        [(ngModel)]="pwd" placeholder="Enter Password" required>
+
+                      <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                        (click)="togglePassword()">
+                      </i>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div>
+                   
+                    <button type="submit" class="btn btn-successs btn-primary w-100 tex-white"
+                      [disabled]="infrastructureForm.invalid">Login</button>
+                  </form>
+
+                </div>
+              <!--  DHS loging-->
+                <div class="tab-pane fade " id="DHS" role="tabpanel" aria-labelledby="cgmscl-tab">
+                  <form #cgmsclForm="ngForm" (ngSubmit)="cgmsclForm.valid && handleCgmsclLogin()">
+                    <div class="mb-3">
+                      <label for="emailid" class="form-label">Select User</label>
+                      <div class="filter-field d-flex gap-4 align-items-center">
+                    
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="0"
+                            [(ngModel)]="selectedStatusDHS" (change)="onStatusChangeDHS()">
+                          <label class="form-check-label" for="exampleRadios1">
+                           Health Facility
+                          </label>
+                        </div>
+                    
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="1"
+                            [(ngModel)]="selectedStatusDHS" (change)="getallusers('5')">
+                          <label class="form-check-label" for="exampleRadios2">
+                           CMHO-Store
+                          </label>
+                        </div>
+                    
+                      </div>
+                    </div>
+                    <ng-container *ngIf="selectedStatusDHS == '0'">
+                    <!-- <div class="mb-3">
+                      <label for="emailid" class="form-label">User ID</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span>
+                        <ng-select [items]="cgmsclDropdownList" bindLabel="textfield" bindValue="emailid"
+                          [(ngModel)]="emailid" (change)="onUserChangeCgmscl($event)" name="emailid"
+                          #emailidField="ngModel" [placeholder]="!emailid ? 'Choose CGMSCL User' : ''"
+                          [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
+                        </ng-select>
+                      </div>
+                      <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                        class="text-danger">
+                        Please select a User.
+                      </div>
+                    </div> -->
+                     <div class="mb-3">
+
+                      <label for="pwd" class="form-label">User Id</label>
+                      <div class="input-group">
+                        <!-- <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span> -->
+                        <input  type="text" class="form-control"
+                          id="id" name="id" [(ngModel)]="pwd" #pwdField="ngModel" required>
+                       
+                      </div>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div> 
+                    <div class="mb-3 position-relative">
+                      <label for="pwd" class="form-label">Password</label>
+
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                        [(ngModel)]="pwd" placeholder="Enter Password" required>
+
+                      <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                        (click)="togglePassword()">
+                      </i>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-successs btn-primary tex-white w-100" [disabled]="cgmsclForm.invalid">Login</button>
+                    </ng-container>
+                    <ng-container *ngIf="selectedStatusDHS == '1'">
+                    
+                    <div class="mb-3">
+                      <label for="emailid" class="form-label">User ID</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span>
+                        <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id"
+                          [(ngModel)]="emailid" (change)="onUserChangeCgmscl($event)" name="user_id"
+                          #emailidField="ngModel" [placeholder]="!emailid ? 'Select Directorate' : ''"
+                          [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
+                        </ng-select>
+                      </div>
+                      <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                        class="text-danger">
+                        Please select a User.
+                      </div>
+                    </div>
+                      <div class="mb-3">
+
+                      <label for="pwd" class="form-label">User Id</label>
+                      <div class="input-group">
+                        <!-- <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span> -->
+                        <input  type="text" class="form-control"
+                          id="id" name="id" [(ngModel)]="pwd" #pwdField="ngModel" required>
+                       
+                      </div>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div> 
+                    <div class="mb-3 position-relative">
+                      <label for="pwd" class="form-label">Password</label>
+
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                        [(ngModel)]="pwd" placeholder="Enter Password" required>
+
+                      <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                        (click)="togglePassword()">
+                      </i>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-successs btn-primary tex-white w-100" [disabled]="cgmsclForm.invalid">Login</button>
+                    </ng-container>
+                  
+
+                  </form>
+
+                </div>
+                <!-- Supplier -->
+                <div class="tab-pane fade" id="SUPPLIER" role="tabpanel" aria-labelledby="cgmscl-tab">
+                  <form #cgmsclForm="ngForm" (ngSubmit)="cgmsclForm.valid && handleCgmsclLogin()">
+                    <div class="mb-3">
+                      <label for="emailid" class="form-label">Select User</label>
+                      <div class="filter-field d-flex gap-4 align-items-center">
+                    
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="0"
+                            [(ngModel)]="selectedStatussup" (change)="getallusers('6')">
+                          <label class="form-check-label" for="exampleRadios1">
+                            Login in EMS	
+                          </label>
+                        </div>
+                    
+                        <div class="form-check1">
+                          <!-- <button class="btn btn-light btn-outline-success" (click)="onStatusChangesup()" value="1">Register User in EMS</button> -->
+                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="1"
+                            [(ngModel)]="selectedStatussup" (change)="getallusers('8')">
+                          <label class="form-check-label" for="exampleRadios2">
+                           New User-ID in EMS
+                          </label>
+                        </div>
+                    
+                        <div class="form-check1">
+                           <!-- <button class="btn btn-light btn-outline-secondary" (click)="onStatusChangesup()" value="2">Forgot/Reset Password</button> -->
+                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="2"
+                            [(ngModel)]="selectedStatussup" (change)="getallusers('7')">
+                          <label class="form-check-label" for="exampleRadios3">
+                           Forgot/Reset Password
+                          </label>
+                        </div>
+                    
+                      </div>
+                    </div>
+                    <ng-container *ngIf="selectedStatussup == '0'">
+                    <div class="mb-3">
+                      <label for="emailid" class="form-label">User ID</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span>
+                        <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id"
+                          [(ngModel)]="emailid" (change)="onUserChangeCgmscl($event)" name="user_id"
+                          #emailidField="ngModel" [placeholder]="!emailid ? 'Choose CGMSCL User' : ''"
+                          [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
+                        </ng-select>
+                      </div>
+                      <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                        class="text-danger">
+                        Please select a User.
+                      </div>
+                    </div>
+                     <div class="mb-3">
+
+                      <label for="pwd" class="form-label">User Id</label>
+                      <div class="input-group">
+                        <!-- <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span> -->
+                        <input  type="text" class="form-control"
+                          id="id" name="id" [(ngModel)]="pwd" #pwdField="ngModel" required>
+                       
+                      </div>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div> 
+                    <div class="mb-3 position-relative">
+                      <label for="pwd" class="form-label">Password</label>
+
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                        [(ngModel)]="pwd" placeholder="Enter Password" required>
+
+                      <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                        (click)="togglePassword()">
+                      </i>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-successs btn-primary tex-white w-100" [disabled]="cgmsclForm.invalid"> Login in EMS</button>
+                    </ng-container>
+                    <ng-container *ngIf="selectedStatussup == '1'">
+                    
+                    <div class="mb-3">
+                      <label for="emailid" class="form-label">User ID</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span>
+                        <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id"
+                          [(ngModel)]="emailid" (change)="onUserChangeCgmscl($event)" name="user_id"
+                          #emailidField="ngModel" [placeholder]="!emailid ? 'Select Directorate' : ''"
+                          [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
+                        </ng-select>
+                      </div>
+                      <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                        class="text-danger">
+                        Please select a User.
+                      </div>
+                    </div>
+                    <!-- <div class="mb-3">
+                      <label class="form-label">OTP</label>
+
+                      <div class="input-group">
+                        <input type="text" id="otpInput" class="form-control" maxlength="5" [(ngModel)]="otp" name="otp"
+                          #otpField="ngModel" placeholder="Enter OTP" required />
+
+                        <button type="button" class="btn btn-success" (click)="sendOTP()">
+                          Get OTP
+                        </button>
+                      </div>
+
+                      <div *ngIf="otpField.invalid && (otpField.dirty || otpField.touched)" class="text-danger">
+                        OTP is required.
+                      </div>
+                    </div> -->
+                    <div class="mb-3 position-relative">
+                      <label for="pwd" class="form-label">Password</label>
+
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                        [(ngModel)]="pwd" placeholder="Enter Password" required>
+
+                      <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                        (click)="togglePassword()">
+                      </i>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-successs btn-primary tex-white w-100" [disabled]="cgmsclForm.invalid">Login</button>
+                    </ng-container>
+                    <ng-container *ngIf="selectedStatussup == '2'">
+                    <div class="mb-3">
+                      <label for="emailid" class="form-label">User ID</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span>
+                        <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id"
+                          [(ngModel)]="emailid" (change)="onUserChangeCgmscl($event)" name="user_id"
+                          #emailidField="ngModel" [placeholder]="!emailid ? 'Choose User' : ''"
+                          [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
+                        </ng-select>
+                      </div>
+                      <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                        class="text-danger">
+                        Please select a User.
+                      </div>
+                    </div>
+                    <!-- <div class="mb-3">
+                      <label class="form-label">OTP</label>
+
+                      <div class="input-group">
+                        <input type="text" id="otpInput" class="form-control" maxlength="5" [(ngModel)]="otp" name="otp"
+                          #otpField="ngModel" placeholder="Enter OTP" required />
+
+                        <button type="button" class="btn btn-success" (click)="sendOTP()">
+                          Get OTP
+                        </button>
+                      </div>
+
+                      <div *ngIf="otpField.invalid && (otpField.dirty || otpField.touched)" class="text-danger">
+                        OTP is required.
+                      </div>
+                    </div> -->
+                    <div class="mb-3 position-relative">
+                      <label for="pwd" class="form-label">Password</label>
+
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                        [(ngModel)]="pwd" placeholder="Enter Password" required>
+
+                      <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                        (click)="togglePassword()">
+                      </i>
+
+                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                        Password is required.
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-successs btn-primary tex-white w-100" [disabled]="cgmsclForm.invalid">Login</button>
+                    </ng-container>
+
+                  </form>
+
+                </div>
+
+              </div>
+              <!-- <div class="alert alert-warning mb-0 mb-md-0 flex-grow-1 small ng-star-inserted">
+                <ul>
+                  <h3 class="text-center text-success">Who needs to Register??</h3>
+                  <li class="text-dark">
+                    <h4>Manufacturers of drugs and consumables.</h4>
+                  </li>
+                  <li class="text-dark">
+                    <h4>Importers of drugs and consumables.</h4>
+                  </li>
+                </ul>
+              </div> -->
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </div>
+    <div class="pt-4">
+      <!-- success -->
+      <footer class="bg-primaryy text-white text-center fixed-bottom" style="background-color: rgb(56, 52, 52);">
+        <div class="container p-2">
+          <p class="mb-0">&copy; 2025 Designed and Developed by IT-Cell CGMSCL | All Rights Reserved.</p>
+        </div>
+      </footer>
+    </div>
+
+  </div>
+
+
+
+  <ng-template class="border rounded" #itemDetailsModal let-modal>
+    <div class="row align-items-center p-2 m-2">
+      <div class="col-6"></div>
+      <div class="col-6 text-end">
+        <button mat-icon-button mat-dialog-close aria-label="Close">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-2" mat-dialog-content>
+      <div class="card shadow card-body">
+        <div class="d-flex justify-content-between align-items-center mb-0">
+          <div class="export-menu-container w-100">
+            <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+              <form #adminLoginForm="ngForm" (ngSubmit)="adminLoginForm.valid && handleLogin_SMIT()" class="w-100">
+                <div class="mb-3">
+                  <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                    class="text-danger mt-1">
+                    Please select a user.
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <button type="button" class="btn btn-success btn-sm w-100"
+                    (click)="sendOTP_PUblicView_For_SMIT()">Generate OTP</button>
+                  <input type="text" id="otpInput" class="form-control w-100 mt-2" maxlength="6" [(ngModel)]="otp"
+                    name="otp" placeholder="Enter OTP" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="captcha" class="form-label">CAPTCHA</label>
+                  <div class="d-flex align-items-center">
+                    <span class="captcha-box flex-grow-1 text-center">{{ captcha }}</span>
+                    <button type="button" class="btn btn-link" (click)="generateCaptcha()">Refresh</button>
+                  </div>
+                  <input type="text" class="form-control w-100 mt-2" id="captcha" #captchaInput
+                    placeholder="Enter CAPTCHA" required>
+                  <div *ngIf="otpField.invalid && (otpField.dirty || otpField.touched)" class="text-danger">
+                    OTP is required.
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100" [disabled]="adminLoginForm.invalid">Login through
+                  OTP</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-grid gap-2 col-12 mx-auto footer mt-2 p-2">
+      <button mat-button mat-dialog-close type="button" class="btn btn-info btn-lg bg-info w-100">
+        <mat-icon role="img">exit_to_app</mat-icon>
+      </button>
+    </div>
+  </ng-template>
+
+
+
+
+
+  <!-- Modal -->
+  <div class="modal fade custom-transparent-modal" id="forgotpassModal" tabindex="-1"
+    aria-labelledby="forgotpassModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-none">
+        <div class="modal-header bg-dark text-white py-2 px-3">
+          <h5 class="modal-title" id="forgotpassModalLabel">Forgot Password</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-0">
+          <div class="col-lg-12 card">
+            <div class="p-5 bg-light">
+              <div class="mb-4 pb-2">
+                <div data-mdb-input-init class="form-outline">
+                  <label class="form-label" for="form3Examplev4">Phone Number:<span class="text-danger">*</span></label>
+                  <input type="text" id="form3Examplev4" class="form-control form-control-lg" maxlength="10" />
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-4 pb-2  mb-md-0 pb-md-0">
+
+                  <div data-mdb-input-init class="form-outline">
+                    <button type="button" data-mdb-button-init data-mdb-ripple-init
+                      class="btn btn-primary w-100 mb-2 btn-lg">Get OTP</button>
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div data-mdb-input-init class="form-outline">
+
+                    <input type="number" maxlength="6" name="otp" class="form-control form-control-lg"
+                      placeholder=" Enter OTP " />
+
+                  </div>
+
+                </div>
+              </div>
+              <div class="mb-4 pb-2">
+
+                <div style="position: relative;" data-mdb-input-init class="form-outline">
+
+                  <label class="form-label" for="pwd">Password:
+                    <span class="text-danger">*</span>
+                  </label>
+                  <div class="password-box">
+                    <input class="form-control form-control-lg" />
+
+
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4 pb-2 ">
+
+                  <div data-mdb-input-init class="form-outline">
+                    <label class="form-label" for="form3Examplev5">Confirm Password:<span
+                        class="text-danger">*</span></label>
+                    <div class="password-box">
+                      <input id="form3Examplev5" class="form-control form-control-lg" />
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+              </div>
+              <div data-mdb-input-init class="form-outline">
+                <button type="button" data-mdb-button-init data-mdb-ripple-init
+                  class="btn btn-success w-100 mb-2 btn-lg">Save</button>
+              </div>
+
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="forgotpassModal1" tabindex="-1" aria-labelledby="forgotpassModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="itemDetailsModalLabel">Item Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Facility Name:</strong> {{ selectedWarehouse?.facilityname }}</p>
+          <p><strong>Number of Items:</strong> {{ selectedWarehouse?.nositems }}</p>
+          <p><strong>Drop Date:</strong> {{ selectedWarehouse?.dropdate }}</p>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</section>

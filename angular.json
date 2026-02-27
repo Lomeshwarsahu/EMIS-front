@@ -1,0 +1,168 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "schematics": {
+    "@schematics/angular:component": {
+      "style": "css",
+      "skipTests": false,
+      "inlineStyle": false,
+      "inlineTemplate": false,
+      "flat": false,
+      "prefix": "app",
+      "type": "component"
+    },
+    "@schematics/angular:class": {
+      "skipTests": false
+    },
+    "@schematics/angular:directive": {
+      "skipTests": false,
+      "prefix": "app",
+      "type": "directive"
+    },
+    "@schematics/angular:pipe": {
+      "skipTests": false,
+      "typeSeparator": "."
+    },
+    "@schematics/angular:service": {
+      "skipTests": false,
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
+    }
+  }
+  ,
+  "newProjectRoot": "projects",
+  "projects": {
+    "EMIS": {
+      "projectType": "application",
+      "schematics": {}
+      ,
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": {
+              "base": "dist/EMIS"
+            },
+            "index": "src/index.html",
+            "polyfills": [
+              "zone.js"
+            ],
+            "allowedCommonJsDependencies": ["lodash"
+          ,"apexcharts",
+          "xlsx/dist/xlsx.mini.min",
+          "html2canvas",
+          "jspdf-autotable",
+          "sweetalert2",
+          "canvg",
+          "raf",
+          "rgbcolor",
+          "core-js"
+
+        ],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/manifest.webmanifest"
+            ],
+            "styles": ["./node_modules/bootstrap/dist/css/bootstrap.min.css",
+            "@angular/material/prebuilt-themes/indigo-pink.css",
+            "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+            "src/styles.css",
+            "node_modules/ngx-spinner/animations/line-scale-party.css" ,
+            "node_modules/ngx-toastr/toastr.css",
+            "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+
+
+          ],
+          "scripts": [
+            "./node_modules/bootstrap/dist/js/bootstrap.js"
+          ],
+          "browser": "src/main.ts"
+       
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "10mb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "180kb",
+                  "maximumError": "200kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "EMIS:build:production"
+            },
+            "development": {
+              "buildTarget": "EMIS:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n",
+          "options": {
+            "buildTarget": "EMIS:build"
+          }
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/manifest.webmanifest"
+            ],
+            "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.css",
+              "node_modules/ngx-toastr/toastr.css"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": "3bd8fb75-2640-40d0-b6bd-706a2e817782"
+  }
+}
