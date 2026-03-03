@@ -6,6 +6,7 @@ import { LogoutComponent } from './component/auth/logout/logout.component';
 import { RouteGuardService } from './service/authentication/route-guard.service';
 import { OtpComponent } from './component/auth/otp/otp.component';
 import { Registration } from './component/auth/registration/registration';
+import { GenerationFileNonastiComponent } from './component/generation-file-nonasti/generation-file-nonasti.component';
 
 
 
@@ -16,9 +17,11 @@ const routes: Routes = [
   {path:'login',component:LoginComponent},
   {path:'Registration',component:Registration},
   {path:'otp',component:OtpComponent},
+  {path:'GenerationFileNonasti',component:GenerationFileNonastiComponent},
 
   {path:'logout',component:LogoutComponent,canActivate:[RouteGuardService]}, 
-{ path: 'welcome', component: HomeComponent },
+// { path: 'welcome', component: HomeComponent },
+{ path: 'welcome', component: HomeComponent, canActivate: [RouteGuardService],data: { allowedRoles: ['AD','AU','AAO','AYUSH','CGMSC','CON','DHS','DKS','DME','DMT','FDA','FU','GMF','IT','Principal','SCI','SUP','TPO']} },
 // { path: 'welcome', component: HomeComponent, canActivate: [RouteGuardService],data: { allowedRoles: ['Suppliers','SEC1','DHS','CME','DME1','Collector','Warehouse','SE','HO_Infra','Division','DM PO','SSO','Logi Cell']} },
 
 

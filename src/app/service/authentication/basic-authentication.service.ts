@@ -49,7 +49,7 @@ export class BasicAuthenticationService {
   executeAuthenticationService1(userId: any, password: any) {
     debugger
     const body = {
-      user_name: userId,   // 👈 yahi tumhara user_id hai
+      user_name: userId, 
       password: password
     };
   
@@ -57,6 +57,7 @@ export class BasicAuthenticationService {
       'https://localhost:7036/api/Auth/login',
       body
     );
+   
   }
   // authenticate(emailid: any, pwd: any) {
     
@@ -82,20 +83,32 @@ export class BasicAuthenticationService {
     }
 
      // Retrieve role information
-  getRole() {
-    return {
-      roleName: this.approle ?? localStorage.getItem('roleName')
-    };
-  }
+  // getRole() {
+  //   return {
+  //     roleName: this.approle ?? localStorage.getItem('roleName')
+  //     // roleName: this.approle ?? localStorage.getItem('roleName')
+  //   };
+  // }
 
+getRole() {
+  const data = JSON.parse(localStorage.getItem('loginData') || '{}');
 
+  return {
+    roleName: this.approle ?? data.user_type
+  };
+}
 
   isUserLogedIn() {
     let user = sessionStorage.getItem('authenticatedUser');
     return !(user === null);
   }
   getUserRole() {
-    return sessionStorage.getItem('role');
+    // return sessionStorage.getItem('role');
+     const data = JSON.parse(localStorage.getItem('loginData') || '{}');
+
+  return {
+    roleName: this.approle ?? data.user_type
+  };
   }
 
   logout() {
