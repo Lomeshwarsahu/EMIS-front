@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { RouterModule } from '@angular/router';
+import { json } from 'stream/consumers';
 declare var bootstrap: any;
 @Component({
     selector: 'app-login',
@@ -102,8 +103,8 @@ browserInfo: any;
   //   this.browserInfo= this.getBrowserInfo();
     // console.log('userAgent1=',this.browserInfo.userAgent ); 
     // sessionStorage.setItem('userAgent',this.browserInfo.userAgent );
-    this.adminLoginDropdown();
-    this.cgmsclLoginDropdown();
+    // this.adminLoginDropdown();
+    // this.cgmsclLoginDropdown();
     // this.fetchActualDropInfo(this.days);
     // this.wHlLoginDropdown();
     // this.getDashLoginDDL();
@@ -996,66 +997,138 @@ this.api.getUsers(id).subscribe(res => {
       
     }
   }
+  
   async handleCgmsclLogin1() {
 debugger;
-    // basic validation
-    if (!this.emailid || !this.pwd) {
-      this.toastr.error('User and Password required');
-      return;
+
+// ✅ basic validation
+if (!this.emailid || !this.pwd) {
+this.toastr.error('User and Password required');
+return;
+}
+
+// ✅ clear old storage
+sessionStorage.clear();
+localStorage.clear();
+
+const user_id = this.emailid.toString();
+
+this.loginService.executeAuthenticationService1(user_id, this.pwd)
+.subscribe({
+next: (res: any) => {
+console.log('res:', res);
+    // ✅ IMPORTANT: correct key name
+    localStorage.setItem('loginData', JSON.stringify(res));
+
+    // ✅ success check (API ke according)
+    if (res?.message === 'Login Successful' || res?.message === 'Successfully Login') {
+
+      this.invalidLogin = false;
+      this.toastr.success('Logged in Successfully');
+
+      // ✅ token store
+      if (res?.token) {
+        sessionStorage.setItem('token', res.token);
+      }
+
+      // ✅ ROLE FIX (MOST IMPORTANT)
+      const role = res?.user_type?.toUpperCase();
+      console.log('User Role:', role);
+
+      this.InsertUserLoginLog();
+
+      // ✅ ROLE BASED REDIRECT
+      if (role === 'AD' || role === 'AU' || role === 'AAO' || role === 'AYUSH'
+        || role === 'CGMSC' || role === 'CON' || role === 'DHS' || role === 'DKS'
+        || role === 'DME' || role === 'DMT' || role === 'FDA' || role === 'FU'
+        || role === 'GMF' || role === 'IT' || role === 'PRINCIPAL'
+        || role === 'SCI' || role === 'SUP' || role === 'TPO') {
+
+        this.router.navigate(['/welcome']);
+
+      } else if (role === 'QC') {
+        this.router.navigate(['/qc-dashboard']);
+
+      } else {
+        this.router.navigate(['/home']);
+      }
+
+    } else {
+      this.handleLoginFailure();
     }
-  
-    // Clear storage
-    sessionStorage.clear();
-    localStorage.clear();
-  
-    // ✅ OTP verify (agar use kar rahe ho)
-    // const otpValid = await this.verifyOTPOther();
-    // if (!otpValid) return;
-  const user_id= this.emailid.toString()
-    // ✅ LOGIN CALL
-    this.loginService
-      .executeAuthenticationService1(user_id, this.pwd)
-      // .executeAuthenticationService1(this.emailid, this.pwd)
-      .subscribe({
-        next: (res: any) => {
-          console.log("res:",res);
-          // this.router.navigate(['/home']);
-          this.router.navigate(['/welcome']);
-          this.toastr.success('Logged in Successfully');
-          // if (res?.message === "Successfully Login") {
-  
-          //   this.invalidLogin = false;
-          //   this.toastr.success('Logged in Successfully');
-  
-          //   // ✅ store token (agar aa raha ho)
-          //   if (res.token) {
-          //     sessionStorage.setItem('token', res.token);
-          //   }
-  
-          //   this.rolename = res.userInfo?.rolename;
-  
-          //   this.InsertUserLoginLog();
-  
-          //   // ✅ ROLE BASED NAVIGATION
-          //   if (this.rolename === 'SSO' || this.rolename === 'Logi Cell') {
-          //     this.router.navigate(['/welcome']);
-  
-          //   } else if (this.rolename === 'QC') {
-          //     this.router.navigate(['/qc-dashboard']);
-  
-          //   } else {
-          //     this.router.navigate(['/home']);
-          //   }
-  
-          // } else {
-          //   this.handleLoginFailure();
-          // }
-        },
-        error: (e:any) =>{
-console.log('error=',e);
-        } //this.handleLoginFailure()
-      });
+  },
+
+  error: (e: any) => {
+    console.log('error=', e);
+    this.handleLoginFailure();
   }
+});
+
+
+}
+
+//   async handleCgmsclLogin1() {
+// debugger;
+//     // basic validation
+//     if (!this.emailid || !this.pwd) {
+//       this.toastr.error('User and Password required');
+//       return;
+//     }
+  
+//     // Clear storage
+//     sessionStorage.clear();
+//     localStorage.clear();
+  
+//     // ✅ OTP verify (agar use kar rahe ho)
+//     // const otpValid = await this.verifyOTPOther();
+//     // if (!otpValid) return;
+//   const user_id= this.emailid.toString()
+//     // ✅ LOGIN CALL
+//     this.loginService
+//       .executeAuthenticationService1(user_id, this.pwd)
+//       // .executeAuthenticationService1(this.emailid, this.pwd)
+//       .subscribe({
+//         next: (res: any) => {
+//           console.log("res:",res);
+//          localStorage.setItem('login data', JSON.stringify(res));
+//           // this.router.navigate(['/home']);
+//           // this.router.navigate(['/welcome']);
+//           // this.toastr.success('Logged in Successfully');
+//           debugger;
+//           if (res?.message === "Successfully Login") {
+  
+//             this.invalidLogin = false;
+//             this.toastr.success('Logged in Successfully');
+  
+//             // ✅ store token (agar aa raha ho)
+//             if (res.token) {
+//               sessionStorage.setItem('token', res.token);
+//             }
+  
+//             this.rolename = res.userInfo?.rolename;
+  
+//             this.InsertUserLoginLog();
+  
+//             // ✅ ROLE BASED NAVIGATION
+//             if (this.rolename === 'SSO' || this.rolename === 'Logi Cell') {
+//               this.router.navigate(['/welcome']);
+  
+//             } else if (this.rolename === 'QC') {
+//               this.router.navigate(['/qc-dashboard']);
+  
+//             } else {
+//               this.router.navigate(['/home']);
+//             }
+  
+//           } else {
+//             this.handleLoginFailure();
+//           }
+//         },
+//         error: (e:any) =>{
+// console.log('error=',e);
+//         } //this.handleLoginFailure()
+//       });
+//   }
 //#endregion
 
 

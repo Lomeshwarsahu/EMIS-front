@@ -1,0 +1,181 @@
+
+<section class="container-fluid">
+  <div class="card">
+    <div class="card shadow-lg p-2 border-0 bg-white rounded ">
+      <div class="card-body border rounded px-0 pt-2 pb-3 bg-light"
+        style="height: auto; overflow: hidden; position: relative;">
+        <div class="mb-3 Fon-family" style="text-align: justify;">
+          <form class="p-2">
+            <div class="card shadow-sm p-3">
+  <div class="row align-items-end g-3">
+
+    <!-- 🔘 Search Mode -->
+    <div class="col-12">
+      <label class="fw-semibold me-3">Search Mode:</label>
+
+      <div class="form-check form-check-inline">
+        <input class="form-check-input"
+               type="radio"
+               name="searchMode"
+               value="po"
+               [(ngModel)]="searchMode">
+        <label class="form-check-label">By PO No</label>
+      </div>
+
+      <div class="form-check form-check-inline">
+        <input class="form-check-input"
+               type="radio"
+               name="searchMode"
+               value="outward"
+               [(ngModel)]="searchMode">
+        <label class="form-check-label">By Outward + Year</label>
+      </div>
+    </div>
+
+    <!-- PO NO -->
+    <div class="col-md-4">
+      <label class="form-label fw-semibold">Type PO No</label>
+      <input type="text"
+             class="form-control"
+             placeholder="Enter PO Number"
+             [(ngModel)]="poNo"
+             [disabled]="searchMode !== 'po'">
+    </div>
+
+    <!-- OR divider -->
+    <div class="col-md-1 text-center d-none d-md-block">
+      <div class="vr" style="height:60px;"></div>
+      <div class="fw-bold text-muted">OR</div>
+    </div>
+
+    <!-- OUTWARD -->
+    <div class="col-md-3">
+      <label class="form-label fw-semibold">Outward Number</label>
+      <input type="text"
+             class="form-control"
+             placeholder="Enter Outward Number"
+             [(ngModel)]="outwardNo"
+             [disabled]="searchMode !== 'outward'">
+    </div>
+
+    <!-- YEAR -->
+    <div class="col-md-4">
+      <label class="form-label fw-semibold">Select Year</label>
+      <ng-select class="form-control"
+                 bindLabel="Year"
+                 [items]="yearList"
+                 placeholder="Select Year"
+                 [(ngModel)]="selectedYear"
+                 [disabled]="searchMode !== 'outward'">
+      </ng-select>
+    </div>
+
+  </div>
+</div>
+            <!-- <div class="row pb-3">
+                <div class="form-group col-md-4  pt-3">
+                <label for="inputPassword4">Type PO NO : <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="Type PO Number" id="inputPassword4" />
+
+              </div>
+              
+              <div class="form-group col-md-4  pt-3">
+                <label for="inputPassword4">Search by Outward Number : <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="Search by Outward Number" id="inputPassword4" />
+
+              </div>
+              <div class="form-group col-md-4 pt-3" style="position: relative;">
+              
+                <label for="inputName">Select Year :<span class="text-danger">*</span></label>
+                <ng-select class="form-control" bindLabel="Year" name="Year" placeholder="Select Year ">
+                </ng-select>
+              
+              </div>
+            
+            </div> -->
+<!-- <div class="row pb-3 align-items-end">
+
+
+  <div class="form-group col-md-4 pt-3">
+    <label>Type PO NO :</label>
+    <input type="text"
+           class="form-control"
+           placeholder="Type PO Number"
+           [(ngModel)]="poNo">
+  </div>
+
+
+  <div class="col-md-1 text-center pt-4">
+    <strong style="font-size:18px;">OR</strong>
+  </div>
+
+<div class="form-group col-md-3 pt-3">
+    <label>Search by Outward Number :</label>
+    <input type="text"
+           class="form-control"
+           placeholder="Search by Outward Number"
+           [(ngModel)]="outwardNo">
+  </div>
+
+  <div class="form-group col-md-4 pt-3">
+    <label>Select Year :</label>
+    <ng-select class="form-control"
+               bindLabel="Year"
+               [items]="yearList"
+               placeholder="Select Year"
+               [(ngModel)]="selectedYear">
+    </ng-select>
+  </div>
+
+</div> -->
+            <div class="row pb-3">
+              <div class="form-group col-md-6 pt-3">
+                <label for="inputEmail4">Bank Name: <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="Bank Name:*" id="inputEmail4" />
+
+              </div>
+              <div class="form-group col-md-6 pt-3">
+                <label for="inputAddress">IFSC Code: <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="Type your IFSC Code" id="inputAddress" />
+
+
+              </div>
+            </div>
+
+            <div class="row pb-3">
+              <div class="form-group col-md-6 pt-3">
+                <label for="inputnumber">Account No: <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" placeholder="Type your Account No" id="inputnumber"
+                  minlength="9" maxlength="18" />
+
+
+              </div>
+              <div class="form-group col-md-6 pt-3">
+                <label for="inputAddress">Branch Address: <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="Type your Branch Address" id="inputAddress" />
+
+
+              </div>
+            </div>
+
+
+            <div class="row pb-3">
+              <div class="form-group col-md-6 pt-3">
+                <label for="inputnumber"> Upload Bank Mandate: <span class="text-danger">*</span></label>
+                <input type="file" accept=".pdf" class="form-control" name="bankmandatefile"
+                  placeholder="Type your Account No">
+
+
+              </div>
+
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
