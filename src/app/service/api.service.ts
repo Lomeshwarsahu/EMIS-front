@@ -18,6 +18,7 @@ export class ApiService {
   // testing
   // private apiUrll = 'https://localhost:5001/api/Auth';
   private apiUrll = 'https://localhost:7036/api/Auth';
+  private apiUrls = 'https://localhost:7036/api/';
 
   private tokenSubject = new BehaviorSubject<string | null>(null);
 
@@ -26,6 +27,19 @@ export class ApiService {
   getUsers(id: number) {
     return this.http.get(`${this.apiUrll}/${id}`);
   }
+  // https://localhost:7036/api/GenerateNasti/Getyear
+  // public get(url: string, data?: FormData, options?: any){
+  //    return this.http.get(this.apiUrll + url, data, options);
+
+  // }
+  public get(url: string, options?: any) {
+  return this.http.get(this.apiUrls + url, options);
+}
+  
+    public post(url: string, data: FormData, options?: any) {
+    return this.http.post(this.API + url, data, options);
+  }
+
 //#endregion
 
 
@@ -84,9 +98,6 @@ export class ApiService {
     return this.http.get(
       `${this.VREGAPI}/Registration/registeredVendors?vregid=${supplierId}`
     );
-  }
-  public post(url: string, data: FormData, options?: any) {
-    return this.http.post(this.API + url, data, options);
   }
 
 
