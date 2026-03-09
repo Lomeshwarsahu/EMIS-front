@@ -4,7 +4,276 @@
       <div class="card-body border rounded px-0 pt-2 pb-3 bg-light"
         style="height: auto; overflow: hidden; position: relative;">
         <div class="mb-0 Fon-family" style="text-align: justify;">
-          <form class="p-2">
+          <form class="p-2" #fileForm="ngForm" (ngSubmit)="UpdateFileNo(fileForm)">
+
+  <div class="card shadow-sm p-3">
+    <div class="row align-items-end g-3">
+
+      <div class="col-12">
+        <label class="fw-semibold me-3">Search Mode:</label>
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input"
+                 type="radio"
+                 name="searchMode"
+                 value="po"
+                 [(ngModel)]="searchMode">
+          <label class="form-check-label">By PO No</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input"
+                 type="radio"
+                 name="searchMode"
+                 value="outward"
+                 [(ngModel)]="searchMode">
+          <label class="form-check-label">By Outward + Year</label>
+        </div>
+      </div>
+
+      <!-- PO No -->
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Type PO No</label>
+        <input type="text"
+               class="form-control"
+               placeholder="Enter PO Number"
+               [(ngModel)]="poNo"
+               name="poNo"
+               #poNoRef="ngModel"
+               required
+               [disabled]="searchMode !== 'po'">
+
+        <small class="text-danger" *ngIf="poNoRef.invalid && poNoRef.touched">
+          PO Number is required
+        </small>
+      </div>
+
+      <div class="col-md-1 text-center d-none d-md-block">
+        <div class="vr" style="height:60px;"></div>
+        <div class="fw-bold text-muted">OR</div>
+      </div>
+
+      <!-- Outward No -->
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">Outward Number</label>
+        <input type="text"
+               class="form-control"
+               placeholder="Enter Outward Number"
+               [(ngModel)]="outwardNo"
+               name="outwardNo"
+               #outwardRef="ngModel"
+               required
+               [disabled]="searchMode !== 'outward'">
+
+        <small class="text-danger" *ngIf="outwardRef.invalid && outwardRef.touched">
+          Outward Number is required
+        </small>
+      </div>
+
+      <!-- Year -->
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Select Year</label>
+
+        <ng-select
+          class="form-control"
+          bindLabel="year"
+          [items]="yearList" appendTo=".form-group"
+          name="selectedYear"
+          [(ngModel)]="selectedYear"
+          #yearRef="ngModel"
+          required
+          [disabled]="searchMode !== 'outward'">
+
+        </ng-select>
+
+        <small class="text-danger" *ngIf="yearRef.invalid && yearRef.touched">
+          Year is required
+        </small>
+
+      </div>
+
+      <div class="d-flex justify-content-center mt-3">
+        <button type="button"
+                class="btn btn-primary"
+                (click)="search()"    [disabled]="
+          (searchMode === 'po' && !poNo) ||
+          (searchMode === 'outward' && (!outwardNo || !selectedYear))
+        ">
+          Show File No
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- File Details -->
+  <div class="card shadow-sm p-3 mt-1">
+    <div class="row align-items-end g-3">
+
+      <div class="col-md-4">
+
+        <!-- File No -->
+        <div class="form-group pt-3">
+          <label class="form-label fw-semibold">
+            File No:<span class="text-danger">*</span>
+          </label>
+
+          <input type="text"
+                 class="form-control"
+                 placeholder="Enter File No"
+                 [(ngModel)]="fileNo"
+                 name="fileNo"
+                 #fileNoRef="ngModel"
+                 required>
+
+          <small class="text-danger"
+                 *ngIf="fileNoRef.invalid && fileNoRef.touched">
+            File No is required
+          </small>
+
+        </div>
+
+
+        <!-- File Date -->
+        <div class="form-group pt-3">
+          <label class="form-label fw-semibold">
+            File Creation Date:<span class="text-danger">*</span>
+          </label>
+
+          <input type="date"
+                 class="form-control"
+                 [(ngModel)]="podt"
+                 name="fileDate"
+                 #fileDateRef="ngModel"
+                 required>
+
+          <small class="text-danger"
+                 *ngIf="fileDateRef.invalid && fileDateRef.touched">
+            File Date is required
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div class="col-md-1 text-center d-none d-md-block">
+        <div class="vr" style="height:100px;"></div>
+      </div>
+
+
+      <div class="col-md-7">
+
+        <div class="row">
+
+          <!-- PO Number -->
+          <div class="form-group col-md-6 pt-3">
+            <label class="form-label fw-semibold">
+              PO No:<span class="text-danger">*</span>
+            </label>
+
+            <input type="text"
+                   class="form-control"
+                   [(ngModel)]="poNo"
+                   name="poNumber"
+                   #poNumberRef="ngModel"
+                   required>
+
+            <small class="text-danger"
+                   *ngIf="poNumberRef.invalid && poNumberRef.touched">
+              PO No is required
+            </small>
+
+          </div>
+
+
+          <!-- PO Date -->
+          <div class="form-group col-md-6 pt-3">
+            <label class="form-label fw-semibold">
+              PO Date:<span class="text-danger">*</span>
+            </label>
+
+            <input type="date"
+                   class="form-control"
+                   [(ngModel)]="podt"
+                   name="poDate"
+                   #poDateRef="ngModel"
+                   required>
+
+            <small class="text-danger"
+                   *ngIf="poDateRef.invalid && poDateRef.touched">
+              PO Date is required
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="row">
+
+          <!-- Tender Ref -->
+          <div class="form-group col-md-6 pt-3">
+            <label class="form-label fw-semibold">
+              Tender Ref:<span class="text-danger">*</span>
+            </label>
+
+            <input type="text"
+                   class="form-control"
+                   [(ngModel)]="schemeCode"
+                   name="schemeCode"
+                   #schemeRef="ngModel"
+                   required>
+
+            <small class="text-danger"
+                   *ngIf="schemeRef.invalid && schemeRef.touched">
+              Tender Ref is required
+            </small>
+
+          </div>
+
+
+          <!-- Supplier Name -->
+          <div class="form-group col-md-6 pt-3">
+            <label class="form-label fw-semibold">
+              Supplier Name:<span class="text-danger">*</span>
+            </label>
+
+            <input type="text"
+                   class="form-control"
+                   [(ngModel)]="supplierName"
+                   name="supplierName"
+                   #supplierRef="ngModel"
+                   required>
+
+            <small class="text-danger"
+                   *ngIf="supplierRef.invalid && supplierRef.touched">
+              Supplier Name is required
+            </small>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Save Button -->
+    <div class="d-flex justify-content-center mt-3">
+      <button type="submit"
+              class="btn btn-primary"
+              [disabled]="fileForm.invalid">
+        Save
+      </button>
+    </div>
+
+  </div>
+
+</form>
+          <!-- <form class="p-2" #fileForm="ngForm" (ngSubmit)="UpdateFileNo(fileForm)">
             <div class="card shadow-sm p-3">
               <div class="row align-items-end g-3">
 
@@ -109,15 +378,16 @@
 
                 </div>
               </div>
-            </div>
-
-
-
-
-            <div class="d-flex justify-content-center mt-3">
+                  <div class="d-flex justify-content-center mt-3">
               <button type="submit" class="btn btn-primary">Save</button>
             </div>
-          </form>
+            </div>
+
+
+
+
+        
+          </form> -->
         </div>
       </div>
     </div>
@@ -189,17 +459,17 @@
                     </ng-container>
     
                     <!-- <ng-container matColumnDef="action">
-                                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
-                                            <td mat-cell *matCellDef="let element" class="text-center">
-                                              <span class="d-flex  flex-row-reverse p-2 ">
-                                                <button
-                                                  class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
-                                                  mat-button (click)="onButtonClick(element.atid)">
-                                                  <i class="bi bi-pencil-square text-primary"></i>
-                                                </button>
-                                              </span>
-                                            </td>
-                                          </ng-container> -->
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+                          <td mat-cell *matCellDef="let element" class="text-center">
+                            <span class="d-flex  flex-row-reverse p-2 ">
+                                <button
+                                 class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
+                                  mat-button (click)="onButtonClick(element.atid)">
+                                   <i class="bi bi-pencil-square text-primary"></i>
+                                 </button>
+                            </span>
+                          </td>
+                     </ng-container> -->
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                   </table>

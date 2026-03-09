@@ -91,6 +91,15 @@ export class GenerationFileNonastiComponent {
     'fileDT',
     //  ,'action','delete'
   ];
+
+  poId:any;
+// poNo:any;
+// fileNo:any;
+// podt:any;
+// schemeCode:any;
+// supplierName:any;
+// outwardNo:any;
+// financialyearid:any;
   constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
@@ -157,13 +166,20 @@ export class GenerationFileNonastiComponent {
         // this.PODetails = res[0];
 
         const data = res[0];
+
+this.poId = data.ponoid;
+this.fileNo = data.fileNo;
+this.poNo = data.poNo;
+this.schemeCode = data.schemeCode;
+this.supplierName = data.supplierName;
+this.podt = this.convertDate(data.podt);
         // ponoid
-        this.fileNo = data.fileNo;
-        // this.podt = data.podt;
-        this.podt = this.convertDate(data.podt);
-        this.schemeCode = data.schemeCode;
-        this.supplierName = data.supplierName;
-        this.poNo = data.poNo;
+        // this.fileNo = data.fileNo;
+        // // this.podt = data.podt;
+        // this.podt = this.convertDate(data.podt);
+        // this.schemeCode = data.schemeCode;
+        // this.supplierName = data.supplierName;
+        // this.poNo = data.poNo;
         // poNo
         this.spinner.hide();
       },
@@ -235,4 +251,94 @@ export class GenerationFileNonastiComponent {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+//   https://localhost:7036/api/GenerateNasti/UpdateFileNo
+//   {
+//   "poId": 128,
+//   "fileNo": "1898/T fgsergtfgd",
+//   "fileDate": "2026-03-09T05:24:43.414Z"
+// }
+
+// UpdateFileNo() {
+
+//   try {
+
+//     this.spinner.show();
+
+//     // const body = {
+//     //   PoId: this.poId,
+//     //   FileNo: this.fileNo,
+//     //   FileDate: new Date().toISOString()
+//     // };
+// const body = {
+//   poId: this.poId,
+//   fileNo: this.fileNo,
+//   fileDate: new Date().toISOString().split('T')[0]
+// };
+//     this.api.put('GenerateNasti/UpdateFileNo', body).subscribe({
+//       next: (res: any) => {
+
+//         console.log(res);
+//         this.toastr.success('File Updated Successfully');
+//         this.GETGetPODetails();
+//         this.spinner.hide();
+
+//       }, error: (error: any) => {
+
+//         this.spinner.hide();
+//         console.log('Error:', error);
+
+//       }
+//     });
+
+//   } catch (err: any) {
+
+//     this.spinner.hide();
+//     console.log(err);
+
+//   }
+
+// }
+UpdateFileNo(form: any) {
+
+  try {
+
+    this.spinner.show();
+
+    const body = {
+      poId: this.poId,
+      fileNo: this.fileNo,
+      fileDate: new Date().toISOString().split('T')[0]
+    };
+
+    this.api.put('GenerateNasti/UpdateFileNo', body).subscribe({
+
+      next: (res: any) => {
+
+        console.log(res);
+        this.toastr.success('File Updated Successfully');
+        this.GETGetPODetails();
+        this.spinner.hide();
+
+        form.resetForm();
+
+      },
+
+      error: (error: any) => {
+
+        this.spinner.hide();
+        console.log('Error:', error);
+
+      }
+
+    });
+
+  } catch (err: any) {
+
+    this.spinner.hide();
+    console.log(err);
+
+  }
+
+}
 }

@@ -39,7 +39,17 @@ export class ApiService {
     public post(url: string, data: FormData, options?: any) {
     return this.http.post(this.API + url, data, options);
   }
+//     public put(url: string, data: FormData, options?: any) {
+// debugger;
 
+//     return this.http.put(this.apiUrls  + url, data, options);
+//   }
+// public put(url: string, data: any) {
+//   return this.http.put(this.apiUrls  + url, data);
+// }
+public put(url: string, data: any) {
+  return this.http.put(this.apiUrls + url, data, { responseType: 'text' });
+}
 //#endregion
 
 
