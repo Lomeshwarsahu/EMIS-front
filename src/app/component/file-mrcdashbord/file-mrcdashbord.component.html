@@ -1,1 +1,303 @@
-<p>file-mrcdashbord works!</p>
+<section class="container-fluid">
+  <div class="card">
+    <div class="card shadow-lg p-2 border-0 bg-white rounded ">
+      <div class="card-body border rounded px-0 pt-2 pb-3 bg-light"
+        style="height: auto; overflow: hidden; position: relative;">
+        <div class="mb-0 Fon-family" style="text-align: justify;">
+          <form class="p-2">
+            <div class="card shadow-sm p-3 mt-2">
+
+  <div class="row text-center align-items-start">
+
+    <!-- PO TYPES -->
+    <div class="col-md-4 border-end">
+
+      <h6 class="fw-bold text-primary mb-3">
+        <i class="bi bi-folder me-1"></i> PO Types
+      </h6>
+
+      <div class="d-flex justify-content-center flex-wrap">
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="poType" value="All" [(ngModel)]="poType">
+          <label class="form-check-label">All PO</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="poType" value="NP" [(ngModel)]="poType">
+          <label class="form-check-label">Normal PO</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="poType" value="CP" [(ngModel)]="poType">
+          <label class="form-check-label">Covid PO</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="poType" value="siteReady" [(ngModel)]="poType">
+          <label class="form-check-label">After Site Readiness</label>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- PAYMENT TYPES -->
+    <div class="col-md-4 border-end">
+
+      <h6 class="fw-bold text-success mb-3">
+        <i class="bi bi-cash-coin me-1"></i> Payment Types
+      </h6>
+
+      <div class="d-flex justify-content-center flex-wrap">
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="paymentType" value="All" [(ngModel)]="paymentType">
+          <label class="form-check-label">All</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="paymentType" value="FP" [(ngModel)]="paymentType">
+          <label class="form-check-label">Fit For Payment</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="paymentType" value="NFP" [(ngModel)]="paymentType">
+          <label class="form-check-label">Not Fit</label>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- MY DESK -->
+    <div class="col-md-4">
+
+      <h6 class="fw-bold text-warning mb-3">
+        <i class="bi bi-person-workspace me-1"></i> My Desk
+      </h6>
+
+      <div class="d-flex justify-content-center">
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input"
+                 type="checkbox"
+                 [(ngModel)]="onlyMyDesk"
+                 name="onlyMyDesk">
+          <label class="form-check-label">
+            Only include Files on my Desk
+          </label>
+        </div>
+
+      </div>
+
+    </div>
+ <div class="d-flex justify-content-center mt-3">
+      <button type="submit"
+              class="btn btn-primary" (click)=" GETGetPODetails()"
+             >
+        Show Details
+      </button>
+    </div>
+ <!-- [disabled]="fileForm.invalid" -->
+  </div>
+
+</div>
+<!-- <div class="card shadow-sm p-3 mt-2">
+
+  <div class="row">
+
+    <div class="col-md-4 border-end">
+
+      <h6 class="fw-bold mb-3 text-primary">PO Types</h6>
+
+      <div class="form-check">
+        <input class="form-check-input"
+               type="radio"
+               name="poType"
+               value="all"
+               [(ngModel)]="poType">
+        <label class="form-check-label">All PO</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input"
+               type="radio"
+               name="poType"
+               value="normal"
+               [(ngModel)]="poType">
+        <label class="form-check-label">Normal PO</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input"
+               type="radio"
+               name="poType"
+               value="covid"
+               [(ngModel)]="poType">
+        <label class="form-check-label">Covid PO</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input"
+               type="radio"
+               name="poType"
+               value="siteReady"
+               [(ngModel)]="poType">
+        <label class="form-check-label">After Site Readiness</label>
+      </div>
+
+    </div>
+
+
+    <div class="col-md-4 border-end">
+
+      <h6 class="fw-bold mb-3 text-success">Payment Types</h6>
+
+      <div class="form-check">
+        <input class="form-check-input"
+               type="radio"
+               name="paymentType"
+               value="all"
+               [(ngModel)]="paymentType">
+        <label class="form-check-label">All</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input"
+               type="radio"
+               name="paymentType"
+               value="fit"
+               [(ngModel)]="paymentType">
+        <label class="form-check-label">Fit For Payment</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input"
+               type="radio"
+               name="paymentType"
+               value="notFit"
+               [(ngModel)]="paymentType">
+        <label class="form-check-label">Not Fit For Payment</label>
+      </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+      <h6 class="fw-bold mb-3 text-warning">My Desk</h6>
+
+      <div class="form-check">
+        <input class="form-check-input"
+               type="checkbox"
+               [(ngModel)]="onlyMyDesk"
+               name="onlyMyDesk">
+        <label class="form-check-label">
+          Only include Files on my Desk
+        </label>
+      </div>
+
+    </div>
+
+  </div>
+
+</div> -->
+</form>
+        
+        </div>
+      </div>
+    </div>
+    <!-- data table -->
+    <div class="card shadow-lg p-2 mt-0 pt-0 border-0 bg-white rounded ">
+      <div class="card-body border rounded px-0 pt-2 pb-3 bg-light"
+        style="height: auto; overflow: hidden; position: relative;">
+    
+        <div class="container-fluid p-3 m-0">
+          <div class="row justify-content-center g-4 ">
+    
+            <div class="col-lg-12 mb-2">
+              <div class=" card row shadow ">
+                <div class="d-flex justify-content-between align-items-center m-2">
+                  <div class="filter-field flex-grow-1">
+                    <input type="text" class="form-control" placeholder="Search" (keyup)="applyTextFilter($event)">
+                  </div>
+    
+    
+                  <div class="export-menu-container m-2">
+    
+                    <button type="button" class="btn border rounded btn-outline-secondary" mat-button
+                      [matMenuTriggerFor]="exportMenu">Export</button>
+                    <mat-menu #exportMenu="matMenu">
+                      <button mat-menu-item
+                        (click)="exporter.exportTable('xlsx', { fileName: 'PODetails', sheet: 'PODetails', Props: { Author: 'cgmsc' }})">Excel</button>
+                      <!-- <button mat-menu-item (click)="exporter.exportTable('csv')">CSV</button>
+                                            <button mat-menu-item (click)="exporter.exportTable('json')">JSON</button>
+                                                                                       <button mat-menu-item (click)="exporter.exportTable('txt')">TXT</button>
+                                            <button mat-menu-item (click)="exportToPDF()">PDF</button> -->
+                    </mat-menu>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped border rounded " mat-table matTableExporter
+                    [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+    
+                    <ng-container matColumnDef="sno">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No </th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                        {{element.sno}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="poNo">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>PO. No </th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.poNo}} </td>
+                    </ng-container>
+  
+                    <ng-container matColumnDef="tenderNo">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No </th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.tenderNo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="poQty">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>poQty</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.poQty}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="supplier">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.supplier}}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="poDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>poDate </th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.poDate}} </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="itemName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>itemName</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.itemName}} </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="action">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Download IDetails</th>
+                          <td mat-cell *matCellDef="let element" class="text-center">
+                            <span class="d-flex  flex-row-reverse p-2 ">
+                                <button
+                                 class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
+                                  mat-button (click)="onButtonClick(element.poId)">
+                                   <i class="bi bi-pencil-square text-primary"></i>
+                                 </button>
+                            </span>
+                          </td>
+                     </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                  <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons></mat-paginator>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

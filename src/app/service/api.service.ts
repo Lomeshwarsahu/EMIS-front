@@ -32,7 +32,10 @@ export class ApiService {
   //    return this.http.get(this.apiUrll + url, data, options);
 
   // }
+
   public get(url: string, options?: any) {
+    debugger
+
   return this.http.get(this.apiUrls + url, options);
 }
   
