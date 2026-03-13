@@ -8,6 +8,7 @@ import { OtpComponent } from './component/auth/otp/otp.component';
 import { Registration } from './component/auth/registration/registration';
 import { GenerationFileNonastiComponent } from './component/generation-file-nonasti/generation-file-nonasti.component';
 import { FileMRCDashbordComponent } from './component/file-mrcdashbord/file-mrcdashbord.component';
+import { InstallationDetailsComponent } from './component/installation-details/installation-details.component';
 
 
 
@@ -19,7 +20,8 @@ const routes: Routes = [
   {path:'Registration',component:Registration},
   {path:'otp',component:OtpComponent},
   {path:'GenerationFileNonasti',component:GenerationFileNonastiComponent},
-  {path:'FileMRCDashbordComponent',component:FileMRCDashbordComponent},
+  {path:'FileMRCDashbord',component:FileMRCDashbordComponent},
+  {path:'InstallationDetails',component:InstallationDetailsComponent},
 
   {path:'logout',component:LogoutComponent,canActivate:[RouteGuardService]}, 
 // { path: 'welcome', component: HomeComponent },

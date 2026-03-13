@@ -1,3 +1,4 @@
+
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ChangeDetectorRef, ViewChild } from '@angular/core';
@@ -39,10 +40,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PODetails,PaymentListDetails } from 'src/app/Model/models';
-
+import { PODetails,PaymentListDetails,HeaderPO,CRIDetailDTO} from 'src/app/Model/models';
+import { ActivatedRoute } from '@angular/router';
 @Component({
-  selector: 'app-file-mrcdashbord',
+  selector: 'app-installation-details',
   standalone: true,
   imports: [
     NgSelectModule,
@@ -61,16 +62,15 @@ import { PODetails,PaymentListDetails } from 'src/app/Model/models';
     MatOptionModule,
     MatTableExporterModule,
   ],
-  templateUrl: './file-mrcdashbord.component.html',
-  styleUrl: './file-mrcdashbord.component.css',
+  templateUrl: './installation-details.component.html',
+  styleUrl: './installation-details.component.css',
 })
-export class FileMRCDashbordComponent {
- 
-poType = 'NP';
-paymentType = 'FP';
-onlyMyDesk = false;
+export class InstallationDetailsComponent {
 
-
+poid:any;
+// HeaderPO:HeaderPO[]=[];
+HeaderPO: any = {};
+FillDeniedDetail:any={};
   // yearList=[{id:0, 'Year':2012}];
   yearList: any;
   searchMode: 'po' | 'outward' = 'po';
@@ -83,36 +83,30 @@ onlyMyDesk = false;
   podt: any;
   schemeCode: any;
   supplierName: any;
-  dispatchData: PaymentListDetails[] = [];
-  dataSource!: MatTableDataSource<PaymentListDetails>;
+
+
+  dispatchData: CRIDetailDTO[] = [];
+  dataSource!: MatTableDataSource<CRIDetailDTO>;
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
   displayedColumns: string[] = [
     'sno',
-    'poNo',
-    'tenderNo',
-    'poQty',
-    'supplier',
-    'poDate',
-    'itemName',
-     'action' 
-    // ,'delete'
+    'MakeNo',
+    'InstallationDate',
+    'RecievedDate',
+    'WarentyFrom',
+    'ReceivedQty',
+    'WarrantyCardNo',
+    'LocationName',
+    'UType',
+     'action',
+    'Photos',
+    'card',
+    'Challan',
+
   ];
 
-  // sno:number
-  // poId: number
-  // tenderNo: string
-  // poNo: string
-  // supplier: string
-  // poDate: string
-  // itemName: string
-  // poQty: number
-  // supplyQty: number
-  // receiptQty: number
-  // fitUnfit: any
-  // presentFile: string
-  // fileNo: any
-  // lastRDate: any
+  
   constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
@@ -120,37 +114,25 @@ onlyMyDesk = false;
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer,private route: ActivatedRoute
   ) {
-    this.dataSource = new MatTableDataSource<PaymentListDetails>([]);
+    this.dataSource = new MatTableDataSource<CRIDetailDTO>([]);
   }
 
-  ngOnInit() {
-    // this.GETGetPODetails();
-    // this.Getyears();
-  }
-  search() {
-    debugger;
-    if (this.searchMode === 'po') {
-      if (!this.poNo) {
-        this.toastr.warning('Enter PO Number');
-        return;
-      }
-      // call PO search
-      this.GetPODetails();
-    }
+ngOnInit() {
 
-    if (this.searchMode === 'outward') {
-      if (!this.outwardNo || !this.selectedYear) {
-        this.toastr.warning('Enter Outward Number and Year');
-        return;
-      }
-      // call outward search
-      this.GetPODetails();
-    }
-  }
+  this.route.queryParams.subscribe(params => {
 
-  // https://localhost:7036/api/GenerateNasti/Getyear
+    const poId = params['poId'];
+    // this.poid=poId;
+    console.log('PO ID:', poId);
+    this.GetHeaderPO(poId);
+    this.GetCRIDetail(poId);
+   this.GetFillDeniedDetail(poId);
+
+  });
+}
+
 
   Getyears() {
     this.api.get('GenerateNasti/Getyear').subscribe({
@@ -163,29 +145,18 @@ onlyMyDesk = false;
       },
     });
   }
- 
-  GetPODetails() {
+//  https://localhost:7036/api/Payment/GetHeaderPO?poId=136
+  GetHeaderPO(poid:any) {
     // debugger
     this.spinner.show();
 
     const params = {
-      pono: this.poNo || 0,
-      outwardNo: this.outwardNo || 0,
-      financialYearId: this.financialyearid || 0,
+      poId: poid
     };
-    this.api.get('GenerateNasti/GetPODetails', { params }).subscribe({
+    this.api.get('Payment/GetHeaderPO', { params }).subscribe({
       next: (res: any) => {
-        console.log('podetailes', res);
-        // this.PODetails = res[0];
-
-        const data = res[0];
-
-        // this.poId = data.ponoid;
-        this.fileNo = data.fileNo;
-        this.poNo = data.poNo;
-        this.schemeCode = data.schemeCode;
-        this.supplierName = data.supplierName;
-        this.podt = this.convertDate(data.podt);
+        this.HeaderPO=res[0];
+        // console.log('GetHeaderPO', res);
         this.spinner.hide();
       },
       error: (err: any) => {
@@ -198,43 +169,22 @@ onlyMyDesk = false;
     const parts = dateStr.split('/');
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
-  onselectacno(event: any): void {
-    //  debugger
-    const financial_year_id = event.financial_year_id;
-    this.financialyearid = financial_year_id;
-    // if (bankaccountid === 0) {
-    // //  this.GETSupplierBankAccDetail(0,bankaccountid);
-    // // this.GETSupplierBankAccDetail(1836,1139);
-    // // this.bankForm.resetForm();
-
-    // } else {
-    //   // this.GETSupplierBankAccDetail(1836,1139);
-    //   // const selectedUser = this.VendorBankDetail.find(
-    //   //   (user: { bankaccountid: any }) => user.bankaccountid === this.acno
-    //   // );
-    //   // console.log('selectedUser:', selectedUser);
-    // }
-  }
- // https://localhost:7036/api/Payment/GetFitPaymentList?Potype=NP&MyDeskFile=false&FitUnfit=FP&UserId=383
-  // https://localhost:7036/api/Payment/GetFitPaymentList?Potype=NP&MyDeskFile=false&FitUnfit=FP
-  GETGetPODetails() {
+//  https://localhost:7036/api/Payment/GetCRIDetail?poId=717
+  GetCRIDetail(poid:any) {
     debugger
     try {
       this.spinner.show();
 
-      const params = {
-        // pono: 'EQP/783/2017-2018',
-        Potype: this.poType,
-        MyDeskFile: this.onlyMyDesk ,
-        FitUnfit: this.paymentType ,
-      };
-      this.api.get('Payment/GetFitPaymentList?', { params }).subscribe(
+    const params = {
+      poId: poid
+    };
+      this.api.get('Payment/GetCRIDetail', { params }).subscribe(
         (res: any) => {
-          this.dispatchData = res.map((item: PODetails, index: number) => ({
+          this.dispatchData = res.map((item: CRIDetailDTO, index: number) => ({
             ...item,
             sno: index + 1,
           }));
-          console.log('GetPODetails=:', this.dispatchData);
+          console.log('CRIDetailDTO=:', this.dispatchData);
           this.dataSource.data = this.dispatchData;
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -259,12 +209,32 @@ onlyMyDesk = false;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 onButtonClick(poid:any){
- this.router.navigate(['/InstallationDetails'], {
-  queryParams: { poId: poid}
-});
-  // InstallationDetails
-// alert(poid)
-// InstallationDetails
+alert(poid)
 }
-// https://localhost:7036/api/Payment/GetHeaderPO?poId=136
+// https://localhost:7036/api/Payment/FillDeniedDetail?poId=717
+
+  GetFillDeniedDetail(poid:any) {
+    // debugger
+    this.spinner.show();
+
+    const params = {
+      poId: poid
+    };
+    this.api.get('Payment/FillDeniedDetail', { params }).subscribe({
+      next: (res: any) => {
+        this.FillDeniedDetail=res[0];
+        console.log('FillDeniedDetail', res);
+        this.spinner.hide();
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        console.error(err);
+      },
+    });
+  }
+
+
+
+
+
 }
