@@ -83,23 +83,16 @@ export class GenerationFileNonastiComponent {
   @ViewChild('sort') sort!: MatSort;
   displayedColumns: string[] = [
     'sno',
-    'poNo',
-    'podt',
-    'itemCode',
-    'supplierName',
-    'fileNo',
-    'fileDT',
+    'PONo',
+    'PODT',
+    'ItemCode',
+    'SupplierName',
+    'FileNo',
+    'FileDT',
     //  ,'action','delete'
   ];
 
   poId:any;
-// poNo:any;
-// fileNo:any;
-// podt:any;
-// schemeCode:any;
-// supplierName:any;
-// outwardNo:any;
-// financialyearid:any;
   constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
