@@ -42,6 +42,9 @@ export class ApiService {
     public post(url: string, data: FormData, options?: any) {
     return this.http.post(this.API + url, data, options);
   }
+  public post1(url: string, data: any, options?: any) {
+  return this.http.post(this.apiUrls + url, data, options);
+}
 //     public put(url: string, data: FormData, options?: any) {
 // debugger;
 

@@ -1,30 +1,61 @@
 export interface PODetails {
     sno:number
-  ponoid: number
-  poNo: string
-  podt: string
-  schemeCode: string
-  itemCode: string
-  supplierName: string
-  supplierId: number
-  fileNo: string
-  fileDT: string
+  PONOID: number
+  PONo: string
+  PODT: string
+  SchemeCode: string
+  ItemCode: string
+  SupplierName: string
+  SupplierId: number
+  FileNo: string
+  FileDT: string
 }
 export interface PaymentListDetails {
-    sno:number
-  poId: number
-  tenderNo: string
-  poNo: string
-  supplier: string
-  poDate: string
-  itemName: string
-  poQty: number
-  supplyQty: number
-  receiptQty: number
-  fitUnfit: any
-  presentFile: string
-  fileNo: any
-  lastRDate: any
+  //   sno:number
+  // poId: number
+  // tenderNo: string
+  // poNo: string
+  // supplier: string
+  // poDate: string
+  // itemName: string
+  // poQty: number
+  // supplyQty: number
+  // receiptQty: number
+  // fitUnfit: any
+  // presentFile: string
+  // fileNo: any
+  // lastRDate: any
+   PoId: number
+  TenderNo: string
+  PoNo: string
+  Supplier: string
+  PoDate: string
+  ItemName: string
+  POQty: number
+  SupplyQty: number
+  ReceiptQty: number
+  FitUnfit: string
+  PresentFile: string
+  FileNo: string
+  LastRDate: string
+  FacilityAutName: string
+  ItemCode: string
+  POValue: number
+  InstallationQty: number
+  PoType: string
+  FileDt: string
+  PresentUserId: number
+  ToUserId: number
+  PenaltyPercent: number
+  ReasonId: number
+  ReasonName: string
+  IsSolved: string
+  SiteStatus: string
+  RowNo: number
+  ToDate: string
+  EntDT: string
+  Remarks: string
+  ExtStatus: string
 }
 export interface HeaderPO {
   sno:number

@@ -7,104 +7,102 @@
           <form class="p-2">
             <div class="card shadow-sm p-3 mt-2">
 
-  <div class="row text-center align-items-start">
+              <div class="row text-center align-items-start">
 
-    <!-- PO TYPES -->
-    <div class="col-md-4 border-end">
+                <!-- PO TYPES -->
+                <div class="col-md-4 border-end">
 
-      <h6 class="fw-bold text-primary mb-3">
-        <i class="bi bi-folder me-1"></i> PO Types
-      </h6>
+                  <h6 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-folder me-1"></i> PO Types
+                  </h6>
 
-      <div class="d-flex justify-content-center flex-wrap">
+                  <div class="d-flex justify-content-center flex-wrap">
 
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="poType" value="All" [(ngModel)]="poType">
-          <label class="form-check-label">All PO</label>
-        </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="poType" value="All" [(ngModel)]="poType">
+                      <label class="form-check-label">All PO</label>
+                    </div>
 
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="poType" value="NP" [(ngModel)]="poType">
-          <label class="form-check-label">Normal PO</label>
-        </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="poType" value="NP" [(ngModel)]="poType">
+                      <label class="form-check-label">Normal PO</label>
+                    </div>
 
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="poType" value="CP" [(ngModel)]="poType">
-          <label class="form-check-label">Covid PO</label>
-        </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="poType" value="CP" [(ngModel)]="poType">
+                      <label class="form-check-label">Covid PO</label>
+                    </div>
 
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="poType" value="siteReady" [(ngModel)]="poType">
-          <label class="form-check-label">After Site Readiness</label>
-        </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="poType" value="siteReady" [(ngModel)]="poType">
+                      <label class="form-check-label">After Site Readiness</label>
+                    </div>
 
-      </div>
+                  </div>
 
-    </div>
+                </div>
 
 
-    <!-- PAYMENT TYPES -->
-    <div class="col-md-4 border-end">
+                <!-- PAYMENT TYPES -->
+                <div class="col-md-4 border-end">
 
-      <h6 class="fw-bold text-success mb-3">
-        <i class="bi bi-cash-coin me-1"></i> Payment Types
-      </h6>
+                  <h6 class="fw-bold text-success mb-3">
+                    <i class="bi bi-cash-coin me-1"></i> Payment Types
+                  </h6>
 
-      <div class="d-flex justify-content-center flex-wrap">
+                  <div class="d-flex justify-content-center flex-wrap">
 
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="paymentType" value="All" [(ngModel)]="paymentType">
-          <label class="form-check-label">All</label>
-        </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="paymentType" value="All"
+                        [(ngModel)]="paymentType">
+                      <label class="form-check-label">All</label>
+                    </div>
 
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="paymentType" value="FP" [(ngModel)]="paymentType">
-          <label class="form-check-label">Fit For Payment</label>
-        </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="paymentType" value="FP"
+                        [(ngModel)]="paymentType">
+                      <label class="form-check-label">Fit For Payment</label>
+                    </div>
 
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="paymentType" value="NFP" [(ngModel)]="paymentType">
-          <label class="form-check-label">Not Fit</label>
-        </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="paymentType" value="NFP"
+                        [(ngModel)]="paymentType">
+                      <label class="form-check-label">Not Fit</label>
+                    </div>
 
-      </div>
+                  </div>
 
-    </div>
+                </div>
 
-    <!-- MY DESK -->
-    <div class="col-md-4">
+                <!-- MY DESK -->
+                <div class="col-md-4">
 
-      <h6 class="fw-bold text-warning mb-3">
-        <i class="bi bi-person-workspace me-1"></i> My Desk
-      </h6>
+                  <h6 class="fw-bold text-warning mb-3">
+                    <i class="bi bi-person-workspace me-1"></i> My Desk
+                  </h6>
 
-      <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center">
 
-        <div class="form-check form-check-inline">
-          <input class="form-check-input"
-                 type="checkbox"
-                 [(ngModel)]="onlyMyDesk"
-                 name="onlyMyDesk">
-          <label class="form-check-label">
-            Only include Files on my Desk
-          </label>
-        </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" [(ngModel)]="onlyMyDesk" name="onlyMyDesk">
+                      <label class="form-check-label">
+                        Only include Files on my Desk
+                      </label>
+                    </div>
 
-      </div>
+                  </div>
 
-    </div>
- <div class="d-flex justify-content-center mt-3">
-      <button type="submit"
-              class="btn btn-primary" (click)=" GETGetPODetails()"
-             >
-        Show Details
-      </button>
-    </div>
- <!-- [disabled]="fileForm.invalid" -->
-  </div>
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                  <button type="submit" class="btn btn-primary" (click)=" GETGetPODetails()">
+                    Show Details
+                  </button>
+                </div>
+                <!-- [disabled]="fileForm.invalid" -->
+              </div>
 
-</div>
-<!-- <div class="card shadow-sm p-3 mt-2">
+            </div>
+            <!-- <div class="card shadow-sm p-3 mt-2">
 
   <div class="row">
 
@@ -204,8 +202,8 @@
   </div>
 
 </div> -->
-</form>
-        
+          </form>
+
         </div>
       </div>
     </div>
@@ -213,20 +211,20 @@
     <div class="card shadow-lg p-2 mt-0 pt-0 border-0 bg-white rounded ">
       <div class="card-body border rounded px-0 pt-2 pb-3 bg-light"
         style="height: auto; overflow: hidden; position: relative;">
-    
+
         <div class="container-fluid p-3 m-0">
           <div class="row justify-content-center g-4 ">
-    
+
             <div class="col-lg-12 mb-2">
               <div class=" card row shadow ">
                 <div class="d-flex justify-content-between align-items-center m-2">
                   <div class="filter-field flex-grow-1">
                     <input type="text" class="form-control" placeholder="Search" (keyup)="applyTextFilter($event)">
                   </div>
-    
-    
+
+
                   <div class="export-menu-container m-2">
-    
+
                     <button type="button" class="btn border rounded btn-outline-secondary" mat-button
                       [matMenuTriggerFor]="exportMenu">Export</button>
                     <mat-menu #exportMenu="matMenu">
@@ -242,52 +240,202 @@
                 <div class="table-responsive">
                   <table class="table table-bordered table-striped border rounded " mat-table matTableExporter
                     [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
-    
+
                     <ng-container matColumnDef="sno">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No </th>
                       <td mat-cell *matCellDef="let element" class="text-center">
                         {{element.sno}} </td>
                     </ng-container>
-                    <ng-container matColumnDef="poNo">
+                    <ng-container matColumnDef="PoNo">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>PO. No </th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.poNo}} </td>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.PoNo}} </td>
                     </ng-container>
-  
-                    <ng-container matColumnDef="tenderNo">
+                    <ng-container matColumnDef="TenderNo">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No </th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.tenderNo}} </td>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.TenderNo}} </td>
                     </ng-container>
-                    <ng-container matColumnDef="poQty">
+                    <ng-container matColumnDef="POQty">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>poQty</th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.poQty}} </td>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.POQty}} </td>
                     </ng-container>
-                    <ng-container matColumnDef="supplier">
+                    <ng-container matColumnDef="Supplier">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.supplier}}
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.Supplier}}
                       </td>
                     </ng-container>
-                    <ng-container matColumnDef="poDate">
+                    <ng-container matColumnDef="PoDate">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>poDate </th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.poDate}} </td>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.PoDate}} </td>
                     </ng-container>
-    
-                    <ng-container matColumnDef="itemName">
+
+                    <ng-container matColumnDef="ItemName">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>itemName</th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.itemName}} </td>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.ItemName}} </td>
                     </ng-container>
-    
+                    <ng-container matColumnDef="Present_File_Action">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Present File to Action</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                        <span class="d-flex  flex-row-reverse p-2 ">
+                          <a type="link" class="download-link" (click)="ONOpenModal(element.PoId,element.FileNo)">Send To
+                          </a>
+                        </span>
+                      </td>
+                    </ng-container>
+
                     <ng-container matColumnDef="action">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>Download IDetails</th>
-                          <td mat-cell *matCellDef="let element" class="text-center">
-                            <span class="d-flex  flex-row-reverse p-2 ">
-                                <button
-                                 class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
-                                  mat-button (click)="onButtonClick(element.poId)">
-                                   <i class="bi bi-pencil-square text-primary"></i>
-                                 </button>
-                            </span>
-                          </td>
-                     </ng-container>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                        <span class="d-flex  flex-row-reverse p-2 ">
+                          <button
+                            class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
+                            mat-button (click)="onButtonClick(element.PoId)">
+                            <i class="bi bi-arrow-down text-primary"></i>
+                          </button>
+                        </span>
+                      </td>
+                    </ng-container>
+                    <!-- PO Value -->
+                    <ng-container matColumnDef="POValue">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Value</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.POValue}}</td>
+                    </ng-container>
+
+                    <!-- Supply Qty -->
+                    <ng-container matColumnDef="SupplyQty">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Supply Qty</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.SupplyQty}}</td>
+                    </ng-container>
+
+                    <!-- Receipt Qty -->
+                    <ng-container matColumnDef="ReceiptQty">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Receipt Qty</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ReceiptQty}}</td>
+                    </ng-container>
+
+                    <!-- Installation Qty -->
+                    <ng-container matColumnDef="InstallationQty">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Installation Qty</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.InstallationQty}}</td>
+                    </ng-container>
+
+                    <!-- Fit Unfit -->
+                    <ng-container matColumnDef="FitUnfit">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Fit Status</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.FitUnfit}}</td>
+                    </ng-container>
+
+                    <!-- Present File -->
+                    <ng-container matColumnDef="PresentFile">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Present File</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.PresentFile}}</td>
+                    </ng-container>
+
+                    <!-- File No -->
+                    <ng-container matColumnDef="FileNo">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>File No</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.FileNo}}</td>
+                    </ng-container>
+
+                    <!-- Last Receipt Date -->
+                    <ng-container matColumnDef="LastRDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Receipt</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.LastRDate}}</td>
+                    </ng-container>
+
+                    <!-- Facility -->
+                    <ng-container matColumnDef="FacilityAutName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Facility</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.FacilityAutName}}</td>
+                    </ng-container>
+
+                    <!-- Item Code -->
+                    <ng-container matColumnDef="ItemCode">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ItemCode}}</td>
+                    </ng-container>
+
+                    <!-- PO Type -->
+                    <ng-container matColumnDef="PoType">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Type</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.PoType}}</td>
+                    </ng-container>
+
+                    <!-- File Date -->
+                    <ng-container matColumnDef="FileDt">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>File Date</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.FileDt}}</td>
+                    </ng-container>
+
+                    <!-- Present User -->
+                    <ng-container matColumnDef="PresentUserId">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Present User</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.PresentUserId}}</td>
+                    </ng-container>
+
+                    <!-- To User -->
+                    <ng-container matColumnDef="ToUserId">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>To User</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ToUserId}}</td>
+                    </ng-container>
+
+                    <!-- Penalty -->
+                    <ng-container matColumnDef="PenaltyPercent">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Penalty %</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.PenaltyPercent}}</td>
+                    </ng-container>
+
+                    <!-- Reason -->
+                    <ng-container matColumnDef="ReasonId">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Reason Id</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ReasonId}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ReasonName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Reason</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ReasonName}}</td>
+                    </ng-container>
+
+                    <!-- Solved -->
+                    <ng-container matColumnDef="IsSolved">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Solved</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.IsSolved}}</td>
+                    </ng-container>
+
+                    <!-- Site Status -->
+                    <ng-container matColumnDef="SiteStatus">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Site Status</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.SiteStatus}}</td>
+                    </ng-container>
+
+                    <!-- Row -->
+                    <ng-container matColumnDef="RowNo">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Row</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.RowNo}}</td>
+                    </ng-container>
+
+                    <!-- To Date -->
+                    <ng-container matColumnDef="ToDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>To Date</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ToDate}}</td>
+                    </ng-container>
+
+                    <!-- Entry Date -->
+                    <ng-container matColumnDef="EntDT">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Entry Date</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.EntDT}}</td>
+                    </ng-container>
+
+                    <!-- Remarks -->
+                    <ng-container matColumnDef="Remarks">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Remarks</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.Remarks}}</td>
+                    </ng-container>
+
+                    <!-- Ext Status -->
+                    <ng-container matColumnDef="ExtStatus">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ext Status</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ExtStatus}}</td>
+                    </ng-container>
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                   </table>
@@ -301,3 +449,215 @@
     </div>
   </div>
 </section>
+
+
+<div class="modal fade custom-transparent-modal" id="SendModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+
+      <!-- Header -->
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title">Send To File</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body bg-light">
+
+        <form class="p-3" #forwardForm="ngForm" (ngSubmit)="saveForward(forwardForm)">
+
+          <div class="row g-3">
+
+            <!-- Send Option -->
+            <div class="col-md-6">
+              <label class="form-label">Select Send</label>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="Send" value="S" [(ngModel)]="Sendoption" (change)="Getsendto()" required>
+            
+                <label class="form-check-label">
+                  Send
+                </label>
+              </div>
+              <!-- <div class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="Send"
+                                   value="S"
+                                   [(ngModel)]="Sendoption">
+            
+                            <label class="form-check-label">
+                              Send
+                            </label>
+                          </div> -->
+            
+            </div>
+
+
+            <!-- Dropdown -->
+            <!-- <div class="col-md-6">
+            
+                          <label class="form-label">Select Send To</label>
+            
+                          <select class="form-select" [(ngModel)]="sendTo" name="sendTo">
+            
+                            <option value="">Select User</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Officer">Officer</option>
+            
+                          </select>
+            
+                        </div> -->
+            <div class="col-md-6">
+            
+              <label class="form-label">Select Send To</label>
+            
+              <select class="form-select" [(ngModel)]="sendTo" name="sendTo" required>
+            
+                <option value="">Select User</option>
+            
+                <option *ngFor="let user of userList" [value]="user.user_id">
+            
+                  {{user.user_name}}
+            
+                </option>
+              </select>
+            
+            </div>
+            
+            <!-- Remarks -->
+            <div class="col-md-6">
+
+              <label class="form-label">Remarks / Comments</label>
+
+              <textarea class="form-control"
+                        rows="1"
+                        placeholder="Enter remarks..."
+                        [(ngModel)]="remarks"
+                        name="remarks" required>
+              </textarea>
+
+            </div>
+
+
+            <!-- Forward Date -->
+            <div class="col-md-6">
+
+              <label class="form-label">Forward Date</label>
+
+              <input type="date"
+                     class="form-control"
+                     [(ngModel)]="forwardDate"
+                     name="forwardDate" required>
+
+            </div>
+
+          </div>
+
+
+          <!-- Buttons -->
+          <div class="d-flex justify-content-center gap-2 mt-4">
+
+            <button type="submit" class="btn btn-success"  [disabled]="forwardForm.invalid">
+              <i class="bi bi-send"></i> Save 
+            </button>
+
+            <button type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+              Cancel
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade custom-transparent-modal" id="SendModall" tabindex="-1" aria-labelledby="SendModalLabel"
+    aria-hidden="true">
+    <!-- modal-lg -->
+    <!-- <div class="modal-dialog modal-dialog-centered modal-fullscreen"> -->
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-none">
+            <div class="modal-header bg-dark text-white py-2 px-3">
+                <h5 class="modal-title" id="SendModalLabel">Send To File </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <!-- *ngIf="onshowGST == true" -->
+                <div class="card shadow-lg p-4 border-0 bg-white rounded " >
+
+                    <div class="card-body border rounded px-0 pt-2 pb-3 bg-light"
+                        style="height: auto; overflow: hidden; position: relative;">
+                        <div class="mb-3 Fon-family" style="text-align: justify;">
+                            <!-- <form class="p-2 " #GSTForm="ngForm" (ngSubmit)="InsertGSTCertificate(GSTForm)"> -->
+                            <form class="p-2 ">
+                                <div class="row pb-3">
+                                    <div class="form-group col-md-6 pt-3 form-check form-check-inline" style="position: relative;">
+                                       <label for="inputName">Select Send <span class="text-danger">*</span></label>
+                                        <input class="form-check-input" type="radio" name="poType" value="All" [(ngModel)]="poType">
+                                        <label class="form-check-label">Send</label>
+                                    </div>
+                                    <div class="form-group col-md-6 pt-3" style="position: relative;">
+                                        <label for="inputName">Select Send To <span class="text-danger">*</span></label>
+                                       <input type="dropdown" class="form-control dropdown-toggle" id="turnoveran" name="gstno"
+                                            placeholder="Type GST No." 
+                                            minlength="15" maxlength="15" >
+                                             <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Action</a></li>
+    <li><a class="dropdown-item" href="#">Another action</a></li>
+    <li><a class="dropdown-item" href="#">Something else here</a></li>
+  </ul>
+                                    </div>
+                                    <div class="form-group col-md-6  pt-3">
+                                        <label for="inputPassword4">Remarks/Comments: <span class="text-danger">*</span></label>
+                                        <input type="textarea" class="form-control" id="turnoveran" name="gstno"
+                                            placeholder="Type GST No." 
+                                            minlength="15" maxlength="15" >
+
+
+
+                                        <!-- <div *ngIf="gstnoc.invalid && (gstnoc.touched || GSTForm.submitted)"
+                                            class="text-danger small">
+                                            <div *ngIf="gstnoc.errors?.['required']">GST number is required</div>
+                                            <div *ngIf="gstnoc.errors?.['minlength'] || gstnoc.errors?.['maxlength']">
+                                                Must be 15
+                                                characters</div>
+                                            <div *ngIf="gstnoc.errors?.['pattern']">Invalid GST format (Use uppercase
+                                                letters & numbers)
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="row pb-3">
+                                    <div class="form-group col-md-6 pt-3">
+                                        <label for="inputnumber">Forward Date: <span
+                                                class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" id="date" name="GSTCertificate"
+                                            >
+                                      
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-3">
+                                    <button type="submit" class="btn btn-primary mt-3"
+                                       >Save</button>
+                                    <button type="submit" class="btn btn-primary mt-3 btn-close btn-close-white"
+                                       >Cancel</button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

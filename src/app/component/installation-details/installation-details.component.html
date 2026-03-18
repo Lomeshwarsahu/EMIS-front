@@ -261,10 +261,9 @@
                                             <th mat-header-cell *matHeaderCellDef mat-sort-header>Uploaded Installation Documents</th>
                                             <td mat-cell *matCellDef="let element" class="text-center">
                                                 <span class="d-flex  flex-row-reverse p-2 ">
-                                                    <a
-                                                      type="link"  class=""
-                                                        mat-button (click)="onButtonClick(element.poId)">Download Installation Report
-                                                </a>
+                                                    <a  class= "download-link"  (click)="onButtonClick(element.poId)">
+                                                        Download Installation Report
+                                                    </a>
                                                 </span>
                                             </td>
                                         </ng-container>
@@ -272,11 +271,10 @@
                                             <th mat-header-cell *matHeaderCellDef mat-sort-header>Uploaded Photos</th>
                                             <td mat-cell *matCellDef="let element" class="text-center">
                                                 <span class="d-flex  flex-row-reverse p-2 ">
-                                                    <button
-                                                        class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
-                                                        mat-button (click)="onButtonClick(element.poId)">
-                                                        <i class="bi bi-pencil-square text-primary"></i>
-                                                    </button>
+                                                     <a class= "download-link"  (click)="onButtonClick(element.poId)">
+                                                       Download Installation Photo 
+                                                    </a>
+                                                    
                                                 </span>
                                             </td>
                                         </ng-container>
@@ -284,11 +282,10 @@
                                             <th mat-header-cell *matHeaderCellDef mat-sort-header>Uploaded Warranty Card</th>
                                             <td mat-cell *matCellDef="let element" class="text-center">
                                                 <span class="d-flex  flex-row-reverse p-2 ">
-                                                    <button
-                                                        class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
-                                                        mat-button (click)="onButtonClick(element.poId)">
-                                                        <i class="bi bi-pencil-square text-primary"></i>
-                                                    </button>
+                                                     <a class= "download-link" (click)="onButtonClick(element.poId)">
+                                                        Download Warranty Card
+                                                    </a>
+                                                     
                                                 </span>
                                             </td>
                                         </ng-container>
@@ -296,11 +293,9 @@
                                             <th mat-header-cell *matHeaderCellDef mat-sort-header>Uploaded Challan & Other Documents</th>
                                             <td mat-cell *matCellDef="let element" class="text-center">
                                                 <span class="d-flex  flex-row-reverse p-2 ">
-                                                    <button
-                                                        class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
-                                                        mat-button (click)="onButtonClick(element.poId)">
-                                                        <i class="bi bi-pencil-square text-primary"></i>
-                                                    </button>
+                                                     <a class= "download-link" (click)="onButtonClick(element.poId)">
+                                                       Download Challan
+                                                    </a>
                                                 </span>
                                             </td>
                                         </ng-container>

@@ -69,7 +69,14 @@ export class FileMRCDashbordComponent {
 poType = 'NP';
 paymentType = 'FP';
 onlyMyDesk = false;
-
+SendModal:any;
+sendTo:any;
+remarks:any;
+forwardDate:any;
+Sendoption:any;
+userList:any[]=[];
+poID:any;
+FileNo:any;
 
   // yearList=[{id:0, 'Year':2012}];
   yearList: any;
@@ -77,6 +84,7 @@ onlyMyDesk = false;
   poNo: any;
   outwardNo: any;
   selectedYear: any;
+  
   // PODetails: PaymentListDetails[] = [];
   financialyearid: any;
   fileNo: any;
@@ -88,31 +96,40 @@ onlyMyDesk = false;
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
   displayedColumns: string[] = [
-    'sno',
-    'poNo',
-    'tenderNo',
-    'poQty',
-    'supplier',
-    'poDate',
-    'itemName',
-     'action' 
-    // ,'delete'
+     'sno',
+  'PoNo',
+  'TenderNo',
+  'Supplier',
+  'PoDate',
+  'ItemName',
+  'POQty',
+  'POValue',
+  'SupplyQty',
+  'ReceiptQty',
+  'InstallationQty',
+  'FitUnfit',
+  'PresentFile',
+  'FileNo',
+  'LastRDate',
+  'FacilityAutName',
+  'ItemCode',
+  'PoType',
+  'FileDt',
+  'PresentUserId',
+  'ToUserId',
+  'PenaltyPercent',
+  'ReasonId',
+  'ReasonName',
+  'IsSolved',
+  'SiteStatus',
+  'RowNo',
+  'ToDate',
+  'EntDT',
+  'Remarks',
+  'ExtStatus',
+  'Present_File_Action',
+  'action'
   ];
-
-  // sno:number
-  // poId: number
-  // tenderNo: string
-  // poNo: string
-  // supplier: string
-  // poDate: string
-  // itemName: string
-  // poQty: number
-  // supplyQty: number
-  // receiptQty: number
-  // fitUnfit: any
-  // presentFile: string
-  // fileNo: any
-  // lastRDate: any
   constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
@@ -152,17 +169,7 @@ onlyMyDesk = false;
 
   // https://localhost:7036/api/GenerateNasti/Getyear
 
-  Getyears() {
-    this.api.get('GenerateNasti/Getyear').subscribe({
-      next: (res: any) => {
-        console.log('years', res);
-        this.yearList = res;
-      },
-      error: (err: any) => {
-        console.error(err);
-      },
-    });
-  }
+ 
  
   GetPODetails() {
     // debugger
@@ -218,7 +225,7 @@ onlyMyDesk = false;
  // https://localhost:7036/api/Payment/GetFitPaymentList?Potype=NP&MyDeskFile=false&FitUnfit=FP&UserId=383
   // https://localhost:7036/api/Payment/GetFitPaymentList?Potype=NP&MyDeskFile=false&FitUnfit=FP
   GETGetPODetails() {
-    debugger
+    // debugger
     try {
       this.spinner.show();
 
@@ -267,4 +274,86 @@ onButtonClick(poid:any){
 // InstallationDetails
 }
 // https://localhost:7036/api/Payment/GetHeaderPO?poId=136
+
+
+
+  ONOpenModal( id:any,FileNo:any): void {
+this.poID=id;
+this.FileNo=FileNo;
+    document.querySelectorAll('.modal-backdrop').forEach((el) => el.remove());
+
+    const modalEl = document.getElementById('SendModal')!;
+    document.body.appendChild(modalEl);
+    (modalEl as HTMLElement).style.zIndex = '99999';
+
+    this.SendModal = new bootstrap.Modal(modalEl, {
+      backdrop: false,
+      keyboard: true,
+      focus: true,
+    });
+    this.SendModal.show();
+  }
+  // https://localhost:7036/api/Payment/sendto/383?sb=S
+Getsendto(){
+  this.sendTo = "";
+const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+const userId = loginData.user_id;
+  // const poid = 383;
+  const send = this.Sendoption;
+
+  this.api.get(`Payment/sendto/${userId}?sb=${send}`).subscribe({
+    next:(res:any)=>{
+      this.userList=res;
+    },
+       error:(err:any)=>{
+      console.error(err);
+    }
+  });
+
+}
+// 
+saveForward(form:any){
+// debugger;
+ this.spinner.show();
+const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+
+const payload = {
+
+UserId: loginData.user_id,
+
+ToUserId: this.sendTo,
+
+PonoId: this.poID,
+
+FileId:this.FileNo || "",
+
+Remarks: this.remarks,
+
+ForwardDate: this.forwardDate,
+
+Flag: this.Sendoption
+
+};
+
+console.log("Forward Payload",payload);
+
+this.api.post1('Payment/forward', payload).subscribe({
+
+next:(res:any)=>{
+ this.spinner.hide();
+ this.toastr.success('File Forward Successfully!');
+ form.resetForm();
+console.log("Forward Success",res);
+
+},
+
+error:(err:any)=>{
+ this.spinner.hide();
+console.error(err);
+
+}
+
+});
+
+}
 }

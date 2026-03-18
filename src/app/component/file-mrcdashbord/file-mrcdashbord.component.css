@@ -195,3 +195,13 @@
 }
 
 
+.download-link{
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.download-link:hover{
+    color: blue;
+    text-decoration: underline;
+}
