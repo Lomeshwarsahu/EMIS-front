@@ -129,3 +129,42 @@ export interface CRIDetailDTO {
   PoId: number
   LocationName: string
 }
+export interface ExtensionEHODTO {
+    sno:number
+  item_id: number
+  PO_ID: number
+  CODE: string
+  ITEM_NAME: string
+  OUTWARD_NO: string
+  po_date: string
+  PO_NO: string
+  quantity: number
+  no_of_consignee: number
+  basic_rate: number
+  percentage: number
+  single_unit_price: number
+  totalPOvalue: number
+  tender_no: string
+  status: string
+  SD: string
+  SubmissionStatus: string
+  name: string
+}
+
+
+export interface  ExtensionListDTO
+  {
+      sno:number
+     ExtensionId: number
+     PoId: number
+      Remark: string
+      Days: number
+      ExtendedDate: string
+      PoEndDate: string
+      Path: string
+      LetterDate: string
+      LetterNo: string
+      SysGenApplyDate: string
+      Status: string
+      Penalty: string
+  }
