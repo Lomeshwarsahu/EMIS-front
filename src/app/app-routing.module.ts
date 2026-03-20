@@ -9,6 +9,8 @@ import { Registration } from './component/auth/registration/registration';
 import { GenerationFileNonastiComponent } from './component/generation-file-nonasti/generation-file-nonasti.component';
 import { FileMRCDashbordComponent } from './component/file-mrcdashbord/file-mrcdashbord.component';
 import { InstallationDetailsComponent } from './component/installation-details/installation-details.component';
+import { ExtensionHODetailComponent } from './component/extension-hodetail/extension-hodetail.component';
+import { ExtensionHOEntryComponent } from './component/extension-hoentry/extension-hoentry.component';
 
 
 
@@ -22,6 +24,8 @@ const routes: Routes = [
   {path:'GenerationFileNonasti',component:GenerationFileNonastiComponent},
   {path:'FileMRCDashbord',component:FileMRCDashbordComponent},
   {path:'InstallationDetails',component:InstallationDetailsComponent},
+  {path:'ExtensionHODetail',component:ExtensionHODetailComponent},
+  {path:'ExtensionHOEntry',component:ExtensionHOEntryComponent},
 
   {path:'logout',component:LogoutComponent,canActivate:[RouteGuardService]}, 
 // { path: 'welcome', component: HomeComponent },

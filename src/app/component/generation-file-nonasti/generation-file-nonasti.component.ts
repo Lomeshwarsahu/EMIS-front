@@ -110,7 +110,7 @@ export class GenerationFileNonastiComponent {
     this.Getyears();
   }
   search() {
-    debugger;
+    // debugger;
     if (this.searchMode === 'po') {
       if (!this.poNo) {
         this.toastr.warning('Enter PO Number');
