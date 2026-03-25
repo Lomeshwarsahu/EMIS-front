@@ -196,6 +196,33 @@ export class MenuServiceService {
       ],
     },
     
+    TPO: {
+    
+       
+        items: [
+          // { label: 'Home', route: '/home' },
+          { label: 'Home', route: '/home' },
+          { label: 'Generation FileNo', route: '/GenerationFileNonasti' },
+          // { label: '  Generation FileNo', route: '/GenerationFileNonasti' },
+          { label: '   File MRC Dashboard', route: '/FileMRCDashbord' },
+          { label: '   Extension HO Detail', route: '/ExtensionHODetail' },
+          { label: '  Item Wise Detail PO Cell', route: '/ItemWiseDetailPOCell' },
+          { label: '  Indent PO Summary Dirwise', route: '/IndentPOSummaryDirwise' },
+          { label: '  District Wise PO Detail', route: '/DistrictWisePODetail' },
+          // { label: '  Generation FileNo', route: '/GenerationFileNonasti' },
+
+
+
+          // { label: 'Dashboard', route: '/eqp-dash' },
+          // { label: 'RCDetail', route: '/Rcdetail' },
+          // { label: 'Complaints', route: '/complaints' },
+          // { label: 'Supply/Installation Status', route: '/dispatchPending' },
+          // { label: 'Orders', route: '/dhs' },
+          // { label: 'Reagent Issue', route: '/ReagentIssue' },
+        ]
+      
+     
+    },
     MDGMT: {
     
        

@@ -1,0 +1,25 @@
+.welcome-card {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  min-width: 500px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+ body {
+  background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

@@ -1,0 +1,256 @@
+<!-- <div class="container-fluid d-flex justify-content-center align-items-start vh-100 pt-5">
+
+  <div class="text-center welcome-card p-4">
+
+    <h2 class="fw-bold text-primary mb-3">
+      👋 Welcome, {{ userName }}
+    </h2>
+
+    <p class="text-muted mb-4">
+      Dashboard Overview
+    </p>
+
+    <button class="btn btn-danger px-4" (click)="logout()">
+      Logout
+    </button>
+
+  </div>
+
+</div> -->
+
+<div class="container-fluid d-flex justify-content-center align-items-start vh-100 pt-5">
+
+    <div class="text-center welcome-card p-4 p-md-5">
+
+        <div class="mb-3">
+            <img src="https://ui-avatars.com/api/?name={{userName}}&background=0D8ABC&color=fff&rounded=true"
+                alt="User Avatar" class="shadow-sm rounded-circle" width="80" height="80">
+        </div>
+
+        <h3 class="fw-bold text-primary mb-2">
+            👋 Welcome, {{ userName }}!
+        </h3>
+
+        <p class="text-muted mb-4">
+            Ready to start your day? Here is your overview.
+        </p>
+
+        <!-- <div class="row mb-4 g-2">
+      <div class="col-6">
+        <div class="p-3 border rounded bg-light">
+          <h5 class="mb-0 text-dark fw-bold">12</h5>
+          <small class="text-muted" style="font-size: 0.8rem;">New Tasks</small>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="p-3 border rounded bg-light">
+          <h5 class="mb-0 text-dark fw-bold">5</h5>
+          <small class="text-muted" style="font-size: 0.8rem;">Messages</small>
+        </div>
+      </div>
+    </div> -->
+
+        <div class="d-flex justify-content-center gap-3">
+            <!-- <button class="btn btn-outline-primary px-4 rounded-pill">
+        Profile
+      </button> -->
+            <button class="btn btn-danger px-4 rounded-pill d-flex align-items-center gap-2" (click)="logout()">
+                Logout
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- <iframe class="oac_embedding_iframe" style="height: 100vh; width:100%; border: none;" srcdoc='
+    <!DOCTYPE html>
+    <html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OAC TEST</title>
+        <script src="https://cgmscanalytics-cgmscee-bo.analytics.ocp.oraclecloud.com/public/dv/v1/embedding/standalone/embedding.js" type="application/javascript"></script>
+        <script>
+            var token = "";
+            var isBound = false; 
+
+            function fetchAndSetToken() {
+                fetch("https://kcthepe5e6xwemxr36bzoz4xgq.apigateway.ap-mumbai-1.oci.customer-oci.com/oac/auth_token")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("HTTP error! status:" + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    token = data.access_token;
+                    console.log("New token fetched:", token);
+
+                    // Update security config dynamically
+                    requirejs(["jquery", "knockout", "obitech-application/application","ojs/ojcore", "ojs/ojknockout", "ojs/ojcomposite", "jet-composites/oracle-dv/loader"], 
+                    function($, ko, application) {
+                        
+                        application.setSecurityConfig("token", {
+                            tokenAuthFunction: function() {
+                                return token;
+                            }
+                        });
+
+                       
+                        if (!isBound) {
+                            function DashboardViewModel() {
+                                var self = this;
+                                
+                                // Parameter setup
+                                self.dashboardParams = ko.observable({
+                                    "p1n": "PARAM_WHID",
+                                    "p1v": 2615
+                                });
+                            }
+                            
+                            ko.applyBindings(new DashboardViewModel());
+                            isBound = true; // Flag ko true set kar diya
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching token:", error);
+                });
+            }
+
+            // Initial fetch + setup
+            fetchAndSetToken();
+
+            // Refresh every 45 minutes
+            setInterval(fetchAndSetToken, 45 * 60 * 1000);
+        </script>
+    </head>
+    <body>
+        <div style="width: 100%; height: 100vh;">
+            <oracle-dv project-path="/@Catalog/users/sm.cgmsc@gmail.com/Testing Dashboard" active-page="insight"
+                parameters="[[dashboardParams]]" project-options=&#39;{"bShowFilterBar":false}&#39;>
+            </oracle-dv>
+        </div>
+    </body>
+    </html>
+'>
+</iframe> -->
+
+<iframe
+    class="oac_embedding_iframe"
+    style="height: 100vh; width: 100%; border: none;" 
+    srcdoc='
+    <!DOCTYPE html>
+    <html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OAC TEST - Pipeline</title>
+        <script src="https://cgmscanalytics-cgmscee-bo.analytics.ocp.oraclecloud.com/public/dv/v1/embedding/standalone/embedding.js" type="application/javascript"></script>
+        <script>
+            var token = "";
+            var isBound = false; 
+
+            function fetchAndSetToken() {
+                fetch("https://kcthepe5e6xwemxr36bzoz4xgq.apigateway.ap-mumbai-1.oci.customer-oci.com/oac/auth_token")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("HTTP error! status:" + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    token = data.access_token;
+                    console.log("New token fetched:", token);
+
+                    // Update security config dynamically
+                    requirejs(["jquery", "knockout", "obitech-application/application","ojs/ojcore", "ojs/ojknockout", "ojs/ojcomposite", "jet-composites/oracle-dv/loader"], 
+                    function($, ko, application) {
+                        
+                        application.setSecurityConfig("token", {
+                            tokenAuthFunction: function() {
+                                return token;
+                            }
+                        });
+
+                        if (!isBound) {
+                            function MyProject() {
+                                var self = this;
+
+                                // Aapka dashboard path
+                                self.projectPath = ko.observable("/@Catalog/users/sm.cgmsc@gmail.com/Pipeline");
+
+                                // PARAMETER PASSING (Supplier = CIPLA)
+                                self.parameters = ko.observable({
+                                    "p1n": "PARAM_SUPPLIERID",
+                                    "p1v": 2216
+                                });
+                            }
+                            
+                            ko.applyBindings(new MyProject());
+                            isBound = true;
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching token:", error);
+                });
+            }
+
+            // Initial fetch + setup
+            fetchAndSetToken();
+
+            // Refresh every 45 minutes
+            setInterval(fetchAndSetToken, 45 * 60 * 1000);
+        </script>
+    </head>
+    <body>
+        <div style="width: 100%; height: 100vh;">
+            <oracle-dv 
+                project-path="[[projectPath]]" 
+                active-page="insight" 
+                active-tab-id="snapshot!canvas!1"
+                parameters="[[parameters]]"
+                project-options=&#39;{"bShowFilterBar":true}&#39;>
+            </oracle-dv>
+        </div>
+    </body>
+    </html>
+'>
+</iframe>
+
+
+
+
+
+<!-- <div style="position: absolute; width: 1000px; height: 800px;">
+  <oracle-dv
+    project-path="[[projectPath]]"
+    active-page="insight"
+    active-tab-id="snapshot!canvas!1"
+    parameters="[[parameters]]"
+    project-options='{"bShowFilterBar":false}'>
+  </oracle-dv>
+</div> -->
+
+<!-- <script>
+require(['knockout', 'ojs/ojcore', 'ojs/ojknockout', 'ojs/ojcomposite', 'jet-composites/oracle-dv/loader'],
+function(ko) {
+
+  function MyProject() {
+    var self = this;
+
+    // ✅ Your actual dashboard path
+    self.projectPath = ko.observable("/@Catalog/users/sm.cgmsc@gmail.com/Pipeline");
+
+    // 🔥 PARAMETER PASSING (Updated for your case)
+    self.parameters = ko.observable({
+      "p1n": "PARAM_SUPPLIERID",
+      "p1v": "CIPLA"
+    });
+  }
+
+  ko.applyBindings(new MyProject());
+});
+</script> -->

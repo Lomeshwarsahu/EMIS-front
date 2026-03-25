@@ -34,7 +34,7 @@ export class ApiService {
   // }
 
   public get(url: string, options?: any) {
-    debugger
+    // debugger
 
   return this.http.get(this.apiUrls + url, options);
 }

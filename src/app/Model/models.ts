@@ -168,3 +168,92 @@ export interface  ExtensionListDTO
       Status: string
       Penalty: string
   }
+  export interface ItemWiseDetailDTO {
+      sno:number
+  financial_year_id: number
+  item_code_as_per_tender: string
+  po_id: number
+  tender_no: string
+  year: string
+  outward_no: string
+  po_no: string
+  po_date: string
+  directorate_id: number
+  facility_aut_name: string
+  item_name: string
+  Supplier: string
+  POQTY: number
+  Supplyqty: any
+  receiptQTY: any
+  LastRDate: any
+  insqty: any
+  potype: string
+  balanceToDispatch: number
+  BalToReceipt: number
+  BalToInstall: number
+}
+
+export interface ItemWiseFullDTO {
+     sno:number
+  po_id: number
+  tender_no: string
+  year: string
+  outward_no: string
+  po_no: string
+  po_date: string
+  directorate_id: number
+  facility_aut_name: string
+  item_code_as_per_tender: string
+  item_name: string
+  Supplier: string
+  DBStart_Name_En: string
+  location_name: string
+  POQTY: number
+  Supplyqty: number
+  receiptQTY: number
+  insqty: number
+  potype: string
+  balanceToDispatch: number
+  BalToReceipt: number
+  BalToInstall: number
+}
+export interface IndentPOSummaryDirwiseDTO {
+    sno:number
+  IndentDT: string
+  Indent_Letter_no: string
+  po_no: string
+  podate: string
+  item_code_as_per_tender: string
+  item_name: string
+  eqtype: string
+  Indent_Qty: number
+  poqty: number
+  no_of_consignee: number
+  povalue: number
+  indent_consolidation_id: number
+  indent_year: string
+  po_year: string
+}
+
+export interface DistrictWiseDetailDTO {
+    sno:number
+  potype: string
+  tender_no: string
+  po_no: string
+  po_date: string
+  supplier_name: string
+  item_code_as_per_tender: string
+  item_name: string
+  DBStart_Name_En: string
+  consignee_id: number
+  location_name: string
+  po_qty: number
+  basicrate: number
+  percentage: number
+  totalprice: number
+  Eqptype: string
+  po_id: number
+  supply_qty: number
+  receiptQTY: number
+  insqty: number
+}
