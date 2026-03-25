@@ -15,8 +15,16 @@
     <span class="title">EMIS</span>
   
     <!-- Desktop Welcome Message -->
-    <span class="welcome-text">Welcome: <strong>{{ firstname | titlecase }}</strong></span>
-  
+    <span class="welcome-text">Welcome: 
+      <!-- <strong>{{ firstname | titlecase }}</strong> -->
+    <img 
+        src="https://ui-avatars.com/api/?name={{firstname}}&background=4d82e3&color=fff&rounded=true" 
+        alt="User Avatar" 
+        class="shadow-sm rounded-circle " 
+        width="35" 
+        height="35"
+      >
+    </span>
     <!-- Back button -->
     <button mat-button class="back-btn" (click)="goBack()">
       <span class="button-label">Back</span>
@@ -103,13 +111,19 @@
         <ng-container *ngIf="menuItems.length === 0">
           <mat-list-item>
                   <!-- <a type="link" class="m-2"></a><br> -->
-           <a mat-button routerLink="/GenerationFileNonasti">
+           <!-- <a mat-button routerLink="/GenerationFileNonasti">
              Generation FileNo
             </a><br>
            <a mat-button routerLink="/FileMRCDashbord">
             File MRC Dashboard </a>
            <a mat-button routerLink="/ExtensionHODetail">
            Extension HO Detail</a>
+           <a mat-button routerLink="/ItemWiseDetailPOCell">
+           ItemWiseDetailPOCell</a>
+           <a mat-button routerLink="/IndentPOSummaryDirwise">
+           IndentPOSummaryDirwise</a>
+           <a mat-button routerLink="/DistrictWisePODetail">
+           DistrictWisePODetail</a> -->
             <!-- <button mat-button disabled>
               <mat-icon>error</mat-icon> No menu items available
             </button> -->

@@ -119,9 +119,10 @@ export class AppComponent implements OnInit, DoCheck {
 
     const role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
     // this.role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
-
+    const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+    this.firstname = loginData?.username || 'User';
     this.roleName = role;
-    this.firstname = sessionStorage.getItem('firstname');
+    // this.firstname = sessionStorage.getItem('firstname');
     if(this.firstname==='Public'){
       this.firstname='Public View Of Drugs and Consumables'
     }
