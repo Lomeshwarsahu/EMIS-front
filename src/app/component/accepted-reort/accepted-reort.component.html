@@ -1,0 +1,230 @@
+<section class="container-fluidd">
+  <div class="card">
+    <div class="card p-4 mb-4 shadow-smm text-center bg-light border-0 rounded-3">
+      <!-- Main Heading Centered -->
+      <h2 class="fw-bold text-primary mb-2">Pending Rate Contract of Accepted Equipment</h2>
+
+      <!-- Optional small subtitle for clarity -->
+      <p class="text-muted mb-0 fs-6">
+        List of accepted equipment with pending rate contract processing details
+      </p>
+    </div>
+    <div class="card shadow-lgg p-2 border-0 bg-white rounded ">
+      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lighty"
+        style="height: auto; overflow: hidden; position: relative;">
+        <div class="mb-0 Fon-family" style="text-align: justify;">
+          <form class="p-2">
+            <div class="card shadow-sm p-3 mt-2">
+
+              <div class="row text-center align-items-start">
+
+                <!-- PO TYPES -->
+                <div class="col-md-4 border-end">
+
+                  <h6 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-folder me-1"></i>Select Tender
+                  </h6>
+
+                  <div class="d-flex justify-content-center flex-wrap">
+                    <!-- <div class="row g-3 justify-content-center"> -->
+                    <!-- <div class="col-md-6 mx-auto text-center"> -->
+                    <!-- <label class="form-label fw-semibold">Select Tender</label> -->
+                    <!-- appendTo=".form-group" -->
+                    <!-- <ng-select [items]="Tenterlist" bindLabel="tender_no" bindValue="tender_id" 
+                                        class="form-control" appendTo="body"    [(ngModel)]="tender_id" [disabled]="CategoryType !== 'supplier'"
+                                        name="selecteditem" placeholder="Select Tender" (change)="onSelectedItem($event)">
+                                    </ng-select> -->
+                    <ng-select [items]="Tenterlist" bindLabel="tender_no" bindValue="tender_id" [(ngModel)]="tender_id"
+                      [readonly]="CategoryType !== 'tender'" class="form-control" appendTo="body"
+                      placeholder="Select Tender" (change)="onSelectedItem($event)">
+                    </ng-select>
+                    <!-- </div> -->
+                    <!-- </div> -->
+
+                  </div>
+
+
+                </div>
+                <div class="col-md-4 border-end">
+
+                  <h6 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-folder me-1"></i>Select Supplier
+                  </h6>
+
+                  <div class="d-flex justify-content-center flex-wrap">
+                    <!-- <div class="row g-3 justify-content-center"> -->
+                    <!-- <div class="col-md-6 mx-auto text-center"> -->
+                    <!-- <label class="form-label fw-semibold">Select Tender</label> -->
+                    <!-- appendTo=".form-group" -->
+                    <ng-select [items]="Supplierlist" bindLabel="name" bindValue="supplier_id" [(ngModel)]="supplier_id"
+                      [readonly]="CategoryType !== 'supplier'" class="form-control" appendTo="body"
+                      placeholder="Select Supplier" (change)="onSelectedItem1($event)">
+                    </ng-select>
+                    <!-- <ng-select [items]="Supplierlist" bindLabel="name" bindValue="supplier_id"
+                                        class="form-control" appendTo="body" [(ngModel)]="supplier_id"  [disabled]="CategoryType !== 'tender'"
+                                        name="selecteditem" placeholder="Select Supplier" (change)="onSelectedItem1($event)">
+                                    </ng-select> -->
+
+                    <!-- </div> -->
+                    <!-- </div> -->
+
+                  </div>
+
+
+                </div>
+
+
+                <!-- PAYMENT TYPES -->
+                <div class="col-md-4 border-end">
+
+                  <h6 class="fw-bold text-success mb-3">
+                    <i class="bi bi-cash-coin me-1"></i> Category Types
+                  </h6>
+
+                  <div class="d-flex justify-content-center flex-wrap">
+
+                    <!-- <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="paymentType" value="All"
+                        [(ngModel)]="paymentType">
+                      <label class="form-check-label">All</label>
+                    </div> -->
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="CategoryType" value="tender"
+                        [(ngModel)]="CategoryType" (change)="onCategoryChange()">
+                      <label class="form-check-label">Tender Wise</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="CategoryType" value="supplier"
+                        [(ngModel)]="CategoryType" (change)="onCategoryChange()">
+                      <label class="form-check-label">Supplier Wise</label>
+                    </div>
+
+                  </div>
+
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                  <button type="submit" class="btn btn-primary" (click)="GetTenderSupplierData()">
+                    Show Details
+                  </button>
+                </div>
+                <!-- [disabled]="fileForm.invalid" -->
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+    <!-- data table -->
+    <div class="card shadow-lgg p-2 mt-0 pt-0 border-0 bg-white rounded ">
+      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lightt"
+        style="height: auto; overflow: hidden; position: relative;">
+
+        <div class="container-fluid p-3 m-0">
+          <div class="row justify-content-center g-4 ">
+
+            <div class="col-lg-12 mb-2">
+              <div class=" card row shadow ">
+                <div class="d-flex justify-content-between align-items-center m-2">
+                  <div class="filter-field flex-grow-1">
+                    <input type="text" class="form-control" placeholder="Search" (keyup)="applyTextFilter($event)">
+                  </div>
+
+
+                  <div class="export-menu-container m-2">
+
+                    <button type="button" class="btn border rounded btn-outline-secondary" mat-button
+                      [matMenuTriggerFor]="exportMenu">Export</button>
+                    <mat-menu #exportMenu="matMenu">
+                      <button mat-menu-item
+                        (click)="exporter.exportTable('xlsx', { fileName: 'PODetails', sheet: 'PODetails', Props: { Author: 'cgmsc' }})">Excel</button>
+                    </mat-menu>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped border rounded " mat-table matTableExporter
+                    [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+                    <ng-container matColumnDef="sno">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No </th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                        {{element.sno}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ItemCode">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code as per tender</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.ItemCode}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ItemName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Equipment</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.ItemName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="SupplierName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.SupplierName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="TenderNo">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.TenderNo}}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="TenderDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender Date </th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.TenderDate}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="TenderQuantity">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender Quantity</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.TenderQuantity}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="BasicRate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Basic Rate</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.BasicRate}} </td>
+
+                    </ng-container>
+                    <ng-container matColumnDef="GST">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tax</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.GST}} </td>
+
+                    </ng-container>
+                    <ng-container matColumnDef="AcceptedBasicRate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Accepted Basic Rate</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.AcceptedBasicRate}} </td>
+
+                    </ng-container>
+
+                    <ng-container matColumnDef="AcceptedDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Accepted Date</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.AcceptedDate}} </td>
+
+                    </ng-container>
+
+
+                    <!-- <ng-container matColumnDef="action">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Download IDetails</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                        <span class="d-flex  flex-row-reverse p-2 ">
+                          <button
+                            class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
+                            mat-button (click)="onButtonClick(element.PoId)">
+                            <i class="bi bi-arrow-down text-primary"></i>
+                          </button>
+                        </span>
+                      </td>
+                    </ng-container> -->
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                  <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons></mat-paginator>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

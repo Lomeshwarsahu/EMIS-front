@@ -1,0 +1,447 @@
+<section class="container-fluidd">
+  <div class="card">
+    <div class="card p-4 mb-4 shadow-smm text-center bg-light border-0 rounded-3">
+      <!-- Main Heading Centered -->
+      <h2 class="fw-bold text-primary mb-2">Rate Contract Detail Report</h2>
+    
+      <!-- Optional small subtitle for clarity -->
+      <p class="text-muted mb-0 fs-6">
+         Detailed view of rate contract items, suppliers, and pricing information
+      </p>
+    </div>
+    <div class="card shadow-lgg p-2 border-0 bg-white rounded ">
+      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lighty"
+        style="height: auto; overflow: hidden; position: relative;">
+        <div class="mb-0 Fon-family" style="text-align: justify;">
+          <form class="p-2">
+            <div class="card shadow-sm p-3 mt-2">
+
+              <div class="row text-center align-items-start">
+
+                <!-- PO TYPES -->
+                <div class="col-md-4 border-end">
+
+                  <h6 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-folder me-1"></i>Select Tender
+                  </h6>
+
+                  <div class="d-flex justify-content-center flex-wrap">
+                            <!-- <div class="row g-3 justify-content-center"> -->
+                                <!-- <div class="col-md-6 mx-auto text-center"> -->
+                                    <!-- <label class="form-label fw-semibold">Select Tender</label> -->
+                                    <!-- appendTo=".form-group" -->
+                                    <ng-select [items]="Tenterlist" bindLabel="tender_no" bindValue="tender_id"
+                                        class="form-control" appendTo="body" 
+                                        name="selecteditem" placeholder="Select Tender" (change)="onSelectedItem($event)">
+                                    </ng-select>
+
+                                <!-- </div> -->
+                            <!-- </div> -->
+                    <!-- <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="poType" value="All" [(ngModel)]="poType">
+                      <label class="form-check-label">All PO</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="poType" value="NP" [(ngModel)]="poType">
+                      <label class="form-check-label">Normal PO</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="poType" value="CP" [(ngModel)]="poType">
+                      <label class="form-check-label">Covid PO</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="poType" value="siteReady" [(ngModel)]="poType">
+                      <label class="form-check-label">After Site Readiness</label>
+                    </div> -->
+
+                  </div>
+
+                </div>
+
+
+                <!-- PAYMENT TYPES -->
+                <div class="col-md-4 border-end">
+
+                  <h6 class="fw-bold text-success mb-3">
+                    <i class="bi bi-cash-coin me-1"></i> Category Types
+                  </h6>
+
+                  <div class="d-flex justify-content-center flex-wrap">
+
+                    <!-- <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="paymentType" value="All"
+                        [(ngModel)]="paymentType">
+                      <label class="form-check-label">All</label>
+                    </div> -->
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="CategoryType" value="E"
+                        [(ngModel)]="CategoryType">
+                      <label class="form-check-label">Equipment</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="CategoryType" value="R"
+                        [(ngModel)]="CategoryType">
+                      <label class="form-check-label">Reagent</label>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <!-- RcType -->
+                <div class="col-md-4">
+
+                  <h6 class="fw-bold text-warning mb-3">
+                    <i class="bi bi-person-workspace me-1"></i>RcType
+                  </h6>
+
+                  <div class="d-flex justify-content-center">
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="RcType" value="R"
+                        [(ngModel)]="RcType">
+                      <label class="form-check-label">Current RC Valid</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="RcType" value="D"
+                        [(ngModel)]="RcType">
+                      <label class="form-check-label">Expired or Previous RC</label>
+                    </div>
+                    <!-- <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" [(ngModel)]="onlyMyDesk" name="onlyMyDesk">
+                      <label class="form-check-label">
+                        Only include Files on my Desk
+                      </label>
+                    </div> -->
+
+                  </div>
+
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                  <button type="submit" class="btn btn-primary" (click)="GetRcDetailReport()">
+                    Show Details
+                  </button>
+                </div>
+                <!-- [disabled]="fileForm.invalid" -->
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+    <!-- data table -->
+    <div class="card shadow-lgg p-2 mt-0 pt-0 border-0 bg-white rounded ">
+      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lightt"
+        style="height: auto; overflow: hidden; position: relative;">
+
+        <div class="container-fluid p-3 m-0">
+          <div class="row justify-content-center g-4 ">
+
+            <div class="col-lg-12 mb-2">
+              <div class=" card row shadow ">
+                <div class="d-flex justify-content-between align-items-center m-2">
+                  <div class="filter-field flex-grow-1">
+                    <input type="text" class="form-control" placeholder="Search" (keyup)="applyTextFilter($event)">
+                  </div>
+
+
+                  <div class="export-menu-container m-2">
+
+                    <button type="button" class="btn border rounded btn-outline-secondary" mat-button
+                      [matMenuTriggerFor]="exportMenu">Export</button>
+                    <mat-menu #exportMenu="matMenu">
+                      <button mat-menu-item
+                        (click)="exporter.exportTable('xlsx', { fileName: 'PODetails', sheet: 'PODetails', Props: { Author: 'cgmsc' }})">Excel</button>
+                    </mat-menu>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped border rounded " mat-table matTableExporter
+                    [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+                    <ng-container matColumnDef="sno">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No </th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                        {{element.sno}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="contractItemId">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>contract Item Id </th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.contractItemId}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="itemId">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Id</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.itemId}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="itemCode">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.itemCode}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="itemName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.itemName}}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="make">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Make </th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.make}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="model">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.model}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="supplierName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier Name</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.supplierName}} </td>
+                      
+                    </ng-container>
+                    <ng-container matColumnDef="tenderNo">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.tenderNo}} </td>
+                      
+                    </ng-container>
+                    <ng-container matColumnDef="contractDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Date</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.contractDate}} </td>
+                      
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="contractEndDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract End Date</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.contractEndDate}} </td>
+                      
+                    </ng-container>
+                    <ng-container matColumnDef="basicRate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Basic Rate</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.basicRate}} </td>
+                      
+                    </ng-container>
+                    <ng-container matColumnDef="gst">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>GST</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.gst}} </td>
+                      
+                    </ng-container>
+                    <ng-container matColumnDef="singleUnitPrice">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Single Unit Price</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.singleUnitPrice}} </td>
+                      
+                    </ng-container>
+                    <ng-container matColumnDef="cmc1">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>cmc1</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.cmc1}} </td>
+                      
+                    </ng-container>
+                    <ng-container matColumnDef="cmc2">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>cmc2</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.cmc2}} </td>
+                      
+                    </ng-container>
+                    <ng-container matColumnDef="cmc3">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>cmc3</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.cmc3}} </td>
+                      
+                    </ng-container>
+                    <ng-container matColumnDef="cmc4">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>cmc4</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.cmc4}} </td>
+                      
+                    </ng-container>
+                    <ng-container matColumnDef="cmc5">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>cmc5</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.cmc5}} </td>
+                      
+                    </ng-container>
+                    <ng-container matColumnDef="tenderId">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender Id</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                          <td mat-cell *matCellDef="let element" class="text-center"> {{element.tenderId}} </td>
+                      
+                    </ng-container>
+
+                    <ng-container matColumnDef="action">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Download IDetails</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                        <span class="d-flex  flex-row-reverse p-2 ">
+                          <button
+                            class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
+                            mat-button (click)="onButtonClick(element.PoId)">
+                            <i class="bi bi-arrow-down text-primary"></i>
+                          </button>
+                        </span>
+                      </td>
+                    </ng-container>
+                    <!-- PO Value -->
+                    <ng-container matColumnDef="POValue">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Value</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.POValue}}</td>
+                    </ng-container>
+
+                    <!-- Supply Qty -->
+                    <ng-container matColumnDef="SupplyQty">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Supply Qty</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.SupplyQty}}</td>
+                    </ng-container>
+
+                    <!-- Receipt Qty -->
+                    <ng-container matColumnDef="ReceiptQty">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Receipt Qty</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ReceiptQty}}</td>
+                    </ng-container>
+
+                    <!-- Installation Qty -->
+                    <ng-container matColumnDef="InstallationQty">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Installation Qty</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.InstallationQty}}</td>
+                    </ng-container>
+
+                    <!-- Fit Unfit -->
+                    <ng-container matColumnDef="FitUnfit">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Fit Status</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.FitUnfit}}</td>
+                    </ng-container>
+
+                    <!-- Present File -->
+                    <ng-container matColumnDef="PresentFile">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Present File</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.PresentFile}}</td>
+                    </ng-container>
+
+                    <!-- File No -->
+                    <ng-container matColumnDef="FileNo">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>File No</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.FileNo}}</td>
+                    </ng-container>
+
+                    <!-- Last Receipt Date -->
+                    <ng-container matColumnDef="LastRDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Receipt</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.LastRDate}}</td>
+                    </ng-container>
+
+                    <!-- Facility -->
+                    <ng-container matColumnDef="FacilityAutName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Facility</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.FacilityAutName}}</td>
+                    </ng-container>
+
+                    <!-- Item Code -->
+                    <ng-container matColumnDef="ItemCode">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ItemCode}}</td>
+                    </ng-container>
+
+                    <!-- PO Type -->
+                    <ng-container matColumnDef="PoType">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Type</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.PoType}}</td>
+                    </ng-container>
+
+                    <!-- File Date -->
+                    <ng-container matColumnDef="FileDt">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>File Date</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.FileDt}}</td>
+                    </ng-container>
+
+                    <!-- Present User -->
+                    <ng-container matColumnDef="PresentUserId">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Present User</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.PresentUserId}}</td>
+                    </ng-container>
+
+                    <!-- To User -->
+                    <ng-container matColumnDef="ToUserId">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>To User</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ToUserId}}</td>
+                    </ng-container>
+
+                    <!-- Penalty -->
+                    <ng-container matColumnDef="PenaltyPercent">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Penalty %</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.PenaltyPercent}}</td>
+                    </ng-container>
+
+                    <!-- Reason -->
+                    <ng-container matColumnDef="ReasonId">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Reason Id</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ReasonId}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ReasonName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Reason</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ReasonName}}</td>
+                    </ng-container>
+
+                    <!-- Solved -->
+                    <ng-container matColumnDef="IsSolved">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Solved</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.IsSolved}}</td>
+                    </ng-container>
+
+                    <!-- Site Status -->
+                    <ng-container matColumnDef="SiteStatus">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Site Status</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.SiteStatus}}</td>
+                    </ng-container>
+
+                    <!-- Row -->
+                    <ng-container matColumnDef="RowNo">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Row</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.RowNo}}</td>
+                    </ng-container>
+
+                    <!-- To Date -->
+                    <ng-container matColumnDef="ToDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>To Date</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ToDate}}</td>
+                    </ng-container>
+
+                    <!-- Entry Date -->
+                    <ng-container matColumnDef="EntDT">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Entry Date</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.EntDT}}</td>
+                    </ng-container>
+
+                    <!-- Remarks -->
+                    <ng-container matColumnDef="Remarks">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Remarks</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.Remarks}}</td>
+                    </ng-container>
+
+                    <!-- Ext Status -->
+                    <ng-container matColumnDef="ExtStatus">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ext Status</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ExtStatus}}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                  <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons></mat-paginator>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

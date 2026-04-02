@@ -195,7 +195,18 @@ export class MenuServiceService {
         { label: 'IWH Pendings', route: '/iwhPending' },
       ],
     },
-    
+    AD:{
+        items: [
+            { label: 'Home', route: '/home' },
+                { label: 'RC Details Report', route: '/RCDetailReport' },//contracts
+                { label: 'Price Accepted Report', route: '/AcceptedReort' },//contracts
+                { label: 'Indent From Facilities', route: '/IndentFromFacilities' },//Indent
+                { label: 'Complain Report', route: '/ComplainReportBME' },//Complain
+                { label: 'Year Wise PO Abstract', route: '/FacilityAuthPOValuePOCell' },//Finance
+                { label: 'PO Wise Payment Report', route: '/POPaidReport' },//Finance
+        ]
+
+    },
     TPO: {
     
        
