@@ -257,3 +257,113 @@ export interface DistrictWiseDetailDTO {
   receiptQTY: number
   insqty: number
 }
+export interface ContractItem {
+      sno:number
+  contractItemId: number;
+  itemId: number;
+
+  itemCode: string;
+  itemName: string;
+
+  make: string;
+  model: string;
+
+  supplierName: string;
+  tenderNo: string;
+
+  contractDate: string;
+  contractEndDate: string;
+
+  basicRate: number;
+  gst: number;
+  singleUnitPrice: number;
+
+  cmc1: number;
+  cmc2: number;
+  cmc3: number;
+  cmc4: number;
+  cmc5: number;
+
+  tenderId: number;
+}
+export interface TenderSupplierDataDTO {
+     sno:number
+  ItemId: number
+  ItemCode: string
+  ItemName: string
+  SupplierName: string
+  TenderNo: string
+  TenderDate: string
+  TenderQuantity: number
+  BasicRate: number
+  GST: number
+  AcceptedBasicRate: number
+  AcceptedDate: string
+  TenderId: number
+  SupplierId: number
+}
+export interface IndentConsolidationDTO {
+     sno:number
+  IndentConsolidationId: number
+  IndentConNo: string
+  IndentDate: string
+  ItemCount: number
+  Status: string
+  FacilityAutName: string
+  Description: string
+  Path: string
+  UserType: string
+  Designation: string
+  UserId: number
+  UserName: string
+}
+export interface ComplaintDTO {
+   sno:number
+  ComplaintId: number
+  ComplaintNo: string
+  ComplaintDate: string
+  ItemId: number
+  ComplaintDetails: string
+  LocationId: number
+  SupplierId: number
+  ComplaintTroubleId: number
+  NotFunctionDate: string
+  ItemName: string
+  LocationName: string
+  ItemCode: string
+  UserId: number
+  SerialNo: string
+  SupplierName: string
+  Email: string
+  MobileNo: string
+  Path: string
+  Ext: string
+  ExtensionId: number
+}
+export interface FacilityReportDTO {
+   sno:number
+  FacilityAutId: number
+  FacilityAutName: string
+  POtype: string
+  NosPO: number
+  NosItem: number
+  TotalPOValueCr: number
+  PValue: number
+}
+export interface PODetailsReportDTO {
+   sno:number
+  FacilityAutId: number
+  FacilityAutName: string
+  PONO: string
+  POtype: string
+  CODE: string
+  ITEM_NAME: string
+  PODate: string
+  SupplierName: string
+  TenderNo: string
+  Quantity: number
+  PValue: number
+  PDate: string
+  Percentage: number
+  BasicRate: number
+}

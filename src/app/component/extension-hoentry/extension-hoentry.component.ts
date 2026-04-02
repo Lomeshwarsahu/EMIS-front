@@ -189,42 +189,84 @@ ngOnInit() {
 
 // https://localhost:7036/api/ExtensionEHO/apply
 
+// onSubmit(form: any) {
+// // debugger;
+//  this.spinner.hide();
+//   if (form.invalid) {
+//      this.toastr.warning('Please fill all required fields ❌');
+//     return;
+//   }
+
+//   const payload = {
+//       PoId: Number(this.poid), 
+//      Days: Number(this.Days), 
+//       Remark: this.remarks?.substring(0, 200),
+//       ExtendedDate: this.formatDate(new Date()), 
+//     PoEndDate: this.formatDate(this.PoEndDate),
+//     LetterDate: this.formatDate(this.LetterDate),
+//     IsPenalty: this.IsPenalty[0] 
+//   };
+// // console.log(JSON.stringify(payload));
+//   this.api.post1('ExtensionEHO/apply', payload)
+//     .subscribe({
+//       next: (res: any) => {
+//         this.toastr.success('Submitted Successfully!');
+//         form.reset();
+//          this.spinner.hide();
+//       },
+//       error: (err) => {
+//          this.spinner.hide();
+//         console.error(err);
+//         // alert('Error ❌');
+//       }
+//     });
+// }
+
 onSubmit(form: any) {
-// debugger;
- this.spinner.hide();
+
   if (form.invalid) {
-     this.toastr.warning('Please fill all required fields ❌');
+    this.toastr.warning('Please fill all required fields ❌');
     return;
   }
 
-  const payload = {
-      PoId: Number(this.poid), 
-     Days: Number(this.Days), 
-      Remark: this.remarks?.substring(0, 200),
-      ExtendedDate: this.formatDate(new Date()), 
-    PoEndDate: this.formatDate(this.PoEndDate),
-    LetterDate: this.formatDate(this.LetterDate),
-    IsPenalty: this.IsPenalty[0] 
-  };
-// console.log(JSON.stringify(payload));
-  this.api.post1('ExtensionEHO/apply', payload)
+  const formData = new FormData();
+
+  formData.append('PoId', this.poid);
+  formData.append('Days', this.Days);
+  formData.append('Remark', this.remarks?.substring(0, 200));
+  formData.append('ExtendedDate', this.formatDate(new Date()));
+  formData.append('PoEndDate', this.formatDate(this.PoEndDate));
+  formData.append('LetterDate', this.formatDate(this.LetterDate));
+  formData.append('IsPenalty', this.IsPenalty === 'Yes' ? 'Y' : 'N');
+
+  
+  if (this.selectedFile) {
+    formData.append('File', this.selectedFile);
+  }
+
+  this.api.post2('ExtensionEHO/apply', formData)
     .subscribe({
       next: (res: any) => {
         this.toastr.success('Submitted Successfully!');
         form.reset();
-         this.spinner.hide();
+        this.selectedFile = null;
       },
       error: (err) => {
-         this.spinner.hide();
         console.error(err);
-        // alert('Error ❌');
+        this.toastr.error('Error ❌');
       }
     });
 }
 onFileChange(event: any) {
   this.selectedFile = event.target.files[0];
 }
-formatDate(date: any) {
-  return date ? new Date(date).toISOString() : null;
+formatDate(date: any): string {
+  return date ? new Date(date).toISOString() : '';
 }
+// onFileChange(event: any) {
+//   this.selectedFile = event.target.files[0];
+// }
+// formatDate(date: any) {
+//   return date ? new Date(date).toISOString() : null;
+// }
 }

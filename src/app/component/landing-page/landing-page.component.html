@@ -137,7 +137,7 @@
 '>
 </iframe> -->
 
-<iframe
+<!-- <iframe
     class="oac_embedding_iframe"
     style="height: 100vh; width: 100%; border: none;" 
     srcdoc='
@@ -183,8 +183,11 @@
 
                                 // PARAMETER PASSING (Supplier = CIPLA)
                                 self.parameters = ko.observable({
-                                    "p1n": "PARAM_SUPPLIERID",
-                                    "p1v": 2216
+                                  "p1n": "PARAM_SUPPLIERID",
+                                    "p1v": 2216,
+                                    "p2n": "PARAM_WHID",
+                                    "p2v": 2617 
+                              
                                 });
                             }
                             
@@ -207,22 +210,29 @@
     </head>
     <body>
         <div style="width: 100%; height: 100vh;">
-            <oracle-dv 
+      
+  <oracle-dv 
                 project-path="[[projectPath]]" 
                 active-page="insight" 
                 active-tab-id="snapshot!canvas!1"
                 parameters="[[parameters]]"
-                project-options=&#39;{"bShowFilterBar":true}&#39;>
-            </oracle-dv>
+                project-options=&#39;{"bShowFilterBar":false}&#39;>
+            </oracle-dv> 
         </div>
     </body>
     </html>
 '>
-</iframe>
+</iframe>  -->
+<!-- "9M INDIA LIMITED"
+      <oracle-dv 
+                project-path="[[projectPath]]" 
+                active-page="insight" 
+                active-tab-id="snapshot!canvas!1"
+                parameters="[[parameters]]"
+                project-options=&#39;{"bShowFilterBar":false}&#39;>
+            </oracle-dv> -->
 
-
-
-
+-
 
 <!-- <div style="position: absolute; width: 1000px; height: 800px;">
   <oracle-dv
