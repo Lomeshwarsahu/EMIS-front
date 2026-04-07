@@ -367,3 +367,118 @@ export interface PODetailsReportDTO {
   Percentage: number
   BasicRate: number
 }
+export interface PaymentPOWiseDTO {
+     sno:number
+  PoNo: string
+  PoDate: string
+  OutwardNo: string
+  SupplierName: string
+  SanctionDate: string
+  GrossAmt: number
+  TotalDed: number
+  TotalAddition: number
+  ChequeAmt: number
+  AidNo: string
+  ChequeDate: string
+  BudgetName: string
+  BudgetId: number
+  SanctionId: number
+  PStatus: string
+  SupplierId: number
+  Potype: string
+  PoId: number
+  PaymentId: number
+  TypeP: string
+  AidDate: string
+  AdminCharges: number
+  ActChequeAmt: number
+  AccountNo: string
+}
+export interface ChequePaymentSummaryDTO {
+     sno:number
+
+  Name: string
+  SupplierId: number
+  CountNOs: number
+  ChequeAmt: number
+  AdminC: number
+  AidNo: string
+  ChequeDT: string
+  PaidOn: string
+  PaymentId: number
+  BudgetName: string
+  BudgetId: number
+  TotalCheque: number
+  MobileNo: string
+  LenMob: number
+  EmailId: string
+  Potype: any
+}
+export interface IndentItemSummaryDTO {
+     sno:number
+  Code: string
+  ItemName: string
+  Quantity: number
+  BasicRate: number
+  Percentage: number
+  SingleUnitPrice: number
+  TotalPOValue: number
+}
+export interface IndentDetailsDTO {
+   sno:number
+  LocationId: number
+  LocationName: string
+  DP_DistrictID: number
+  UserId: number
+  UserName: string
+  UserType: string
+  Designation: string
+  Code: string
+  ItemName: string
+  OutwardNo: string
+  PoDate: string
+  Quantity: number
+  BasicRate: number
+  Percentage: number
+  SingleUnitPrice: number
+  TotalPOValue: number
+  SupplierName: string
+  MobileNo: string
+  TenderNo: string
+  TenderDate: string
+  Status: string
+  Remarks: string
+  ItemId: number
+  FinancialYearId: number
+  Year: string
+  TenderId: number
+  PoNo: string
+  SupplierId: number
+  DirectorateId: number
+  IndentFundId: number
+  PoId: number
+}
+export interface TenderDto {
+   sno:number
+  TenderId: number
+  TenderNo: string
+  TenderDate: string
+  TenderDescription: string
+  TotalItems: number
+  Found: number
+  NotFound: number
+  PriceEntry: number
+  Accept: number
+  Reject: number
+  Status: string
+  Flag: string
+  FinancialYearId: number
+  WarrantyYear: number
+  ImportDays: number
+  DomesticDays: number
+  CoverA: string
+  CoverB: string
+  CoverDemo: string
+  CoverC: string
+  CsId: number
+}

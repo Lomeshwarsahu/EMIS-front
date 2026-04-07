@@ -1,0 +1,211 @@
+<section class="container-fluidd">
+  <div class="card">
+    <div class="card p-4 mb-4 shadow-smm text-center bg-light border-0 rounded-3">
+      <!-- Main Heading Centered -->
+      <h2 class="fw-bold text-primary mb-2"> PO Summary Report</h2>
+
+      <!-- Optional small subtitle for clarity -->
+      <p class="text-muted mb-0 fs-6">
+        Quick summary of all purchase orders for easy tracking and analysis
+      </p>
+    </div>
+    <div class="card shadow-lgg p-2 border-0 bg-white rounded ">
+      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lighty"
+        style="height: auto; overflow: hidden; position: relative;">
+        <div class="mb-0 Fon-family" style="text-align: justify;">
+          <form class="p-2">
+            <div class="card shadow-sm p-3 mt-2">
+    
+              <div class="row text-center align-items-start">
+                   <div class="col-md-4 border-end">
+    
+                  <h6 class="fw-bold text-dark mb-3">
+                    <i class="bi bi-cash-coin me-1"></i>Select Financial Year
+                  </h6>
+    
+                  <div class="d-flex justify-content-center flex-wrap">
+                    <ng-select [items]="yearlist" bindLabel="year" bindValue="financial_year_id" class="form-control"
+                      appendTo="body" [(ngModel)]="selecteditem" name="selecteditem" placeholder="Select year"
+                      (change)="onSelectedyearlist($event)">
+                    </ng-select>
+    
+                  </div>
+    
+                </div>
+                <!-- PO TYPES -->
+                <div class="col-md-4 border-end">
+    
+                  <h6 class="fw-bold text-warning mb-3">
+                    <i class="bi bi-folder me-1"></i>Select Item Name
+                  </h6>
+    
+                  <div class="d-flex justify-content-center flex-wrap">
+                    <ng-select [items]="ItemsList" bindLabel="ItemName" bindValue="ItemId" [(ngModel)]="ItemId"
+                     class="form-control" appendTo="body"
+                      placeholder="Select Item" (change)="onSelectedItem($event)">
+                    </ng-select>
+    
+                  </div>
+    
+    
+                </div>
+                <div class="col-md-4 border-end">
+    
+                  <h6 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-folder me-1"></i>Select Directorate/HOD
+                  </h6>
+    
+                  <div class="d-flex justify-content-center flex-wrap">
+                    <ng-select [items]="Diectoratelist" bindLabel="facility_aut_name" bindValue="facility_aut_id" [(ngModel)]="facility_aut_id"
+                     class="form-control" appendTo="body"
+                      placeholder="Select Directorate/HOD" (change)="onSelectedDirectorate($event)">
+                    </ng-select>
+    
+                  </div>
+    
+    
+                </div>
+    
+    
+                <!-- PAYMENT TYPES -->
+                <!-- <div class="col-md-3 border-end">
+    
+                  <h6 class="fw-bold text-success mb-3">
+                    <i class="bi bi-cash-coin me-1"></i>Select Med.Coll./District 
+                  </h6>
+    
+                  <div class="d-flex justify-content-center flex-wrap">
+                    <ng-select [items]="UsersByAuthoritylist" bindLabel="UserName" bindValue="UserId" [(ngModel)]="UserId" class="form-control"
+                      appendTo="body"  name="selecteditem" placeholder="Select Med.Coll./District"
+                      (change)="onSelectedUsers($event)">
+                    </ng-select>
+    
+                  </div>
+    
+                </div> -->
+               
+                <div class="d-flex justify-content-center mt-3">
+                  <button type="submit" class="btn btn-primary" (click)="GetIndentConsolidation()">
+                    Show Details
+                  </button>
+                </div>
+                <!-- [disabled]="fileForm.invalid" -->
+              </div>
+    
+            </div>
+          </form>
+    
+        </div>
+      </div>
+    </div>
+    <!-- data table -->
+    <div class="card shadow-lgg p-2 mt-0 pt-0 border-0 bg-white rounded ">
+      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lightt"
+        style="height: auto; overflow: hidden; position: relative;">
+
+        <div class="container-fluid p-3 m-0">
+          <div class="row justify-content-center g-4 ">
+
+            <div class="col-lg-12 mb-2">
+              <div class=" card row shadow ">
+                <div class="d-flex justify-content-between align-items-center m-2">
+                  <div class="filter-field flex-grow-1">
+                    <input type="text" class="form-control" placeholder="Search" (keyup)="applyTextFilter($event)">
+                  </div>
+
+
+                  <div class="export-menu-container m-2">
+
+                    <button type="button" class="btn border rounded btn-outline-secondary" mat-button
+                      [matMenuTriggerFor]="exportMenu">Export</button>
+                    <mat-menu #exportMenu="matMenu">
+                      <button mat-menu-item
+                        (click)="exporter.exportTable('xlsx', { fileName: 'PODetails', sheet: 'PODetails', Props: { Author: 'cgmsc' }})">Excel</button>
+                    </mat-menu>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped border rounded " mat-table matTableExporter
+                    [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+                    <ng-container matColumnDef="sno">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No </th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                        {{element.sno}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Code">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.Code}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ItemName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.ItemName}} </td>
+                    </ng-container>
+                    <!-- <ng-container matColumnDef="Quantity">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.Quantity}} </td>
+                    </ng-container> -->
+                        <ng-container matColumnDef="Quantity">
+                                            <th mat-header-cell *matHeaderCellDef>Quantity </th>
+                                            <td mat-cell *matCellDef="let element">
+                                                <span class="d-flex  flex-row-reverse p-2">
+                                                    <a type="link" class="download-link text-info" (click)=" GetitemFulldetail(element.ItemName,element.Code
+                                                      )">{{element.Quantity}}
+                                                    </a>
+                                                </span>
+                                        
+                                            </td>
+                                        </ng-container>
+                    <ng-container matColumnDef="BasicRate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Basic Rate</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.BasicRate}}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Percentage">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Percentage</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.Percentage}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="SingleUnitPrice">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Single Unit Price</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.SingleUnitPrice}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Description">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.Description}} </td>
+
+                    </ng-container>
+                    <ng-container matColumnDef="TotalPOValue">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total PO Value</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.TotalPOValue}} </td>
+
+                    </ng-container>
+                   
+
+
+                    <!-- <ng-container matColumnDef="action">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Download IDetails</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                        <span class="d-flex  flex-row-reverse p-2 ">
+                          <button
+                            class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
+                            mat-button (click)="onButtonClick(element.PoId)">
+                            <i class="bi bi-arrow-down text-primary"></i>
+                          </button>
+                        </span>
+                      </td>
+                    </ng-container> -->
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                  <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons></mat-paginator>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
