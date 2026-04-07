@@ -39,11 +39,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PaymentPOWiseDTO } from 'src/app/Model/models';
+import { IndentDetailsDTO } from 'src/app/Model/models';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-popaid-report',
-  standalone: true,
+  selector: 'app-posummary-drill-dwn-qty',
+standalone: true,
   imports: [
     NgSelectModule,
     CommonModule,
@@ -61,36 +62,31 @@ import { PaymentPOWiseDTO } from 'src/app/Model/models';
     MatOptionModule,
     MatTableExporterModule,
   ],
-  templateUrl: './popaid-report.component.html',
-  styleUrl: './popaid-report.component.css',
+  templateUrl: './posummary-drill-dwn-qty.component.html',
+  styleUrl: './posummary-drill-dwn-qty.component.css',
 })
-export class POPaidReportComponent {
-      Fromdt: any;
-      Todt: any;
-      poType: any; //1;
-
- 
-  dispatchData: PaymentPOWiseDTO[] = [];
-  dataSource!: MatTableDataSource<PaymentPOWiseDTO>;
-  @ViewChild('paginator') paginator!: MatPaginator;
-  @ViewChild('sort') sort!: MatSort;
-  displayedColumns: string[] = [
+export class POSummaryDrillDwnQtyComponent {
+  Dname: any;
+  Iname:any
+  year: any;
+  dispatchData1: IndentDetailsDTO[] = [];
+  dataSource1!: MatTableDataSource<IndentDetailsDTO>;
+  @ViewChild('paginator1') paginator1!: MatPaginator;
+  @ViewChild('sort1') sort1!: MatSort;
+  displayedColumns1: string[] = [
     'sno',
     'PoNo',
     'PoDate',
+    'LocationName',
+    'Quantity',
+    'BasicRate',
+    'Percentage',
+    'SingleUnitPrice',
+    'TotalPOValue',
     'SupplierName',
-    'GrossAmt',
-    'TotalDed',
-    'TotalAddition',
-    'ChequeAmt',
-    'AdminCharges',
-    'ActChequeAmt',
-    'ChequeDate',
-    'AidNo',
-    'BudgetName',
-    'Potype',
-    'action'
+    'TenderNo',
   ];
+
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -100,57 +96,59 @@ export class POPaidReportComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private sanitizer: DomSanitizer,
-    private cd: ChangeDetectorRef,
+    private route: ActivatedRoute,
   ) {
-    this.dataSource = new MatTableDataSource<PaymentPOWiseDTO>([]);
+    this.dataSource1 = new MatTableDataSource<IndentDetailsDTO>([]);
   }
 
   ngOnInit() {
-
+    this.route.queryParams.subscribe((params) => {
+      //http://localhost:4200/EMIS/POSummaryDrillDwnQty?
+      // ItemName=300MA%20X-Ray%20Machine&Icode=DHS20&yearid=6&directorateId=5&directorate=Directorate%20of%20Health%20Services&year=2017-2018
+      const yearid = params['yearid'];
+      const directorateId = params['directorateId'];
+      const itemCode = params['Icode'];
+      this.Iname = params['ItemName'];
+      this.year = params['year'];
+      this.Dname=params['directorate'];
+      this.GetPOSummaryDrillDwnQtyPOWise(yearid, directorateId, itemCode);
+    });
   }
-formatDate(date: any) {
-  if (!date) return '';
 
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = ('0' + (d.getMonth() + 1)).slice(-2);
-  const day = ('0' + d.getDate()).slice(-2);
+  //https://localhost:7036/api/Contract/Reports/GetItemWPODetails?finYrId=7&itemCode=DHS20&directorateId=5
+  GetPOSummaryDrillDwnQtyPOWise(yearid: any, directorateId: any, itemCode: any) {
+    // debugger
 
-  return `${day}-${month}-${year}`;
-}
-  // https://localhost:7036/api/Contract/FinanceRep/PaymentUnionReport?potype=NP&fromDate=05-06-2024&toDate=16-04-2026
-  GetTenderSupplierData() {
-    debugger
     try {
       this.spinner.show();
       const params = {
-        potype: this.poType,
-         fromDate: this.formatDate(this.Fromdt),
-        toDate: this.formatDate(this.Todt)
-        // fromDate: this.Fromdt,
-        // toDate: this.Todt,
+        finYrId: yearid,
+        itemCode: itemCode,
+        directorateId: directorateId,
       };
-      this.api.get('Contract/FinanceRep/PaymentUnionReport?', { params }).subscribe(
-        (res: any) => {
-          this.dispatchData = res.map(
-            (item: PaymentPOWiseDTO, index: number) => ({
-              ...item,
-              sno: index + 1,
-            }),
-          );
-          console.log('PaymentPOWiseDTO=:', this.dispatchData);
-          this.dataSource.data = this.dispatchData;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          this.cdr.detectChanges();
-          this.spinner.hide();
-        },
-        (error: { message: any }) => {
-          this.spinner.hide();
-          console.log('Error fetching data:', JSON.stringify(error.message));
-          // alert(`Error fetching data: ${JSON.stringify(error.message)}`);
-        },
-      );
+      this.api
+        .get('Contract/Reports/GetItemWPODetails?', { params })
+        .subscribe(
+          (res: any) => {
+            this.dispatchData1 = res.map(
+              (item: IndentDetailsDTO, index: number) => ({
+                ...item,
+                sno: index + 1,
+              }),
+            );
+            console.log('IndentDetailsDTO=:', this.dispatchData1);
+            this.dataSource1.data = this.dispatchData1;
+            this.dataSource1.paginator = this.paginator1;
+            this.dataSource1.sort = this.sort1;
+            this.cdr.detectChanges();
+            this.spinner.hide();
+          },
+          (error: { message: any }) => {
+            this.spinner.hide();
+            console.log('Error fetching data:', JSON.stringify(error.message));
+            // alert(`Error fetching data: ${JSON.stringify(error.message)}`);
+          },
+        );
     } catch (err: any) {
       this.spinner.hide();
 
@@ -160,20 +158,7 @@ formatDate(date: any) {
   }
   applyTextFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-  onButtonClick(poid: any) {
-    return;
-    this.router.navigate(['/InstallationDetails'], {
-      queryParams: { poId: poid },
-    });
-    // InstallationDetails
-    // alert(poid)
-    // InstallationDetails
-  }
-  onCategoryChange() {
-    this.poType;
-    // force UI refresh
-    this.cd.detectChanges();
+    this.dataSource1.filter = filterValue.trim().toLowerCase();
   }
 }
+

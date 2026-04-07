@@ -204,6 +204,10 @@ export class MenuServiceService {
                 { label: 'Complain Report', route: '/ComplainReportBME' },//Complain
                 { label: 'Year Wise PO Abstract', route: '/FacilityAuthPOValuePOCell' },//Finance
                 { label: 'PO Wise Payment Report', route: '/POPaidReport' },//Finance
+                { label: 'Cheque Wise Payment Report', route: '/ChequeWisePaymentReport' },//Finance
+                { label: ' PO Summary', route: '/POSummaryReport' },//Report
+                { label: ' PO Wise Payment Report', route: '/ChequeWisePaymentReport' },//Report
+                { label: ' Tenders Status', route: '/TendersStatus' },//Report
         ]
 
     },
