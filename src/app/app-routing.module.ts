@@ -16,6 +16,17 @@ import { ItemWiseDetailPOCellByPOidComponent } from './component/item-wise-detai
 import { IndentPOSummaryDirwiseComponent } from './component/indent-posummary-dirwise/indent-posummary-dirwise.component';
 import { DistrictWisePODetailComponent } from './component/district-wise-podetail/district-wise-podetail.component';
 import { LandingPageComponent } from './component/landing-page/landing-page.component';
+import { RCDetailReportComponent } from './component/rcdetail-report/rcdetail-report.component';
+import { AcceptedReortComponent } from './component/accepted-reort/accepted-reort.component';
+import { IndentFromFacilitiesComponent } from './component/indent-from-facilities/indent-from-facilities.component';
+import { ComplainReportBMEComponent } from './component/complain-report-bme/complain-report-bme.component';
+import { FacilityAuthPOValuePOCellComponent } from './component/facility-auth-povalue-pocell/facility-auth-povalue-pocell.component';
+import { POSummaryDrillDwnQtyPOWiseComponent } from './component/posummary-drill-dwn-qty-powise/posummary-drill-dwn-qty-powise.component';
+import { POPaidReportComponent } from './component/popaid-report/popaid-report.component';
+import { ChequeWisePaymentRComponent } from './component/cheque-wise-payment-r/cheque-wise-payment-r.component';
+import { POSummaryReportComponent } from './component/posummary-report/posummary-report.component';
+import { POSummaryDrillDwnQtyComponent } from './component/posummary-drill-dwn-qty/posummary-drill-dwn-qty.component';
+import { TendersStatusComponent } from './component/tenders-status/tenders-status.component';
 
 
 
@@ -35,6 +46,8 @@ const routes: Routes = [
   {path:'ItemWiseDetailPOCellByPOid',component:ItemWiseDetailPOCellByPOidComponent},
   // {path:'IndentPOSummaryDirwise',component:IndentPOSummaryDirwiseComponent},
   // {path:'DistrictWisePODetail',component:DistrictWisePODetailComponent},
+  {path:'POSummaryDrillDwnQtyPOWise',component:POSummaryDrillDwnQtyPOWiseComponent},
+  {path:'POSummaryDrillDwnQty',component:POSummaryDrillDwnQtyComponent},
 
   {path:'logout',component:LogoutComponent,canActivate:[RouteGuardService]}, 
 // { path: 'welcome', component: HomeComponent },
@@ -51,6 +64,16 @@ const routes: Routes = [
 {path:'IndentPOSummaryDirwise',component:IndentPOSummaryDirwiseComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['TPO'] }},
 
 {path:'DistrictWisePODetail',component:DistrictWisePODetailComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['TPO'] }},
+// MD logins 
+{path:'RCDetailReport',component:RCDetailReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'AcceptedReort',component:AcceptedReortComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'IndentFromFacilities',component:IndentFromFacilitiesComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'ComplainReportBME',component:ComplainReportBMEComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'FacilityAuthPOValuePOCell',component:FacilityAuthPOValuePOCellComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'POPaidReport',component:POPaidReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'ChequeWisePaymentReport',component:ChequeWisePaymentRComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'POSummaryReport',component:POSummaryReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'TendersStatus',component:TendersStatusComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
 
 
 // {path:'generate-GenerationFileNonasti',component:GenerationFileNonastiComponent,canActivate:[RouteGuardService],data: { allowedRoles: ['TPO']}},
