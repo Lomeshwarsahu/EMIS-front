@@ -27,6 +27,9 @@ import { ChequeWisePaymentRComponent } from './component/cheque-wise-payment-r/c
 import { POSummaryReportComponent } from './component/posummary-report/posummary-report.component';
 import { POSummaryDrillDwnQtyComponent } from './component/posummary-drill-dwn-qty/posummary-drill-dwn-qty.component';
 import { TendersStatusComponent } from './component/tenders-status/tenders-status.component';
+import { PORecdsummaryComponent } from './component/porecdsummary/porecdsummary.component';
+import { TenterStatusItemWiseComponent } from './component/tenter-status-item-wise/tenter-status-item-wise.component';
+import { POSummaryDrillDwnQtyReagentComponent } from './component/posummary-drill-dwn-qty-reagent/posummary-drill-dwn-qty-reagent.component';
 
 
 
@@ -71,9 +74,13 @@ const routes: Routes = [
 {path:'ComplainReportBME',component:ComplainReportBMEComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
 {path:'FacilityAuthPOValuePOCell',component:FacilityAuthPOValuePOCellComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
 {path:'POPaidReport',component:POPaidReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'FPOPaidReport',component:POPaidReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
 {path:'ChequeWisePaymentReport',component:ChequeWisePaymentRComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
 {path:'POSummaryReport',component:POSummaryReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
 {path:'TendersStatus',component:TendersStatusComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'PORecdsummary',component:PORecdsummaryComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'TenterStatusItemWise',component:TenterStatusItemWiseComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'POSummaryDrillDwnQtyReagent',component:POSummaryDrillDwnQtyReagentComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
 
 
 // {path:'generate-GenerationFileNonasti',component:GenerationFileNonastiComponent,canActivate:[RouteGuardService],data: { allowedRoles: ['TPO']}},

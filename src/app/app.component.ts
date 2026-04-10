@@ -17,7 +17,6 @@ import { ApiService } from './service/api.service';
     standalone: false
 })
 
-
 export class AppComponent implements OnInit, DoCheck {
  
   deferredPrompt: any;
@@ -27,7 +26,6 @@ export class AppComponent implements OnInit, DoCheck {
   roleName = localStorage.getItem('roleName')
   firstname = sessionStorage.getItem('firstname')
   vregid: any;
-
 
   @HostListener('window:beforeinstallprompt', ['$event'])
   onbeforeinstallprompt(e: Event) {
@@ -39,12 +37,9 @@ export class AppComponent implements OnInit, DoCheck {
     this.showButton = true;
   }
 
-
   isExternalLink(route: string): boolean {
     return route.startsWith('http://') || route.startsWith('https://');
   }
-
-
 
   menuItems: { label: string; route: string; submenu?: { label: string; route: string }[] }[] = [];
   expandedMenus: { [key: string]: boolean } = {}; // Track expanded state for each menu item
@@ -65,14 +60,7 @@ export class AppComponent implements OnInit, DoCheck {
       public basicAuthentication: BasicAuthenticationService, private api:ApiService,
       private https: HttpClient) { }
 
-     
-
-
-
   logout() {
-// 
-  
-
     if (sessionStorage.getItem('roleId') === '482') {
       sessionStorage.clear();
       localStorage.clear();
@@ -93,7 +81,6 @@ export class AppComponent implements OnInit, DoCheck {
     this.location.back();
   }
 
-
   ngOnInit(): void {
   
     this.router.events.subscribe(event => {
@@ -110,13 +97,7 @@ export class AppComponent implements OnInit, DoCheck {
 
   }
 
- 
-  
-
-
   ngDoCheck(): void {
-    // 
-
     const role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
     // this.role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
     const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
@@ -129,19 +110,10 @@ export class AppComponent implements OnInit, DoCheck {
 
     // this.GetVendorDetailsID(sessionStorage.getItem('facilityid'));
 
-
-
     this.cdr.detectChanges();
 
   }
 
-
-  
-  
-
-
-
-  
   GetVendorDetailsID(supplierId: any) {
     this.api.getVendorDetailsID(supplierId).subscribe({
       next: (res: any) => {
@@ -165,7 +137,6 @@ export class AppComponent implements OnInit, DoCheck {
   
   private updateMenu() {
     
-    // ;
     // Check if the role has categories or direct items
     const hasCategories = ['SEC1', 'DHS', 'CME'].includes(this.role);
     
@@ -213,5 +184,22 @@ export class AppComponent implements OnInit, DoCheck {
 
   isCollectorLogin(): boolean {
     return this.router.url === '/collector-login';
+  }
+
+  isMenuActive(item: any): boolean {
+
+  // अगर direct route है
+  if (item.route && this.router.url === item.route) {
+    return true;
+  }
+
+  // अगर submenu है
+  if (item.submenu) {
+    return item.submenu.some((sub: any) =>
+      this.router.url === sub.route
+    );
+  }
+
+  return false;
   }
 }

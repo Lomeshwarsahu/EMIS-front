@@ -5,7 +5,7 @@
 }
 
 .submenu mat-list-item {
-  padding-left: 16px; /* Add extra padding for submenu items */
+  padding-left: 16px; 
 }
 
 .submenu[hidden] {
@@ -13,11 +13,10 @@
   padding: 0;
 }
 
-
-.mat-toolbar.mat-dark {
+/* .mat-toolbar.mat-dark {
     background: #000;
     color: #fff;
-}
+} */
 .mat-toolbar {
     display: flex;
     justify-content: space-between;
@@ -49,151 +48,316 @@
     display: flex;
     align-items: center;
     transition: transform 0.5s ease-in-out, bottom 0.5s ease-in-out;
+}
 
-  }
-  
-  .add-to-home-screen.show {
-    bottom: 20px; /* Final position */
-    transform: translateX(-50%) translateY(0);
-  }
-  
-  .add-to-home-screen img {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-  }
-  
-  .add-to-home-screen button {
-    background: #6200ea;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .add-to-home-screen button:hover {
-    background: #3700b3;
-  }
-  
-  .add-to-home-screen .close-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    margin-left: auto;
-    cursor: pointer;
-  }
+.add-to-home-screen.show {
+  bottom: 20px; /* Final position */
+  transform: translateX(-50%) translateY(0);
+}
 
+.add-to-home-screen img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
 
-  
-  .welcome-message {
-    font-size: 1rem;
-    color: #ffffff;
-    white-space: nowrap;
-  }
- 
-  .navbar-brand {
-    font-size: 1.25rem;
-    font-weight: 500;
-  }
-  
-  /* pwa close */
-  
+/* .add-to-home-screen button {
+  background: #6200ea;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+} */
 
+/* .add-to-home-screen button:hover {
+  background: #3700b3;
+} */
 
+.add-to-home-screen .close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  margin-left: auto;
+  cursor: pointer;
+}
 
+.welcome-message {
+  font-size: 1rem;
+  color: #ffffff;
+  white-space: nowrap;
+}
 
+/* .navbar-brand {
+  font-size: 1.25rem;
+  font-weight: 500;
+} */
 
-  html, body {
-    height: 100%;
-    margin: 0;
-  }
-  
-  mat-drawer-container,
-  mat-drawer-content,
-  mat-drawer {
-    height: 100vh !important;
-    min-height: 100vh;
-  }
-  
-  .main-container {
-    height: calc(100vh - 64px) !important; /* adjust if toolbar height changes */
-  }
-  
-  .content-area {
-    display: flex;
-    flex-direction: column;
-    min-height: calc(100vh - 64px);
-    background-color: #f8f9fa;
-  }
-  
-  .footer {
-    margin-top: auto;
-    background-color: #f1f1f1;
-    padding: 10px;
-    text-align: center;
-    color: #555;
-    font-size: 0.9rem;
-  }
-  
+/* pwa close */
 
+/* html, body {
+  height: 100%;
+  margin: 0;
+} */
 
-  /* test new navbar */
-  .toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 8px;
-  }
-  
-  .menu-btn {
-    margin-right: 8px;
-  }
-  
+mat-drawer-container,
+mat-drawer-content,
+/* mat-drawer {
+  height: 100vh !important;
+  min-height: 100vh;
+  background: #1e1e2f;
+  color: #fff;
+} */
+.mat-mdc-button:not(:disabled) {/* add lomesh*/
+  color: #fff;
+}
+.main-container {
+  height: calc(100vh - 64px) !important; /* adjust if toolbar height changes */
+}
+
+.content-area {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 64px);
+  background-color: #f8f9fa;
+}
+
+.footer {
+  margin-top: auto;
+  /* background-color: #f1f1f1; */
+  padding: 10px;
+  text-align: center;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+/* test new navbar */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+}
+
+.menu-btn {
+  margin-right: 8px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  flex: 1;
+  /* text-align: center; */
+  text-align:start;
+}
+
+/* Desktop welcome text */
+.welcome-text {
+  margin-right: 15px;
+  font-size: 14px;
+}
+
+/* Desktop back button */
+.back-btn {
+  display: inline-flex;
+}
+
+/* Mobile back button (icon) hidden on desktop */
+.mobile-back-btn {
+  display: none;
+}
+
+/* --------------------------- */
+/* MOBILE VIEW          */
+/* --------------------------- */
+@media (max-width: 600px) {
   .title {
-    font-size: 16px;
-    font-weight: 600;
-    flex: 1;
-    /* text-align: center; */
-    text-align:start;
-  }
-  
-  /* Desktop welcome text */
-  .welcome-text {
-    margin-right: 15px;
     font-size: 14px;
+    text-align: center;
+    margin: 0 auto;
   }
-  
-  /* Desktop back button */
+
+  .welcome-text {
+    display: none; /* Hide welcome text on mobile */
+  }
+
   .back-btn {
-    display: inline-flex;
+    display: none; /* Hide big back button */
   }
-  
-  /* Mobile back button (icon) hidden on desktop */
+
   .mobile-back-btn {
-    display: none;
+    display: inline-flex; /* Show icon back button */
   }
-  
-  /* --------------------------- */
-  /*        MOBILE VIEW          */
-  /* --------------------------- */
-  @media (max-width: 600px) {
-    .title {
-      font-size: 14px;
-      text-align: center;
-      margin: 0 auto;
-    }
-  
-    .welcome-text {
-      display: none; /* Hide welcome text on mobile */
-    }
-  
-    .back-btn {
-      display: none; /* Hide big back button */
-    }
-  
-    .mobile-back-btn {
-      display: inline-flex; /* Show icon back button */
-    }
-  }
-  
+}
+
+/* .mat-drawer-backdrop.mat-drawer-shown {
+    margin-top: 65px;
+    background-color: rgb(108 108 108 / 60%);
+} */
+::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
+  margin-top: 65px !important;
+  background-color: rgba(108, 108, 108, 0.6) !important;
+}
+
+/* Sidebar */
+mat-drawer {
+  margin-top: 64px;
+  height: 100vh !important;
+  min-height: 100vh;
+  background: #353535;
+  /* height: 100vh !important;
+  min-height: 100vh;
+  background: #1e1e2f; */
+  color: #fff;
+}
+
+mat-list-item {
+  margin: 4px 8px;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+mat-list-item:hover {
+  background: rgba(255,255,255,0.08);
+  transform: translateX(5px);
+}
+
+mat-list-item button {
+  width: 100%;
+  justify-content: flex-start;
+  color: #fff;
+  gap: 10px;
+}
+
+/* Arrow rotate */
+.rotate {
+  transform: rotate(180deg);
+  transition: 0.3s;
+}
+
+/* Submenu */
+.submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+/* Open submenu */
+.submenu.open {
+  max-height: 500px;
+}
+
+/* Submenu item */
+.submenu mat-list-item {
+  padding-left: 20px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* Toolbar */
+.title {
+  margin-left: 10px;
+  font-weight: 600;
+}
+
+/* Spacer */
+.spacer {
+  flex: 1;
+}
+
+/* Content */
+/* .content {
+  padding: 10px;
+} */
+
+/* Fix layout */
+.menu-btn1 {
+  display: flex;
+  align-items: center;  
+  width: 100%;
+}
+
+/* Left icon */
+.left-iconn {
+  margin-right: 10px;
+}
+
+/* Label */
+.menu-labell {
+  flex: 1;
+}
+
+/* Arrow fix */
+.right-arrow1 {
+  margin-left: 70px;
+  /* margin-left: 30px; */
+  margin-top: 0px;
+  font-size: 20px;
+  display: inline-table;
+  align-items: revert-layer;
+  /* margin-left: auto;     
+  font-size: 20px;       
+  display: flex;
+  align-items: center; */
+}
+
+.active-menu1 {
+  background: #ffe6e6 !important;
+  color: #000000 !important;
+  /* color: #f37200 !important; */
+  /* background: #ff9933 !important;
+  color: #fff !important; */
+  border-radius: 6px;
+}
+
+/* Active */
+.active-menu {
+  background: #757575 !important;
+  color: #ffa700 !important;
+  /* background: #ff9933 !important; 
+  color: #fff !important; */
+  /* color: #000 !important; */
+}
+
+
+
+/* Fix layout */
+.menu-btn {
+  display: flex;
+  align-items: center;   
+  width: 100%;
+}
+
+::ng-deep .menu-btn .mdc-button__label,
+::ng-deep .menu-btn .mat-button-wrapper {
+  width: 100%;
+}
+
+.menu-btn {
+  width: 100%;
+}
+
+
+.menu-item-layout {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* Left Icon (☰) */
+.left-icon {
+  margin-right: 15px; 
+}
+
+/* Text Label (Contracts, Home etc.) */
+.menu-label {
+  flex: 1;
+  text-align: left;
+  font-size: 17px;
+}
+
+/* Right Arrow (>) */
+.right-arrow {
+  margin-left: auto; 
+  font-size: 20px;
+}
