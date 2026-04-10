@@ -350,6 +350,7 @@ export interface FacilityReportDTO {
   TotalPOValueCr: number
   PValue: number
 }
+
 export interface PODetailsReportDTO {
    sno:number
   FacilityAutId: number
@@ -480,5 +481,43 @@ export interface TenderDto {
   CoverB: string
   CoverDemo: string
   CoverC: string
+  CsId: number
+}
+
+export interface POReceiptDTO {
+   sno:number
+  PoId: number
+  TenderNo: string
+  Year: string
+  OutwardNo: string
+  po_no: string
+  Pono: string
+  PoDate: string
+  FacilityAutName: string
+  EQPTyp: string
+  item_code_as_per_tender: any
+  ItemName: string
+  Supplier: string
+  POQty: number
+  SupplyQty: number
+  ReceiptQty: number
+  LastRDate: string
+  InsQty: number
+  PoType: string
+  CancellationDays: number
+  DaysTakenToSupply: number
+  LastSupplyDate: string
+  Todays: number
+}
+export interface TenderAllItemStatusDTO {
+   sno:number
+  TenderId: number
+  TenderNo: string
+  ItemCodeAsPerTender: string
+  ItemName: string
+  TenderDate: string
+  EndDate: string
+  FinalStatus: string
+  ItemId: number
   CsId: number
 }
