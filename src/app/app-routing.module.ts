@@ -30,6 +30,7 @@ import { TendersStatusComponent } from './component/tenders-status/tenders-statu
 import { PORecdsummaryComponent } from './component/porecdsummary/porecdsummary.component';
 import { TenterStatusItemWiseComponent } from './component/tenter-status-item-wise/tenter-status-item-wise.component';
 import { POSummaryDrillDwnQtyReagentComponent } from './component/posummary-drill-dwn-qty-reagent/posummary-drill-dwn-qty-reagent.component';
+import { MastterSupplierDashComponent } from './component/BME/mastter-supplier-dash/mastter-supplier-dash.component';
 
 
 
@@ -67,6 +68,8 @@ const routes: Routes = [
 {path:'IndentPOSummaryDirwise',component:IndentPOSummaryDirwiseComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['TPO'] }},
 
 {path:'DistrictWisePODetail',component:DistrictWisePODetailComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['TPO'] }},
+// BME
+{path:'MastterSupplierDash',component:MastterSupplierDashComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
 // MD logins 
 {path:'RCDetailReport',component:RCDetailReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
 {path:'AcceptedReort',component:AcceptedReortComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},

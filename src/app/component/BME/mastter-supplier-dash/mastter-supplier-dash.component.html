@@ -1,0 +1,182 @@
+<section class="container-fluid bg-light min-vh-100 py-4">
+    
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-primary mb-1">Supplier Management</h2>
+            <p class="text-muted mb-0 fs-6">Manage MAS supplier information and pricing details</p>
+        </div>
+        <button *ngIf="!show!" class="btn btn-primary shadow-sm" (click)="showinput()">
+            <i class="bi bi-plus-circle me-2"></i>Add New Supplier
+        </button>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-3 mb-4" *ngIf="show!">
+        <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+            <h5 class="fw-bold text-secondary mb-0">Supplier Details Form</h5>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
+                <div class="row g-3">
+                    
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <label class="form-label fw-semibold text-muted">Supplier Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="SupplierName" placeholder="Enter Supplier Name" />
+                        <div *ngIf="supplierForm.get('SupplierName')?.invalid && supplierForm.get('SupplierName')?.touched" class="text-danger mt-1 small">
+                            <span *ngIf="supplierForm.get('SupplierName')?.errors?.['required']">Supplier Name is required.</span>
+                            <span *ngIf="supplierForm.get('SupplierName')?.errors?.['maxlength']">Max length is 100 characters.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <label class="form-label fw-semibold text-muted">Contact Person Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="ContactPersonName" placeholder="Contact Person Name" />
+                        <div *ngIf="supplierForm.get('ContactPersonName')?.invalid && supplierForm.get('ContactPersonName')?.touched" class="text-danger mt-1 small">
+                            <span *ngIf="supplierForm.get('ContactPersonName')?.errors?.['required']">Contact Person Name is required.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <label class="form-label fw-semibold text-muted">Contact Person No. <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="ContactPersonNumber" placeholder="Contact Person Number" />
+                        <div *ngIf="supplierForm.get('ContactPersonNumber')?.invalid && supplierForm.get('ContactPersonNumber')?.touched" class="text-danger mt-1 small">
+                            <span *ngIf="supplierForm.get('ContactPersonNumber')?.errors?.['required']">Contact Person Number is required.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <label class="form-label fw-semibold text-muted">Mobile No <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="MobileNo" placeholder="Enter Mobile No" />
+                        <div *ngIf="supplierForm.get('MobileNo')?.invalid && supplierForm.get('MobileNo')?.touched" class="text-danger mt-1 small">
+                            <span *ngIf="supplierForm.get('MobileNo')?.errors?.['required']">Mobile No is required.</span>
+                            <span *ngIf="supplierForm.get('MobileNo')?.errors?.['pattern']">Must be exactly 10 digits.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <label class="form-label fw-semibold text-muted">Email ID <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" formControlName="Email" placeholder="Enter Email" />
+                        <div *ngIf="supplierForm.get('Email')?.invalid && supplierForm.get('Email')?.touched" class="text-danger mt-1 small">
+                            <span *ngIf="supplierForm.get('Email')?.errors?.['required']">Email is required.</span>
+                            <span *ngIf="supplierForm.get('Email')?.errors?.['email']">Invalid email format.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <label class="form-label fw-semibold text-muted">GST No <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="GSTNo" placeholder="Enter GST No" />
+                        <div *ngIf="supplierForm.get('GSTNo')?.invalid && supplierForm.get('GSTNo')?.touched" class="text-danger mt-1 small">
+                            <span *ngIf="supplierForm.get('GSTNo')?.errors?.['required']">GST No is required.</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <label class="form-label fw-semibold text-muted">Phone No</label>
+                        <input type="text" class="form-control" formControlName="PhnNo" placeholder="Enter Phone No" />
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <label class="form-label fw-semibold text-muted">Tin No</label>
+                        <input type="text" class="form-control" formControlName="TinNo" placeholder="Enter Tin No" />
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold text-muted">Address <span class="text-danger">*</span></label>
+                        <textarea rows="2" class="form-control" formControlName="Address" placeholder="Enter full address"></textarea>
+                        <div *ngIf="supplierForm.get('Address')?.invalid && supplierForm.get('Address')?.touched" class="text-danger mt-1 small">
+                            <span *ngIf="supplierForm.get('Address')?.errors?.['required']">Address is required.</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="d-flex justify-content-end mt-4 gap-2">
+                    <button type="button" class="btn btn-light border" (click)="supplierForm.reset(); show = false;">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4" [disabled]="supplierForm.invalid">
+                        <i class="bi bi-save me-1"></i> Save Details
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body">
+            
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
+                
+                <div class="input-group shadow-sm" style="max-width: 300px;">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control border-start-0 ps-0" placeholder="Search suppliers..." (keyup)="applyTextFilter($event)">
+                </div>
+
+                <div>
+                    <button class="btn btn-outline-success shadow-sm" mat-button [matMenuTriggerFor]="exportMenu">
+                        <i class="bi bi-file-earmark-excel me-1"></i> Export
+                    </button>
+                    <mat-menu #exportMenu="matMenu">
+                        <button mat-menu-item (click)="exporter.exportTable('xlsx', { fileName: 'PODetails', sheet: 'PODetails', Props: { Author: 'cgmsc' }})">
+                            <i class="bi bi-file-excel text-success me-2"></i> Download Excel
+                        </button>
+                    </mat-menu>
+                </div>
+            </div>
+
+            <div class="table-responsive border rounded">
+                <table class="table table-hover align-middle mb-0" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+                    <ng-container matColumnDef="sno">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light"> S.No </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"> {{element.sno}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light"> Supplier </th>
+                        <td mat-cell *matCellDef="let element" class="fw-semibold text-dark"> {{element.Name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="EmailId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light"> Email </th>
+                        <td mat-cell *matCellDef="let element"> {{element.EmailId}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="MobileNo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light"> Mobile No </th>
+                        <td mat-cell *matCellDef="let element"> {{element.MobileNo}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="PhNo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light"> Phone No </th>
+                        <td mat-cell *matCellDef="let element">{{element.PhNo}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="GSTNo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light"> GST </th>
+                        <td mat-cell *matCellDef="let element"> <span class="badge bg-secondary bg-opacity-10 text-secondary border">{{element.GSTNo}}</span> </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Address">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light"> Address </th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <span class="d-inline-block text-truncate" style="max-width: 150px;" title="{{element.Address}}">{{element.Address}}</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef class="bg-light text-center"> Action </th>
+                        <td mat-cell *matCellDef="let element" class="text-center">
+                            <button class="btn btn-sm btn-light border text-primary" mat-button (click)="GetById(element.SupplierId)" title="Edit Supplier">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+            
+            <mat-paginator class="mt-2" #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons></mat-paginator>
+            
+        </div>
+    </div>
+</section>
