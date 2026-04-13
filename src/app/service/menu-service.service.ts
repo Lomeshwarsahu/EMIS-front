@@ -275,6 +275,61 @@ AD: {
     }
   ]
 },
+AU: {
+  items: [
+    { label: 'Home', route: '/home' },
+    {
+      label: 'Masters',
+      route: '',
+      submenu: [
+        { label: 'Supplier', route: '/MastterSupplierDash' },
+      ]
+    },
+    {
+      label: 'Contracts',
+      route: '',
+      submenu: [
+        { label: 'RC Details Report', route: '/RCDetailReport' },
+        { label: 'Price Accepted Report', route: '/AcceptedReort' }
+      ]
+    },
+    {
+      label: 'Indents',
+      route: '',
+      submenu: [
+        { label: 'Indent From Facilities', route: '/IndentFromFacilities' }
+      ]
+    },
+    {
+      label: 'Finance Report',
+      route: '',
+      submenu: [
+        { label: 'Year Wise PO Abstract', route: '/FacilityAuthPOValuePOCell' },
+        { label: 'PO Wise Payment FReport', route: '/FPOPaidReport' },
+        { label: 'Cheque Wise Payment Report', route: '/ChequeWisePaymentReport' }
+      ]
+    },
+    {
+      label: 'Complain',
+      route: '',
+      submenu: [
+       { label: 'Complain Report', route: '/ComplainReportBME' }, //Complain
+      ]
+    },
+    {
+      label: 'Reports',
+      route: '',
+      submenu: [
+        { label: 'PO Summary', route: '/POSummaryReport' },
+        { label: 'PO Wise Payment Report', route: '/POPaidReport' },
+        { label: 'Tenders Status', route: '/TendersStatus' },
+        { label: 'PO Receipts summary', route: '/PORecdsummary' },
+        { label: 'Item Status in Tenter', route: '/TenterStatusItemWise' },
+        { label: 'Reagent PO Report', route: '/POSummaryDrillDwnQtyReagent' },
+      ]
+    }
+  ]
+},
 
     TPO: {
       items: [

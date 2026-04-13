@@ -521,3 +521,35 @@ export interface TenderAllItemStatusDTO {
   ItemId: number
   CsId: number
 }
+export interface MassupplierDTO {
+  sno:number
+  SupplierId: number
+  IsContractor: any
+  Name: string
+  EmailId: string
+  PhNo: string
+  Address: string
+  SupplierCode: string
+  ModuleCode: string
+  MobileNo: any
+  GSTNo: any
+  Type: any
+  Class: any
+  IsRegister: any
+  ServiceEngineerName: string
+  ServiceEngineerNumber: string
+  TinNo: string
+}
+
+export interface SupplierResponseDTO {
+  SupplierId: number
+  SupplierName: string
+  ContactPersonName: string
+  ContactPersonNumber: string
+  MobileNo: any
+  Email: string
+  GSTNo: any
+  PhnNo: string
+  TinNo: string
+  Address: string
+}
