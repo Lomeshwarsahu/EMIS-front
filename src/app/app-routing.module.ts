@@ -31,6 +31,12 @@ import { PORecdsummaryComponent } from './component/porecdsummary/porecdsummary.
 import { TenterStatusItemWiseComponent } from './component/tenter-status-item-wise/tenter-status-item-wise.component';
 import { POSummaryDrillDwnQtyReagentComponent } from './component/posummary-drill-dwn-qty-reagent/posummary-drill-dwn-qty-reagent.component';
 import { MastterSupplierDashComponent } from './component/BME/mastter-supplier-dash/mastter-supplier-dash.component';
+import { ItemsBMEComponent } from './component/BME/items-bme/items-bme.component';
+import { MapitemsEithTypeComponent } from './component/BME/mapitems-eith-type/mapitems-eith-type.component';
+import { MapitemswithTypeUpdateComponent } from './component/BME/mapitemswith-type-update/mapitemswith-type-update.component';
+import { MapitemswithMainitemTypeRepoComponent } from './component/BME/mapitemswith-mainitem-type-repo/mapitemswith-mainitem-type-repo.component';
+import { EMSRCDashbordComponent } from './component/BME/emsrcdashbord/emsrcdashbord.component';
+import { EMSNEWRCComponent } from './component/BME/emsnewrc/emsnewrc.component';
 
 
 
@@ -70,6 +76,12 @@ const routes: Routes = [
 {path:'DistrictWisePODetail',component:DistrictWisePODetailComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['TPO'] }},
 // BME
 {path:'MastterSupplierDash',component:MastterSupplierDashComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'ItemsBME',component:ItemsBMEComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'MapitemsEithType',component:MapitemsEithTypeComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'MapitemswithTypeUpdate',component:MapitemswithTypeUpdateComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'MapitemswithMainitemTypeRepo',component:MapitemswithMainitemTypeRepoComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'EMSRCDashbord',component:EMSRCDashbordComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'EMSNEWRC',component:EMSNEWRCComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
 // MD logins 
 {path:'RCDetailReport',component:RCDetailReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
 {path:'AcceptedReort',component:AcceptedReortComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},

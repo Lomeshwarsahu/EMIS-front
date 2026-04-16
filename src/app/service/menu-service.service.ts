@@ -283,14 +283,18 @@ AU: {
       route: '',
       submenu: [
         { label: 'Supplier', route: '/MastterSupplierDash' },
+        { label: 'Add New Items', route: '/ItemsBME' },
+        { label: 'Mapping to Main items', route: '/MapitemsEithType' },
+        { label: 'Update Mapping to Main items', route: '/MapitemswithTypeUpdate' },
+        { label: 'Main Equipment Mapped Report', route: '/MapitemswithMainitemTypeRepo' },
       ]
     },
     {
       label: 'Contracts',
       route: '',
       submenu: [
-        { label: 'RC Details Report', route: '/RCDetailReport' },
-        { label: 'Price Accepted Report', route: '/AcceptedReort' }
+        { label: 'Contract Dashboard', route: '/EMSRCDashbord' },
+        { label: 'New Contract', route: '/EMSNEWRC' }
       ]
     },
     {
