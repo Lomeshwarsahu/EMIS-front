@@ -553,3 +553,29 @@ export interface SupplierResponseDTO {
   TinNo: string
   Address: string
 }
+
+export interface EquipmentItemDTO {
+   sno:number
+  ContractItemId: any
+  ItemName: string
+  ItemId: number
+  ItemCodeAsPerTender: string
+  EstimatedCost: number
+  AMC: string
+  PM: string
+  PmMonth: string
+  RCValid: string
+  BasicRate: any
+  Percentage: any
+  TenderNo: string
+  Category: string
+  CategoryId: number
+}
+export interface UnmappedItemDTO {
+  sno:number
+  ItemCodeAsPerTender: string
+  ItemName: string
+  ItemId: number
+  Pid: any
+  PItemName: any
+}
