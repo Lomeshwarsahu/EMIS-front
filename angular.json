@@ -86,8 +86,8 @@
             "src/assets/css/excss.css",
             "node_modules/ngx-spinner/animations/line-scale-party.css" ,
             "node_modules/ngx-toastr/toastr.css",
-            "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-            "node_modules/@ng-select/ng-select/themes/default.theme.css"
+            "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+    
 
 
           ],

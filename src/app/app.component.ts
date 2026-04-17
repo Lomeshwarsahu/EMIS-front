@@ -6,7 +6,7 @@ import { MenuServiceService } from './service/menu-service.service';
 import { BasicAuthenticationService } from './service/authentication/basic-authentication.service';
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-
+import { BreakpointObserver } from '@angular/cdk/layout';
 // import { TokenService } from './services/token.service';
 import { ApiService } from './service/api.service';
 
@@ -18,7 +18,7 @@ import { ApiService } from './service/api.service';
 })
 
 export class AppComponent implements OnInit, DoCheck {
- 
+ isMobile: boolean = false;
   deferredPrompt: any;
   showButton = false;
   title!: 'VENDER REGISTRATION PORTAL'
@@ -57,7 +57,7 @@ export class AppComponent implements OnInit, DoCheck {
   role: any = ''; // Dynamic role
   constructor(private location: Location,private cdr: ChangeDetectorRef, private menuService: MenuServiceService,
      private toastr: ToastrService, private router: Router,
-      public basicAuthentication: BasicAuthenticationService, private api:ApiService,
+      public basicAuthentication: BasicAuthenticationService, private api:ApiService,private breakpointObserver: BreakpointObserver,
       private https: HttpClient) { }
 
   logout() {
@@ -92,7 +92,9 @@ export class AppComponent implements OnInit, DoCheck {
         this.updateMenu();
       }
     });
-
+this.breakpointObserver.observe(['(max-width: 768px)']).subscribe(result => {
+    this.isMobile = result.matches;
+  });
     // this.GetVendorDetailsID(sessionStorage.getItem('facilityid'));
 
   }
