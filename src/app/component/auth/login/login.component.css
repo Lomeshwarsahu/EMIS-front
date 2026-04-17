@@ -1,3 +1,63 @@
+/* ================= FIX: GLOBAL BACKGROUND ================= */
+body, html {
+  background-color: #e2e8f0 !important; 
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  height: 100%;
+}
+.premium-login-bg {
+  min-height: 100vh;
+  background-color: #e2e8f0 !important;
+}
+
+/* ================= FIX: HEADER VISIBILITY & REDUCED SIZE ================= */
+.custom-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important; 
+  border-bottom: 4px solid #f59e0b !important; 
+  padding: 5px 0 !important; /* REDUCED PADDING: Header tight rahega */
+}
+
+/* Logo Sizing Fix */
+.header-logo { 
+  max-height: 55px !important; /* REDUCED SIZE: Logo chhota kiya */
+  object-fit: contain; 
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); 
+}
+
+/* Header Text Resizing */
+.header-title h1.text-white {
+  color: #ffffff !important; 
+  font-size: 1.1rem !important; /* Text size chhota kiya */
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  margin-bottom: 2px !important;
+}
+.header-title h1.text-warning {
+  color: #facc15 !important; 
+  font-size: 1.1rem !important; /* Text size chhota kiya */
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  margin-bottom: 2px !important;
+}
+.header-title p {
+  color: #cbd5e1 !important; 
+  font-size: 0.8rem !important; /* Subtitle size chhota kiya */
+}
+
+/* ================= FIX: CARDS ================= */
+.premium-login-card, .premium-card {
+  background: #ffffff !important; 
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+.modern-card-header {
+  background: #1e3a8a !important; 
+  color: #ffffff !important;
+  border-radius: 12px 12px 0 0;
+  padding: 12px 15px;
+}
+/* oldddas */
+
+
 body, html {
   margin: 0;
   padding: 0;

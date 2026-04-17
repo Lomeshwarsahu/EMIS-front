@@ -1,116 +1,99 @@
-<mat-drawer-container class="main-container" >
-<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="line-scale-party" [fullScreen]="true">
-  <p style="color: white"> Please wait... </p>
-</ngx-spinner>
-  <mat-drawer #drawer mode="over">
+<mat-drawer-container class="main-container">
+  
+  <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="line-scale-party" [fullScreen]="true">
+    <p style="color: white"> Please wait... </p>
+  </ngx-spinner>
+
+  <mat-drawer #drawer mode="over" class="premium-drawer">
+    <div class="sidebar-header">
+      <h2 class="brand-text">EMIS <span>Portal</span></h2>
+    </div>
 
     <mat-nav-list>
 
       <ng-container *ngFor="let item of menuItems">
-        <mat-list-item>
-  <button mat-button class="menu-btn"
-          (click)="item.submenu ? toggleSubmenu(item.label) : drawer.close()"
-          [routerLink]="!item.submenu ? item.route : null"
-          routerLinkActive="active-menu"
-          [ngClass]="{'active-menu1': isMenuActive(item)}">
+        <mat-list-item class="nav-item">
+          <button mat-button class="menu-btn"
+                  (click)="item.submenu ? toggleSubmenu(item.label) : drawer.close()"
+                  [routerLink]="!item.submenu ? item.route : null"
+                  routerLinkActive="active-menu"
+                  [ngClass]="{'active-menu1': isMenuActive(item)}">
 
-    <span class="menu-item-layout">
-      
-      <mat-icon class="left-icon">format_list_bulleted</mat-icon>
-      
-      <span class="menu-label">{{ item.label }}</span>
+            <div class="menu-content">
+              <div class="active-dot" *ngIf="isMenuActive(item)"></div>
+              
+              <mat-icon class="left-icon" [ngClass]="{'active-icon': isMenuActive(item)}">format_list_bulleted</mat-icon>
+              <span class="menu-text" [ngClass]="{'active-text': isMenuActive(item)}">{{ item.label }}</span>
+              
+              <mat-icon *ngIf="item.submenu" class="right-icon" [class.rotate]="expandedMenus[item.label]">
+                chevron_right
+              </mat-icon>
+            </div>
 
-      <mat-icon *ngIf="item.submenu" class="right-arrow">
-        {{ expandedMenus[item.label] ? 'expand_more' : 'chevron_right' }}
-      </mat-icon>
+          </button>
+        </mat-list-item>
 
-    </span>
-    </button>
-</mat-list-item>
-<!-- <mat-list-item>
-  <button mat-button class="menu-btn"
-        (click)="item.submenu ? toggleSubmenu(item.label) : drawer.close()"
-        [routerLink]="!item.submenu ? item.route : null"
-        routerLinkActive="active-menu"
-        [ngClass]="{'active-menu1': isMenuActive(item)}">
-  <mat-icon class="left-icon">format_list_bulleted</mat-icon>
-  
-  <span class="menu-label" style="font-size: 17px;">
-    {{ item.label }}
-  </span> <mat-icon *ngIf="item.submenu" class="right-arrow">
-    {{ expandedMenus[item.label] ? 'expand_more' : 'chevron_right' }}
-  </mat-icon>
-  <span class="menu-label" style="font-size: 17px;">
-    {{ item.label }}
-
-    <mat-icon *ngIf="item.submenu" class="right-arrow">
-      {{ expandedMenus[item.label] ? 'expand_more' : 'chevron_right' }}
-    </mat-icon>
-  </span>
-
-</button>
-  </mat-list-item> -->
         <div class="submenu" [class.open]="expandedMenus[item.label]">
-
-          <mat-list-item *ngFor="let sub of item.submenu">
-            <button mat-button
+          <mat-list-item *ngFor="let sub of item.submenu; let i = index" class="sub-nav-item" [style.transition-delay]="(i * 0.05) + 's'">
+            <button mat-button class="submenu-btn"
                     [routerLink]="sub.route"
-                    routerLinkActive="active-menu"
+                    routerLinkActive="active-submenu"
                     (click)="drawer.close()">
-
-              <mat-icon>chevron_right</mat-icon>
-              {{ sub.label }}
+              
+              <div class="menu-content">
+                <mat-icon class="sub-icon">remove</mat-icon> <span class="menu-text">{{ sub.label }}</span>
+              </div>
 
             </button>
           </mat-list-item>
-
         </div>
-
       </ng-container>
 
-      <mat-list-item>
-        <button mat-button (click)="logout()"  (click)="drawer.close()" style="font-size: 17px;">
-          <mat-icon>logout</mat-icon> Logout
+      <div class="divider"></div>
+
+      <mat-list-item class="nav-item">
+        <button mat-button class="menu-btn logout-btn" (click)="logout(); drawer.close()">
+          <div class="menu-content">
+            <mat-icon class="left-icon">power_settings_new</mat-icon> 
+            <span class="menu-text">Secure Logout</span>
+          </div>
         </button>
       </mat-list-item>
 
     </mat-nav-list>
-
   </mat-drawer>
 
   <mat-drawer-content>
-
-    <mat-toolbar color="primary" *ngIf="!isLoginPage">
-      <button mat-icon-button (click)="drawer.toggle()">
-        <mat-icon>menu</mat-icon>
+    
+    <mat-toolbar class="header-toolbar" *ngIf="!isLoginPage">
+      <button mat-icon-button class="menu-toggle" (click)="drawer.toggle()">
+        <mat-icon>menu_open</mat-icon>
       </button>
 
       <span class="title">EMIS</span>
-
       <span class="spacer"></span>
- <span class="welcome-text">Welcome: 
-      <img 
-        src="https://ui-avatars.com/api/?name={{firstname}}&background=4d82e3&color=fff&rounded=true" 
-        alt="User Avatar" 
-        class="shadow-sm rounded-circle " 
-        width="35" 
-        height="35"
-      >
-    </span>
-      <button mat-button (click)="goBack()">Back</button>
+
+      <div class="user-profile">
+        <span class="welcome-text">Hi, {{firstname}}</span>
+        <div class="avatar-container">
+          <img src="https://ui-avatars.com/api/?name={{firstname}}&background=38bdf8&color=fff&rounded=true" 
+               alt="User" class="avatar-img shadow-sm">
+          <div class="pulse-ring"></div>
+        </div>
+      </div>
+      
+      <button mat-button class="glass-back-btn" (click)="goBack()">Back</button>
     </mat-toolbar>
 
-    <div class="content">
+    <div class="content-area">
       <router-outlet></router-outlet>
+      
       <div class="pt-4">
-   <footer class="bg-primaryy text-white text-center fixed-bottom" style="background-color: rgb(56, 52, 52); padding: 14px;">
-     <div class="container p-2">
-       <p class="mb-0">&copy; 2025 Designed and Developed by IT-Cell CGMSCL | All Rights Reserved.</p>
-     </div>
-   </footer>
- </div>
+        <footer class="modern-footer fixed-bottom">
+          <p>&copy; 2025 Designed & Developed by <span class="highlight">IT-Cell CGMSCL</span></p>
+        </footer>
+      </div>
     </div>
-
   </mat-drawer-content>
 
 </mat-drawer-container>
