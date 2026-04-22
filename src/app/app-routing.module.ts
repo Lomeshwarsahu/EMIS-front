@@ -54,6 +54,7 @@ import { TenderDetailsPriceEntryGEMComponent } from './component/BME/tender-deta
 
 
 
+import { ConsigeeInformationComponent } from './component/DME/consigee-information/consigee-information.component';
 
 
 const routes: Routes = [
@@ -128,6 +129,8 @@ const routes: Routes = [
 
 
 // {path:'generate-GenerationFileNonasti',component:GenerationFileNonastiComponent,canActivate:[RouteGuardService],data: { allowedRoles: ['TPO']}},
+
+{path:'consigee-information',component:ConsigeeInformationComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
 
 { path: '**', redirectTo: 'login' }
 

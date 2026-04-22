@@ -655,6 +655,13 @@ DME: {
       },
     },
 
+    DME: {
+      items: [
+        { label: 'Home', route: '/home' },
+        { label: 'Consigee Information', route: '/consigee-information' }
+      ],
+    },
+
     HR: {
       items: [
         { label: 'Home', route: '/home' },
