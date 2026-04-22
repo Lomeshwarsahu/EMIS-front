@@ -17,8 +17,8 @@ export class ApiService {
   private API = 'https://cgmsc.gov.in/EMIS_API';
   // testing
   // private apiUrll = 'https://localhost:5001/api/Auth';
-  private apiUrll = 'https://localhost:7036/api/Auth';
-  private apiUrls = 'https://localhost:7036/api/';
+  private apiUrll = 'http://localhost:5169/api/Auth';
+  private apiUrls = 'http://localhost:5169/api/';
 
   private tokenSubject = new BehaviorSubject<string | null>(null);
 
