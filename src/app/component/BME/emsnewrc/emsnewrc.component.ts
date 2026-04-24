@@ -12,16 +12,6 @@ import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import {
-  SupplierBankAccDetail_model,
-  vendorBankDetail_model,
-  UpdateBankDetails_model,
-  UpdateAnnualTurnover_model,
-  GetAnnualTurnoverDetail,
-  BankMandateDetail,
-  MassuppliergstDetails,
-  GstReturnDetails,
-} from 'src/app/Model/VendorRegisDetail';
 import { ApiService } from 'src/app/service/api.service';
 import { CollapseModule } from 'src/app/collapse';
 import { NgForm } from '@angular/forms';
@@ -65,38 +55,68 @@ import { MatTabsModule } from '@angular/material/tabs';
 export class EMSNEWRCComponent {
   mappingForm!: FormGroup;
   showForm: boolean = true;
-
+  showtable: boolean = true;
+TenderItem:any;
+Taxlist:any;
   yearlist: any[] = [];
   Tenderlist: any[] = [];
   Supplierrlist: any[] = [];
   yearId: any;
   statusvalue: any;
   suppId: any;
+  Tenderno:any;
   dispatchData: any[] = [];
   dataSource!: MatTableDataSource<any>;
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
-
-  // displayedColumns: string[] = ['sno','PItemName', 'ItemCode', 'ItemName', 'IsElectrical','ProgReq','SRorBulkEntry','AmcReq'];
-  displayedColumns: string[] = [
-    'sno',
-    'contractNumber',
-    'contractDate',
-    'supplierName',
-    'tenderNo',
-    'tenderDate',
-    'contractDuration',
-    'contractSignDate',
-    'contractEndDate',
-    'status',
-  ];
+displayedColumns: string[] = [
+  'sno',
+  'ItemName',
+  'NoOfDaysForSupply',
+  'BasicRate',
+  'TaxTypeName',
+  'Percentage',
+  'SingleUnitPrice',
+  'LicenceNumber',
+  'Make',
+  'Model',
+  'SupplyCategory',
+  'actions' 
+];
   selectedItems: number[] = [];
   status = [
-    { value: 0, name: 'All' },
-    { value: 'C', name: 'Completed' },
-    { value: 'I', name: 'Incomplete' },
+    { value: 0, name: 'Domestic' },
+    // { value: 'C', name: 'Completed' },
+    { value: 'I', name: 'Imported' },
   ];
+  supplierId:any;
+  sName:any;
+activeTab: number = 1;
+itemData: any = {
+  AwardOfContractId: null, 
+  ItemId: null,
+  NoOfDaysForSupply: null,
+  BasicRate: null,
+  TaxTypeId: null,
+  Percentage: null,
+  SingleUnitPrice: null,
+  LicenceNumber: '',
+  Make: '',
+  Model: '',
+  DomesticImported: '0' 
+};
+
+  contractData: any = {
+  FinancialYearId: null,
+  TenderId: null,
+  SupplierId: null,
+  ContractDate: ''
+};
+isEditMode: boolean = false;
+year:any;
   tenderId: any;
+  awardOfContractId: any;
+  contractNumber: any;
   constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
@@ -107,19 +127,24 @@ export class EMSNEWRCComponent {
   ) {
     this.dataSource = new MatTableDataSource<any>([]);
   }
-
+switchTab(tabNumber: number) {
+  this.activeTab = tabNumber;
+}
   ngOnInit() {
     this.Getyear();
-    // this.GetTenderlist();
+    this.GetTaxlist();
+  // this.GetTenderItemDetails(0);
     // this.GetmappedItemsReport();
   }
   //https://localhost:7036/api/BME/GetSuppliersByTenderId/120
   GetSuppliersByTenderId(event: any) {
     if (event) {
+      // debugger
       this.tenderId = event.Tenderid;
-      const selectedTenderId = event.Tenderid;
-      console.log('Selected Tender ID:', selectedTenderId);
-      this.api.get(`BME/GetSuppliersByTenderId/${selectedTenderId}`).subscribe({
+      this.Tenderno = event.Tenderno;
+      // const selectedTenderId = event.Tenderid;
+      // console.log('Selected Tender ID:', selectedTenderId);
+      this.api.get(`BME/GetSuppliersByTenderId/${ this.tenderId}`).subscribe({
         next: (res: any) => {
           this.Supplierrlist = res;
           console.log('Supplierrlist', res);
@@ -160,8 +185,11 @@ export class EMSNEWRCComponent {
   }
   // https://localhost:7036/api/BME/GetTenderlist
   GetTenderlist(event: any) {
+  
+    // debugger
     if (event) {
       this.yearId = event.financial_year_id;
+      this.year = event.year;
       console.log('yearId', this.yearId);
 
       const selectedyearId = event.financial_year_id;
@@ -185,6 +213,8 @@ export class EMSNEWRCComponent {
   OnselectSupplierrlist(event: any) {
     // debugger;
     this.suppId = event.sId;
+    this.sName = event.sName;
+     this.GetTenderItemDetails(this.tenderId,this.suppId,0);
     console.log(' this.suppId', this.suppId);
   }
   Onselectstatus(event: any) {
@@ -192,122 +222,342 @@ export class EMSNEWRCComponent {
     this.statusvalue = event.value;
     console.log('staus', this.statusvalue);
   }
-  // https://localhost:7036/api/BME/GetRCreports?financialYearId=14&tenderId=12&supplierId=0&status=0
-  GetRCreports() {
-    // debugger;
-    this.spinner.show();
 
-    this.api
-      .get(
-        `BME/GetRCreports?financialYearId=${this.yearId}&tenderId=${this.tenderId}&supplierId=${this.suppId}&status=${this.statusvalue}`,
-      )
-      .subscribe({
-        next: (res: any) => {
-          this.dispatchData = res.map((item: any, index: number) => ({
-            ...item,
-            sno: index + 1,
-          }));
-          console.log('this.dispatchData=', this.dispatchData);
-
-          this.dataSource.data = this.dispatchData;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          this.cdr.detectChanges();
-          this.spinner.hide();
-        },
-        error: (err: any) => {
-          this.spinner.hide();
-          console.log('Error fetching table data:', err);
-        },
-      });
+// https://localhost:7036/api/BME/GetTenderItemDetails/450/180/2441
+ GetTenderItemDetails(tid:any,suid:any,selectedItemId:any) {
+//  debugger
+    this.api.get(`BME/GetTenderItemDetails/${tid}/${suid}/${selectedItemId}`).subscribe({
+    // this.api.get(`BME/GetTenderItemDetails/${this.contractData.TenderId}/${this.contractData.SupplierId}/${selectedItemId}`).subscribe({
+      next: (res: any) => {
+        this.TenderItem = res;
+        console.log('this.TenderItem',this.TenderItem)
+      },
+      error: (err: any) => {
+        console.log('Error fetching mapped items:', err);
+      },
+    });
   }
+// https://localhost:7036/api/BME/GetTaxlist
+   GetTaxlist() {
+//  debugger
+
+    this.api.get('BME/GetTaxlist').subscribe({
+      next: (res: any) => {
+       
+        this.Taxlist = res;
+        console.log(' this.Taxlist', this.Taxlist)
+      },
+      error: (err: any) => {
+        console.log('Error fetching mapped items:', err);
+      },
+    });
+  }
+
+  // https://localhost:7036/api/BME/GetRCreports?financialYearId=14&tenderId=12&supplierId=0&status=0
+getContractItems() {
+  this.spinner.show();
+
+
+  const encodedContractNo = encodeURIComponent(this.contractNumber);
+
+  this.api.get(`BME/GetContractItemsByContractNo?contractNo=${encodedContractNo}`).subscribe({
+    next: (res: any) => {
+      this.dispatchData = res.map((item: any, index: number) => ({
+        ...item,
+        sno: index + 1,
+      }));
+      
+      console.log('Contract Items Data =', this.dispatchData);
+
+      this.dataSource.data = this.dispatchData;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.cdr.detectChanges();
+      this.spinner.hide();
+    },
+    error: (err: any) => {
+      this.spinner.hide();
+      console.log('Error fetching items data:', err);
+      this.toastr.error('Failed to load items.', 'Error');
+    },
+  });
+}
 
   applyTextFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  // ==========================================
-  // Checkbox Selection Logic
-  // ==========================================
-  isSelected(itemId: number): boolean {
-    return this.selectedItems.includes(itemId);
+ 
+
+
+
+onSubmit(form: any): void {
+  if (form.invalid) {
+    this.toastr.warning('Please fill all required fields.', 'Warning');
+    return;
   }
 
-  toggleAll(event: any): void {
-    if (event.target.checked) {
-      this.selectedItems = this.dataSource.data.map((item: any) => item.ItemId);
-    } else {
-      this.selectedItems = [];
-    }
-  }
+  this.spinner.show();
 
-  toggleSelection(itemId: number): void {
-    const index = this.selectedItems.indexOf(itemId);
-    if (index > -1) {
-      this.selectedItems.splice(index, 1);
-    } else {
-      this.selectedItems.push(itemId);
-    }
-  }
+  const payload = {
+    TenderId: Number(this.contractData.TenderId),
+    SupplierId: Number(this.contractData.SupplierId),
+    FinancialYearId: Number(this.contractData.FinancialYearId),
+    ContractDate: this.contractData.ContractDate
+  };
 
-  AddnewRC() {
-    this.router.navigate(['/EMSNEWRC']);
-  }
-  // ==========================================
-  // Submit Logic (API Call)
-  // ==========================================
-  onSubmit(): void {
-    this.spinner.show();
-
-    if (this.mappingForm.valid && this.selectedItems.length > 0) {
-      const payload = {
-        MainItemTypeId: this.mappingForm.value.MainItemTypeId,
-        SelectedItemIds: this.selectedItems,
-      };
-
-      this.api.post2('BME/MapExistingItems', payload).subscribe({
-        next: (response: any) => {
-          this.spinner.hide();
-          this.toastr.success(
-            response.message || 'Items Successfully Mapped!',
-            'Success',
-          );
-
-          this.mappingForm.reset();
-          this.selectedItems = [];
-
-          // this.GetEquipmentIte();
-        },
-        error: (err: any) => {
-          this.spinner.hide();
-          console.error('API Error:', err);
-          this.toastr.error(
-            err.error?.message || 'Something went wrong.',
-            'Error',
-          );
-        },
-      });
-    } else {
+  // API Call
+  this.api.post2('BME/GenerateContract', payload).subscribe({
+    next: (response: any) => {
       this.spinner.hide();
+       this.awardOfContractId=response.awardOfContractId;
+      this.contractNumber=response.contractNumber;
+      // "awardOfContractId": 671,
+      // "contractNumber": "Cont/150/1/2021-2022"
+      this.toastr.success(response.message || 'Contract Generated Successfully!', 'Success');
 
-      if (this.selectedItems.length === 0) {
-        this.toastr.warning(
-          'Please select at least one item from the table to map.',
-          'Warning',
-        );
-      } else {
-        this.mappingForm.markAllAsTouched();
-        this.toastr.warning('Please select a Main Item Type.', 'Warning');
-      }
+      form.resetForm();
+      this.contractData = { FinancialYearId: null, TenderId: null, SupplierId: null, ContractDate: '' };
+    },
+    error: (err: any) => {
+      this.spinner.hide();
+      console.error('API Error:', err);
+      this.toastr.error(err.error?.message || 'Something went wrong.', 'Error');
     }
+  });
+}
+
+onReset(form: any): void {
+  form.resetForm();
+  this.contractData = { FinancialYearId: null, TenderId: null, SupplierId: null, ContractDate: '' };
+}
+
+
+calculateUnitPrice() {
+  const basicRate = Number(this.itemData.BasicRate) || 0;
+  const percentage = Number(this.itemData.Percentage) || 0;
+  
+  if (basicRate > 0) {
+    const calculatedPrice = basicRate + (basicRate * percentage / 100);
+    this.itemData.SingleUnitPrice = parseFloat(calculatedPrice.toFixed(2)); 
+  } else {
+    this.itemData.SingleUnitPrice = null;
+  }
+}
+onSubmitItem(form: any): void {
+  if (form.invalid) {
+    this.toastr.warning('Please fill all required fields.', 'Warning');
+    return;
   }
 
+  this.spinner.show();
 
+  const payload = {
+    AwardOfContractId: Number(this.awardOfContractId), 
+    ItemId: Number(this.itemData.ItemId),
+    NoOfDaysForSupply: Number(this.itemData.NoOfDaysForSupply),
+    BasicRate: Number(this.itemData.BasicRate),
+    TaxTypeId: Number(this.itemData.TaxTypeId),
+    Percentage: Number(this.itemData.Percentage),
+    SingleUnitPrice: Number(this.itemData.SingleUnitPrice),
+    LicenceNumber: this.itemData.LicenceNumber,
+    Make: this.itemData.Make,
+    Model: this.itemData.Model,
+    DomesticImported: this.itemData.DomesticImported
+  };
+
+  // API Call
+  this.api.post2('BME/AddContractItem', payload).subscribe({
+    next: (response: any) => {
+      this.spinner.hide();
+      this.toastr.success('Item Added Successfully!', 'Success');
+      
+      form.resetForm();
+      this.itemData = { DomesticImported: '0' }; 
+       this.showtable=false;
+      // this.getContractItems();
+    },
+    error: (err: any) => {
+      this.spinner.hide();
+      console.error('API Error:', err);
+      this.toastr.error(err.error?.message || 'Something went wrong.', 'Error');
+    }
+  });
+}
+
+
+finalizeData: any = {
+  ContractDuration: 24, 
+  ContractSignDate: '' 
+};
+
+calculatedEndDate: Date | null = null; 
+
+calculateEndDate() {
+  if (this.finalizeData.ContractSignDate && this.finalizeData.ContractDuration) {
+    const startDate = new Date(this.finalizeData.ContractSignDate);
+    const durationMonths = Number(this.finalizeData.ContractDuration);
+
+    if (!isNaN(startDate.getTime()) && !isNaN(durationMonths)) {
+      startDate.setMonth(startDate.getMonth() + durationMonths);
+      this.calculatedEndDate = startDate;
+    } else {
+      this.calculatedEndDate = null;
+    }
+  } else {
+    this.calculatedEndDate = null;
+  }
+}
+
+onFinalizeRC(form: any): void {
+  if (form.invalid) {
+    this.toastr.warning('Please provide a valid Start Date and Duration.', 'Warning');
+    return;
+  }
+
+  if (!this.awardOfContractId) {
+    this.toastr.error('Contract ID is missing. Please generate the contract first.', 'Error');
+    return;
+  }
+
+  this.spinner.show();
+
+  const payload = {
+    AwardOfContractId: Number(this.awardOfContractId),
+    ContractDuration: Number(this.finalizeData.ContractDuration),
+    ContractSignDate: this.finalizeData.ContractSignDate 
+  };
+
+  this.api.put('BME/FinalizeContract', payload).subscribe({
+    next: (res: any) => {
+      this.spinner.hide();
+      this.toastr.success(res.message || 'RC Finalized Successfully!', 'Success');
+      
+      // this.router.navigate(['/EMSRCDashboard']);
+    },
+    error: (err: any) => {
+      this.spinner.hide();
+      console.error('API Error:', err);
+      this.toastr.error(err.error?.message || 'Something went wrong.', 'Error');
+    }
+  });
+}
+
+
+
+
+
+
+editItem(rowData: any) {
+  this.isEditMode = true; 
+
+  this.itemData = {
+    ContractItemId: rowData.ContractItemId, 
+    AwardOfContractId: rowData.AwardOfContractId,
+    ItemId: rowData.ItemId,
+    NoOfDaysForSupply: rowData.NoOfDaysForSupply,
+    BasicRate: rowData.BasicRate,
+    TaxTypeId: rowData.TaxTypeId,
+    Percentage: rowData.Percentage,
+    SingleUnitPrice: rowData.SingleUnitPrice,
+    LicenceNumber: rowData.LicenceNumber,
+    Make: rowData.Make,
+    Model: rowData.Model,
+    DomesticImported: rowData.SupplyCategory === 'Imported' ? '1' : '0' 
+  };
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+onUpdateContractItem(form: any): void {
+  if (form.invalid) {
+    this.toastr.warning('Please fill all required fields.', 'Warning');
+    return;
+  }
+
+  this.spinner.show();
+
+  const updatePayload = {
+    ContractItemId: Number(this.itemData.ContractItemId),
+    NoOfDaysForSupply: Number(this.itemData.NoOfDaysForSupply),
+    BasicRate: Number(this.itemData.BasicRate),
+    TaxTypeId: Number(this.itemData.TaxTypeId),
+    Percentage: Number(this.itemData.Percentage),
+    SingleUnitPrice: Number(this.itemData.SingleUnitPrice),
+    LicenceNumber: this.itemData.LicenceNumber,
+    Make: this.itemData.Make,
+    Model: this.itemData.Model
+  };
+
+  // PUT API Call
+  this.api.put('BME/UpdateContractItems', updatePayload).subscribe({
+    next: (res: any) => {
+      this.spinner.hide();
+      this.toastr.success(res.message || 'Item Updated Successfully!', 'Success');
+      
+      form.resetForm();
+      this.isEditMode = false;
+      this.itemData = { DomesticImported: '0' }; 
+      
+      // this.getContractItems(); 
+    },
+    error: (err: any) => {
+      this.spinner.hide();
+      console.error('Update API Error:', err);
+      this.toastr.error(err.error?.message || 'Failed to update item.', 'Error');
+    }
+  });
+}
+
+onSubmitItem1(form: any): void {
+  if (this.isEditMode) {
+    this.onUpdateContractItem(form);
+  } else {
+    this.onSubmitItem(form); 
+  }
+}
+
+cancelEdit(form: any) {
+  form.resetForm();
+  this.isEditMode = false;
+  this.itemData = { DomesticImported: '0' };
+}
   // https://localhost:7036/api/BME/GenerateContract
   // {
   // "message": "Contract Generated Successfully",
   // "awardOfContractId": 671,
   // "contractNumber": "Cont/150/1/2021-2022"
+
+  // https://localhost:7036/api/BME/GetTaxlist
+  // {
+  //   "TaxId": 1,
+  //   "Taxname": "GST"
+  // },
+  // https://localhost:7036/api/BME/GetItemRateDetails/450/180/2441
+  	
+// Response body
+// Download
+// {
+//   "ItemId": 2441,
+//   "ItemName": "Repeater-EQP0018",
+//   "BasicRate": 44000,
+//   "Gst": 18,
+//   "SupplierId": 180,
+//   "TenderId": 450
+// }
+
+// https://localhost:7036/api/BME/GetTenderItemDetails/450/180/2441
+// esponse body
+// Download
+// {
+//   "ItemId": 2441,
+//   "ItemName": "Repeater-EQP0018",
+//   "BasicRate": 44000,
+//   "Gst": 18,
+//   "SupplierId": 180,
+//   "TenderId": 450
+// }
+
 
 }

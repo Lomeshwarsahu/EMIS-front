@@ -37,6 +37,7 @@ import { MapitemswithTypeUpdateComponent } from './component/BME/mapitemswith-ty
 import { MapitemswithMainitemTypeRepoComponent } from './component/BME/mapitemswith-mainitem-type-repo/mapitemswith-mainitem-type-repo.component';
 import { EMSRCDashbordComponent } from './component/BME/emsrcdashbord/emsrcdashbord.component';
 import { EMSNEWRCComponent } from './component/BME/emsnewrc/emsnewrc.component';
+import { PlanaTenderDComponent } from './component/BME/plana-tender-d/plana-tender-d.component';
 
 
 
@@ -82,6 +83,7 @@ const routes: Routes = [
 {path:'MapitemswithMainitemTypeRepo',component:MapitemswithMainitemTypeRepoComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
 {path:'EMSRCDashbord',component:EMSRCDashbordComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
 {path:'EMSNEWRC',component:EMSNEWRCComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'PlanaTenderD',component:PlanaTenderDComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
 // MD logins 
 {path:'RCDetailReport',component:RCDetailReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
 {path:'AcceptedReort',component:AcceptedReortComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
