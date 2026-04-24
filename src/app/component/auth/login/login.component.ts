@@ -620,7 +620,7 @@ error => {
 );
 }
 handleInfrastructureLogin() {
-  
+  // debugger;
   // Your logic for handling CGMSCL login
   sessionStorage.removeItem
   localStorage.removeItem
@@ -962,7 +962,7 @@ selectedStatussup:any;
 userdatas:any;
 
 getallusers(id:any){
-  debugger;
+  // debugger;
 this.api.getUsers(id).subscribe(res => {
   this.userdatas=res;
   console.log('login api drop',res);
