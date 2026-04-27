@@ -46,15 +46,17 @@ export class BasicAuthenticationService {
   }
 
 
-  executeAuthenticationService1(userId: any, password: any) {
-    debugger
+  executeAuthenticationService1(userId: any, password: any ,email:any) {
+    // debugger
     const body = {
       user_name: userId, 
-      password: password
+      password: password,
+     EMAIL: email ? 'EMAIL' : ''
     };
   
     return this.http.post<any>(
-      'https://localhost:7036/api/Auth/login',
+      'https://localhost:7036/api/Auth/login1',
+      // 'https://localhost:7036/api/Auth/login',
       body
     );
    

@@ -345,6 +345,76 @@ AU: {
     }
   ]
 },
+DME: {
+  items: [
+    { label: 'Home', route: '/home' },
+    {
+      label: 'Masters',
+      route: '',
+      submenu: [
+        { label: 'Supplier', route: '/MastterSupplierDash' },
+        { label: 'Add New Items', route: '/ItemsBME' },
+        { label: 'Mapping to Main items', route: '/MapitemsEithType' },
+        { label: 'Update Mapping to Main items', route: '/MapitemswithTypeUpdate' },
+        { label: 'Main Equipment Mapped Report', route: '/MapitemswithMainitemTypeRepo' },
+      ]
+    },
+    {
+      label: 'Contracts',
+      route: '',
+      submenu: [
+        { label: 'Contract Dashboard', route: '/EMSRCDashbord' },
+        { label: 'New Contract', route: '/EMSNEWRC' }
+      ]
+    },
+    {
+      label: 'Tender',
+      route: '',
+      submenu: [
+        { label: 'Plan a Tender', route: '/PlanaTenderD' },
+        { label: 'Evaluation A', route: '/' },
+        { label: 'Claim-Object Preparation', route: '/' },
+        { label: 'Gem-Price Entry Acceptance', route: '/' },
+        { label: 'Gem-Price Entry', route: '/' }
+      ]
+    },
+    {
+      label: 'Indents',
+      route: '',
+      submenu: [
+        { label: 'Indent From Facilities', route: '/IndentFromFacilities' }
+      ]
+    },
+    {
+      label: 'Finance Report',
+      route: '',
+      submenu: [
+        { label: 'Year Wise PO Abstract', route: '/FacilityAuthPOValuePOCell' },
+        { label: 'PO Wise Payment FReport', route: '/FPOPaidReport' },
+        { label: 'Cheque Wise Payment Report', route: '/ChequeWisePaymentReport' }
+      ]
+    },
+    {
+      label: 'Complain',
+      route: '',
+      submenu: [
+       { label: 'Complain Report', route: '/ComplainReportBME' }, //Complain
+      ]
+    },
+    {
+      label: 'Reports',
+      route: '',
+      submenu: [
+        { label: 'PO Summary', route: '/POSummaryReport' },
+        { label: 'PO Wise Payment Report', route: '/POPaidReport' },
+        { label: 'Tenders Status', route: '/TendersStatus' },
+        { label: 'PO Receipts summary', route: '/PORecdsummary' },
+        { label: 'Item Status in Tenter', route: '/TenterStatusItemWise' },
+        { label: 'Reagent PO Report', route: '/POSummaryDrillDwnQtyReagent' },
+      ]
+    }
+  ]
+},
 
     TPO: {
       items: [
