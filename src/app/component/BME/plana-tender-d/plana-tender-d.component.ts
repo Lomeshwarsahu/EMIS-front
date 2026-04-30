@@ -183,4 +183,19 @@ GetTenderDashboardReports(fid:any,tyid:any) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+// opennewpage() {
+//     this.router.navigate(['/TenderStatusUpdate']);
+//   }
+
+ opennewpage(tender_no :any) {
+   this.router.navigate(['/TenderStatusUpdate'], {
+      queryParams: {tender_no:tender_no},
+    });
+  }
+ openAddRTenderItems(tender_no :any) {
+   this.router.navigate(['/AddRTenderItems'], {
+      queryParams: {tender_no:tender_no},
+    });
+  }
 }

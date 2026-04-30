@@ -38,6 +38,8 @@ import { MapitemswithMainitemTypeRepoComponent } from './component/BME/mapitemsw
 import { EMSRCDashbordComponent } from './component/BME/emsrcdashbord/emsrcdashbord.component';
 import { EMSNEWRCComponent } from './component/BME/emsnewrc/emsnewrc.component';
 import { PlanaTenderDComponent } from './component/BME/plana-tender-d/plana-tender-d.component';
+import { TenderStatusUpdateComponent } from './component/BME/tender-status-update/tender-status-update.component';
+import { AddRTenderItemsComponent } from './component/BME/add-rtender-items/add-rtender-items.component';
 
 
 
@@ -59,6 +61,8 @@ const routes: Routes = [
   // {path:'DistrictWisePODetail',component:DistrictWisePODetailComponent},
   {path:'POSummaryDrillDwnQtyPOWise',component:POSummaryDrillDwnQtyPOWiseComponent},
   {path:'POSummaryDrillDwnQty',component:POSummaryDrillDwnQtyComponent},
+  {path:'TenderStatusUpdate',component:TenderStatusUpdateComponent},
+  {path:'AddRTenderItems',component:AddRTenderItemsComponent},
 
   {path:'logout',component:LogoutComponent,canActivate:[RouteGuardService]}, 
 // { path: 'welcome', component: HomeComponent },
