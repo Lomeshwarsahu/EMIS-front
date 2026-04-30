@@ -4,74 +4,80 @@
         <h2 class="fw-bold text-primary mb-1">Tender Dashboard</h2>
         <p class="text-muted mb-0 fs-6">Manage and track Tender Reports.</p>
     </div>
-   <div class="card shadow-sm border-0 rounded-3 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn">
-    <div class="card-header bg-white border-bottom-0 pt-3 pb-2">
-        <h5 class="fw-bold text-secondary mb-0">
-            <i class="bi bi-funnel-fill text-primary me-2"></i> Filter Contracts
-        </h5>
-    </div>
-    
-    <div class="card-body bg-light bg-opacity-50">
-        <form #filterForm="ngForm" (ngSubmit)="onSubmitFilter(filterForm)">
-            
-            <div class="row align-items-end g-3 mb-4">
-                
-                <div class="col-12 col-md-6 col-lg-3">
-                    <label class="form-label fw-semibold text-muted small">Select Year <span class="text-danger">*</span></label>
-                    <ng-select class="bg-white rounded shadow-sm form-control" [items]="yearlist" appendTo="body" 
-                        bindLabel="year" bindValue="financial_year_id" placeholder="Search Year..."
-                        [(ngModel)]="filterData.financialYearId" name="FinancialYearId" required>
-                    </ng-select>
+    <div
+        class="card shadow-sm border-0 rounded-3 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn">
+        <div class="card-header bg-white border-bottom-0 pt-3 pb-2">
+            <h5 class="fw-bold text-secondary mb-0">
+                <i class="bi bi-funnel-fill text-primary me-2"></i> Filter Contracts
+            </h5>
+        </div>
+
+        <div class="card-body bg-light bg-opacity-50">
+            <form #filterForm="ngForm" (ngSubmit)="onSubmitFilter(filterForm)">
+
+                <div class="row align-items-end g-3 mb-4">
+
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <label class="form-label fw-semibold text-muted small">Select Year <span
+                                class="text-danger">*</span></label>
+                        <ng-select class="bg-white rounded shadow-sm form-control" [items]="yearlist" appendTo="body"
+                            bindLabel="year" bindValue="financial_year_id" placeholder="Search Year..."
+                            [(ngModel)]="filterData.financialYearId" name="FinancialYearId" required>
+                        </ng-select>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <label class="form-label fw-semibold text-muted small">Select Type <span
+                                class="text-danger">*</span></label>
+                        <ng-select class="bg-white rounded shadow-sm form-control" [items]="Type" appendTo="body"
+                            bindLabel="T_name" bindValue="Value" placeholder="Search Type..."
+                            [(ngModel)]="filterData.typeId" name="TypeId" required>
+                        </ng-select>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" *ngIf="filterData.typeId">
+                        <label class="form-label fw-semibold text-muted small">Select Category <span
+                                class="text-danger">*</span></label>
+                        <ng-select class="bg-white rounded shadow-sm border-primary form-control" [items]="Category"
+                            appendTo="body" bindLabel="C_name" bindValue="Value" placeholder="Search Category..."
+                            [(ngModel)]="filterData.categoryId" name="CategoryId" required>
+                        </ng-select>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" *ngIf="filterData.typeId">
+                        <label class="form-label fw-semibold text-muted small">Type to Search <span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-white text-muted border-end-0"><i
+                                    class="bi bi-search"></i></span>
+                            <input type="text" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                [(ngModel)]="filterData.searchText" name="SearchText" required>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="col-12 col-md-6 col-lg-3">
-                    <label class="form-label fw-semibold text-muted small">Select Type <span class="text-danger">*</span></label>
-                    <ng-select class="bg-white rounded shadow-sm form-control" [items]="Type" appendTo="body" 
-                        bindLabel="T_name" bindValue="Value" placeholder="Search Type..." 
-                        [(ngModel)]="filterData.typeId" name="TypeId" required>
-                    </ng-select>
-                </div>
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center pt-3 border-top">
+                        <button type="submit" class="btn btn-primary px-5 shadow-sm me-3 rounded-pill fw-semibold"
+                            [disabled]="filterForm.invalid">
+                            <i class="bi bi-search me-2"></i> Search Data
+                        </button>
 
-                <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" *ngIf="filterData.typeId">
-                    <label class="form-label fw-semibold text-muted small">Select Category <span class="text-danger">*</span></label>
-                    <ng-select class="bg-white rounded shadow-sm border-primary form-control" [items]="Category" appendTo="body" 
-                        bindLabel="C_name" bindValue="Value" placeholder="Search Category..."
-                        [(ngModel)]="filterData.categoryId" name="CategoryId" required>
-                    </ng-select>
-                </div>
-
-                <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" *ngIf="filterData.typeId">
-                    <label class="form-label fw-semibold text-muted small">Type to Search <span class="text-danger">*</span></label>
-                    <div class="input-group shadow-sm">
-                        <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control border-start-0 ps-0" placeholder="Type here..."
-                            [(ngModel)]="filterData.searchText" name="SearchText" required>
+                        <button type="button" class="btn btn-outline-secondary px-4 shadow-sm rounded-pill fw-semibold"
+                            (click)="onResetFilter(filterForm)">
+                            <i class="bi bi-arrow-counterclockwise me-2"></i> Reset
+                        </button>
                     </div>
                 </div>
 
-            </div>
-
-            <div class="row">
-                <div class="col-12 d-flex justify-content-center pt-3 border-top">
-                    <button type="submit" class="btn btn-primary px-5 shadow-sm me-3 rounded-pill fw-semibold"
-                            [disabled]="filterForm.invalid">
-                        <i class="bi bi-search me-2"></i> Search Data
-                    </button>
-
-                    <button type="button" class="btn btn-outline-secondary px-4 shadow-sm rounded-pill fw-semibold"
-                            (click)="onResetFilter(filterForm)">
-                        <i class="bi bi-arrow-counterclockwise me-2"></i> Reset
-                    </button>
-                </div>
-            </div>
-
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
     <div class="card shadow-sm border-0 rounded-3">
         <div class="card-body p-3">
-    
+
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="input-group input-group-sm" style="max-width: 300px;">
                     <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
@@ -87,32 +93,34 @@
                             (click)="exporter.exportTable('xlsx', { fileName: 'Tender_Dashboard', sheet: 'Tender_Dashboard', Props: { Author: 'cgmsc' }})">
                             <i class="bi bi-file-excel text-success me-2"></i> Download Excel
                         </button>
-    
+
                     </mat-menu>
                 </div>
             </div>
-    
+
             <div class="table-responsive border rounded shadow-sm" style="max-height: 500px; overflow-y: auto;">
                 <table class="table table-hover align-middle mb-0 text-nowrap" mat-table matTableExporter
                     [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
-    
+
                     <ng-container matColumnDef="sno" sticky>
                         <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center"
                             style="width: 60px;"> S.No </th>
                         <td mat-cell *matCellDef="let element" class="text-center text-muted fw-medium"> {{element.sno}}
                         </td>
                     </ng-container>
-    
+
                     <ng-container matColumnDef="TenderNo">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-secondary"> Tender No.
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-secondary"> Tender
+                            No.
                         </th>
                         <td mat-cell *matCellDef="let element" class="fw-bold text-dark">
                             <i class="bi bi-file-earmark-text text-primary me-2"></i>{{element.TenderNo}}
                         </td>
                     </ng-container>
-    
+
                     <ng-container matColumnDef="TotalItems">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-secondary text-center">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="bg-light text-secondary text-center">
                             Total Items </th>
                         <td mat-cell *matCellDef="let element" class="text-center">
                             <span
@@ -121,7 +129,7 @@
                             </span>
                         </td>
                     </ng-container>
-    
+
                     <ng-container matColumnDef="TotalValue">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-secondary text-end">
                             Total Value </th>
@@ -129,9 +137,10 @@
                             ₹ {{element.TotalValue | number:'1.2-2'}}
                         </td>
                     </ng-container>
-    
+
                     <ng-container matColumnDef="CStatus">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-secondary text-center">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="bg-light text-secondary text-center">
                             Status </th>
                         <td mat-cell *matCellDef="let element" class="text-center">
                             <span class="badge rounded-pill bg-info text-dark bg-opacity-25 border border-info">
@@ -139,106 +148,119 @@
                             </span>
                         </td>
                     </ng-container>
-    
+
                     <ng-container matColumnDef="TenderDate">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-secondary text-center">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="bg-light text-secondary text-center">
                             Tender Date </th>
                         <td mat-cell *matCellDef="let element" class="text-center text-muted">
                             <i class="bi bi-calendar3 me-1"></i> {{element.TenderDate}}
                         </td>
                     </ng-container>
-    
+
                     <ng-container matColumnDef="NosItemsBid">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-secondary text-center">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="bg-light text-secondary text-center">
                             Items Bid </th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-semibold text-secondary">
                             {{element.NosItemsBid}}
                         </td>
                     </ng-container>
-    
+
                     <ng-container matColumnDef="TenderDescription">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-secondary"> Description
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light text-secondary">
+                            Description
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-wrap text-muted" style="min-width: 250px;">
                             {{element.TenderDescription || 'No description'}}
                         </td>
                     </ng-container>
 
-                   <ng-container matColumnDef="UpdateStatus" >
-    <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start" style="z-index: 100;"> Update Status </th>
-    <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-        <button class="btn btn-sm btn-outline-info text-dark rounded-pill px-3 shadow-sm text-nowrap">
-            <i class="bi bi-arrow-repeat me-1 fw-bold"></i> Status
-        </button>
-    </td>
-</ng-container>
+                    <ng-container matColumnDef="UpdateStatus">
+                        <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
+                            style="z-index: 100;"> Update Status </th>
+                        <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
+                            <button
+                                class="btn btn-sm btn-outline-info text-dark rounded-pill px-3 shadow-sm text-nowrap" (click)="opennewpage(element.TenderId)">
+                                <i class="bi bi-arrow-repeat me-1 fw-bold"></i> Status
+                            </button>
+                        </td>
+                    </ng-container>
 
-<ng-container matColumnDef="AddTenderItem" >
-    <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start" style="z-index: 100;"> Add Item </th>
-    <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-        <button class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm text-nowrap">
-            <i class="bi bi-box-seam me-1"></i> Add Item
-        </button>
-    </td>
-</ng-container>
+                    <ng-container matColumnDef="AddTenderItem">
+                        <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
+                            style="z-index: 100;"> Add Item </th>
+                        <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
+                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm text-nowrap" (click)="openAddRTenderItems(element.TenderId)">
+                                <i class="bi bi-box-seam me-1"></i> Add Item
+                            </button>
+                        </td>
+                    </ng-container>
 
-<ng-container matColumnDef="UpdateExcel" >
-    <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start" style="z-index: 100;"> Update Excel </th>
-    <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-        <button class="btn btn-sm btn-outline-success rounded-pill px-3 shadow-sm text-nowrap">
-            <i class="bi bi-file-earmark-excel me-1"></i> Excel
-        </button>
-    </td>
-</ng-container>
+                    <ng-container matColumnDef="UpdateExcel">
+                        <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
+                            style="z-index: 100;"> Update Excel </th>
+                        <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
+                            <button class="btn btn-sm btn-outline-success rounded-pill px-3 shadow-sm text-nowrap">
+                                <i class="bi bi-file-earmark-excel me-1"></i> Excel
+                            </button>
+                        </td>
+                    </ng-container>
 
-<ng-container matColumnDef="AddBidder" >
-    <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start" style="z-index: 100;"> Add Bidder </th>
-    <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-        <button class="btn btn-sm btn-outline-warning text-dark rounded-pill px-3 shadow-sm text-nowrap">
-            <i class="bi bi-person-plus me-1"></i> Bidder
-        </button>
-    </td>
-</ng-container>
+                    <ng-container matColumnDef="AddBidder">
+                        <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
+                            style="z-index: 100;"> Add Bidder </th>
+                        <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
+                            <button
+                                class="btn btn-sm btn-outline-warning text-dark rounded-pill px-3 shadow-sm text-nowrap">
+                                <i class="bi bi-person-plus me-1"></i> Bidder
+                            </button>
+                        </td>
+                    </ng-container>
 
-<ng-container matColumnDef="AddBidItem" >
-    <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start" style="z-index: 100;"> Add Bid Item </th>
-    <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 shadow-sm text-nowrap">
-            <i class="bi bi-tags me-1"></i> Bid Item
-        </button>
-    </td>
-</ng-container>
-<ng-container matColumnDef="AddLeavy" >
-    <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start" style="z-index: 100;"> Add Leavy/Penalty </th>
-    <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-        <button class="btn btn-sm btn-outline-dark rounded-pill px-3 shadow-sm text-nowrap">
-            <i class="bi bi-exclamation-triangle-fill me-1"></i> Add Penalty
-        </button>
-    </td>
-</ng-container>
-<ng-container matColumnDef="AddnewHOD" >
-    <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start" style="z-index: 100;"> Add HOD </th>
-    <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-        <button class="btn btn-sm btn-outline-danger rounded-pill px-3 shadow-sm text-nowrap">
-            <i class="bi bi-person-badge me-1"></i> HOD
-        </button>
-    </td>
-</ng-container>
+                    <ng-container matColumnDef="AddBidItem">
+                        <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
+                            style="z-index: 100;"> Add Bid Item </th>
+                        <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 shadow-sm text-nowrap">
+                                <i class="bi bi-tags me-1"></i> Bid Item
+                            </button>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="AddLeavy">
+                        <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
+                            style="z-index: 100;"> Add Leavy/Penalty </th>
+                        <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
+                            <button class="btn btn-sm btn-outline-dark rounded-pill px-3 shadow-sm text-nowrap">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Add Penalty
+                            </button>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="AddnewHOD">
+                        <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
+                            style="z-index: 100;"> Add HOD </th>
+                        <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
+                            <button class="btn btn-sm btn-outline-danger rounded-pill px-3 shadow-sm text-nowrap">
+                                <i class="bi bi-person-badge me-1"></i> HOD
+                            </button>
+                        </td>
+                    </ng-container>
 
-<ng-container matColumnDef="actions" stickyEnd>
-    <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start" style="z-index: 100;"> Tender Status </th>
-    <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-        <button class="btn btn-sm btn-outline-muted rounded-pill px-3 shadow-sm text-nowrap">
-            <i class="bi bi-clipboard-plus me-1"></i> Add Status
-        </button>
-    </td>
-</ng-container>
-    
+                    <ng-container matColumnDef="actions" stickyEnd>
+                        <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
+                            style="z-index: 100;"> Tender Status </th>
+                        <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
+                            <button class="btn btn-sm btn-outline-muted rounded-pill px-3 shadow-sm text-nowrap">
+                                <i class="bi bi-clipboard-plus me-1"></i> Add Status
+                            </button>
+                        </td>
+                    </ng-container>
+
                     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
                         style="cursor: pointer; transition: background-color 0.2s ease;" class="hover-shadow-sm">
                     </tr>
-    
+
                     <tr class="mat-row" *matNoDataRow>
                         <td class="mat-cell text-center py-5 text-muted" [attr.colspan]="displayedColumns.length">
                             <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary opacity-50"></i>
@@ -247,12 +269,12 @@
                     </tr>
                 </table>
             </div>
-    
+
             <div class="mt-2">
                 <mat-paginator #paginator class="bg-transparent" [pageSizeOptions]="[10, 25, 50]"
                     showFirstLastButtons></mat-paginator>
             </div>
-    
+
         </div>
     </div>
 </section>

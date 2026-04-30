@@ -579,3 +579,15 @@ export interface UnmappedItemDTO {
   Pid: any
   PItemName: any
 }
+export interface TenderLinkedItemDto {
+  sno:number
+   SlNo:number
+    ItemId: number
+    TenderItemId: number
+    TenderId: number
+    ItemName: string
+    ItemCodeAsPerTender: string
+    ItemCode: string
+    EmdAmount: number
+    TenderQuantity: number
+}
