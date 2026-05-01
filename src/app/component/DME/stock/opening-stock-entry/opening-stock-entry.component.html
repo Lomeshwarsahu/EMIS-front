@@ -1,0 +1,37 @@
+<div class="legacy-page">
+  <div class="legacy-title">Opening Stock Entry</div>
+
+  <div class="legacy-card">
+    <div class="grid-form">
+      <label>
+        Financial Year
+        <input type="text" [(ngModel)]="financialYear" />
+      </label>
+      <label>
+        Hospital / District
+        <input type="text" [(ngModel)]="hospital" />
+      </label>
+      <label>
+        Equipment Code
+        <input type="text" [(ngModel)]="equipmentCode" />
+      </label>
+      <label>
+        Equipment Name
+        <input type="text" [(ngModel)]="equipmentName" />
+      </label>
+      <label>
+        Quantity
+        <input type="number" [(ngModel)]="quantity" />
+      </label>
+      <label>
+        Remarks
+        <input type="text" [(ngModel)]="remarks" />
+      </label>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn-primary">Save Entry</button>
+      <button type="button" class="btn-secondary">Reset</button>
+    </div>
+  </div>
+</div>

@@ -352,11 +352,30 @@ DME: {
       label: 'Masters',
       route: '',
       submenu: [
+        { label: 'Update Consignee Information', route: '/consigee-information' },
+        { label: 'Report-Specification', route: '/report-specification' },
+        { label: 'CME EEL Suggestion', route: '/cme-eel-suggestion' },
         { label: 'Supplier', route: '/MastterSupplierDash' },
         { label: 'Add New Items', route: '/ItemsBME' },
         { label: 'Mapping to Main items', route: '/MapitemsEithType' },
         { label: 'Update Mapping to Main items', route: '/MapitemswithTypeUpdate' },
         { label: 'Main Equipment Mapped Report', route: '/MapitemswithMainitemTypeRepo' },
+      ]
+    },
+    {
+      label: 'Stock',
+      route: '',
+      submenu: [
+        { label: 'Stock Report', route: '/stock-report' },
+        { label: 'Opening Stock Entry', route: '/opening-stock-entry' }
+      ]
+    },
+    {
+      label: 'Orders',
+      route: '',
+      submenu: [
+        { label: 'Purchase Order Dashboard', route: '/purchase-order-dashboard' },
+        { label: 'Purchase Order Receipts', route: '/purchase-order-receipts' }
       ]
     },
     {
@@ -372,10 +391,10 @@ DME: {
       route: '',
       submenu: [
         { label: 'Plan a Tender', route: '/PlanaTenderD' },
-        { label: 'Evaluation A', route: '/' },
-        { label: 'Claim-Object Preparation', route: '/' },
-        { label: 'Gem-Price Entry Acceptance', route: '/' },
-        { label: 'Gem-Price Entry', route: '/' }
+        { label: 'Evaluation A', route: '/TenderStatusUpdate' },
+        { label: 'Claim-Object Preparation', route: '/AddRTenderItems' },
+        { label: 'Gem-Price Entry Acceptance', route: '/TendersStatus' },
+        { label: 'Gem-Price Entry', route: '/PlanaTenderD' }
       ]
     },
     {
@@ -653,13 +672,6 @@ DME: {
           { label: 'Running Works', route: '/RunningWork' },
         ],
       },
-    },
-
-    DME: {
-      items: [
-        { label: 'Home', route: '/home' },
-        { label: 'Consigee Information', route: '/consigee-information' }
-      ],
     },
 
     HR: {

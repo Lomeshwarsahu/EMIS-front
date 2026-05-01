@@ -28,8 +28,9 @@ export class ApiService {
     return this.http.get(`${this.apiUrll}/${id}`);
   }
   GetUserEmail(userId: number) {
-    // let url = `https://localhost:7036/api/Auth/GetUserEmail/${userId}`;
-    return this.http.get(`https://localhost:7036/api/Auth/GetUserEmail/${userId}`);
+    return this.http.get<{ Email?: string; UserName?: string }>(
+      `${this.apiUrll}/GetUserEmail/${userId}`,
+    );
   }
   // https://localhost:7036/api/GenerateNasti/Getyear
   // public get(url: string, data?: FormData, options?: any){

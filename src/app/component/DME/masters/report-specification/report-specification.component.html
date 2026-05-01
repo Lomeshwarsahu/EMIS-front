@@ -1,0 +1,47 @@
+<div class="legacy-page">
+  <div class="legacy-title">CME EEL - Specifications Upload</div>
+
+  <div class="legacy-card">
+    <div class="filters">
+      <label>
+        Category
+        <select [(ngModel)]="selectedCategory">
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+      </label>
+
+      <label>
+        Search Equipment
+        <input type="text" [(ngModel)]="searchText" placeholder="Search item..." />
+      </label>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Equipment Code</th>
+            <th>Equipment Name</th>
+            <th>Category</th>
+            <th>Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of filteredRows; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ row.equipmentCode }}</td>
+            <td>{{ row.equipmentName }}</td>
+            <td>{{ row.category }}</td>
+            <td>
+              <span [class.pending]="row.uploadStatus === 'Pending'">{{ row.uploadStatus }}</span>
+            </td>
+          </tr>
+          <tr *ngIf="filteredRows.length === 0">
+            <td colspan="5" class="empty">No equipment found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

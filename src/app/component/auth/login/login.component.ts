@@ -156,11 +156,13 @@ approle:any;
   ngAfterViewInit(): void {}
 
   togglePassword(): void {
-    //
-    this.isPasswordVisible = !this.isPasswordVisible; // Toggle visibility
-    const passwordField = document.getElementById('pwd') as HTMLInputElement;
-    if (passwordField) {
-      passwordField.type = this.isPasswordVisible ? 'text' : 'password'; // Toggle input type
+    this.isPasswordVisible = !this.isPasswordVisible;
+    const ids = ['pwd', 'dmePwdInput'];
+    for (const id of ids) {
+      const el = document.getElementById(id) as HTMLInputElement | null;
+      if (el) {
+        el.type = this.isPasswordVisible ? 'text' : 'password';
+      }
     }
   }
 
@@ -171,35 +173,61 @@ approle:any;
     this.errorMessage = 'Invalid Credentials';
   }
 
-  onUserChangeInfrastructure(event: any): void {
-    // debugger;
-    const selectedId = event.user_id;
-    // const selectedId = (event.target as HTMLSelectElement).value;
+  /**
+   * DME Medical College dropdown: ng-select passes bindValue (user_id number), not { user_id }.
+   */
+  onUserChangeInfrastructure(selected: unknown): void {
+    const selectedId =
+      typeof selected === 'number'
+        ? selected
+        : typeof selected === 'string' && selected !== ''
+          ? Number(selected)
+          : selected &&
+              typeof selected === 'object' &&
+              'user_id' in (selected as object)
+            ? Number((selected as { user_id: number }).user_id)
+            : this.id != null
+              ? Number(this.id)
+              : NaN;
 
-    const selectedUser = this.userdatas.find(
-      (user: any) => user.user_id == selectedId,
+    if (!Number.isFinite(selectedId) || selectedId <= 0) {
+      this.emailid = '';
+      return;
+    }
+
+    const selectedUser = this.userdatas?.find(
+      (user: any) => Number(user.user_id) === selectedId,
     );
 
-    // console.log('Selected ID from Event:', selectedId);
-    // console.log('Found User Object:', selectedUser);
+    if (!selectedUser) {
+      console.error('DME: user not found for user_id', selectedId);
+      this.emailid = '';
+      return;
+    }
 
-    if (selectedUser) {
-      this.siMobile = selectedUser.mobile || null;
-      this.id = selectedUser.id || null;
-      this.rolename = selectedUser.role || null;
-      this.firstname = selectedUser.desig || null;
+    this.id = selectedUser.user_id;
+    this.siMobile = selectedUser.mobile ?? selectedUser.siMobile ?? null;
+    this.rolename = selectedUser.role ?? selectedUser.rolename ?? 'DME';
+    this.firstname =
+      selectedUser.desig ??
+      selectedUser.user_name ??
+      selectedUser.firstname ??
+      '';
 
-      this.setRole(this.rolename);
-      sessionStorage.setItem('firstname', this.firstname);
-      sessionStorage.setItem('authenticatedUser', this.firstname);
+    this.setRole(this.rolename);
+    sessionStorage.setItem('firstname', this.firstname);
+    sessionStorage.setItem(
+      'authenticatedUser',
+      selectedUser.e_mail_id ?? String(selectedUser.user_id),
+    );
+    sessionStorage.setItem('divisionID', String(selectedUser.user_id));
 
-      sessionStorage.setItem('divisionID', String(this.id));
-
-      this.GetUserEmail(selectedId);
+    // Prefer email from GET /Auth/4 list (includes e_mail_id); otherwise fetch.
+    if (selectedUser.e_mail_id) {
+      this.emailid = selectedUser.e_mail_id;
+      this.EMAIL = 'EMAIL';
     } else {
-      console.error(
-        'Selected user not found in the list. Check if ID matches.',
-      );
+      this.GetUserEmail(selectedId);
     }
   }
 
@@ -219,10 +247,23 @@ approle:any;
   // https://localhost:7036/api/Auth/GetUserEmail/5
 
   GetUserEmail(userid: any) {
-    this.api.GetUserEmail(userid).subscribe((res: any) => {
-      this.emailid = res.Email;
-      this.EMAIL = 'EMAIL';
-      // console.log('Extracted Email:', this.emailid);
+    const uid = Number(userid);
+    this.api.GetUserEmail(uid).subscribe({
+      next: (res) => {
+        if (res?.Email) {
+          this.emailid = res.Email;
+        } else if (res?.UserName) {
+          this.emailid = res.UserName;
+        } else {
+          // Auth/login accepts CAST(user_id AS VARCHAR) as username
+          this.emailid = String(uid);
+        }
+        this.EMAIL = 'EMAIL';
+      },
+      error: () => {
+        this.emailid = String(uid);
+        this.EMAIL = 'EMAIL';
+      },
     });
   }
   onStatusChange() {

@@ -1,129 +1,106 @@
 <div class="page-wrapper">
-  <!-- Top Header -->
   <div class="top-bar">
     <div class="actions">
-      <button class="circle-btn white">⛶</button>
-      <button class="circle-btn cyan">↻</button>
-      <button class="circle-btn orange">−</button>
+      <button type="button" class="circle-btn white" aria-label="Fullscreen">⛶</button>
+      <button type="button" class="circle-btn cyan" (click)="load()" aria-label="Refresh">↻</button>
+      <button type="button" class="circle-btn orange" aria-label="Minimize">−</button>
     </div>
   </div>
 
-  <!-- Main Card -->
   <div class="content-card">
-
-    <!-- Title -->
     <div class="title-box">
       Medical College/Hospital Contact Details
+      <span *ngIf="loading" class="text-muted ms-2">Loading…</span>
     </div>
 
     <hr />
 
-    <!-- User ID -->
     <div class="row">
-      <div class="label">UserID(for Login)</div>
-      <div class="value blue-link">StoreBram@ems.in</div>
+      <div class="label">UserID (for Login)</div>
+      <div class="value blue-link">{{ model.LoginEmail || '—' }}</div>
     </div>
 
     <hr />
 
-    <!-- Row 1 -->
     <div class="grid-row">
       <div class="field">
-        <label>Dean/Supritendent Name</label>
-        <input type="text" value="Professor (Dr.) SBS Netam" />
+        <label for="deanName">Dean/Superintendent Name</label>
+        <input id="deanName" type="text" [(ngModel)]="model.DeanName" name="deanName" />
       </div>
 
       <div class="field">
-        <label>Dean Mobile No</label>
-        <input type="text" value="9826064727" />
+        <label for="deanMobile">Dean Mobile No</label>
+        <input id="deanMobile" type="text" [(ngModel)]="model.DeanMobile" name="deanMobile" />
       </div>
     </div>
 
     <hr />
 
-    <!-- Row 2 -->
     <div class="grid-row">
       <div class="field">
-        <label>Store Officer</label>
-        <input type="text" value="Dr. Bidhi Tembunikar" />
+        <label for="storeOfficer">Store Officer</label>
+        <input id="storeOfficer" type="text" [(ngModel)]="model.StoreOfficerName" name="storeOfficer" />
       </div>
 
       <div class="field">
-        <label>Store Officer Mobile No (for login & indent finalization)</label>
-        <input type="text" value="9893029918" />
+        <label for="storeMobile">Store Officer Mobile No (login & indent)</label>
+        <input id="storeMobile" type="text" [(ngModel)]="model.StoreOfficerMobile" name="storeMobile" />
       </div>
     </div>
 
-    <!-- Close -->
-    <div class="close-text">Close</div>
+    <div class="close-text" *ngIf="model.LocationName">
+      {{ model.LocationName }}
+    </div>
 
     <hr />
 
-    <!-- Row 3 -->
     <div class="grid-row">
       <div class="field">
-        <label>Email (office)</label>
-        <input type="text" value="bramhospital@gmail.com" />
+        <label for="officeEmail">Email (office)</label>
+        <input id="officeEmail" type="email" [(ngModel)]="model.OfficeEmail" name="officeEmail" />
       </div>
 
       <div class="field">
-        <label>Contact No (office)</label>
-        <input type="text" value="0771-2890100" />
+        <label for="officePhone">Contact No (office)</label>
+        <input id="officePhone" type="text" [(ngModel)]="model.OfficeContactNo" name="officePhone" />
       </div>
     </div>
 
     <hr />
 
-    <!-- Address 1 -->
     <div class="grid-row single">
       <div class="field wide">
-        <label>Address Line 1</label>
-        <input type="text" value="Dr. B.R. Ambedkar Memorial Hospital" />
-        <small>Medical college Hospital</small>
+        <label for="addr1">Address Line 1</label>
+        <input id="addr1" type="text" [(ngModel)]="model.AddressLine1" name="addr1" />
       </div>
-
-      <div class="hint">Add1:for ex.</div>
     </div>
 
     <hr />
 
-    <!-- Address 2 -->
     <div class="grid-row single">
       <div class="field wide">
-        <label>Address Line 2</label>
-        <textarea rows="2">Central Jail Road</textarea>
-      </div>
-
-      <div class="hint">
-        Add2:for ex. xyz Chowk Main RoadAddress Line 2
+        <label for="addr2">Address Line 2</label>
+        <textarea id="addr2" rows="2" [(ngModel)]="model.AddressLine2" name="addr2"></textarea>
       </div>
     </div>
 
     <hr />
 
-    <!-- Address 3 -->
     <div class="grid-row single">
       <div class="field wide">
-        <label>Address Line 3</label>
-        <textarea rows="2">Raipur</textarea>
-      </div>
-
-      <div class="hint">
-        Add:for ex. District : Raipur
+        <label for="addr3">Address Line 3</label>
+        <textarea id="addr3" rows="2" [(ngModel)]="model.AddressLine3" name="addr3"></textarea>
       </div>
     </div>
 
     <hr />
 
-    <!-- Button -->
     <div class="btn-wrapper">
-      <button class="update-btn">Update Contacts</button>
+      <button type="button" class="update-btn" (click)="save()" [disabled]="saving || loading">
+        {{ saving ? 'Saving…' : 'Update Contacts' }}
+      </button>
     </div>
-
   </div>
 
-  <!-- Side Gear -->
-  <div class="gear-box">
-    ⚙
-  </div>
+  <div class="gear-box" aria-hidden="true">⚙</div>
 </div>

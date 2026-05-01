@@ -388,61 +388,42 @@
                 <!--  DME loging-->
                 <!-- (ngSubmit)="infrastructureForm.valid && handleInfrastructureLogin()"> -->
                 <div class="tab-pane fade" id="DME" role="tabpanel" aria-labelledby="infrastructure-tab">
-                  <form #cgmsclForm="ngForm" (ngSubmit)="cgmsclForm.valid &&  handleCgmsclLogin1()">
-                    <div class="mb-3">
-                      Medical College /Hospital Login
-                    </div>
+                  <form #dmeLoginForm="ngForm" (ngSubmit)="dmeLoginForm.valid && handleCgmsclLogin1()">
                     <div class="mb-3">
                       <div class="input-group">
                         <span class="input-group-text bg-light">
                           <i class="fas fa-user"></i>
                         </span>
                         <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="id"
-                          (change)="onUserChangeInfrastructure($event)" name="user_id" #idField="ngModel"
-                          [placeholder]="!id ? 'Select Medical College/Hospital' : ''" [searchable]="true"
+                          (ngModelChange)="onUserChangeInfrastructure($event)" name="dme_user_id"
+                          #dmeUserField="ngModel"
+                          [placeholder]="!id ? 'Select Medical College / Hospital' : ''" [searchable]="true"
                           [clearable]="true" [appendTo]="'body'" required class="form-control">
-
                         </ng-select>
                       </div>
-
-                      <!-- <div *ngIf="idField.invalid && (idField.dirty || idField.touched)" class="text-danger">
-                        Please select an engineer.
-                      </div> -->
-                    </div>
-                    <div class="mb-3">
-
-                      <label for="pwd" class="form-label">User Id</label>
-                      <div class="input-group">
-                        <!-- <span class="input-group-text bg-light">
-                          <i class="fas fa-user"></i>
-                        </span> -->
-                        <input type="text" class="form-control" id="id" name="id" [(ngModel)]="emailid"
-                          #pwdField="ngModel" required>
-                        <!-- id="id" name="id" [(ngModel)]="pwd" #pwdField="ngModel" required> -->
-
-                      </div>
-
-                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
-                        Password is required.
+                      <div *ngIf="dmeUserField.invalid && (dmeUserField.dirty || dmeUserField.touched)"
+                        class="text-danger mt-1">
+                        Please select a Medical College / Hospital.
                       </div>
                     </div>
                     <div class="mb-3 position-relative">
-                      <label for="pwd" class="form-label">Password</label>
+                      <label for="dmePwdInput" class="form-label">Password</label>
 
-                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                        [(ngModel)]="pwd" placeholder="Enter Password" required>
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="dmePwdInput"
+                        name="dmePwd" [(ngModel)]="pwd" placeholder="Enter Password" required #dmePwdField="ngModel">
 
                       <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
                         (click)="togglePassword()">
                       </i>
 
-                      <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                      <div *ngIf="dmePwdField.invalid && (dmePwdField.dirty || dmePwdField.touched)"
+                        class="text-danger mt-1">
                         Password is required.
                       </div>
                     </div>
 
-                    <button type="submit" class="btn btn-successs btn-primary w-100 tex-white"
-                      [disabled]="cgmsclForm.invalid">Login</button>
+                    <button type="submit" class="btn btn-successs btn-primary text-white w-100 mb-3"
+                      [disabled]="dmeLoginForm.invalid">Login</button>
                   </form>
 
                 </div>
