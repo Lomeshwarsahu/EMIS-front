@@ -204,6 +204,7 @@
                     <th class="py-3" style="width: 130px;">Tender Qty</th>
                     <th class="py-3" style="width: 150px;">EMD Amount</th>
                     <th class="py-3">RC Status</th>
+                    <th class="py-3">RC Days Valid</th>
                     <th class="py-3">Action</th>
                 </tr>
             </thead>
@@ -238,10 +239,17 @@
                         </div>
                     </td>
                     <td>
-                        <!-- RC Status Conditional Color -->
+                        <!-- RC Status Conditional Color   -->
                         <span [ngClass]="item.RCStatus === 'RC Valid' ? 'text-success' : 'text-danger'" class="fw-bold small">
                             <i [ngClass]="item.RCStatus === 'RC Valid' ? 'bi bi-check-circle' : 'bi bi-x-circle'" class="me-1"></i>
                             {{ item.RCStatus }}
+                        </span>
+                    </td>
+                    <td>
+                        <!--RC Days Valid -->
+                        <span  class="fw-bold small">
+                            <!-- <i [ngClass]="item.RCStatus === 'RC Valid' ? 'bi bi-check-circle' : 'bi bi-x-circle'" class="me-1"></i> -->
+                            {{ item.daysRCValid }}
                         </span>
                     </td>
                     <td>

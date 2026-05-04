@@ -31,8 +31,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { TenderLinkedItemDto } from 'src/app/Model/models';
 
 @Component({
-  selector: 'app-add-rtender-items',
-   standalone: true,
+  selector: 'app-add-excel',
+    standalone: true,
   imports: [
     NgSelectModule,
     CommonModule,
@@ -50,11 +50,11 @@ import { TenderLinkedItemDto } from 'src/app/Model/models';
     MatOptionModule,
     MatTableExporterModule
   ],
-  templateUrl: './add-rtender-items.component.html',
-  styleUrl: './add-rtender-items.component.css',
+  templateUrl: './add-excel.component.html',
+  styleUrl: './add-excel.component.css',
 })
-export class AddRTenderItemsComponent {
-    tenderNo: string | null = null;
+export class AddExcelComponent {
+ tenderNo: string | null = null;
   CoverStatusList:any;
  TenderDetails: any = {};
  itemsDtails:any;
@@ -63,10 +63,19 @@ export class AddRTenderItemsComponent {
    dataSource!: MatTableDataSource<TenderLinkedItemDto>;
    @ViewChild('paginator') paginator!: MatPaginator;
    @ViewChild('sort') sort!: MatSort;
-  displayedColumns: string[] = [
+//   displayedColumns: string[] = [
+//   'sno', 
+//   'ItemCodeAsPerTender', 
+//   'ItemName', 
+//   'TenderQuantity', 
+//   'EmdAmount'
+// ];
+displayedColumns: string[] = [
   'sno', 
-  'ItemCodeAsPerTender', 
+  'select', 
+  'ItemCode', 
   'ItemName', 
+  'CategoryName', 
   'TenderQuantity', 
   'EmdAmount'
 ];
@@ -142,7 +151,7 @@ fetchTenderDetails(tenderNo: any) {
 // https://localhost:7036/api/BME/GetItemEligibility/902
 
 GetItemEligibility1() {
-debugger;
+// debugger;
   this.api.get(`BME/GetItemEligibility/${this.item_id}`).subscribe({
     next: (res: any) => {
       this.itemsDtails=res;
@@ -214,10 +223,10 @@ addItemToTender(item: any) {
 
 GetLinkedItems() {
     // debugger
-  
+  // https://localhost:7036/api/BME/GetLinkedItemsByTender/680/A
     try {
       this.spinner.show();
-      this.api.get(`BME/GetLinkedItemsByTender/${this.tenderNo}/${'A'}`).subscribe(
+      this.api.get(`BME/GetLinkedItemsByTender/${this.tenderNo}/${'E'}`).subscribe(
         (res: any) => {
           this.dispatchData = res.map((item: TenderLinkedItemDto, index: number) => ({
             ...item,

@@ -198,4 +198,14 @@ GetTenderDashboardReports(fid:any,tyid:any) {
       queryParams: {tender_no:tender_no},
     });
   }
+ openAddRExcel(tender_no :any) {
+   this.router.navigate(['/AddExcel'], {
+      queryParams: {tender_no:tender_no},
+    });
+  }
+ openCovAaddRemuvie(tender_no :any) {
+   this.router.navigate(['/CovAaddRemuvie'], {
+      queryParams: {tender_no:tender_no},
+    });
+  }
 }

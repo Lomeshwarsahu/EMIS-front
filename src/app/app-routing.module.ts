@@ -40,6 +40,8 @@ import { EMSNEWRCComponent } from './component/BME/emsnewrc/emsnewrc.component';
 import { PlanaTenderDComponent } from './component/BME/plana-tender-d/plana-tender-d.component';
 import { TenderStatusUpdateComponent } from './component/BME/tender-status-update/tender-status-update.component';
 import { AddRTenderItemsComponent } from './component/BME/add-rtender-items/add-rtender-items.component';
+import { AddExcelComponent } from './component/add-excel/add-excel.component';
+import { CovAaddRemuvieComponent } from './component/cov-aadd-remuvie/cov-aadd-remuvie.component';
 
 
 
@@ -63,6 +65,8 @@ const routes: Routes = [
   {path:'POSummaryDrillDwnQty',component:POSummaryDrillDwnQtyComponent},
   {path:'TenderStatusUpdate',component:TenderStatusUpdateComponent},
   {path:'AddRTenderItems',component:AddRTenderItemsComponent},
+  {path:'AddExcel',component:AddExcelComponent},
+  {path:'CovAaddRemuvie',component:CovAaddRemuvieComponent},
 
   {path:'logout',component:LogoutComponent,canActivate:[RouteGuardService]}, 
 // { path: 'welcome', component: HomeComponent },

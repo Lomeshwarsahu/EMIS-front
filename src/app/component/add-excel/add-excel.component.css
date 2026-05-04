@@ -1,0 +1,51 @@
+/* Container Background */
+.custom-design-container {
+    background-color: #FFF8F0; /* Light cream background from image */
+    padding: 10px;
+    border: 1px solid #D3D3D3;
+}
+
+/* Table styling */
+.custom-brown-table {
+    width: 100%;
+    background-color: transparent !important;
+}
+
+/* Header Styling (Brown color from image) */
+.custom-brown-table thead th {
+    background-color: #9E5B34 !important; /* Brownish color */
+    color: white !important;
+    font-weight: bold;
+    text-align: left;
+    padding: 12px 8px;
+    border: 1px solid #ffffff33 !important;
+}
+
+/* Cells Styling */
+.custom-brown-table td {
+    color: #5D4037;
+    font-size: 14px;
+    border: 1px solid #E0C0A8 !important; /* Light brown borders */
+    padding: 8px !important;
+}
+
+/* Input Boxes inside table */
+.table-input {
+    height: 30px;
+    border-radius: 2px;
+    border: 1px solid #9E9E9E;
+    font-size: 14px;
+    width: 100%;
+    max-width: 150px;
+}
+
+/* Row Hover */
+.custom-brown-table tr:hover {
+    background-color: #F5E6D3 !important;
+}
+
+/* Align S.No and Checkbox to center */
+.custom-brown-table .mat-column-sno,
+.custom-brown-table .mat-column-select {
+    text-align: center;
+}

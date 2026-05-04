@@ -31,7 +31,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { TenderLinkedItemDto } from 'src/app/Model/models';
 
 @Component({
-  selector: 'app-add-rtender-items',
+  selector: 'app-cov-aadd-remuvie',
    standalone: true,
   imports: [
     NgSelectModule,
@@ -48,13 +48,13 @@ import { TenderLinkedItemDto } from 'src/app/Model/models';
     MatDialogModule,
     MatSelectModule,
     MatOptionModule,
-    MatTableExporterModule
+    MatTableExporterModule,
   ],
-  templateUrl: './add-rtender-items.component.html',
-  styleUrl: './add-rtender-items.component.css',
+  templateUrl: './cov-aadd-remuvie.component.html',
+  styleUrl: './cov-aadd-remuvie.component.css',
 })
-export class AddRTenderItemsComponent {
-    tenderNo: string | null = null;
+export class CovAaddRemuvieComponent {
+ tenderNo: string | null = null;
   CoverStatusList:any;
  TenderDetails: any = {};
  itemsDtails:any;
@@ -93,7 +93,7 @@ export class AddRTenderItemsComponent {
    this.GetLinkedItems();
   }
     GetCoverStatusList() {
-      // https://localhost:7036/api/BME/GetSelectableItems
+      // https://localhost:7036/api/ExtensionEHO/Supplierlist 
     this.api.get('BME/GetSelectableItems').subscribe({
       next: (res: any) => {
         this.CoverStatusList = res;
