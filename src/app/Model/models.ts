@@ -590,4 +590,6 @@ export interface TenderLinkedItemDto {
     ItemCode: string
     EmdAmount: number
     TenderQuantity: number
+    CategoryName: string
+    ItemDesc: string
 }
