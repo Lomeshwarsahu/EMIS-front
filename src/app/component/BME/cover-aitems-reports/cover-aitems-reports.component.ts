@@ -28,11 +28,12 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TenderLinkedItemDto, TenderSupplierParticipationDto } from 'src/app/Model/models';
+import {ParticipationItemDTO } from 'src/app/Model/models';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-cov-aadd-remuvie',
-   standalone: true,
+  selector: 'app-cover-aitems-reports',
+     standalone: true,
   imports: [
     NgSelectModule,
     CommonModule,
@@ -50,32 +51,25 @@ import { TenderLinkedItemDto, TenderSupplierParticipationDto } from 'src/app/Mod
     MatOptionModule,
     MatTableExporterModule,
   ],
-  templateUrl: './cov-aadd-remuvie.component.html',
-  styleUrl: './cov-aadd-remuvie.component.css',
+  templateUrl: './cover-aitems-reports.component.html',
+  styleUrl: './cover-aitems-reports.component.css',
 })
-export class CovAaddRemuvieComponent {
- tenderNo: string | null = null;
+export class CoverAitemsReportsComponent {
+tenderNo: string | null = null;
   Supplierlist:any;
  TenderDetails: any = {};
  MASDOCUMENTTYPEList:any;
  itemsDtails:any;
-
+  selectedItems: number[] = [];
  item_id:any;
-  dispatchData: TenderSupplierParticipationDto[] = [];
-   dataSource!: MatTableDataSource<TenderSupplierParticipationDto>;
+ Sname:any;
+  dispatchData: ParticipationItemDTO[] = [];
+   dataSource!: MatTableDataSource<ParticipationItemDTO>;
    @ViewChild('paginator') paginator!: MatPaginator;
    @ViewChild('sort') sort!: MatSort;
-  displayedColumns: string[] = [
-  'sno', 
-  'SupplierName', 
-  'Emd', 
-  'TpAmount', 
-  'EmdDocType',
-  'EmdDocNo',
-  'Remark',
-  'PItems',
-  'ADDItems'
-];
+displayedColumns: string[] = ['sno','ItemCode','ItemName','EmdAmount','select'];
+  SchStatusDid: any;
+  Supplierid: any;
  constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
@@ -84,13 +78,14 @@ export class CovAaddRemuvieComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,private route: ActivatedRoute,private location: Location,
   ) {
-   this.dataSource = new MatTableDataSource<TenderSupplierParticipationDto>([]);
+   this.dataSource = new MatTableDataSource<ParticipationItemDTO>([]);
   }
     ngOnInit(): void {
-      this.formData.TenderProFee=5000;
     this.route.queryParams.subscribe(params => {
-      this.tenderNo = params['tender_no'];
-      console.log('Tender Number from URL:', this.tenderNo);
+      this.tenderNo = params['tid'];
+      this.Supplierid = params['sid'];
+      this.SchStatusDid = params['ssdid'];
+      this.Sname = params['Sname'];
       
       if (this.tenderNo) {
         this.fetchTenderDetails(this.tenderNo);
@@ -136,22 +131,32 @@ formatDate(dateStr: string) {
   return '';
 }
 
+// {
+//   "TenderId": 680,
+//   "TenderNo": "GEM/2025/B/6375542 (FOR DH GPM)",
+//   "FinancialYearId": 19,
+//   "Status": "Cover A Opened",
+//   "TenderDate": "24/06/2025",
+//   "SchStatusDid": 515,
+//   "EndDate": "23/07/2025"
+// }
 fetchTenderDetails(tenderNo: any) {
-  this.api.get(`BME/GetTenderDetailsById/${tenderNo}`).subscribe({
+  // https://localhost:7036/api/BME/GetTenderStatus/680
+  this.api.get(`BME/GetTenderStatus/${tenderNo}`).subscribe({
     next: (res: any) => {
       const data = Array.isArray(res) ? res[0] : res;
       
       if (data) {
         this.TenderDetails = {
           ...data,
-          TENDER_DATE: this.formatDate(data.TENDER_DATE),
-          ENDDate: this.formatDate(data.ENDDate),
-          cover_a: this.formatDate(data.cover_a),
-          cover_b: this.formatDate(data.cover_b),
-          cover_c: this.formatDate(data.cover_c),
-          cover_Demo: this.formatDate(data.cover_Demo),
-          cover_Demo2: this.formatDate(data.cover_Demo2),
-          cover_Demo3: this.formatDate(data.cover_Demo3),
+          TenderDate: this.formatDate(data.TenderDate),
+          EndDate: this.formatDate(data.EndDate),
+          // cover_a: this.formatDate(data.cover_a),
+          // cover_b: this.formatDate(data.cover_b),
+          // cover_c: this.formatDate(data.cover_c),
+          // cover_Demo: this.formatDate(data.cover_Demo),
+          // cover_Demo2: this.formatDate(data.cover_Demo2),
+          // cover_Demo3: this.formatDate(data.cover_Demo3),
         };
         console.log('Final Mapped Data:', this.TenderDetails);
       }
@@ -201,12 +206,14 @@ GetItemEligibility() {
 
 GetLinkedItems() {
     // debugger
-  // https://localhost:7036/api/BME/GetSupplierParticipationDetails/680
+  // https://localhost:7036/api/BME/GetTenderItems/680
+  // https://localhost:7036/api/BME/GetParticipationItems?schemeId=680&supplierId=51
     try {
+      // https://localhost:7036/api/BME/GetParticipationItems?schemeId=680&supplierId=51
       this.spinner.show();
-      this.api.get(`BME/GetSupplierParticipationDetails/${this.tenderNo}`).subscribe(
+      this.api.get(`BME/GetParticipationItems?schemeId=${this.tenderNo}&supplierId=${this.Supplierid}`).subscribe(
         (res: any) => {
-          this.dispatchData = res.map((item: TenderSupplierParticipationDto, index: number) => ({
+          this.dispatchData = res.map((item: ParticipationItemDTO, index: number) => ({
             ...item,
             sno: index + 1,
           }));
@@ -231,12 +238,11 @@ GetLinkedItems() {
     }
   }
 
-  applyTextFilter(event: Event) {
+  applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-// Component ke andar variables define karein
 formData: any = {
   TenderId: null,
   SupplierId: null,
@@ -293,60 +299,165 @@ resetForm() {
     Remarks: ''
   };
 }
-// import { Router } from '@angular/router';
 
-// constructor(private router: Router) {}
 
 goToItemDetails(element: any) {
     const supplierId = element.SupplierId;
     const tenderId = element.TenderId;
 
     const url = this.router.serializeUrl(
-      this.router.createUrlTree(['/CovAItemsEntry'], { queryParams: { sid: supplierId, tid: tenderId } })
-    );
-    
-    window.open(url, '_blank'); 
-}
-addItemToTender(element: any) {
- const supplierId = element.SupplierId;
-    const tenderId = element.TenderId;
-
-    const url = this.router.serializeUrl(
       this.router.createUrlTree(['/AddLeavy'], { queryParams: { sid: supplierId, tid: tenderId } })
     );
     
-    window.open(url, '_blank'); 
-
-  return
-  // if (!item.tender_qty || item.tender_qty <= 0) {
-  //   this.toastr.warning("Please Enter Tender QTY");
-  //   return;
-  // }
-  // if (!item.emd_amt || item.emd_amt <= 0) {
-  //   this.toastr.warning("Please Enter EMD");
-  //   return;
-  // }
-
-  // const payload = {
-  //   TenderId: Number(this.tenderNo),
-  //   ItemId: item.item_id,
-  //   TenderQuantity: item.tender_qty,
-  //   EmdAmount: item.emd_amt
-  // };
-
-  // this.spinner.show();
-  // this.api.post1('BME/AddItemToTender', payload).subscribe({
-  //   next: (res: any) => {
-  //     this.spinner.hide();
-  //     this.toastr.success(res.message);
-  //     // Item add hone ke baad list refresh karein
-  //     this.GetItemEligibility(); 
-  //     this.GetLinkedItems(); 
-  //   },
-  //   error: (err: any) => {
-  //     this.spinner.hide();
-  //     this.toastr.error(err.error.message || "Failed to add item");
-  //   }
-  // });
+    // window.open(url, '_blank'); 
 }
+
+addItemToTender(element: any) {
+ const supplierId = element.SupplierId;
+    const tenderId = element.TenderId;
+    const SchStatusDid = element.SchStatusDid;
+     this.router.navigate(['/TenderCoverAitems'], {
+      queryParams: {sid: supplierId, tid: tenderId,ssdid:SchStatusDid},
+    });
+}
+
+isAllSelected(): boolean {
+  if (!this.dataSource || this.dataSource.data.length === 0) {
+    return false;
+  }
+  return this.selectedItems.length === this.dataSource.data.length;
+}
+
+toggleAll(event: any): void {
+  if (event.target.checked) {
+    this.selectedItems = this.dataSource.data.map((item: any) => item.ItemId);
+  } else {
+    this.selectedItems = [];
+  }
+}
+
+
+isSelected(itemId: number): boolean {
+  return this.selectedItems.includes(itemId);
+}
+
+toggleSelection(itemId: number): void {
+  const index = this.selectedItems.indexOf(itemId);
+  if (index > -1) {
+    this.selectedItems.splice(index, 1);
+  } else {
+    this.selectedItems.push(itemId);
+  }
+}
+
+
+close() {
+  if (this.selectedItems.length === 0) {
+    this.location.back();
+    return;
+  }
+  Swal.fire({
+    title: 'Discard Changes?',
+    text: "You have un-saved selections. Do you really want to leave?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, Leave',
+    cancelButtonText: 'Stay Here'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.location.back();
+    }
+  });
+}
+
+addParticipation() {
+  if (this.selectedItems.length === 0) {
+    this.toastr.warning("Please select at least one item.");
+    return;
+  }
+ 
+  const payload = {
+    SupplierId: this.Supplierid, 
+    SchemeId: this.tenderNo,
+    SchStatusDid:  this.SchStatusDid,
+    ItemIds: this.selectedItems 
+  };
+
+  this.spinner.show();
+  this.api.post1('BME/SaveBulkEquipmentParticipation', payload).subscribe({
+    next: (res: any) => {
+      this.spinner.hide();
+      this.toastr.success(res.message);
+      this.selectedItems = []; 
+      this.GetLinkedItems(); 
+    },
+    error: (err: any) => {
+      this.spinner.hide();
+      this.toastr.error(err.error.message || "Error saving items");
+    }
+  });
+}
+
+
+deleteParticipation() {
+
+  if (this.selectedItems.length === 0) {
+    this.toastr.warning("Please select at least one item to delete.");
+    return;
+  }
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `You are about to delete ${this.selectedItems.length} selected item(s). This action cannot be undone!`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33', 
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const payload = {
+           SupplierId: this.Supplierid, 
+    SchemeId: this.tenderNo,
+    // SchStatusDid:  this.SchStatusDid,
+    // ItemIds: this.selectedItems 
+        // SupplierId: 51, // Aap isse dynamic variable se replace kar sakte hain (this.supplierId)
+        // SchemeId: 680,  // Isse bhi (this.schemeId)
+        ItemIds: this.selectedItems // [2430, ...]
+      };
+
+      this.spinner.show(); 
+
+      // API Call
+      this.api.post1('BME/DeleteParticipationItems', payload).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          
+          // Success Alert
+          Swal.fire(
+            'Deleted!',
+            res.message || 'Items have been deleted successfully.',
+            'success'
+          );
+
+          this.selectedItems = [];
+          this.GetLinkedItems();
+        },
+        error: (err: any) => {
+          this.spinner.hide();
+          
+          // Error Alert
+          Swal.fire(
+            'Error!',
+            err.error?.message || 'Something went wrong while deleting.',
+            'error'
+          );
+        }
+      });
+    }
+  });
+}
+
 }

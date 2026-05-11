@@ -42,6 +42,11 @@ import { TenderStatusUpdateComponent } from './component/BME/tender-status-updat
 import { AddRTenderItemsComponent } from './component/BME/add-rtender-items/add-rtender-items.component';
 import { AddExcelComponent } from './component/add-excel/add-excel.component';
 import { CovAaddRemuvieComponent } from './component/cov-aadd-remuvie/cov-aadd-remuvie.component';
+import { CovAItemsEntryComponent } from './component/BME/cov-aitems-entry/cov-aitems-entry.component';
+import { AddLeavyComponent } from './component/BME/add-leavy/add-leavy.component';
+import { TenderCoverAitemsComponent } from './component/BME/tender-cover-aitems/tender-cover-aitems.component';
+import { CoverAitemsReportsComponent } from './component/BME/cover-aitems-reports/cover-aitems-reports.component';
+import { AddTenderConComponent } from './component/BME/add-tender-con/add-tender-con.component';
 
 
 
@@ -67,6 +72,11 @@ const routes: Routes = [
   {path:'AddRTenderItems',component:AddRTenderItemsComponent},
   {path:'AddExcel',component:AddExcelComponent},
   {path:'CovAaddRemuvie',component:CovAaddRemuvieComponent},
+  {path:'CovAItemsEntry',component:CovAItemsEntryComponent},
+  {path:'AddLeavy',component:AddLeavyComponent},
+  {path:'TenderCoverAitems',component:TenderCoverAitemsComponent},
+  {path:'CoverAitemsReports',component:CoverAitemsReportsComponent},
+  {path:'AddTenderCon',component:AddTenderConComponent},
 
   {path:'logout',component:LogoutComponent,canActivate:[RouteGuardService]}, 
 // { path: 'welcome', component: HomeComponent },
