@@ -32,7 +32,7 @@ import { TenderLinkedItemDto } from 'src/app/Model/models';
 
 @Component({
   selector: 'app-add-rtender-items',
-   standalone: true,
+  standalone: true,
   imports: [
     NgSelectModule,
     CommonModule,

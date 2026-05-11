@@ -1,0 +1,177 @@
+<section class="container-fluid bg-light min-vh-100 py-4 px-lg-5">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+    <h2 class="fw-bold text-primary mb-1">
+        <i class="bi bi-chat-dots me-2"></i> Pre Bid Entry
+    </h2>
+    <p class="text-muted mb-0 small">Record pre-bid meeting details, supplier queries, and official clarifications for this tender.</p>
+</div>
+       
+        <button class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm" (click)="goBack()">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </button>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden">
+        <div class="card-header bg-white py-3 border-bottom-0">
+            <h6 class="fw-bold text-secondary mb-0">
+                <i class="bi bi-info-circle-fill text-primary me-2"></i>Tender Reference
+            </h6>
+        </div>
+        <div class="table-responsive px-3 pb-3">
+            <table class="table table-sm table-borderless align-middle mb-0 bg-light rounded-3">
+                <thead class="text-muted small text-uppercase">
+                    <tr>
+                        <th class="ps-3 py-2">Tender No.</th>
+                        <th class="py-2">Release Date</th>
+                        <th class="py-2 pe-3">Brief Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ps-3 fw-bold text-primary">{{TenderDetails.TENDER_NO}}</td>
+                        <td><span class="badge bg-white text-dark border shadow-xs px-2">{{TenderDetails.TENDER_DATE}}</span></td>
+                        <td class="pe-3 text-truncate" style="max-width: 400px;">{{TenderDetails.TENDER_DESCRIPTION}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4">
+       <div class="card-body bg-light bg-opacity-50">
+         <form #penaltyForm="ngForm">
+        <div class="row g-3 mb-4 animate__animated animate__fadeIn">
+            <div class="col-12">
+                <h6 class="fw-bold text-primary border-bottom pb-2">
+                    <i class="bi bi-shield-exclamation me-2"></i>Cancellation & Penalty Terms
+                </h6>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-floating shadow-sm">
+                    <input type="number" class="form-control border" id="canDays" placeholder="Days" name="canDays">
+                    <label for="canDays">Select HOD</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-floating shadow-sm">
+                    <input type="date" class="form-control border" id="canPercent" placeholder="%" name="canPercent">
+                    <label for="canPercent">Send Date</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-floating shadow-sm">
+                    <input type="date" class="form-control border" id="penalty1" placeholder="%" name="penalty60_120">
+                    <label for="penalty1">Letter Date</label>
+                </div>
+            </div>
+
+          
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-floating shadow-sm">
+                    <input type="text" class="form-control border" id="penalty2" placeholder="%" name="penalty121_180">
+                    <label for="penalty2">Letter Number</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-floating shadow-sm">
+                    <textarea type="number" class="form-control border" id="logoCharges" placeholder="Amount" name="logoCharges"></textarea>
+                    <label for="logoCharges">Remarks</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-floating shadow-sm">
+                    <input type="file" class="form-control border" id="logoLimit" placeholder="Limit" name="logoLimit">
+                    <label for="logoLimit">Select File(.pdf Max 2 mb Size)</label>
+                </div>
+            </div>
+        </div>
+
+       
+
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center pt-3 border-top gap-3">
+                <button type="submit" class="btn btn-success px-5 shadow-sm rounded-pill fw-bold">
+                    <i class="bi bi-save me-2"></i> Save Data
+                </button>
+                <button type="button" (click)="reset()" class="btn btn-outline-secondary px-4 rounded-pill fw-semibold">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i> Reset
+                </button>
+                <button type="button" (click)="goBack()" class="btn btn-outline-danger px-4 rounded-pill fw-semibold">
+                    <i class="bi bi-arrow-left me-2"></i> Go Back
+                </button>
+            </div>
+        </div>
+    </form> 
+
+  
+</div> 
+    </div>
+
+<!-- Table Card Start -->
+
+<!-- <div class="card shadow-sm border-0 rounded-4 overflow-hidden animate__animated animate__fadeIn">
+    <div class="table-responsive custom-table-height">
+        <table class="table table-hover align-middle mb-0" mat-table matTableExporter [dataSource]="dataSource"
+            #exporter="matTableExporter" matSort #sort="matSort">
+
+            <ng-container matColumnDef="sno">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center py-3" style="width: 80px;">
+                    S.No </th>
+                <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold"> {{i + 1}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ItemCodeAsPerTender">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white"> Item Code </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
+                        {{element.ItemCodeAsPerTender}}
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ItemName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white"> Item Name </th>
+                <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> {{element.ItemName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="TenderQuantity">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Tender Qty </th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                    <span class="fw-bold">{{element.TenderQuantity}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="EmdAmount">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-end pe-4"> EMD Amount </th>
+                <td mat-cell *matCellDef="let element" class="text-end pe-4 text-success fw-bold">
+                    {{element.EmdAmount | currency:'INR':'symbol':'1.0-0'}}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="sticky-top"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="row-hover-effect"></tr>
+
+            <tr *matNoDataRow>
+                <td class="text-center py-5 text-muted" colspan="5">
+                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                    No data found for this tender.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="bg-light border-top">
+        <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons
+            class="bg-transparent"></mat-paginator>
+    </div>
+</div> -->
+</section>

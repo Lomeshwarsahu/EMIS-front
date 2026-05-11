@@ -31,8 +31,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { TenderLinkedItemDto, TenderSupplierParticipationDto } from 'src/app/Model/models';
 
 @Component({
-  selector: 'app-cov-aadd-remuvie',
-   standalone: true,
+  selector: 'app-cov-aitems-entry',
+  standalone: true,
   imports: [
     NgSelectModule,
     CommonModule,
@@ -50,11 +50,11 @@ import { TenderLinkedItemDto, TenderSupplierParticipationDto } from 'src/app/Mod
     MatOptionModule,
     MatTableExporterModule,
   ],
-  templateUrl: './cov-aadd-remuvie.component.html',
-  styleUrl: './cov-aadd-remuvie.component.css',
+  templateUrl: './cov-aitems-entry.component.html',
+  styleUrl: './cov-aitems-entry.component.css',
 })
-export class CovAaddRemuvieComponent {
- tenderNo: string | null = null;
+export class CovAItemsEntryComponent {
+tenderNo: string | null = null;
   Supplierlist:any;
  TenderDetails: any = {};
  MASDOCUMENTTYPEList:any;
@@ -302,51 +302,58 @@ goToItemDetails(element: any) {
     const tenderId = element.TenderId;
 
     const url = this.router.serializeUrl(
-      this.router.createUrlTree(['/CovAItemsEntry'], { queryParams: { sid: supplierId, tid: tenderId } })
-    );
-    
-    window.open(url, '_blank'); 
-}
-addItemToTender(element: any) {
- const supplierId = element.SupplierId;
-    const tenderId = element.TenderId;
-
-    const url = this.router.serializeUrl(
       this.router.createUrlTree(['/AddLeavy'], { queryParams: { sid: supplierId, tid: tenderId } })
     );
     
-    window.open(url, '_blank'); 
+    // window.open(url, '_blank'); 
+}
 
-  return
-  // if (!item.tender_qty || item.tender_qty <= 0) {
-  //   this.toastr.warning("Please Enter Tender QTY");
-  //   return;
-  // }
-  // if (!item.emd_amt || item.emd_amt <= 0) {
-  //   this.toastr.warning("Please Enter EMD");
-  //   return;
-  // }
+// {
+//     "SlNo": 1,
+//     "SchStatusDid": 515,
+//     "TenderId": 680,
+//     "SupplierName": "Adonis Medical System Private Limited",
+//     "Emd": 5677,
+//     "TpAmount": 50000,
+//     "EmdDocType": "1",
+//     "EmdPath": "",
+//     "EmdFileName": "",
+//     "TpFileName": "",
+//     "TpPath": "",
+//     "EmdDocNo": "12",
+//     "SupplierId": 51,
+//     "Remark": "hgbncvbncvbncv",
+//     "PItems": 0,
+//     "IsEligibleB": ""
+//   }
+addItemToTender(element: any) {
+ const supplierId = element.SupplierId;
+    const tenderId = element.TenderId;
+    const SchStatusDid = element.SchStatusDid;
+    const SupplierName = element.SupplierName;
+     this.router.navigate(['/TenderCoverAitems'], {
+      queryParams: {sid: supplierId, tid: tenderId,ssdid:SchStatusDid,Sname:SupplierName},
+    });
 
-  // const payload = {
-  //   TenderId: Number(this.tenderNo),
-  //   ItemId: item.item_id,
-  //   TenderQuantity: item.tender_qty,
-  //   EmdAmount: item.emd_amt
-  // };
+    // const url = this.router.serializeUrl(
+    //   this.router.createUrlTree(['/CovAItemsEntry'], { queryParams: { sid: supplierId, tid: tenderId,ssdid:SchStatusDid } })
+    // );
+    
+    // window.open(url, '_blank'); 
+}
 
-  // this.spinner.show();
-  // this.api.post1('BME/AddItemToTender', payload).subscribe({
-  //   next: (res: any) => {
-  //     this.spinner.hide();
-  //     this.toastr.success(res.message);
-  //     // Item add hone ke baad list refresh karein
-  //     this.GetItemEligibility(); 
-  //     this.GetLinkedItems(); 
-  //   },
-  //   error: (err: any) => {
-  //     this.spinner.hide();
-  //     this.toastr.error(err.error.message || "Failed to add item");
-  //   }
-  // });
+OpenCoverAitemsReports(element :any) {
+
+  const supplierId = element.SupplierId;
+    const tenderId = element.TenderId;
+    const SchStatusDid = element.SchStatusDid;
+    const SupplierName = element.SupplierName;
+     this.router.navigate(['/CoverAitemsReports'], {
+      queryParams: {sid: supplierId, tid: tenderId,ssdid:SchStatusDid,Sname:SupplierName},
+    });
+  //  this.router.navigate(['/CoverAitemsReports'], {
+  //     queryParams: {tender_no:tender_no},
+  //   });
 }
 }
+

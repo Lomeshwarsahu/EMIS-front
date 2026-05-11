@@ -1,0 +1,96 @@
+/* Table Header Styling - Dark Blue from Image */
+.custom-participation-table .mat-header-cell {
+    background-color: #00008b !important; /* Dark Blue */
+    color: white !important;
+    font-weight: bold;
+    padding: 12px 8px !important;
+    border: 1px solid #ccc !important;
+    font-size: 14px;
+}
+
+/* Table Cell Styling */
+.custom-participation-table .mat-cell {
+    border: 1px solid #ccc !important;
+    padding: 8px !important;
+    font-size: 13px;
+    color: #000;
+}
+
+/* Zebra Stripes (Odd Rows) */
+.custom-participation-table .mat-row:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Zebra Stripes (Even Rows) - Gray from Image */
+.custom-participation-table .mat-row:nth-child(even) {
+    background-color: #eeeeee;
+}
+
+/* Border for the whole table */
+.custom-participation-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/* Checkbox Style */
+.form-check-input {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+
+/* Table Header Sticky fix with Color */
+.custom-participation-table .mat-header-cell {
+    background-color: #004085 !important; /* Professional Dark Blue */
+    color: white !important;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #002752 !important;
+}
+
+/* Zebra Stripes & Hover */
+.custom-participation-table .mat-row:nth-child(even) {
+    background-color: #fcfcfc;
+}
+
+.row-hover-effect:hover {
+    background-color: #f1f7ff !important;
+    transition: background-color 0.2s ease;
+}
+
+/* Custom Checkbox Size */
+.custom-check {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+    border: 2px solid #dee2e6;
+}
+
+.custom-check:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Button Hover Animation */
+.btn-action {
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .btn-action {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    .card-header {
+        text-align: center;
+    }
+}

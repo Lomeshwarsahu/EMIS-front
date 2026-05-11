@@ -56,20 +56,47 @@
                     </div>
 
                 </div>
-
                 <div class="row">
-                    <div class="col-12 d-flex justify-content-center pt-3 border-top">
+                    <div
+                        class="col-12 d-flex flex-wrap justify-content-center pt-3 border-top gap-2 gap-md-3 mt-4 mt-md-5 px-2">
+
+                        <button type="submit"
+                            class="btn btn-primary px-3 px-md-5 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center"
+                            [disabled]="filterForm.invalid">
+                            <i class="bi bi-search me-2"></i> <span>Search Data</span>
+                        </button>
+
+                        <button type="button"
+                            class="btn btn-outline-secondary px-3 px-md-4 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center"
+                            (click)="onResetFilter(filterForm)">
+                            <i class="bi bi-arrow-counterclockwise me-2"></i> <span>Reset</span>
+                        </button>
+
+                        <button type="button"
+                            class="btn btn-outline-success px-3 px-md-4 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#SendModall">
+                            <i class="bi bi-plus-circle-fill me-2"></i> <span>Generate New Tender</span>
+                        </button>
+
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-12 d-flex justify-content-center pt-3 border-top gap-2 gap-md-3 mt-4 mt-md-5 px-2">
                         <button type="submit" class="btn btn-primary px-5 shadow-sm me-3 rounded-pill fw-semibold"
                             [disabled]="filterForm.invalid">
                             <i class="bi bi-search me-2"></i> Search Data
                         </button>
 
-                        <button type="button" class="btn btn-outline-secondary px-4 shadow-sm rounded-pill fw-semibold"
+                        <button type="button" class="btn btn-outline-secondary px-4 shadow-sm rounded-pill fw-semibold me-2"
                             (click)="onResetFilter(filterForm)">
                             <i class="bi bi-arrow-counterclockwise me-2"></i> Reset
                         </button>
+                        <button type="button" class="btn btn-outline-success px-4 shadow-sm rounded-pill fw-semibold" data-bs-toggle="modal"
+                            data-bs-target="#SendModall">
+                            <i class="bi bi-plus-circle-fill me-2"></i>Generate New Tender
+                        </button>
                     </div>
-                </div>
+                </div> -->
 
             </form>
         </div>
@@ -181,7 +208,8 @@
                             style="z-index: 100;"> Update Status </th>
                         <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
                             <button
-                                class="btn btn-sm btn-outline-info text-dark rounded-pill px-3 shadow-sm text-nowrap" (click)="opennewpage(element.TenderId)">
+                                class="btn btn-sm btn-outline-info text-dark rounded-pill px-3 shadow-sm text-nowrap"
+                                (click)="opennewpage(element.TenderId)">
                                 <i class="bi bi-arrow-repeat me-1 fw-bold"></i> Status
                             </button>
                         </td>
@@ -191,7 +219,8 @@
                         <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
                             style="z-index: 100;"> Add Item </th>
                         <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm text-nowrap" (click)="openAddRTenderItems(element.TenderId)">
+                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm text-nowrap"
+                                (click)="openAddRTenderItems(element.TenderId)">
                                 <i class="bi bi-box-seam me-1"></i> Add Item
                             </button>
                         </td>
@@ -201,7 +230,8 @@
                         <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
                             style="z-index: 100;"> Update Excel </th>
                         <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-                            <button class="btn btn-sm btn-outline-success rounded-pill px-3 shadow-sm text-nowrap" (click)="openAddRExcel(element.TenderId)">
+                            <button class="btn btn-sm btn-outline-success rounded-pill px-3 shadow-sm text-nowrap"
+                                (click)="openAddRExcel(element.TenderId)">
                                 <i class="bi bi-file-earmark-excel me-1"></i> Excel
                             </button>
                         </td>
@@ -212,7 +242,8 @@
                             style="z-index: 100;"> Add Bidder </th>
                         <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
                             <button
-                                class="btn btn-sm btn-outline-warning text-dark rounded-pill px-3 shadow-sm text-nowrap" (click)="openCovAaddRemuvie(element.TenderId)">
+                                class="btn btn-sm btn-outline-warning text-dark rounded-pill px-3 shadow-sm text-nowrap"
+                                (click)="openCovAaddRemuvie(element.TenderId)">
                                 <i class="bi bi-person-plus me-1"></i> Bidder
                             </button>
                         </td>
@@ -222,7 +253,8 @@
                         <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
                             style="z-index: 100;"> Add Bid Item </th>
                         <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-                            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 shadow-sm text-nowrap">
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 shadow-sm text-nowrap"
+                                (click)="OpenCovAItemsEntry(element.TenderId)">
                                 <i class="bi bi-tags me-1"></i> Bid Item
                             </button>
                         </td>
@@ -231,7 +263,8 @@
                         <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
                             style="z-index: 100;"> Add Leavy/Penalty </th>
                         <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-                            <button class="btn btn-sm btn-outline-dark rounded-pill px-3 shadow-sm text-nowrap">
+                            <button class="btn btn-sm btn-outline-dark rounded-pill px-3 shadow-sm text-nowrap"
+                                (click)="OpenAddLeavy(element.TenderId)">
                                 <i class="bi bi-exclamation-triangle-fill me-1"></i> Add Penalty
                             </button>
                         </td>
@@ -240,7 +273,7 @@
                         <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center border-start"
                             style="z-index: 100;"> Add HOD </th>
                         <td mat-cell *matCellDef="let element" class="text-center border-start bg-white">
-                            <button class="btn btn-sm btn-outline-danger rounded-pill px-3 shadow-sm text-nowrap">
+                            <button class="btn btn-sm btn-outline-danger rounded-pill px-3 shadow-sm text-nowrap" (click)="OpenAddTenderCon(element.TenderId)">
                                 <i class="bi bi-person-badge me-1"></i> HOD
                             </button>
                         </td>
@@ -271,10 +304,283 @@
             </div>
 
             <div class="mt-2">
-                <mat-paginator #paginator class="bg-transparent" [pageSizeOptions]="[10, 25, 50]"
+                <mat-paginator #paginator class="bg-transparent" [pageSizeOptions]="[5,10, 25, 50]"
                     showFirstLastButtons></mat-paginator>
             </div>
 
         </div>
     </div>
 </section>
+
+<div class="modal fade rounded" id="SendModall" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <div class="modal-header bg-success text-white py-3 border-0 rounded-top-4">
+                <h5 class="modal-title d-flex align-items-center">
+                    <i class="bi bi-plus-circle me-2"></i> Add New Tender
+                </h5>
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-4 bg-light-subtle">
+                <form #forwardForm="ngForm" (ngSubmit)="generateTender(forwardForm)" novalidate>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Is Gem Tender</label>
+                            <div class="d-flex gap-3 mt-1">
+                                <div class="form-check custom-radio-card p-0 w-100">
+                                    <input class="btn-check" type="checkbox" name="isGem" id="sendAll"
+                                        [(ngModel)]="newTender1.isGemTender">
+                                    <label class="btn btn-outline-success w-100 rounded-3 py-2" for="sendAll">
+                                        <i class="bi bi-check-circle me-2"></i>Gem Tender
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Select Financial Year <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-select border-2 shadow-none py-2 rounded-3" name="finYearId"
+                                [(ngModel)]="newTender1.finYearId" #finYear="ngModel"
+                                [ngClass]="{'is-invalid': finYear.invalid && (finYear.dirty || finYear.touched)}"
+                                required>
+                                <option value="" selected disabled>-- Select Year --</option>
+                                <option *ngFor="let fYear of yearlist" [value]="fYear.financial_year_id">{{fYear.year}}
+                                </option>
+                            </select>
+                            <div class="invalid-feedback" *ngIf="finYear.invalid && (finYear.dirty || finYear.touched)">
+                                Please select a financial year.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Tender Date <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-2 border-end-0 text-muted"><i
+                                        class="bi bi-calendar3"></i></span>
+                                <input type="date"
+                                    class="form-control border-2 border-start-0 shadow-none py-2 rounded-end-3"
+                                    name="tenderDate" [(ngModel)]="newTender1.tenderDate" #tDate="ngModel"
+                                    [ngClass]="{'is-invalid': tDate.invalid && (tDate.dirty || tDate.touched)}"
+                                    required>
+                                <div class="invalid-feedback" *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)">
+                                    Date is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Tender Value (In Cr) <span
+                                    class="text-danger">*</span></label>
+                            <input type="number" class="form-control border-2 shadow-none py-2 rounded-3"
+                                placeholder="0.00" name="tenderValue" [(ngModel)]="newTender1.tenderValue"
+                                #tValue="ngModel"
+                                [ngClass]="{'is-invalid': tValue.invalid && (tValue.dirty || tValue.touched)}"
+                                min="0.01" required>
+                            <div class="invalid-feedback"
+                                *ngIf="tValue.errors?.['required'] && (tValue.dirty || tValue.touched)">Value is
+                                required.</div>
+                            <div class="invalid-feedback" *ngIf="tValue.errors?.['min']">Value must be greater than 0.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Tender Number <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control border-2 shadow-none rounded-3 py-2" name="tenderNo"
+                                [(ngModel)]="newTender1.tenderNo" #tNo="ngModel"
+                                [ngClass]="{'is-invalid': tNo.invalid && (tNo.dirty || tNo.touched)}"
+                                placeholder="Tender No" required>
+                            <div class="invalid-feedback" *ngIf="tNo.invalid && (tNo.dirty || tNo.touched)">Tender
+                                number is required.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Gem Bid No (Optional)</label>
+                            <input type="text" class="form-control border-2 shadow-none rounded-3 py-2" name="gemBidNo"
+                                [(ngModel)]="newTender1.gemBidNo" placeholder="Gem Bid No">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold small text-muted">Tender Description <span
+                                    class="text-danger">*</span></label>
+                            <textarea class="form-control border-2 shadow-none rounded-3" rows="2" name="description"
+                                [(ngModel)]="newTender1.description" #tDesc="ngModel"
+                                [ngClass]="{'is-invalid': tDesc.invalid && (tDesc.dirty || tDesc.touched)}"
+                                placeholder="Enter tender details..." required minlength="10"></textarea>
+                            <div class="invalid-feedback"
+                                *ngIf="tDesc.errors?.['required'] && (tDesc.dirty || tDesc.touched)">Description is
+                                required.</div>
+                            <div class="invalid-feedback" *ngIf="tDesc.errors?.['minlength']">Minimum 10 characters
+                                required.</div>
+                        </div>
+
+                    </div>
+
+                    <!-- <div class="d-flex justify-content-center gap-3 mt-5">
+        <button type="button" class="btn btn-light border px-5 py-2 rounded-pill fw-semibold text-muted" data-bs-dismiss="modal">
+            Cancel
+        </button>
+        <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-bold shadow" 
+                [disabled]="forwardForm.invalid">
+            <i class="bi bi-cloud-arrow-up me-2"></i> Save & Add
+        </button>
+    </div> -->
+                    <div class="d-flex justify-content-center gap-2 gap-md-3 mt-4 mt-md-5 px-2">
+                        <button type="button"
+                            class="btn btn-light border px-3 px-md-5 py-2 rounded-pill fw-semibold text-muted w-auto"
+                            data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <button type="submit"
+                            class="btn btn-primary px-3 px-md-5 py-2 rounded-pill fw-bold shadow w-auto"
+                            [disabled]="forwardForm.invalid">
+                            <i class="bi bi-cloud-arrow-up me-2"></i> Save & Add
+                        </button>
+                    </div>
+                </form>
+                <!-- <form #forwardForm="ngForm" (ngSubmit)="generateTender(forwardForm)">
+    <div class="row g-4">
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Is Gem Tender <span class="text-danger">*</span></label>
+            <div class="d-flex gap-3 mt-1">
+                <div class="form-check custom-radio-card p-0 w-100">
+                    <input class="btn-check" type="checkbox" name="isGem" id="sendAll" 
+                           [(ngModel)]="newTender1.isGemTender">
+                    <label class="btn btn-outline-success w-100 rounded-3 py-2" for="sendAll">
+                        <i class="bi bi-check-circle me-2"></i>Gem Tender
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Select Financial Year<span class="text-danger">*</span></label>
+            <select class="form-select border-2 shadow-none py-2 rounded-3" name="finYearId" 
+                    [(ngModel)]="newTender1.finYearId" required>
+                <option value="" selected disabled>-- Select Year --</option>
+                <option *ngFor="let fYear of yearlist" [value]="fYear.financial_year_id">
+                    {{fYear.year}}
+                </option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Tender Date <span class="text-danger">*</span></label>
+            <div class="input-group">
+                <span class="input-group-text bg-white border-2 border-end-0 text-muted"><i class="bi bi-calendar3"></i></span>
+                <input type="date" class="form-control border-2 border-start-0 shadow-none py-2 rounded-end-3" 
+                       name="tenderDate" [(ngModel)]="newTender1.tenderDate" required>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Tender Value (In Cr) <span class="text-danger">*</span></label>
+            <input type="number" class="form-control border-2 shadow-none py-2 rounded-3" 
+                   placeholder="0.00" name="tenderValue" [(ngModel)]="newTender1.tenderValue" required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Tender Number <span class="text-danger">*</span></label>
+            <input type="text" class="form-control border-2 shadow-none rounded-3 py-2" 
+                   name="tenderNo" [(ngModel)]="newTender1.tenderNo" placeholder="Tender No" required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Gem Bid No (Optional)</label>
+            <input type="text" class="form-control border-2 shadow-none rounded-3 py-2" 
+                   name="gemBidNo" [(ngModel)]="newTender1.gemBidNo" placeholder="Gem Bid No">
+        </div>
+
+        <div class="col-md-12">
+            <label class="form-label fw-bold small text-muted">Tender Description <span class="text-danger">*</span></label>
+            <textarea class="form-control border-2 shadow-none rounded-3" rows="2" 
+                      name="description" [(ngModel)]="newTender1.description" 
+                      placeholder="Enter tender details..." required></textarea>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center gap-3 mt-5">
+        <button type="button" class="btn btn-light border px-5 py-2 rounded-pill fw-semibold text-muted" data-bs-dismiss="modal">
+            Cancel
+        </button>
+        <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-bold shadow" [disabled]="!forwardForm.valid">
+            <i class="bi bi-cloud-arrow-up me-2"></i> Save & Add
+        </button>
+    </div>
+</form> 
+ <form #forwardForm="ngForm">
+          <div class="row g-4">
+            
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-muted">Is Gem Tender <span class="text-danger">*</span></label>
+                <div class="d-flex gap-3 mt-1">
+                    <div class="form-check custom-radio-card p-0 w-100">
+                        <input class="btn-check" type="radio" name="poType" id="sendAll" value="All" checked>
+                        <label class="btn btn-outline-success w-100 rounded-3 py-2" for="sendAll">
+                            <i class="bi bi-check-circle me-2"></i>Gem
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-muted">Select Financial Year<span class="text-danger">*</span></label>
+                <select class="form-select border-2 shadow-none py-2 rounded-3" name="sendTo" [(ngModel)]="selectedYearId" required>
+                
+                    <option value="" selected disabled>-- Select Year --</option>
+                
+                    <option *ngFor="let fYear of yearlist" [value]="fYear.financial_year_id">
+                        {{fYear.year}}
+                    </option>
+                
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-muted">Tender Date <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-2 border-end-0 text-muted"><i class="bi bi-calendar3"></i></span>
+                    <input type="date" class="form-control border-2 border-start-0 shadow-none py-2 rounded-end-3" name="TenderDate" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-muted">Tender Value (In Cr) <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <input type="text" class="form-control border-2 shadow-none py-2 rounded-end-3" placeholder="Type Tender Value (In Cr)" name="TenderDate" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-muted">Tender Number <span class="text-danger">*</span></label>
+                <textarea class="form-control border-2 shadow-none rounded-3" rows="1" 
+                          name="remarks" placeholder="Type your comments here..." required></textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-muted">Gem Bid No <span class="text-danger">*</span></label>
+                <textarea class="form-control border-2 shadow-none rounded-3" rows="1" 
+                          name="remarks" placeholder="Type your comments here..." required></textarea>
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label fw-bold small text-muted">Tender Description <span class="text-danger">*</span></label>
+                <textarea class="form-control border-2 shadow-none rounded-3" rows="1" 
+                          name="remarks" placeholder="Type your comments here..." required></textarea>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center gap-3 mt-5">
+            <button type="button" class="btn btn-light border px-5 py-2 rounded-pill fw-semibold text-muted" data-bs-dismiss="modal">
+                Cancel
+            </button>
+            <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-bold shadow">
+                <i class="bi bi-cloud-arrow-up me-2"></i> Save & Add
+            </button>
+          </div>
+        </form> -->
+            </div>
+
+        </div>
+    </div>
+</div>

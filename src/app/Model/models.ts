@@ -593,3 +593,50 @@ export interface TenderLinkedItemDto {
     CategoryName: string
     ItemDesc: string
 }
+export interface TenderSupplierParticipationDto {
+  sno:number
+   SlNo:number
+    SchStatusDid: number
+    // TenderItemId: number
+    TenderId: number
+    SupplierName: string
+    Emd: number
+    TpAmount: number
+    EmdDocType: string
+    EmdPath: string
+    EmdFileName: string
+    TpFileName: string
+    TpPath: string
+    EmdDocNo: string
+    SupplierId: number
+    Remark: string
+    PItems: number
+    IsEligibleB: string
+}
+export interface GetTenderItemsDTO {
+  sno:number
+   SlNo:number
+    TenderId: number
+    FinancialYearId: number
+    ItemId: number
+    ItemCodeAsPerTender: string
+    ItemName: string
+
+
+}
+export interface ParticipationItemDTO {
+  sno:number
+   SlNo:number
+    SchemeId: number
+    EmdAmount: number
+    ItemId: number
+    ItemCode: string
+    ItemName: string
+
+    // SlNo": 0,
+    // "SchemeId": 680,
+    // "ItemCode": "GeMCTSCAN64SLICEGPM",
+    // "ItemName": "CT SCAN (64 SLICE) MACHINE",
+    // "EmdAmount": 800000,
+    // "ItemId": 3646
+}

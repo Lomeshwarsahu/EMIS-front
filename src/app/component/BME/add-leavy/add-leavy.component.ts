@@ -28,11 +28,12 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TenderLinkedItemDto, TenderSupplierParticipationDto } from 'src/app/Model/models';
+import { TenderLinkedItemDto } from 'src/app/Model/models';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-cov-aadd-remuvie',
-   standalone: true,
+  selector: 'app-add-leavy',
+    standalone: true,
   imports: [
     NgSelectModule,
     CommonModule,
@@ -48,33 +49,27 @@ import { TenderLinkedItemDto, TenderSupplierParticipationDto } from 'src/app/Mod
     MatDialogModule,
     MatSelectModule,
     MatOptionModule,
-    MatTableExporterModule,
+    MatTableExporterModule
   ],
-  templateUrl: './cov-aadd-remuvie.component.html',
-  styleUrl: './cov-aadd-remuvie.component.css',
+  templateUrl: './add-leavy.component.html',
+  styleUrl: './add-leavy.component.css',
 })
-export class CovAaddRemuvieComponent {
+export class AddLeavyComponent {
  tenderNo: string | null = null;
-  Supplierlist:any;
+  CoverStatusList:any;
  TenderDetails: any = {};
- MASDOCUMENTTYPEList:any;
  itemsDtails:any;
-
  item_id:any;
-  dispatchData: TenderSupplierParticipationDto[] = [];
-   dataSource!: MatTableDataSource<TenderSupplierParticipationDto>;
+  dispatchData: TenderLinkedItemDto[] = [];
+   dataSource!: MatTableDataSource<TenderLinkedItemDto>;
    @ViewChild('paginator') paginator!: MatPaginator;
    @ViewChild('sort') sort!: MatSort;
   displayedColumns: string[] = [
   'sno', 
-  'SupplierName', 
-  'Emd', 
-  'TpAmount', 
-  'EmdDocType',
-  'EmdDocNo',
-  'Remark',
-  'PItems',
-  'ADDItems'
+  'ItemCodeAsPerTender', 
+  'ItemName', 
+  'TenderQuantity', 
+  'EmdAmount'
 ];
  constructor(
     private spinner: NgxSpinnerService,
@@ -84,10 +79,9 @@ export class CovAaddRemuvieComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,private route: ActivatedRoute,private location: Location,
   ) {
-   this.dataSource = new MatTableDataSource<TenderSupplierParticipationDto>([]);
+   this.dataSource = new MatTableDataSource<TenderLinkedItemDto>([]);
   }
     ngOnInit(): void {
-      this.formData.TenderProFee=5000;
     this.route.queryParams.subscribe(params => {
       this.tenderNo = params['tender_no'];
       console.log('Tender Number from URL:', this.tenderNo);
@@ -98,25 +92,12 @@ export class CovAaddRemuvieComponent {
     });
     this.GetCoverStatusList();
    this.GetLinkedItems();
-   this.GETMASDOCUMENTTYPEList();
   }
     GetCoverStatusList() {
-      // https://localhost:7036/api/ExtensionEHO/Supplierlist 
-    this.api.get('ExtensionEHO/Supplierlist').subscribe({
+      // https://localhost:7036/api/BME/GetSelectableItems
+    this.api.get('BME/GetSelectableItems').subscribe({
       next: (res: any) => {
-        this.Supplierlist = res;
-        // console.log('year 1=',   this.CoverStatusList);
-      },
-      error: (err: any) => {
-        console.log('Error fetching mapped items:', err);
-      },
-    });
-  }
-    GETMASDOCUMENTTYPEList() {
-      // https://localhost:7036/api/BME/GETMASDOCUMENTTYPEList
-    this.api.get('BME/GETMASDOCUMENTTYPEList').subscribe({
-      next: (res: any) => {
-        this.MASDOCUMENTTYPEList = res;
+        this.CoverStatusList = res;
         // console.log('year 1=',   this.CoverStatusList);
       },
       error: (err: any) => {
@@ -162,7 +143,7 @@ fetchTenderDetails(tenderNo: any) {
 // https://localhost:7036/api/BME/GetItemEligibility/902
 
 GetItemEligibility1() {
-// debugger;
+debugger;
   this.api.get(`BME/GetItemEligibility/${this.item_id}`).subscribe({
     next: (res: any) => {
       this.itemsDtails=res;
@@ -188,6 +169,7 @@ GetItemEligibility() {
   this.api.get(`BME/GetItemEligibility/${this.item_id}`).subscribe({
     next: (res: any) => {
       this.spinner.hide();
+      // API se array aata hai, isliye hum use direct assign karenge
       this.itemsDtails = res; 
     },
     error: (err: any) => {
@@ -196,17 +178,49 @@ GetItemEligibility() {
     }
   });
 }
+addItemToTender(item: any) {
+  // Check karein ki values empty na hon
+  if (!item.tender_qty || item.tender_qty <= 0) {
+    this.toastr.warning("Please Enter Tender QTY");
+    return;
+  }
+  if (!item.emd_amt || item.emd_amt <= 0) {
+    this.toastr.warning("Please Enter EMD");
+    return;
+  }
 
+  const payload = {
+    TenderId: Number(this.tenderNo),
+    ItemId: item.item_id,
+    TenderQuantity: item.tender_qty,
+    EmdAmount: item.emd_amt
+  };
+
+  this.spinner.show();
+  this.api.post1('BME/AddItemToTender', payload).subscribe({
+    next: (res: any) => {
+      this.spinner.hide();
+      this.toastr.success(res.message);
+      // Item add hone ke baad list refresh karein
+      this.GetItemEligibility(); 
+      this.GetLinkedItems(); 
+    },
+    error: (err: any) => {
+      this.spinner.hide();
+      this.toastr.error(err.error.message || "Failed to add item");
+    }
+  });
+}
 
 
 GetLinkedItems() {
     // debugger
-  // https://localhost:7036/api/BME/GetSupplierParticipationDetails/680
+  
     try {
       this.spinner.show();
-      this.api.get(`BME/GetSupplierParticipationDetails/${this.tenderNo}`).subscribe(
+      this.api.get(`BME/GetLinkedItemsByTender/${this.tenderNo}/${'A'}`).subscribe(
         (res: any) => {
-          this.dispatchData = res.map((item: TenderSupplierParticipationDto, index: number) => ({
+          this.dispatchData = res.map((item: TenderLinkedItemDto, index: number) => ({
             ...item,
             sno: index + 1,
           }));
@@ -236,117 +250,76 @@ GetLinkedItems() {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-// Component ke andar variables define karein
-formData: any = {
-  TenderId: null,
-  SupplierId: null,
-  EmdAmount: null,
-  TenderProFee: null,
-  DocTypeId: null,
-  EmdDocNo: '',
-  Remarks: ''
+levyData: any = {
+  CancellationDays: 0,
+  CancellationPercentage: 0,
+  PenaltyPercent120: 0,
+  PenaltyPercent: 0,
+  PenaltyType: 'D',        // 'd' for Days, 'w' for Weeks
+  ReleaseType: 'M',        // 'm' for Month, 'w' for Week, 'n' for NR
+  PerformanceReq: 'Y',     // 'y' for Yes, 'n' for No, 'a' for NA
+  ReleaseValue: 0,
+  LogoCharges: 0,
+  LogoChargesUpper: 0,
+  LeavyEntryDt: '',        
+  PerfEntryDt: ''          
 };
 
-saveParticipation() {
-  if (!this.formData.TenderProFee || this.formData.TenderProFee <= 0) {
-    this.toastr.warning("Process Fee is Required.");
-    return;
-  }
-  if (!this.formData.EmdAmount || this.formData.EmdAmount <= 0) {
-    this.toastr.warning("EMD Amount is Required.");
-    return;
-  }
-  if (!this.formData.EmdDocNo || this.formData.EmdDocNo.trim() === '') {
-    this.toastr.warning("Please fill EMD Document Number");
-    return;
-  }
-  if (!this.formData.SupplierId) {
-    this.toastr.warning("Please Select Supplier");
-    return;
-  }
+onSubmit(form: NgForm) {
+  if (form.valid) {
+    this.spinner.show();
 
-  this.formData.TenderId = Number(this.tenderNo);
+    // Final Payload mapping
+    const payload = {
+      TenderId: this.tenderNo,
+      CancellationDays: Number(this.levyData.CancellationDays),
+      CancellationPercentage: Number(this.levyData.CancellationPercentage),
+      PenaltyPercent120: Number(this.levyData.PenaltyPercent120),
+      PenaltyPercent: Number(this.levyData.PenaltyPercent),
+      PenaltyType: this.levyData.PenaltyType.toLowerCase(), // 'y', 'n', 'd' etc.
+      ReleaseType: this.levyData.ReleaseType.toLowerCase(),
+      PerformanceReq: this.levyData.PerformanceReq.toLowerCase(),
+      ReleaseValue: Number(this.levyData.ReleaseValue),
+      LogoCharges: Number(this.levyData.LogoCharges),
+      LogoChargesUpper: Number(this.levyData.LogoChargesUpper),
+      LeavyEntryDt: this.levyData.LeavyEntryDt || "",
+      PerfEntryDt: this.levyData.PerfEntryDt || ""
+    };
 
-  this.spinner.show();
-  this.api.post1('BME/SaveSupplierParticipation', this.formData).subscribe({
-    next: (res: any) => {
-      this.spinner.hide();
-      this.toastr.success(res.message);
-      this.resetForm(); 
-      this.GetLinkedItems();
-    },
-    error: (err: any) => {
-      this.spinner.hide();
-      this.toastr.error(err.error.message || "Failed to save");
-    }
-  });
+    this.api.post1('BME/UpdateTenderLevy', payload).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+          form.resetForm(); 
+        Swal.fire('Success', 'Levy details updated successfully!', 'success');
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error("Server Error:", err);
+        Swal.fire('Error', err.error?.details || 'Database Error occurred', 'error');
+      }
+    });
+  }
 }
+ 
 
-resetForm() {
-  this.formData = {
-    TenderId: null,
-    SupplierId: null,
-    EmdAmount: null,
-    TenderProFee: null,
-    DocTypeId: null,
-    EmdDocNo: '',
-    Remarks: ''
-  };
-}
-// import { Router } from '@angular/router';
+  reset() {
+     this.levyData = {
+     CancellationDays: '',
+  CancellationPercentage: '',
+  PenaltyPercent120: '',
+  PenaltyPercent: '',
+  PenaltyType: 'D',        // 'd' for Days, 'w' for Weeks
+  ReleaseType: 'M',        // 'm' for Month, 'w' for Week, 'n' for NR
+  PerformanceReq: 'Y',     // 'y' for Yes, 'n' for No, 'a' for NA
+  ReleaseValue: '',
+  LogoCharges: '',
+  LogoChargesUpper: '',
+  LeavyEntryDt: '',        
+  PerfEntryDt: '' 
+    };
+  }
 
-// constructor(private router: Router) {}
-
-goToItemDetails(element: any) {
-    const supplierId = element.SupplierId;
-    const tenderId = element.TenderId;
-
-    const url = this.router.serializeUrl(
-      this.router.createUrlTree(['/CovAItemsEntry'], { queryParams: { sid: supplierId, tid: tenderId } })
-    );
-    
-    window.open(url, '_blank'); 
-}
-addItemToTender(element: any) {
- const supplierId = element.SupplierId;
-    const tenderId = element.TenderId;
-
-    const url = this.router.serializeUrl(
-      this.router.createUrlTree(['/AddLeavy'], { queryParams: { sid: supplierId, tid: tenderId } })
-    );
-    
-    window.open(url, '_blank'); 
-
-  return
-  // if (!item.tender_qty || item.tender_qty <= 0) {
-  //   this.toastr.warning("Please Enter Tender QTY");
-  //   return;
+  // goBack() {
+  //   window.history.back();
   // }
-  // if (!item.emd_amt || item.emd_amt <= 0) {
-  //   this.toastr.warning("Please Enter EMD");
-  //   return;
-  // }
-
-  // const payload = {
-  //   TenderId: Number(this.tenderNo),
-  //   ItemId: item.item_id,
-  //   TenderQuantity: item.tender_qty,
-  //   EmdAmount: item.emd_amt
-  // };
-
-  // this.spinner.show();
-  // this.api.post1('BME/AddItemToTender', payload).subscribe({
-  //   next: (res: any) => {
-  //     this.spinner.hide();
-  //     this.toastr.success(res.message);
-  //     // Item add hone ke baad list refresh karein
-  //     this.GetItemEligibility(); 
-  //     this.GetLinkedItems(); 
-  //   },
-  //   error: (err: any) => {
-  //     this.spinner.hide();
-  //     this.toastr.error(err.error.message || "Failed to add item");
-  //   }
-  // });
-}
 }
