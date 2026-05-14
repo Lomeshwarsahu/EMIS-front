@@ -28,8 +28,9 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TenderLinkedItemDto } from 'src/app/Model/models';
+import { HodConversationDTO, TenderLinkedItemDto } from 'src/app/Model/models';
 import Swal from 'sweetalert2';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-add-tender-con',
@@ -53,24 +54,41 @@ import Swal from 'sweetalert2';
   ],
   templateUrl: './add-tender-con.component.html',
   styleUrl: './add-tender-con.component.css',
+    animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', opacity: 0, padding: '0' })),
+      state('expanded', style({ height: '*', opacity: 1 })),
+      transition('expanded <=> collapsed', animate('250ms ease-in-out')),
+    ])
+  ],
 })
 export class AddTenderConComponent {
 tenderNo: string | null = null;
   CoverStatusList:any;
+  FacilityList:any;
  TenderDetails: any = {};
  itemsDtails:any;
  item_id:any;
-  dispatchData: TenderLinkedItemDto[] = [];
-   dataSource!: MatTableDataSource<TenderLinkedItemDto>;
+ Convid:any;
+ HodReplyDTO: any[] = [];
+  expandedElement: any | null = null;
+  dispatchData: HodConversationDTO[] = [];
+   dataSource!: MatTableDataSource<HodConversationDTO>;
    @ViewChild('paginator') paginator!: MatPaginator;
    @ViewChild('sort') sort!: MatSort;
-  displayedColumns: string[] = [
-  'sno', 
-  'ItemCodeAsPerTender', 
-  'ItemName', 
-  'TenderQuantity', 
-  'EmdAmount'
-];
+//   displayedColumns: string[] = [
+//   'sno', 
+//   'SCHEMENAME', 
+//   'FACILITYTYPECODE', 
+//   'LetterNo', 
+//   'LetterDate',
+//   'SendDate',
+//   'Remarks',
+//   'Download',
+//   'Action',
+//   'Reply',
+// ];
+displayedColumns: string[] = ['sno', 'SCHEMENAME', 'FACILITYTYPECODE', 'LetterNo', 'LetterDate', 'SendDate', 'Remarks', 'Download', 'Action', 'Reply'];
  constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
@@ -79,7 +97,7 @@ tenderNo: string | null = null;
     private cdr: ChangeDetectorRef,
     private router: Router,private route: ActivatedRoute,private location: Location,
   ) {
-   this.dataSource = new MatTableDataSource<TenderLinkedItemDto>([]);
+   this.dataSource = new MatTableDataSource<HodConversationDTO>([]);
   }
     ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -90,6 +108,7 @@ tenderNo: string | null = null;
         this.fetchTenderDetails(this.tenderNo);
       }
     });
+    this.GetFacilityList();
     this.GetCoverStatusList();
    this.GetLinkedItems();
   }
@@ -98,6 +117,18 @@ tenderNo: string | null = null;
     this.api.get('BME/GetSelectableItems').subscribe({
       next: (res: any) => {
         this.CoverStatusList = res;
+        // console.log('year 1=',   this.CoverStatusList);
+      },
+      error: (err: any) => {
+        console.log('Error fetching mapped items:', err);
+      },
+    });
+  }
+    GetFacilityList() {
+      // https://localhost:7036/api/BME/GetFacilityList
+    this.api.get('BME/GetFacilityList').subscribe({
+      next: (res: any) => {
+        this.FacilityList = res;
         // console.log('year 1=',   this.CoverStatusList);
       },
       error: (err: any) => {
@@ -117,43 +148,28 @@ formatDate(dateStr: string) {
   return '';
 }
 
-fetchTenderDetails(tenderNo: any) {
-    // https://localhost:7036/api/BME/GetTenderSummary/680
-  this.api.get(`BME/GetTenderSummary/${tenderNo}`).subscribe({
-    next: (res: any) => {
-      const data = Array.isArray(res) ? res[0] : res;
-      
-      if (data) {
-        this.TenderDetails = {
-          ...data,
-          TENDER_DATE: this.formatDate(data.TENDER_DATE),
-          ENDDate: this.formatDate(data.ENDDate),
-          cover_a: this.formatDate(data.cover_a),
-          cover_b: this.formatDate(data.cover_b),
-          cover_c: this.formatDate(data.cover_c),
-          cover_Demo: this.formatDate(data.cover_Demo),
-          cover_Demo2: this.formatDate(data.cover_Demo2),
-          cover_Demo3: this.formatDate(data.cover_Demo3),
-        };
-        console.log('Final Mapped Data:', this.TenderDetails);
-      }
-    },
-    error: (err: any) => console.log('Error:', err),
-  });
-}
-// https://localhost:7036/api/BME/GetItemEligibility/902
 
-GetItemEligibility1() {
-debugger;
-  this.api.get(`BME/GetItemEligibility/${this.item_id}`).subscribe({
-    next: (res: any) => {
-      this.itemsDtails=res;
-      console.log('Final Mapped Data:', this.TenderDetails);
-  
-    },
-    error: (err: any) => console.log('Error:', err),
-  });
+fetchTenderDetails(tenderId: any) {
+    this.spinner.show();
+    this.api.get(`BME/GetTenderSummary/${tenderId}`).subscribe({
+        next: (res: any) => {
+            this.spinner.hide();
+            // Array handle karein aur first object lein
+            const data = Array.isArray(res) ? res[0] : res;
+            
+            if (data) {
+                // Direct mapping kyunki keys JSON se match honi chahiye
+                this.TenderDetails = data;
+                console.log('Successfully Bound Data:', this.TenderDetails);
+            }
+        },
+        error: (err: any) => {
+            this.spinner.hide();
+            console.error('API Error:', err);
+        }
+    });
 }
+
 onSelectedItem(item: any) {
   this.item_id=item.item_id;
   // console.log(item.item_id);
@@ -216,12 +232,12 @@ addItemToTender(item: any) {
 
 GetLinkedItems() {
     // debugger
-  
+  // https://localhost:7036/api/BME/GetHodConversations/680
     try {
       this.spinner.show();
-      this.api.get(`BME/GetLinkedItemsByTender/${this.tenderNo}/${'A'}`).subscribe(
+      this.api.get(`BME/GetHodConversations/${this.tenderNo}`).subscribe(
         (res: any) => {
-          this.dispatchData = res.map((item: TenderLinkedItemDto, index: number) => ({
+          this.dispatchData = res.map((item: HodConversationDTO, index: number) => ({
             ...item,
             sno: index + 1,
           }));
@@ -266,42 +282,6 @@ levyData: any = {
   PerfEntryDt: ''          
 };
 
-onSubmit(form: NgForm) {
-  if (form.valid) {
-    this.spinner.show();
-
-    // Final Payload mapping
-    const payload = {
-      TenderId: this.tenderNo,
-      CancellationDays: Number(this.levyData.CancellationDays),
-      CancellationPercentage: Number(this.levyData.CancellationPercentage),
-      PenaltyPercent120: Number(this.levyData.PenaltyPercent120),
-      PenaltyPercent: Number(this.levyData.PenaltyPercent),
-      PenaltyType: this.levyData.PenaltyType.toLowerCase(), // 'y', 'n', 'd' etc.
-      ReleaseType: this.levyData.ReleaseType.toLowerCase(),
-      PerformanceReq: this.levyData.PerformanceReq.toLowerCase(),
-      ReleaseValue: Number(this.levyData.ReleaseValue),
-      LogoCharges: Number(this.levyData.LogoCharges),
-      LogoChargesUpper: Number(this.levyData.LogoChargesUpper),
-      LeavyEntryDt: this.levyData.LeavyEntryDt || "",
-      PerfEntryDt: this.levyData.PerfEntryDt || ""
-    };
-
-    this.api.post1('BME/UpdateTenderLevy', payload).subscribe({
-      next: (res: any) => {
-        this.spinner.hide();
-          form.resetForm(); 
-        Swal.fire('Success', 'Levy details updated successfully!', 'success');
-      },
-      error: (err) => {
-        this.spinner.hide();
-        console.error("Server Error:", err);
-        Swal.fire('Error', err.error?.details || 'Database Error occurred', 'error');
-      }
-    });
-  }
-}
- 
 
   reset() {
      this.levyData = {
@@ -319,5 +299,199 @@ onSubmit(form: NgForm) {
   PerfEntryDt: '' 
     };
   }
+
+
+
+hodData: any = {
+  FacilityAutId: null,
+  SendDate: '',
+  LetterDate: '',
+  LetterNo: '',
+  Remarks: '',
+  SelectedFile: null
+};
+
+onFileSelected(event: any) {
+  if (event.target.files.length > 0) {
+    this.hodData.SelectedFile = event.target.files[0];
+  }
+}
+
+onSubmit(form: NgForm) {
+  if (form.valid && this.hodData.SelectedFile) {
+    this.spinner.show();
+    const formData = new FormData();
+  // formData.append('TenderId', this.tenderNo ?? '');
+  formData.append('TenderId', String(this.tenderNo));
+    formData.append('HodId', this.hodData.FacilityAutId);
+    formData.append('SendDate', this.hodData.SendDate);
+    formData.append('LetterNo', this.hodData.LetterNo);
+    formData.append('LetterDate', this.hodData.LetterDate);
+    formData.append('Remarks', this.hodData.Remarks);
+    formData.append('File', this.hodData.SelectedFile);
+
+    this.api.post1('BME/SaveHodConversation', formData).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        this.GetLinkedItems();
+        Swal.fire('Success', 'Data saved successfully!', 'success');
+        form.reset();
+      },
+      error: (err) => {
+        this.spinner.hide();
+        Swal.fire('Error', err.error?.message || 'Save failed', 'error');
+      }
+    });
+  } else {
+    this.toastr.warning("Please fill all fields and select a PDF file.");
+  }
+}
+readonly baseUrl = 'https://localhost:7036/'; 
+
+downloadFileDirectly(filePath: string, fileName: string) {
+    if (!filePath) {
+        console.error("File path is missing!");
+        return;
+    }
+
+    const relativePath = filePath.replace('~/', '');
+    const fullUrl = this.baseUrl + relativePath;
+
+    fetch(fullUrl)
+        .then(response => {
+            if (!response.ok) throw new Error('File download failed');
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            
+            a.download = fileName || filePath.split('/').pop() || 'document.pdf';
+            
+            document.body.appendChild(a);
+            a.click();
+            
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        })
+        .catch(err => {
+            console.error("Download error:", err);
+            window.open(fullUrl, '_blank');
+        });
+}
+
+viewPdf(convId: number) {
+    const url = `https://localhost:7036/api/FileViewer/ViewPdf/${convId}`;
+    window.open(url, '_blank');
+}
+openReplyModal(convId:any){
+this.Convid=convId;
+}
+replyData: any = {
+  LetterNo: '',
+  LetterDt: '',
+  RecvDate: '',
+  Remarks: ''
+}
+selectedReplyFile: File | null = null;
+
+// File change event
+onReplyFileSelected(event: any) {
+  if (event.target.files.length > 0) {
+    this.selectedReplyFile = event.target.files[0];
+  }
+}
+
+submitReply(form: NgForm) {
+  // debugger;
+  if (form.valid && this.selectedReplyFile) {
+    const formData = new FormData();
+    formData.append('Convid', this.Convid.toString()); 
+    formData.append('LetterNo', this.replyData.LetterNo);
+    formData.append('LetterDt', this.replyData.LetterDt); // yyyy-MM-dd format
+    formData.append('RecvDate', this.replyData.RecvDate); // yyyy-MM-dd format
+    formData.append('Remarks', this.replyData.Remarks);
+    formData.append('File', this.selectedReplyFile);
+
+    this.api.post1('BME/SaveHodReply', formData).subscribe({
+      next: (res: any) => {
+        alert(res.message);
+        form.reset();
+        this.selectedReplyFile = null;
+      },
+      error: (err) => {
+        console.error(err);
+        alert("Error: " + err.error?.message);
+      }
+    });
+  } else {
+    alert("Please fill all required fields and select a file.");
+  }
+}
+GetHodReplyList(convId: any) {
+    this.HodReplyDTO = []; // Loading state clear
+    this.spinner.show();
+    this.api.get(`BME/GetHodReplyList/${convId}`).subscribe({
+      next: (res: any) => {
+        this.HodReplyDTO = res.map((d: any, i: number) => ({ ...d, sno: i + 1 }));
+        this.spinner.hide();
+      },
+      error: () => {
+        this.spinner.hide();
+      }
+    });
+  }
+GetHodReplyList1(convId: any) {
+  this.spinner.show();
+// https://localhost:7036/api/BME/GetHodReplyList/3
+  this.api.get(`BME/GetHodReplyList/${convId}`).subscribe({
+      next: (res: any) => {
+        this.HodReplyDTO = res.map((d: any, i: number) => ({
+          ...d,
+          sno: i + 1,
+        }));
+        this.spinner.hide();
+      },
+      error: () => {
+        this.HodReplyDTO = [];
+        this.spinner.hide();
+      }
+    });
+}
+isExpansionDetailRow = (i: number, row: any) => row.detailRow === true;
+toggleDetails(element: any) {
+    this.expandedElement = this.expandedElement === element ? null : element;
+    if (this.expandedElement) {
+      this.GetHodReplyList(element.Convid);
+    }
+  }
+toggleDetails1(row: any, Convid: any) {
+  if (this.expandedElement === row) {
+    this.expandedElement = null;
+
+    this.dataSource.data = this.dataSource.data.filter(r => !r.detailRow);
+    return;
+  }
+
+  this.expandedElement = row;
+
+  const updatedRows: any[] = [];
+
+  this.dataSource.data.forEach(r => {
+    updatedRows.push(r);
+
+    if (r === row) {
+      updatedRows.push({
+        detailRow: true,
+        data: row
+      });
+    }
+  });
+
+  this.dataSource.data = updatedRows;
+
+  this.GetHodReplyList(Convid);
+}
 
 }

@@ -47,6 +47,7 @@ import { AddLeavyComponent } from './component/BME/add-leavy/add-leavy.component
 import { TenderCoverAitemsComponent } from './component/BME/tender-cover-aitems/tender-cover-aitems.component';
 import { CoverAitemsReportsComponent } from './component/BME/cover-aitems-reports/cover-aitems-reports.component';
 import { AddTenderConComponent } from './component/BME/add-tender-con/add-tender-con.component';
+import { TenderCoverAComponent } from './component/BME/tender-cover-a/tender-cover-a.component';
 
 
 
@@ -101,6 +102,7 @@ const routes: Routes = [
 {path:'MapitemswithMainitemTypeRepo',component:MapitemswithMainitemTypeRepoComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
 {path:'EMSRCDashbord',component:EMSRCDashbordComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
 {path:'EMSNEWRC',component:EMSNEWRCComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'TenderCoverA',component:TenderCoverAComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
 {path:'PlanaTenderD',component:PlanaTenderDComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
 // MD logins 
 {path:'RCDetailReport',component:RCDetailReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
