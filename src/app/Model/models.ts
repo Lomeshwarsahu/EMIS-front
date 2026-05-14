@@ -593,6 +593,21 @@ export interface TenderLinkedItemDto {
     CategoryName: string
     ItemDesc: string
 }
+export interface HodConversationDTO {
+    detailRow: any;
+  sno: number;
+  SCHEMEID: number;
+  SCHEMENAME: string;
+  FACILITYTYPECODE: string;
+  LetterNo: number;
+  LetterDate: string;
+  Remarks: string;
+  SendDate: string;
+  EntryDate: string;
+  FileName: string;
+  FilePath: string;
+  Convid: number;
+}
 export interface TenderSupplierParticipationDto {
   sno:number
    SlNo:number
@@ -601,8 +616,11 @@ export interface TenderSupplierParticipationDto {
     TenderId: number
     SupplierName: string
     Emd: number
+    ReqEMDAMt: number
+    SubmittedEMDAMT: number
     TpAmount: number
     EmdDocType: string
+    DTypeName: string
     EmdPath: string
     EmdFileName: string
     TpFileName: string
@@ -612,6 +630,11 @@ export interface TenderSupplierParticipationDto {
     Remark: string
     PItems: number
     IsEligibleB: string
+    IsCovTechEli: string,
+    IsCOVFinEli: string,
+    CovATechRemarksBefore_OBClM: string,
+    CovAFINRemarksBefore_OBClM: string,
+    Csid: number
 }
 export interface GetTenderItemsDTO {
   sno:number
@@ -639,4 +662,17 @@ export interface ParticipationItemDTO {
     // "ItemName": "CT SCAN (64 SLICE) MACHINE",
     // "EmdAmount": 800000,
     // "ItemId": 3646
+}
+export interface HodReplyDTO {
+  sno: number;
+  CONRID: number;
+  CONVID: number;
+  RecvDate: number;
+  LetterNo: number;
+  LetterDT: string;
+  Remarks: string;
+  FileName: string;
+  FilePath: string;
+  EntryBy: string;
+  EntryDate: string;
 }

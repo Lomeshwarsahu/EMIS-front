@@ -302,7 +302,7 @@ AU: {
       route: '',
       submenu: [
         { label: 'Plan a Tender', route: '/PlanaTenderD' },
-        { label: 'Evaluation A', route: '/' },
+        { label: 'Evaluation A', route: '/TenderCoverA' },
         { label: 'Claim-Object Preparation', route: '/' },
         { label: 'Gem-Price Entry Acceptance', route: '/' },
         { label: 'Gem-Price Entry', route: '/' }
