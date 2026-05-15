@@ -201,10 +201,10 @@ GetItemEligibility() {
 
 GetLinkedItems() {
     // debugger
-  // https://localhost:7036/api/BME/GetSupplierParticipationDetails/680
+  // https://localhost:7036/api/BME/GetSupplierParticipationDetails/680/GetSupplierParticipationDetails/${tid}/${1}
     try {
       this.spinner.show();
-      this.api.get(`BME/GetSupplierParticipationDetails/${this.tenderNo}`).subscribe(
+      this.api.get(`BME/GetSupplierParticipationDetails/${this.tenderNo}/${0}`).subscribe(
         (res: any) => {
           this.dispatchData = res.map((item: TenderSupplierParticipationDto, index: number) => ({
             ...item,

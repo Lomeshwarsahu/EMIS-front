@@ -48,6 +48,9 @@ import { TenderCoverAitemsComponent } from './component/BME/tender-cover-aitems/
 import { CoverAitemsReportsComponent } from './component/BME/cover-aitems-reports/cover-aitems-reports.component';
 import { AddTenderConComponent } from './component/BME/add-tender-con/add-tender-con.component';
 import { TenderCoverAComponent } from './component/BME/tender-cover-a/tender-cover-a.component';
+import { TenderCoverAObClaimComponent } from './tender-cover-aob-claim/tender-cover-aob-claim.component';
+import { TenderItemsPriceGEMComponent } from './component/BME/tender-items-price-gem/tender-items-price-gem.component';
+import { TenderDetailsPriceEntryGEMComponent } from './component/BME/tender-details-price-entry-gem/tender-details-price-entry-gem.component';
 
 
 
@@ -79,6 +82,7 @@ const routes: Routes = [
   {path:'CoverAitemsReports',component:CoverAitemsReportsComponent},
   {path:'AddTenderCon',component:AddTenderConComponent},
 
+
   {path:'logout',component:LogoutComponent,canActivate:[RouteGuardService]}, 
 // { path: 'welcome', component: HomeComponent },
 { path: 'welcome', component: LandingPageComponent, canActivate: [RouteGuardService],data: { allowedRoles: ['AD','AU','AAO','AYUSH','CGMSC','CON','DHS','DKS','DME','DMT','FDA','FU','GMF','IT','Principal','SCI','SUP','TPO']} },
@@ -103,6 +107,9 @@ const routes: Routes = [
 {path:'EMSRCDashbord',component:EMSRCDashbordComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
 {path:'EMSNEWRC',component:EMSNEWRCComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
 {path:'TenderCoverA',component:TenderCoverAComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'TenderCoverAObClaim',component:TenderCoverAObClaimComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'TenderItemsPriceGEM',component:TenderItemsPriceGEMComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'TenderDetailsPriceEntryGEM',component:TenderDetailsPriceEntryGEMComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
 {path:'PlanaTenderD',component:PlanaTenderDComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
 // MD logins 
 {path:'RCDetailReport',component:RCDetailReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
