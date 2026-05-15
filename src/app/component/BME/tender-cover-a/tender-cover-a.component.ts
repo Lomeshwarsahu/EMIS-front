@@ -60,6 +60,17 @@ Eligiblitylist: any[] = [];
 selectedTenderId: any;
 show:boolean=false;
 selectedStatus:any;
+Remarks:any;
+IsEligibleB:any;
+
+
+
+tenderNo: string | null = null;
+ TenderDetails: any = {};
+ itemsDtails:any;
+
+ item_id:any;
+
 dispatchData: TenderSupplierParticipationDto[] = [];
 dataSource!: MatTableDataSource<TenderSupplierParticipationDto>;
 @ViewChild('paginator') paginator!: MatPaginator;
@@ -161,7 +172,7 @@ formatDate(dateStr: string) {
 
 
 GetLinkedItems(tid:any) {
-    debugger
+
 // https://localhost:7036/api/BME/GetSupplierParticipationDetails/680/0
     try {
       this.spinner.show();
@@ -214,8 +225,19 @@ onStatusChange(item: any) {
   // console.log(item.item_id);
   // console.log(item.item_name);
 }
+
 updateRowStatus(element: any) {
-  // Logic validation check karein
+//  debugger;
+  const data = localStorage.getItem('loginData');
+  if (data) {
+   const user = JSON.parse(data);
+   var roleid = user.roleid;
+   var user_id = user.user_id;
+// console.log(user.username); 
+// console.log(user.roleid);   
+// console.log(user.user_id); 
+  }
+
   if (element.IsEligibleB === 'N' && !element.Remark) {
      alert("Please Enter Rejection Remark");
      return;
@@ -223,174 +245,24 @@ updateRowStatus(element: any) {
 
   const payload = {
     SchStatusDid: element.SchStatusDid,
-    SchemeId: element.TenderId, // Aapka tender_id
-    Eligibility: element.IsEligibleB, // Bootstrap dropdown se aayi value
-    Remarks: element.Remark,
-    RoleId: '22', // Ye session ya auth service se aayega
-    UserId: 101   // Ye session ya auth service se aayega
+    SchemeId: element.TenderId, 
+    Eligibility: this.IsEligibleB, 
+    Remarks: this.Remarks,
+    RoleId: roleid, 
+    UserId: user_id   
   };
 
   this.api.post1('BME/UpdateEligibility', payload).subscribe({
     next: (res: any) => {
-      alert(res.message);
-      // Row refresh ya list reload karein
+      // alert(res.message);
+     this.toastr.success(res.message);
     },
     error: (err) => {
       alert(err.error?.message || "Error updating status");
     }
   });
 }
-//#endregion
 
-
-
-
-
-
-
-
-
-
-
-
-
-tenderNo: string | null = null;
-  Supplierlist:any;
- TenderDetails: any = {};
- MASDOCUMENTTYPEList:any;
- itemsDtails:any;
-
- item_id:any;
-
- 
-   
-    GETMASDOCUMENTTYPEList() {
-      // https://localhost:7036/api/BME/GETMASDOCUMENTTYPEList
-    this.api.get('BME/GETMASDOCUMENTTYPEList').subscribe({
-      next: (res: any) => {
-        this.MASDOCUMENTTYPEList = res;
-        // console.log('year 1=',   this.CoverStatusList);
-      },
-      error: (err: any) => {
-        console.log('Error fetching mapped items:', err);
-      },
-    });
-  }
-
-
-
-GetItemEligibility() {
-  if (!this.item_id) {
-    this.toastr.warning('Please select an item first');
-    return;
-  }
-  
-  this.spinner.show();
-  this.api.get(`BME/GetItemEligibility/${this.item_id}`).subscribe({
-    next: (res: any) => {
-      this.spinner.hide();
-      this.itemsDtails = res; 
-    },
-    error: (err: any) => {
-      this.spinner.hide();
-      console.log('Error:', err);
-    }
-  });
-}
-
-
-
-
-// Component ke andar variables define karein
-formData: any = {
-  TenderId: null,
-  SupplierId: null,
-  EmdAmount: null,
-  TenderProFee: null,
-  DocTypeId: null,
-  EmdDocNo: '',
-  Remarks: ''
-};
-
-saveParticipation() {
-  if (!this.formData.TenderProFee || this.formData.TenderProFee <= 0) {
-    this.toastr.warning("Process Fee is Required.");
-    return;
-  }
-  if (!this.formData.EmdAmount || this.formData.EmdAmount <= 0) {
-    this.toastr.warning("EMD Amount is Required.");
-    return;
-  }
-  if (!this.formData.EmdDocNo || this.formData.EmdDocNo.trim() === '') {
-    this.toastr.warning("Please fill EMD Document Number");
-    return;
-  }
-  if (!this.formData.SupplierId) {
-    this.toastr.warning("Please Select Supplier");
-    return;
-  }
-
-  this.formData.TenderId = Number(this.tenderNo);
-
-  this.spinner.show();
-  this.api.post1('BME/SaveSupplierParticipation', this.formData).subscribe({
-    next: (res: any) => {
-      this.spinner.hide();
-      this.toastr.success(res.message);
-      this.resetForm(); 
-      // this.GetLinkedItems();
-    },
-    error: (err: any) => {
-      this.spinner.hide();
-      this.toastr.error(err.error.message || "Failed to save");
-    }
-  });
-}
-
-resetForm() {
-  this.formData = {
-    TenderId: null,
-    SupplierId: null,
-    EmdAmount: null,
-    TenderProFee: null,
-    DocTypeId: null,
-    EmdDocNo: '',
-    Remarks: ''
-  };
-}
-// import { Router } from '@angular/router';
-
-// constructor(private router: Router) {}
-
-goToItemDetails(element: any) {
-    const supplierId = element.SupplierId;
-    const tenderId = element.TenderId;
-
-    const url = this.router.serializeUrl(
-      this.router.createUrlTree(['/AddLeavy'], { queryParams: { sid: supplierId, tid: tenderId } })
-    );
-    
-    // window.open(url, '_blank'); 
-}
-
-// {
-//     "SlNo": 1,
-//     "SchStatusDid": 515,
-//     "TenderId": 680,
-//     "SupplierName": "Adonis Medical System Private Limited",
-//     "Emd": 5677,
-//     "TpAmount": 50000,
-//     "EmdDocType": "1",
-//     "EmdPath": "",
-//     "EmdFileName": "",
-//     "TpFileName": "",
-//     "TpPath": "",
-//     "EmdDocNo": "12",
-//     "SupplierId": 51,
-//     "Remark": "hgbncvbncvbncv",
-//     "PItems": 0,
-//     "IsEligibleB": ""
-//   }
 addItemToTender(element: any) {
  const supplierId = element.SupplierId;
     const tenderId = element.TenderId;
@@ -407,18 +279,15 @@ addItemToTender(element: any) {
     // window.open(url, '_blank'); 
 }
 
-OpenCoverAitemsReports(element :any) {
+//#endregion
 
-  const supplierId = element.SupplierId;
-    const tenderId = element.TenderId;
-    const SchStatusDid = element.SchStatusDid;
-    const SupplierName = element.SupplierName;
-     this.router.navigate(['/CoverAitemsReports'], {
-      queryParams: {sid: supplierId, tid: tenderId,ssdid:SchStatusDid,Sname:SupplierName},
-    });
-  //  this.router.navigate(['/CoverAitemsReports'], {
-  //     queryParams: {tender_no:tender_no},
-  //   });
+
 }
-}
+
+
+
+
+
+
+
 

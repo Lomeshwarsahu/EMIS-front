@@ -303,9 +303,9 @@ AU: {
       submenu: [
         { label: 'Plan a Tender', route: '/PlanaTenderD' },
         { label: 'Evaluation A', route: '/TenderCoverA' },
-        { label: 'Claim-Object Preparation', route: '/' },
-        { label: 'Gem-Price Entry Acceptance', route: '/' },
-        { label: 'Gem-Price Entry', route: '/' }
+        { label: 'Claim-Object Preparation', route: '/TenderCoverAObClaim' },
+        { label: 'Gem-Price Entry Acceptance', route: '/TenderItemsPriceGEM' },
+        { label: 'Gem-Price Entry', route: '/TenderDetailsPriceEntryGEM' }
       ]
     },
     {

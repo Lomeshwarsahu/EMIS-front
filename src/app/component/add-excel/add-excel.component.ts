@@ -63,13 +63,6 @@ export class AddExcelComponent {
    dataSource!: MatTableDataSource<TenderLinkedItemDto>;
    @ViewChild('paginator') paginator!: MatPaginator;
    @ViewChild('sort') sort!: MatSort;
-//   displayedColumns: string[] = [
-//   'sno', 
-//   'ItemCodeAsPerTender', 
-//   'ItemName', 
-//   'TenderQuantity', 
-//   'EmdAmount'
-// ];
 displayedColumns: string[] = [
   'sno', 
   'select', 
@@ -177,7 +170,6 @@ GetItemEligibility() {
   this.api.get(`BME/GetItemEligibility/${this.item_id}`).subscribe({
     next: (res: any) => {
       this.spinner.hide();
-      // API se array aata hai, isliye hum use direct assign karenge
       this.itemsDtails = res; 
     },
     error: (err: any) => {
@@ -187,7 +179,7 @@ GetItemEligibility() {
   });
 }
 addItemToTender(item: any) {
-  // Check karein ki values empty na hon
+ 
   if (!item.tender_qty || item.tender_qty <= 0) {
     this.toastr.warning("Please Enter Tender QTY");
     return;
@@ -209,7 +201,6 @@ addItemToTender(item: any) {
     next: (res: any) => {
       this.spinner.hide();
       this.toastr.success(res.message);
-      // Item add hone ke baad list refresh karein
       this.GetItemEligibility(); 
       this.GetLinkedItems(); 
     },
