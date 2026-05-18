@@ -298,6 +298,107 @@ AU: {
       ]
     },
     {
+      label: 'Tender',
+      route: '',
+      submenu: [
+        { label: 'Plan a Tender', route: '/PlanaTenderD' },
+        { label: 'Evaluation A', route: '/TenderCoverA' },
+        { label: 'Claim-Object Preparation', route: '/TenderCoverAObClaim' },
+        { label: 'Gem-Price Entry Acceptance', route: '/TenderItemsPriceGEM' },
+        { label: 'Gem-Price Entry', route: '/TenderDetailsPriceEntryGEM' }
+      ]
+    },
+    {
+      label: 'Indents',
+      route: '',
+      submenu: [
+        { label: 'Indent From Facilities', route: '/IndentFromFacilities' }
+      ]
+    },
+    {
+      label: 'Finance Report',
+      route: '',
+      submenu: [
+        { label: 'Year Wise PO Abstract', route: '/FacilityAuthPOValuePOCell' },
+        { label: 'PO Wise Payment FReport', route: '/FPOPaidReport' },
+        { label: 'Cheque Wise Payment Report', route: '/ChequeWisePaymentReport' }
+      ]
+    },
+    {
+      label: 'Complain',
+      route: '',
+      submenu: [
+       { label: 'Complain Report', route: '/ComplainReportBME' }, //Complain
+      ]
+    },
+    {
+      label: 'Reports',
+      route: '',
+      submenu: [
+        { label: 'PO Summary', route: '/POSummaryReport' },
+        { label: 'PO Wise Payment Report', route: '/POPaidReport' },
+        { label: 'Tenders Status', route: '/TendersStatus' },
+        { label: 'PO Receipts summary', route: '/PORecdsummary' },
+        { label: 'Item Status in Tenter', route: '/TenterStatusItemWise' },
+        { label: 'Reagent PO Report', route: '/POSummaryDrillDwnQtyReagent' },
+      ]
+    }
+  ]
+},
+DME: {
+  items: [
+    { label: 'Home', route: '/home' },
+    {
+      label: 'Masters',
+      route: '',
+      submenu: [
+        { label: 'Medical College Contact Details', route: '/store-home' },
+        { label: 'Update Consignee Information', route: '/consigee-information' },
+        { label: 'Report-Specification', route: '/report-specification' },
+        { label: 'CME EEL Suggestion', route: '/cme-eel-suggestion' },
+        { label: 'Supplier', route: '/MastterSupplierDash' },
+        { label: 'Add New Items', route: '/ItemsBME' },
+        { label: 'Mapping to Main items', route: '/MapitemsEithType' },
+        { label: 'Update Mapping to Main items', route: '/MapitemswithTypeUpdate' },
+        { label: 'Main Equipment Mapped Report', route: '/MapitemswithMainitemTypeRepo' },
+      ]
+    },
+    {
+      label: 'Stock',
+      route: '',
+      submenu: [
+        { label: 'Stock Report', route: '/stock-report' },
+        { label: 'Opening Stock Entry', route: '/opening-stock-entry' }
+      ]
+    },
+    {
+      label: 'Orders',
+      route: '',
+      submenu: [
+        { label: 'Purchase Order Dashboard', route: '/purchase-order-dashboard' },
+        { label: 'Purchase Order Receipts', route: '/purchase-order-receipts' }
+      ]
+    },
+    {
+      label: 'Contracts',
+      route: '',
+      submenu: [
+        { label: 'Contract Dashboard', route: '/EMSRCDashbord' },
+        { label: 'New Contract', route: '/EMSNEWRC' }
+      ]
+    },
+    {
+      label: 'Tender',
+      route: '',
+      submenu: [
+        { label: 'Plan a Tender', route: '/PlanaTenderD' },
+        { label: 'Evaluation A', route: '/TenderStatusUpdate' },
+        { label: 'Claim-Object Preparation', route: '/AddRTenderItems' },
+        { label: 'Gem-Price Entry Acceptance', route: '/TendersStatus' },
+        { label: 'Gem-Price Entry', route: '/PlanaTenderD' }
+      ]
+    },
+    {
       label: 'Indents',
       route: '',
       submenu: [

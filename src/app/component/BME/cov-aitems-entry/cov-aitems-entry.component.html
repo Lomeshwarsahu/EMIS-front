@@ -1,0 +1,356 @@
+<section class="container-fluid bg-light min-vh-100 py-4 px-lg-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="fw-bold text-primary mb-1">
+                <i class="bi bi-box-seam me-2"></i>Tender Participation Details
+            </h2>
+            <p class="text-muted mb-0 small">Add or remove items specifically for this tender.</p>
+        </div>
+        <button class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm" (click)="goBack()">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </button>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden">
+        <div class="card-header bg-white py-3 border-bottom-0">
+            <h6 class="fw-bold text-secondary mb-0">
+                <i class="bi bi-info-circle-fill text-primary me-2"></i>Tender Reference
+            </h6>
+        </div>
+        <div class="table-responsive px-3 pb-3">
+            <table class="table table-sm table-borderless align-middle mb-0 bg-light rounded-3">
+                <thead class="text-muted small text-uppercase">
+                    <tr>
+                        <th class="ps-3 py-2">Tender No.</th>
+                        <th class="py-2">Release Date</th>
+                        <th class="py-2 pe-3">Brief Description</th>
+                        <th class="py-2 pe-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ps-3 fw-bold text-primary">{{TenderDetails.TENDER_NO}}</td>
+                        <td><span
+                                class="badge bg-white text-dark border shadow-xs px-2">{{TenderDetails.TENDER_DATE}}</span>
+                        </td>
+                        <td class="pe-3 text-truncate" style="max-width: 400px;">{{TenderDetails.TENDER_DESCRIPTION}}
+                        </td>
+                        <td class="pe-3 text-truncate" style="max-width: 400px;">{{TenderDetails.cStatus}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- <div class="card shadow border-0 rounded-4 mb-4 border-top border-primary border-4">
+        <div class="card-body p-4 p-lg-5">
+            <div class="d-flex align-items-center mb-4">
+                <div class="bg-primary bg-opacity-10 p-2 rounded-3 me-3">
+                    <i class="bi bi-file-earmark-plus text-primary fs-4"></i>
+                </div>
+                <h5 class="mb-0 fw-bold text-dark">Tender Submission Form</h5>
+            </div>
+            <form #participationForm="ngForm">
+                <div class="row g-4">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-bold small text-muted mb-2">Select Supplier</label>
+                        
+                        <ng-select class="border-2 rounded shadow-none form-control" appendTo="body"
+                            [items]="Supplierlist" bindLabel="name" bindValue="supplier_id"
+                            [(ngModel)]="formData.SupplierId" placeholder="Search & Select Supplier" name="supplier_id"
+                            (change)="onSelectedItem($event)" required>
+                        </ng-select>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-bold small text-muted mb-2">EMD Amount</label>
+                        <input type="number" name="EmdAmount" [(ngModel)]="formData.EmdAmount"
+                            class="form-control border-2 shadow-none" placeholder="Enter EMD" required>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-bold small text-muted mb-2">Tender Progressing Fee</label>
+                        <input type="number" name="TenderProFee" [(ngModel)]="formData.TenderProFee"
+                            class="form-control border-2 shadow-none" placeholder="Enter Fee" required>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-bold small text-muted mb-2">EMD Document Type</label>
+                        <ng-select class="border-2 rounded shadow-none form-control" appendTo="body"
+                            [items]="MASDOCUMENTTYPEList" bindLabel="dtypename" bindValue="dtypeid"
+                            placeholder="Select EMD Document Type" [(ngModel)]="formData.DocTypeId" name="DocTypeId"
+                            (change)="onSelectedItem($event)" required>
+                        </ng-select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-bold small text-muted mb-2">
+                            Document No (FDR/NEFT/RTGS/DD/SD)
+                        </label>
+                        <input class="form-control form-control-lg fs-6 border-2 shadow-none"
+                            placeholder="Enter Document or UTR No" type="text" name="EmdDocNo"
+                            [(ngModel)]="formData.EmdDocNo" required>
+                        <div class="form-text text-primary-emphasis bg-primary-subtle p-2 rounded-2 mt-2 small">
+                            <i class="bi bi-info-circle-fill me-1"></i>
+                            Note: For multiple UTRs, separate them with ' / '
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-bold small text-muted mb-2">Remarks</label>
+                        <textarea name="Remarks" [(ngModel)]="formData.Remarks"
+                            class="form-control border-2 shadow-none" rows="2" placeholder="Add remarks..."></textarea>
+                    </div>
+
+                    <div class="col-12 border-top pt-4 mt-2 text-center">
+                        <button type="button" class="btn btn-primary px-5 py-2 fw-bold" (click)="saveParticipation()">
+                            Save Supplier
+                        </button>
+                    </div>
+                </div>
+            </form>
+          <form>
+            <div class="row g-4">
+                <div class="col-12 col-md-6">
+                    <label class="form-label fw-bold small text-muted mb-2">
+                        <i class="bi bi-person-check me-1"></i>Select Supplier
+                    </label>
+                     <ng-select class="border-2 rounded shadow-none form-control" appendTo="body"
+                            [items]="Supplierlist" bindLabel="name" bindValue="supplier_id"
+                            placeholder="Search & Select Supplier"  name="supplier_id"
+                            (change)="onSelectedItem($event)" required>
+                        </ng-select>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label fw-bold small text-muted mb-2">
+                        <i class="bi bi-currency-rupee me-1"></i>EMD 
+                    </label>
+                    <input type="number" class="form-control form-control-lg fs-6 border-2 shadow-none" 
+                           placeholder="Enter EMD Amount">
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label fw-bold small text-muted mb-2">
+                        <i class="bi bi-receipt me-1"></i>Tender Progressing Fee
+                    </label>
+                    <input type="text" 
+       name="emdAmountField" 
+       class="form-control form-control-lg fs-6 border-2 shadow-none" 
+       [(ngModel)]="EmdAmount" 
+       placeholder="Enter Fee">
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label fw-bold small text-muted mb-2">
+                        <i class="bi bi-file-earmark-text me-1"></i>EMD Document Type
+                    </label>
+                   
+                     <ng-select class="border-2 rounded shadow-none form-control" appendTo="body"
+                            [items]="MASDOCUMENTTYPEList" bindLabel="dtypename" bindValue="dtypeid"
+                            placeholder="Select EMD Document Type"  name="dtypeid"
+                            (change)="onSelectedItem($event)" required>
+                        </ng-select>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label fw-bold small text-muted mb-2">
+                        <i class="bi bi-hash me-1"></i>Document No (FDR/NEFT/RTGS/DD/SD)
+                    </label>
+                    <input class="form-control form-control-lg fs-6 border-2 shadow-none" 
+                           placeholder="Enter Document or UTR No">
+                    <div class="form-text text-primary-emphasis bg-primary-subtle p-2 rounded-2 mt-2 small">
+                        <i class="bi bi-info-circle-fill me-1"></i>
+                        Note: For multiple UTRs, separate them with ' / '
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label fw-bold small text-muted mb-2">
+                        <i class="bi bi-chat-left-dots me-1"></i>Remarks
+                    </label>
+                    <textarea class="form-control border-2 shadow-none" rows="2" 
+                              placeholder="Add remarks here..."></textarea>
+                </div>
+                <div class="col-12 border-top pt-4 mt-2">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-4 col-lg-3">
+                            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm rounded-3"
+                                (click)="GetItemEligibility()">Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form> 
+        </div>
+    </div> -->
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden" *ngIf="itemsDtails?.length > 0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-dark text-white">
+                    <tr class="text-center small">
+                        <th class="py-3">S.No</th>
+                        <th class="py-3">Category</th>
+                        <th class="py-3 text-start">Item CODE</th>
+                        <th class="py-3 text-start">Item Details</th>
+                        <th class="py-3" style="width: 130px;">Tender Qty</th>
+                        <th class="py-3" style="width: 150px;">EMD Amount</th>
+                        <th class="py-3">RC Status</th>
+                        <!-- <th class="py-3">RC Days Valid</th>
+                        <th class="py-3">Action</th> -->
+                    </tr>
+                </thead>
+                <tbody class="text-center border-top-0">
+                    <tr *ngFor="let item of itemsDtails; let i = index" class="animate__animated animate__fadeInUp">
+                        <td class="text-muted fw-bold">{{ i + 1 }}</td>
+                        <td>
+                            <span class="badge rounded-pill bg-info-subtle text-info border border-info-subtle px-3">
+                                {{ item.Eqtype }}
+                            </span>
+                        </td>
+                        <td class="text-start">
+                            <!-- <div class="fw-bold text-dark">{{ item.item_name }}</div> -->
+                            <div class="text-muted x-small">CODE: {{ item.item_code_as_per_tender || 'N/A' }}</div>
+                        </td>
+                        <td class="text-start">
+                            <div class="fw-bold text-dark">{{ item.item_name }}</div>
+                            <!-- <div class="text-muted x-small">CODE: {{ item.item_code_as_per_tender || 'N/A' }}</div> -->
+                        </td>
+
+                        <td>
+                            <!-- Quantity binding -->
+                            <input type="number" class="form-control form-control-sm text-center shadow-xs border-2"
+                                [(ngModel)]="item.tender_qty" placeholder="0">
+                        </td>
+                        <td>
+                            <div class="input-group input-group-sm shadow-xs border-2">
+                                <span class="input-group-text bg-white border-end-0">₹</span>
+                                <input type="number" class="form-control border-start-0" [(ngModel)]="item.emd_amt"
+                                    placeholder="0">
+                            </div>
+                        </td>
+                        <td>
+                            <!-- RC Status Conditional Color   -->
+                            <span [ngClass]="item.RCStatus === 'RC Valid' ? 'text-success' : 'text-danger'"
+                                class="fw-bold small">
+                                <i [ngClass]="item.RCStatus === 'RC Valid' ? 'bi bi-check-circle' : 'bi bi-x-circle'"
+                                    class="me-1"></i>
+                                {{ item.RCStatus }}
+                            </span>
+                        </td>
+                    
+                    </tr>
+
+                    <!-- No Data Message -->
+                    <tr *ngIf="itemsDtails?.length === 0">
+                        <td colspan="7" class="py-5 text-center text-muted">
+                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                            No items found. Please search and select an item.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer remains same -->
+    </div>
+    <!-- Table Card Start -->
+
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden animate__animated animate__fadeIn">
+
+        <!-- Table Body -->
+        <div class="table-responsive custom-table-height">
+            <table class="table table-hover align-middle mb-0" mat-table matTableExporter [dataSource]="dataSource"
+                #exporter="matTableExporter" matSort #sort="matSort">
+                <!-- S.No -->
+                <ng-container matColumnDef="sno">
+                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center py-3"
+                        style="width: 80px;"> S.No </th>
+                    <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold"> {{i +
+                        1}} </td>
+                </ng-container>
+
+                <!-- Item Code -->
+                <ng-container matColumnDef="SupplierName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Supplier</th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
+                            {{element.SupplierName}}
+                        </span>
+                    </td>
+                </ng-container>
+                <!-- EMD Amount -->
+                <ng-container matColumnDef="Emd">
+                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-end pe-4"> EMD Amount </th>
+                    <td mat-cell *matCellDef="let element" class="text-end pe-4 text-success fw-bold">
+                        {{element.Emd | currency:'INR':'symbol':'1.0-0'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="TpAmount">
+                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-end pe-4"> TP Amount </th>
+                    <td mat-cell *matCellDef="let element" class="text-end pe-4 text-success fw-bold">
+                        {{element.TpAmount | currency:'INR':'symbol':'1.0-0'}}
+                    </td>
+                </ng-container>
+                <!-- Tender Qty -->
+                <ng-container matColumnDef="EmdDocType">
+                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center">EMD Doc Type</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        <span class="fw-bold">{{element.EmdDocType}}</span>
+                    </td>
+                </ng-container>
+                <!-- Item Name -->
+                <ng-container matColumnDef="EmdDocNo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white text-center">EMD Doc No</th>
+                    <td mat-cell *matCellDef="let element" class="fw-medium text-dark text-center"> {{element.EmdDocNo}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Remark">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Remark</th>
+                    <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> {{element.Remark}} </td>
+                </ng-container>
+                <ng-container matColumnDef="PItems">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white text-center">PItems</th>
+                    <td mat-cell *matCellDef="let element" class="fw-medium text-center">
+                        <!-- Clickable Link -->
+                        <a (click)="OpenCoverAitemsReports(element)" class="custom-link text-decoration-none">
+                            {{element.PItems}}
+                        </a>
+                    </td>
+                </ng-container>
+                <!-- <ng-container matColumnDef="PItems">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white text-center">PItems</th>
+                    <td mat-cell *matCellDef="let element" class="fw-medium text-dark text-center">
+                        <a></a>
+                        {{element.PItems}} </td>
+                </ng-container> -->
+                <!-- <ng-container matColumnDef="ADDItems">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">ADD Items</th>
+                    <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> {{element.ADDItems}} </td>
+                </ng-container> -->
+                <ng-container matColumnDef="ADDItems">
+                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Action </th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        <!-- Add Button with Icon -->
+                        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm"
+                            (click)="addItemToTender(element)">
+                            <i class="bi bi-plus-circle me-1"></i> Add Item
+                        </button>
+                    </td>
+                </ng-container>
+
+                <!-- Rows Configuration -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns" class="sticky-top"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="row-hover-effect"></tr>
+
+                <!-- No Data State -->
+                <tr *matNoDataRow>
+                    <td class="text-center py-5 text-muted" colspan="5">
+                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                        No data found for this tender.
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Paginator Footer -->
+        <div class="bg-light border-top">
+            <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="bg-transparent"></mat-paginator> -->
+            <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons
+                class="bg-transparent"></mat-paginator>
+        </div>
+    </div>
+</section>

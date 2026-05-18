@@ -1,0 +1,42 @@
+<div class="legacy-page">
+  <div class="legacy-title">Purchase Orders</div>
+
+  <div class="legacy-card">
+    <div class="filter-row">
+      <label>
+        PO Financial Year
+        <input type="text" [(ngModel)]="poFinancialYear" />
+      </label>
+      <label>
+        Equipment
+        <input type="text" [(ngModel)]="equipmentFilter" placeholder="Search equipment" />
+      </label>
+      <button type="button" class="btn-show">Show</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Equipment</th>
+          <th>Indent Date</th>
+          <th>Indent Qty</th>
+          <th>PO No</th>
+          <th>PO Qty</th>
+          <th>Supplier</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rows; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ row.equipment }}</td>
+          <td>{{ row.indentDate }}</td>
+          <td>{{ row.indentQty }}</td>
+          <td>{{ row.poNo }}</td>
+          <td>{{ row.poQty }}</td>
+          <td>{{ row.supplierName }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

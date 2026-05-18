@@ -1,0 +1,11 @@
+/* Link ka default style aur hover effect */
+.custom-link {
+    color: #0d6efd; /* Bootstrap primary blue */
+    cursor: pointer; /* Hover par pointer/hand icon layega */
+    transition: all 0.2s ease-in-out;
+}
+
+.custom-link:hover {
+    color: #0a58ca; /* Darker blue on hover */
+    text-decoration: underline !important; /* Underline on hover */
+}

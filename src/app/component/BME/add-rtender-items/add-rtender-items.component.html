@@ -1,0 +1,544 @@
+<!-- <section class="container-fluid bg-light min-vh-100 py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold text-primary mb-1">Add Remove Items from Tender</h2>
+        <p class="text-muted mb-0 fs-6">Manage and track Tender Reports.</p>
+    </div>
+    <div
+        class="card shadow-sm border-0 rounded-3 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn">
+        <div class="card-header bg-white border-bottom-0 pt-3 pb-2">
+            <h5 class="fw-bold text-secondary mb-0">
+                <i class="bi bi-funnel-fill text-primary me-2"></i> Basic Identification
+            </h5>
+        </div>
+      <div class="card-body bg-light bg-opacity-50 p-4">
+        <div class="table-responsive animate__animated animate__fadeIn">
+            <table class="table table-hover align-middle shadow-sm border rounded-3 overflow-hidden bg-white">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th class="py-3 ps-4" style="width: 25%;">
+                            <i class="bi bi-hash me-2"></i>Tender No
+                        </th>
+                        <th class="py-3" style="width: 20%;">
+                            <i class="bi bi-calendar3 me-2"></i>Tender Date
+                        </th>
+                        <th class="py-3 pe-4" style="width: 55%;">
+                            <i class="bi bi-card-text me-2"></i>Description
+                        </th>
+                    </tr>
+                </thead>
+        
+                <tbody>
+                    <tr>
+                        <td class="ps-4 fw-bold text-dark">
+                           dstrsr3452345
+                        </td>
+                        <td class="text-secondary">
+                            <span class="badge bg-light text-dark border">
+                              1-02-24
+                            </span>
+                        </td>
+                        <td class="pe-4 text-muted small lh-sm">
+                           tsting
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-body bg-light bg-opacity-50">
+        <form>
+            <div class="row align-items-end g-3 mb-4">
+                <div class="col-12 col-md-12">
+                    <label class="form-label fw-semibold text-muted small">Select Items<span
+                            class="text-danger">*</span></label>
+                    <ng-select class="bg-white rounded shadow-sm form-control" [items]="[]" appendTo="body" bindLabel="year"
+                        bindValue="financial_year_id" placeholder="Search Year..." name="FinancialYearId" required>
+                    </ng-select>
+                </div>
+            </div>
+            <div class="card shadow-sm border-0 rounded-3 mt-4">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle mb-0">
+            <thead class="bg-primary text-white text-center">
+                <tr>
+                    <th class="py-3">S.No.</th>
+                    <th class="py-3">Category</th>
+                    <th class="py-3">Item Code</th>
+                    <th class="py-3" style="width: 25%;">Item Name</th>
+                    <th class="py-3">Tender Qty</th>
+                    <th class="py-3">EMD Amt</th>
+                    <th class="py-3">RC Status</th>
+                    <th class="py-3">RC Days Valid</th>
+                    <th class="py-3">Action</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr >
+                    <td> 1 </td>
+                    <td><span class="badge bg-info-subtle text-info px-2 py-1">Equipment</span></td>
+                    <td class="text-muted">item.item_code || '-' </td>
+                    <td class="text-start fw-medium text-primary">item.item_name </td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm border-secondary-subtle mx-auto text-center" 
+                               style="width: 100px;" >
+                    </td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm border-secondary-subtle mx-auto text-center" 
+                               style="width: 120px;" >
+                    </td>
+                    <td>
+                        <span class="text-danger small fw-bold">RC Not Valid</span>
+                    </td>
+                    <td>0</td>
+                    <td>
+                        <button class="btn btn-outline-dark btn-sm shadow-sm px-3 hover-add-btn">
+                            Add in Tender
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+             <div class="row">
+                    <div class="col-12 d-flex justify-content-center pt-3 border-top">
+                        <button type="submit" class="btn btn-primary px-5 shadow-sm me-3 rounded-pill fw-semibold"
+                           >
+                            <i class="bi bi-search me-2"></i> Show Select Items
+                        </button>
+
+                        <button type="button" class="btn btn-outline-secondary px-4 shadow-sm rounded-pill fw-semibold me-2"
+                           >
+                            <i class="bi bi-arrow-counterclockwise me-2"></i> Reset
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary px-4 shadow-sm rounded-pill fw-semibold "
+                           >
+                            <i class="bi bi-arrow-counterclockwise me-2"></i> Go Back
+                        </button>
+                    </div>
+                </div>
+        </form>
+    </div>
+
+       
+    </div>
+</section> -->
+<section class="container-fluid bg-light min-vh-100 py-4 px-lg-5">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="fw-bold text-primary mb-1">
+                <i class="bi bi-box-seam me-2"></i>Item Management
+            </h2>
+            <p class="text-muted mb-0 small">Add or remove items specifically for this tender.</p>
+        </div>
+        <button class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm" (click)="goBack()">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </button>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden">
+        <div class="card-header bg-white py-3 border-bottom-0">
+            <h6 class="fw-bold text-secondary mb-0">
+                <i class="bi bi-info-circle-fill text-primary me-2"></i>Tender Reference
+            </h6>
+        </div>
+        <div class="table-responsive px-3 pb-3">
+            <table class="table table-sm table-borderless align-middle mb-0 bg-light rounded-3">
+                <thead class="text-muted small text-uppercase">
+                    <tr>
+                        <th class="ps-3 py-2">Tender No.</th>
+                        <th class="py-2">Release Date</th>
+                        <th class="py-2 pe-3">Brief Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ps-3 fw-bold text-primary">{{TenderDetails.TENDER_NO}}</td>
+                        <td><span class="badge bg-white text-dark border shadow-xs px-2">{{TenderDetails.TENDER_DATE}}</span></td>
+                        <td class="pe-3 text-truncate" style="max-width: 400px;">{{TenderDetails.TENDER_DESCRIPTION}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4">
+        <div class="card-body p-4">
+            <form>
+                <div class="row align-items-end g-3">
+                    <div class="col-12 col-lg-9">
+                        <label class="form-label fw-bold text-dark small mb-2">
+                            <i class="bi bi-search me-1"></i>Search & Select Items
+                        </label>
+                          <ng-select class="border-2 rounded shadow-none form-control" appendTo="body" [items]="CoverStatusList"
+                        bindLabel="item_name" bindValue="item_id" placeholder="Select Status" [(ngModel)]="TenderDetails.item_id" name="csid"
+                        (change)="onSelectedItem($event)" required>
+                    </ng-select>
+                        <!-- <ng-select 
+                            class="custom-select shadow-sm" 
+                            [items]="CoverStatusList" 
+                            placeholder="Type item name or code to search..." 
+                            name="FinancialYearId">
+                        </ng-select> -->
+                    </div>
+                    <div class="col-12 col-lg-3">
+                        <button type="submit" class="btn btn-primary w-100 shadow rounded-3 py-2 fw-bold" (click)="GetItemEligibility()">
+                            <i class="bi bi-funnel me-2"></i>Show Items
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<div class="card shadow-lg border-0 rounded-4 overflow-hidden" *ngIf="itemsDtails?.length > 0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-dark text-white">
+                <tr class="text-center small">
+                    <th class="py-3">S.No</th>
+                    <th class="py-3">Category</th>
+                    <th class="py-3 text-start">Item CODE</th>
+                    <th class="py-3 text-start">Item Details</th>
+                    <th class="py-3" style="width: 130px;">Tender Qty</th>
+                    <th class="py-3" style="width: 150px;">EMD Amount</th>
+                    <th class="py-3">RC Status</th>
+                    <th class="py-3">RC Days Valid</th>
+                    <th class="py-3">Action</th>
+                </tr>
+            </thead>
+            <tbody class="text-center border-top-0">
+                <!-- Loop start here -->
+                <tr *ngFor="let item of itemsDtails; let i = index" class="animate__animated animate__fadeInUp">
+                    <td class="text-muted fw-bold">{{ i + 1 }}</td>
+                    <td>
+                        <span class="badge rounded-pill bg-info-subtle text-info border border-info-subtle px-3">
+                            {{ item.Eqtype }}
+                        </span>
+                    </td>
+                     <td class="text-start">
+                        <!-- <div class="fw-bold text-dark">{{ item.item_name }}</div> -->
+                        <div class="text-muted x-small">CODE: {{ item.item_code_as_per_tender || 'N/A' }}</div>
+                    </td>
+                    <td class="text-start">
+                        <div class="fw-bold text-dark">{{ item.item_name }}</div>
+                        <!-- <div class="text-muted x-small">CODE: {{ item.item_code_as_per_tender || 'N/A' }}</div> -->
+                    </td>
+                   
+                    <td>
+                        <!-- Quantity binding -->
+                        <input type="number" class="form-control form-control-sm text-center shadow-xs border-2" 
+                               [(ngModel)]="item.tender_qty" placeholder="0">
+                    </td>
+                    <td>
+                        <div class="input-group input-group-sm shadow-xs border-2">
+                            <span class="input-group-text bg-white border-end-0">₹</span>
+                            <input type="number" class="form-control border-start-0" 
+                                   [(ngModel)]="item.emd_amt" placeholder="0">
+                        </div>
+                    </td>
+                    <td>
+                        <!-- RC Status Conditional Color   -->
+                        <span [ngClass]="item.RCStatus === 'RC Valid' ? 'text-success' : 'text-danger'" class="fw-bold small">
+                            <i [ngClass]="item.RCStatus === 'RC Valid' ? 'bi bi-check-circle' : 'bi bi-x-circle'" class="me-1"></i>
+                            {{ item.RCStatus }}
+                        </span>
+                    </td>
+                    <td>
+                        <!--RC Days Valid -->
+                        <span  class="fw-bold small">
+                            <!-- <i [ngClass]="item.RCStatus === 'RC Valid' ? 'bi bi-check-circle' : 'bi bi-x-circle'" class="me-1"></i> -->
+                            {{ item.daysRCValid }}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-dark btn-sm rounded-pill px-3 hover-add-btn" (click)="addItemToTender(item)">
+                            <i class="bi bi-plus-lg me-1"></i> Add
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- No Data Message -->
+                <tr *ngIf="itemsDtails?.length === 0">
+                    <td colspan="7" class="py-5 text-center text-muted">
+                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                        No items found. Please search and select an item.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Footer remains same -->
+</div>
+<!-- Table Card Start -->
+
+   <div class="card shadow-sm border-0 rounded-4 overflow-hidden animate__animated animate__fadeIn">
+    <!-- Header Section -->
+    <!-- <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+        <h6 class="mb-0 fw-bold text-primary">
+            <i class="bi bi-list-stars me-2"></i>Linked Tender Items
+        </h6>
+        <div class="btn-group">
+            <button class="btn btn-sm btn-outline-success rounded-pill px-3" (click)="exporter.exportTable('xlsx')">
+                <i class="bi bi-file-earmark-excel me-1"></i> Export Excel
+            </button>
+        </div>
+    </div> -->
+
+    <!-- Table Body -->
+    <div class="table-responsive custom-table-height">
+        <table class="table table-hover align-middle mb-0" mat-table  matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort
+                                        #sort="matSort">
+
+            <!-- S.No -->
+            <ng-container matColumnDef="sno">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center py-3" style="width: 80px;"> S.No </th>
+                <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold"> {{i + 1}} </td>
+            </ng-container>
+
+            <!-- Item Code -->
+            <ng-container matColumnDef="ItemCodeAsPerTender">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white"> Item Code </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
+                        {{element.ItemCodeAsPerTender}} 
+                    </span>
+                </td>
+            </ng-container>
+
+            <!-- Item Name -->
+            <ng-container matColumnDef="ItemName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white"> Item Name </th>
+                <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> {{element.ItemName}} </td>
+            </ng-container>
+
+            <!-- Tender Qty -->
+            <ng-container matColumnDef="TenderQuantity">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Tender Qty </th>
+                <td mat-cell *matCellDef="let element" class="text-center"> 
+                    <span class="fw-bold">{{element.TenderQuantity}}</span>
+                </td>
+            </ng-container>
+
+            <!-- EMD Amount -->
+            <ng-container matColumnDef="EmdAmount">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-end pe-4"> EMD Amount </th>
+                <td mat-cell *matCellDef="let element" class="text-end pe-4 text-success fw-bold"> 
+                    {{element.EmdAmount | currency:'INR':'symbol':'1.0-0'}} 
+                </td>
+            </ng-container>
+
+            <!-- Rows Configuration -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="sticky-top"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="row-hover-effect"></tr>
+            
+            <!-- No Data State -->
+            <tr *matNoDataRow>
+                <td class="text-center py-5 text-muted" colspan="5">
+                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                    No data found for this tender.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Paginator Footer -->
+    <div class="bg-light border-top">
+        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="bg-transparent"></mat-paginator> -->
+          <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]"
+                                        showFirstLastButtons class="bg-transparent"></mat-paginator>
+    </div>
+</div>
+</section>
+ <!-- <div class="card-body bg-light bg-opacity-50">
+            <form >
+
+                <div class="row align-items-end g-3 mb-4">
+
+                  
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <label class="form-label fw-semibold text-muted small">Tender No <span
+                                class="text-danger">*</span></label>
+                       <textarea type="text" rows="1" class="form-control ps-0" placeholder="Type here..."
+                                name="tenderno" required></textarea>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <label class="form-label fw-semibold text-muted small">Start Date<span
+                                class="text-danger">*</span></label>
+                       <input type="date" class="form-control  ps-0" placeholder="Type here..."
+                                name="sdate" required>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">End date <span
+                                class="text-danger">*</span></label>
+                       <input type="date" class="form-control  ps-0" placeholder="Type here..."
+                                name="edate" required>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Extended Date<span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                              <span class="input-group-text bg-white text-muted border-end-0">Extended Date</span>
+                            <input type="date" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="exdate" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Financial Year <span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm"> <span class="input-group-text bg-white text-muted border-end-0">Financial Year</span>
+                            <input type="text" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="fyear" required>
+                         
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Tender Description<span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-white text-muted border-end-0">Tender Description</span>
+                            <textarea type="text" row="1" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="TDescription" required></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Items Warranty in year<span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <input type="number" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="iwiy" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Supply Days for Domestic Equipments <span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <input type="number" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="sdde" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Supply Days for International Equipments<span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <input type="number" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="sdie" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Cover A Date<span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <input type="date" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="cadate" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Cover B Date <span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <input type="date" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="cbdate" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Cover C Date <span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <input type="date" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="ccdate" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Cover Demo Date 1 <span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <input type="date" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="D1date" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Cover Demo Date 2 <span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <input type="date" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="D2date" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Cover Demo Date 3 <span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <input type="date" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="cd3date" required>
+                        </div>
+                    </div>
+                      
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Cancelled <span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <input type="date" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="candate" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Remarks<span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <textarea type="text" row="1" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="Remarks" required></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">Tender ID<span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <textarea type="text" row="1" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="tid" required></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">eProc Tender No<span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <textarea type="text" row="1" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="epno" required></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeIn" >
+                        <label class="form-label fw-semibold text-muted small">CGMSC Upload ID<span
+                                class="text-danger">*</span></label>
+                        <div class="input-group shadow-sm">
+                            <textarea type="text" row="1" class="form-control border-start-0 ps-0" placeholder="Type here..."
+                                name="epno" required></textarea>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center pt-3 border-top">
+                        <button type="submit" class="btn btn-primary px-5 shadow-sm me-3 rounded-pill fw-semibold"
+                           >
+                            <i class="bi bi-search me-2"></i> Search Data
+                        </button>
+
+                        <button type="button" class="btn btn-outline-secondary px-4 shadow-sm rounded-pill fw-semibold me-2"
+                           >
+                            <i class="bi bi-arrow-counterclockwise me-2"></i> Reset
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary px-4 shadow-sm rounded-pill fw-semibold "
+                           >
+                            <i class="bi bi-arrow-counterclockwise me-2"></i> Go Back
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div> -->

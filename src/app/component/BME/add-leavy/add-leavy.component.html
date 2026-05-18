@@ -1,0 +1,378 @@
+<section class="container-fluid bg-light min-vh-100 py-4 px-lg-5">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="fw-bold text-primary mb-1">
+                <i class="bi bi-exclamation-triangle me-2"></i> Add Levy / Penalty
+            </h2>
+            <p class="text-muted mb-0 small">Manage and apply penalty charges or levies for this specific tender.</p>
+        </div>
+        <button class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm" (click)="goBack()">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </button>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden">
+        <div class="card-header bg-white py-3 border-bottom-0">
+            <h6 class="fw-bold text-secondary mb-0">
+                <i class="bi bi-info-circle-fill text-primary me-2"></i>Tender Reference
+            </h6>
+        </div>
+        <div class="table-responsive px-3 pb-3">
+            <table class="table table-sm table-borderless align-middle mb-0 bg-light rounded-3">
+                <thead class="text-muted small text-uppercase">
+                    <tr>
+                        <th class="ps-3 py-2">Tender No.</th>
+                        <th class="py-2">Release Date</th>
+                        <th class="py-2 pe-3">Brief Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ps-3 fw-bold text-primary">{{TenderDetails.TENDER_NO}}</td>
+                        <td><span class="badge bg-white text-dark border shadow-xs px-2">{{TenderDetails.TENDER_DATE}}</span></td>
+                        <td class="pe-3 text-truncate" style="max-width: 400px;">{{TenderDetails.TENDER_DESCRIPTION}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4">
+       <div class="card-body bg-light bg-opacity-50">
+        <form #penaltyForm="ngForm" (ngSubmit)="onSubmit(penaltyForm)">
+    <div class="row g-3 mb-4 animate__animated animate__fadeIn">
+        <div class="col-12">
+            <h6 class="fw-bold text-primary border-bottom pb-2">
+                <i class="bi bi-shield-exclamation me-2"></i>Cancellation & Penalty Terms
+            </h6>
+        </div>
+
+        <!-- <div class="col-12 col-md-6 col-lg-3">
+            <div class="form-floating shadow-sm">
+                <input type="number" class="form-control border" name="CancellationDays" [(ngModel)]="levyData.CancellationDays" required>
+                <label>Cancellation Days</label>
+            </div>
+        </div> -->
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="form-floating shadow-sm">
+                <input type="number" class="form-control border" name="CancellationDays" [(ngModel)]="levyData.CancellationDays" required>
+                <label>Cancellation Days</label>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="form-floating shadow-sm">
+                <input type="number" class="form-control border" name="CancellationPercentage" [(ngModel)]="levyData.CancellationPercentage" required>
+                <label>Cancellation Percent (%)</label>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="form-floating shadow-sm">
+                <input type="number" class="form-control border" name="PenaltyPercent" [(ngModel)]="levyData.PenaltyPercent" required>
+                <label>Penalty % (>60 & <120)</label>
+            </div>
+        </div>
+              <div class="col-12 col-md-6 col-lg-3">
+            <label class="form-label fw-semibold text-muted small d-block">Penalty Type</label>
+            <div class="btn-group w-100 shadow-sm rounded" role="group">
+                <input type="radio" class="btn-check" name="PenaltyType" id="pDays" value="D" [(ngModel)]="levyData.PenaltyType">
+                <label class="btn btn-outline-primary border-0" for="pDays">Days</label>
+                
+                <input type="radio" class="btn-check" name="PenaltyType" id="pWeeks" value="W" [(ngModel)]="levyData.PenaltyType">
+                <label class="btn btn-outline-primary border-0" for="pWeeks">Weeks</label>
+            </div>
+        </div>
+        <!-- <div class="col-12 col-md-6 col-lg-3">
+            <label class="form-label fw-semibold text-muted small d-block">Penalty Type</label>
+            <div class="btn-group w-100 shadow-sm rounded" role="group">
+                <input type="radio" class="btn-check" name="PenaltyType" id="pDays" value="Days" [(ngModel)]="levyData.PenaltyType">
+                <label class="btn btn-outline-primary border-0" for="pDays">Days</label>
+                
+                <input type="radio" class="btn-check" name="PenaltyType" id="pWeeks" value="Week" [(ngModel)]="levyData.PenaltyType">
+                <label class="btn btn-outline-primary border-0" for="pWeeks">Weeks</label>
+            </div>
+        </div> -->
+
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-floating shadow-sm">
+                <input type="number" class="form-control border" name="PenaltyPercent120" [(ngModel)]="levyData.PenaltyPercent120" required>
+                <label>Penalty % (121-180 Days)</label>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-floating shadow-sm">
+                <input type="number" class="form-control border" name="LogoCharges" [(ngModel)]="levyData.LogoCharges" required>
+                <label>Logo Charges (₹)</label>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-floating shadow-sm">
+                <input type="number" class="form-control border" name="LogoChargesUpper" [(ngModel)]="levyData.LogoChargesUpper" required>
+                <label>Logo Upper Limit (₹)</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <!-- <div class="col-12 col-md-6 col-lg-4">
+            <label class="form-label small text-muted fw-bold">20% Release Type</label>
+            <div class="d-flex gap-2">
+                <div class="form-check flex-fill p-0" *ngFor="let opt of ['Month', 'Week', 'NR']">
+                    <input class="btn-check" type="radio" [name]="'ReleaseType'" [id]="'rel'+opt" [value]="opt" [(ngModel)]="levyData.ReleaseType">
+                    <label class="btn btn-outline-success w-100 border" [for]="'rel'+opt">{{opt}}</label>
+                </div>
+            </div>
+        </div> -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <label class="form-label small text-muted fw-bold">20% Release Type</label>
+            <div class="d-flex gap-2">
+                <div class="form-check flex-fill p-0">
+                    <input class="btn-check" type="radio" name="ReleaseType" id="relM" value="M" [(ngModel)]="levyData.ReleaseType">
+                    <label class="btn btn-outline-success w-100 border" for="relM">Month</label>
+                </div>
+                <div class="form-check flex-fill p-0">
+                    <input class="btn-check" type="radio" name="ReleaseType" id="relW" value="W" [(ngModel)]="levyData.ReleaseType">
+                    <label class="btn btn-outline-success w-100 border" for="relW">Week</label>
+                </div>
+                <div class="form-check flex-fill p-0">
+                    <input class="btn-check" type="radio" name="ReleaseType" id="relN" value="N" [(ngModel)]="levyData.ReleaseType">
+                    <label class="btn btn-outline-success w-100 border" for="relN">NR</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-floating shadow-sm">
+                <input type="number" class="form-control border" name="ReleaseValue" [(ngModel)]="levyData.ReleaseValue">
+                <label>Release Duration (No. of W/M)</label>
+            </div>
+        </div>
+         <div class="col-12 col-md-6 col-lg-4">
+            <label class="form-label small text-muted fw-bold">Performance Certificate Required?</label>
+            <div class="d-flex gap-2">
+                <div class="form-check flex-fill p-0">
+                    <input class="btn-check" type="radio" name="PerformanceReq" id="perfY" value="Y" [(ngModel)]="levyData.PerformanceReq">
+                    <label class="btn btn-outline-info w-100 border" for="perfY">Yes</label>
+                </div>
+                <div class="form-check flex-fill p-0">
+                    <input class="btn-check" type="radio" name="PerformanceReq" id="perfN" value="N" [(ngModel)]="levyData.PerformanceReq">
+                    <label class="btn btn-outline-info w-100 border" for="perfN">No</label>
+                </div>
+                <div class="form-check flex-fill p-0">
+                    <input class="btn-check" type="radio" name="PerformanceReq" id="perfA" value="A" [(ngModel)]="levyData.PerformanceReq">
+                    <label class="btn btn-outline-info w-100 border" for="perfA">N/A</label>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-12 col-md-6 col-lg-4">
+            <label class="form-label small text-muted fw-bold">Performance Certificate Required?</label>
+            <div class="d-flex gap-2">
+                <div class="form-check flex-fill p-0" *ngFor="let opt of ['Yes', 'No', 'NA']">
+                    <input class="btn-check" type="radio" name="PerformanceReq" [id]="'perf'+opt" [value]="opt" [(ngModel)]="levyData.PerformanceReq">
+                    <label class="btn btn-outline-info w-100 border" [for]="'perf'+opt">{{opt}}</label>
+                </div>
+            </div>
+        </div> -->
+    </div>
+
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center pt-3 border-top gap-3">
+            <button type="submit" class="btn btn-success px-5 shadow rounded-pill fw-bold" [disabled]="!penaltyForm.valid">
+                <i class="bi bi-save me-2"></i> Save Data
+            </button>
+            <button type="button" (click)="reset()" class="btn btn-outline-secondary px-4 rounded-pill">Reset</button>
+        </div>
+    </div>
+</form>
+
+    <!-- <form #penaltyForm="ngForm">
+        <div class="row g-3 mb-4 animate__animated animate__fadeIn">
+            <div class="col-12">
+                <h6 class="fw-bold text-primary border-bottom pb-2">
+                    <i class="bi bi-shield-exclamation me-2"></i>Cancellation & Penalty Terms
+                </h6>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-floating shadow-sm">
+                    <input type="number" class="form-control border" id="canDays" placeholder="Days" name="canDays">
+                    <label for="canDays">Cancellation Days</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-floating shadow-sm">
+                    <input type="number" class="form-control border" id="canPercent" placeholder="%" name="canPercent">
+                    <label for="canPercent">Cancellation Percent (%)</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-floating shadow-sm">
+                    <input type="number" class="form-control border" id="penalty1" placeholder="%" name="penalty60_120">
+                    <label for="penalty1">Penalty % (>60 & <120)</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <label class="form-label fw-semibold text-muted small d-block">Penalty Type</label>
+                <div class="btn-group w-100 shadow-sm rounded" role="group">
+                    <input type="radio" class="btn-check" name="penaltyType" id="pDays" value="Days" checked>
+                    <label class="btn btn-outline-primary border-0" for="pDays">Days</label>
+                    <input type="radio" class="btn-check" name="penaltyType" id="pWeeks" value="Week">
+                    <label class="btn btn-outline-primary border-0" for="pWeeks">Weeks</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-floating shadow-sm">
+                    <input type="number" class="form-control border" id="penalty2" placeholder="%" name="penalty121_180">
+                    <label for="penalty2">Penalty % (121-180 Days)</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-floating shadow-sm">
+                    <input type="number" class="form-control border" id="logoCharges" placeholder="Amount" name="logoCharges">
+                    <label for="logoCharges">Logo Charges (₹)</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-floating shadow-sm">
+                    <input type="number" class="form-control border" id="logoLimit" placeholder="Limit" name="logoLimit">
+                    <label for="logoLimit">Logo Upper Limit (₹)</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4 animate__animated animate__fadeIn" style="animation-delay: 0.2s;">
+            <div class="col-12">
+                <h6 class="fw-bold text-success border-bottom pb-2">
+                    <i class="bi bi-gear-wide-connected me-2"></i>Installation & Performance
+                </h6>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <label class="form-label fw-semibold text-muted small d-block">20% Release Type After Installation</label>
+                <div class="d-flex gap-2">
+                    <div class="form-check custom-radio-btn flex-fill">
+                        <input class="btn-check" type="radio" name="relType" id="relMonth" value="Month" checked>
+                        <label class="btn btn-outline-success w-100 border" for="relMonth">Month</label>
+                    </div>
+                    <div class="form-check custom-radio-btn flex-fill">
+                        <input class="btn-check" type="radio" name="relType" id="relWeek" value="Week">
+                        <label class="btn btn-outline-success w-100 border" for="relWeek">Week</label>
+                    </div>
+                    <div class="form-check custom-radio-btn flex-fill">
+                        <input class="btn-check" type="radio" name="relType" id="relNR" value="NR">
+                        <label class="btn btn-outline-success w-100 border" for="relNR">NR</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-floating shadow-sm">
+                    <input type="number" class="form-control border" id="relDuration" placeholder="Duration" name="relDuration">
+                    <label for="relDuration">Release Duration (No. of W/M)</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <label class="form-label fw-semibold text-muted small d-block">Performance Certificate Required?</label>
+                <div class="d-flex gap-2">
+                    <div class="form-check flex-fill">
+                        <input class="btn-check" type="radio" name="perfCert" id="certYes" value="Yes" checked>
+                        <label class="btn btn-outline-info w-100 border" for="certYes">Yes</label>
+                    </div>
+                    <div class="form-check flex-fill">
+                        <input class="btn-check" type="radio" name="perfCert" id="certNo" value="No">
+                        <label class="btn btn-outline-info w-100 border" for="certNo">No</label>
+                    </div>
+                    <div class="form-check flex-fill">
+                        <input class="btn-check" type="radio" name="perfCert" id="certNA" value="NA">
+                        <label class="btn btn-outline-info w-100 border" for="certNA">N/A</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center pt-3 border-top gap-3">
+                <button type="submit" class="btn btn-success px-5 shadow-sm rounded-pill fw-bold">
+                    <i class="bi bi-save me-2"></i> Save Data
+                </button>
+                <button type="button" (click)="reset()" class="btn btn-outline-secondary px-4 rounded-pill fw-semibold">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i> Reset
+                </button>
+                <button type="button" (click)="goBack()" class="btn btn-outline-danger px-4 rounded-pill fw-semibold">
+                    <i class="bi bi-arrow-left me-2"></i> Go Back
+                </button>
+            </div>
+        </div>
+    </form> -->
+</div> 
+    </div>
+
+<!-- Table Card Start -->
+
+<!-- <div class="card shadow-sm border-0 rounded-4 overflow-hidden animate__animated animate__fadeIn">
+    <div class="table-responsive custom-table-height">
+        <table class="table table-hover align-middle mb-0" mat-table matTableExporter [dataSource]="dataSource"
+            #exporter="matTableExporter" matSort #sort="matSort">
+
+            <ng-container matColumnDef="sno">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center py-3" style="width: 80px;">
+                    S.No </th>
+                <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold"> {{i + 1}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ItemCodeAsPerTender">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white"> Item Code </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
+                        {{element.ItemCodeAsPerTender}}
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ItemName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white"> Item Name </th>
+                <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> {{element.ItemName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="TenderQuantity">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Tender Qty </th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                    <span class="fw-bold">{{element.TenderQuantity}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="EmdAmount">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-end pe-4"> EMD Amount </th>
+                <td mat-cell *matCellDef="let element" class="text-end pe-4 text-success fw-bold">
+                    {{element.EmdAmount | currency:'INR':'symbol':'1.0-0'}}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="sticky-top"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="row-hover-effect"></tr>
+
+            <tr *matNoDataRow>
+                <td class="text-center py-5 text-muted" colspan="5">
+                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                    No data found for this tender.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="bg-light border-top">
+        <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons
+            class="bg-transparent"></mat-paginator>
+    </div>
+</div> -->
+</section>

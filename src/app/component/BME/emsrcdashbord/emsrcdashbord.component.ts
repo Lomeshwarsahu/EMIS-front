@@ -68,16 +68,33 @@ mappingForm!: FormGroup;
   
   yearlist: any[] = []; 
   Tenderlist: any[] = []; 
-
+  Supplierrlist: any[] = []; 
+yearId:any;
+statusvalue:any;
+suppId:any;
   dispatchData: any[] = [];
   dataSource!: MatTableDataSource<any>;
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
   
-  displayedColumns: string[] = ['sno','PItemName', 'ItemCode', 'ItemName', 'IsElectrical','ProgReq','SRorBulkEntry','AmcReq'];
-  
+  // displayedColumns: string[] = ['sno','PItemName', 'ItemCode', 'ItemName', 'IsElectrical','ProgReq','SRorBulkEntry','AmcReq'];
+displayedColumns: string[] = [
+  'sno',
+  'contractNumber', 
+  'contractDate', 
+  'supplierName', 
+  'tenderNo', 
+  'tenderDate', 
+  'contractDuration', 
+  'contractSignDate', 
+  'contractEndDate',
+  'status'
+];
   selectedItems: number[] = [];
+status=[{value:0,name:'All'},{value:'C',name:'Completed'},{value:'I',name:'Incomplete'}
 
+]
+  tenderId: any;
   constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
@@ -88,16 +105,36 @@ mappingForm!: FormGroup;
   ) {
     this.dataSource = new MatTableDataSource<any>([]);
     
-    this.mappingForm = this.fb.group({
-      MainItemTypeId: [null, Validators.required]
-    });
+
   }
 
   ngOnInit() {
     this.Getyear(); 
-    this.GetTenderlist(); 
-    this.GetmappedItemsReport(); 
+    // this.GetTenderlist(); 
+    // this.GetmappedItemsReport(); 
   }
+//https://localhost:7036/api/BME/GetSuppliersByTenderId/120
+GetSuppliersByTenderId(event: any) {
+    if (event) {
+     this.tenderId= event.Tenderid;
+        const selectedTenderId = event.Tenderid;
+        console.log('Selected Tender ID:', selectedTenderId);
+            this.api.get(`BME/GetSuppliersByTenderId/${selectedTenderId}`).subscribe({
+      next: (res: any) => {
+        this.Supplierrlist=res;
+        console.log('Supplierrlist',res)
+      },
+      error: (err: any) => {
+        console.log('Error fetching mapped items:', err);
+      }
+    });
+        
+        // this.api.get(`BME/GetSuppliersByTenderId/${selectedTenderId}`)...
+    } else {
+        console.log('Tender cleared');
+        // this.supplierList = []; 
+    }
+}
 // https://localhost:7036/api/GenerateNasti/Getyear
 
   Getyear() {
@@ -115,8 +152,15 @@ mappingForm!: FormGroup;
     });
   }
   // https://localhost:7036/api/BME/GetTenderlist
-  GetTenderlist() {
-    this.api.get('BME/GetTenderlist').subscribe({
+  GetTenderlist(event: any) {
+   if (event) {
+    this.yearId=event.financial_year_id;
+    console.log('yearId',  this.yearId)
+
+        const selectedyearId = event.financial_year_id;
+        // console.log('financial_year_id:', selectedyearId);
+
+    this.api.get(`BME/GetTenderlist/${selectedyearId}`).subscribe({
       next: (res: any) => {
      this.Tenderlist= res; 
       },
@@ -124,16 +168,36 @@ mappingForm!: FormGroup;
         console.log('Error fetching mapped items:', err);
       }
     });
+        
+        // this.api.get(`BME/GetSuppliersByTenderId/${selectedTenderId}`)...
+    } else {
+        console.log('Tender cleared');
+        // this.supplierList = []; 
+    }
   }
-// https://localhost:7036/api/BME/GetmappedItemsReport
-  GetmappedItemsReport() {
+  OnselectSupplierrlist(event:any){
+    // debugger;
+ this.suppId=event.sId;
+   console.log(' this.suppId', this.suppId)
+  }
+  Onselectstatus(event:any){
+    // debugger;
+ this.statusvalue=event.value;
+    console.log('staus',  this.statusvalue)
+  }
+// https://localhost:7036/api/BME/GetRCreports?financialYearId=14&tenderId=12&supplierId=0&status=0
+  GetRCreports() {
+    // debugger;
     this.spinner.show();
-    this.api.get('BME/GetmappedItemsReport').subscribe({
+
+    this.api.get( `BME/GetRCreports?financialYearId=${this.yearId}&tenderId=${this.tenderId}&supplierId=${this.suppId}&status=${this.statusvalue}`).subscribe({
       next: (res: any) => {
         this.dispatchData = res.map((item: any, index: number) => ({
           ...item,
           sno: index + 1,
         }));
+        console.log('this.dispatchData=',this.dispatchData);
+
         this.dataSource.data = this.dispatchData;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -176,6 +240,10 @@ mappingForm!: FormGroup;
     }
   }
 
+
+ AddnewRC() {
+  this.router.navigate(['/EMSNEWRC']);
+}
   // ==========================================
   // Submit Logic (API Call)
   // ==========================================

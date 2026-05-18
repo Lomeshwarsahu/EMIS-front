@@ -37,10 +37,16 @@ import { MapitemswithTypeUpdateComponent } from './component/BME/mapitemswith-ty
 import { MapitemswithMainitemTypeRepoComponent } from './component/BME/mapitemswith-mainitem-type-repo/mapitemswith-mainitem-type-repo.component';
 import { EMSRCDashbordComponent } from './component/BME/emsrcdashbord/emsrcdashbord.component';
 import { EMSNEWRCComponent } from './component/BME/emsnewrc/emsnewrc.component';
-
-
-
+import { PlanaTenderDComponent } from './component/BME/plana-tender-d/plana-tender-d.component';
+import { TenderStatusUpdateComponent } from './component/BME/tender-status-update/tender-status-update.component';
+import { AddRTenderItemsComponent } from './component/BME/add-rtender-items/add-rtender-items.component';
 import { ConsigeeInformationComponent } from './component/DME/consigee-information/consigee-information.component';
+import { ReportSpecificationComponent } from './component/DME/masters/report-specification/report-specification.component';
+import { CmeEelSuggestionComponent } from './component/DME/masters/cme-eel-suggestion/cme-eel-suggestion.component';
+import { StockReportComponent } from './component/DME/stock/stock-report/stock-report.component';
+import { OpeningStockEntryComponent } from './component/DME/stock/opening-stock-entry/opening-stock-entry.component';
+import { PurchaseOrderDashboardComponent } from './component/DME/orders/purchase-order-dashboard/purchase-order-dashboard.component';
+import { PurchaseOrderReceiptsComponent } from './component/DME/orders/purchase-order-receipts/purchase-order-receipts.component';
 
 
 const routes: Routes = [
@@ -59,6 +65,8 @@ const routes: Routes = [
   // {path:'DistrictWisePODetail',component:DistrictWisePODetailComponent},
   {path:'POSummaryDrillDwnQtyPOWise',component:POSummaryDrillDwnQtyPOWiseComponent},
   {path:'POSummaryDrillDwnQty',component:POSummaryDrillDwnQtyComponent},
+{path:'TenderStatusUpdate',component:TenderStatusUpdateComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
+{path:'AddRTenderItems',component:AddRTenderItemsComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
 
   {path:'logout',component:LogoutComponent,canActivate:[RouteGuardService]}, 
 // { path: 'welcome', component: HomeComponent },
@@ -76,32 +84,44 @@ const routes: Routes = [
 
 {path:'DistrictWisePODetail',component:DistrictWisePODetailComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['TPO'] }},
 // BME
-{path:'MastterSupplierDash',component:MastterSupplierDashComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
-{path:'ItemsBME',component:ItemsBMEComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
-{path:'MapitemsEithType',component:MapitemsEithTypeComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
-{path:'MapitemswithTypeUpdate',component:MapitemswithTypeUpdateComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
-{path:'MapitemswithMainitemTypeRepo',component:MapitemswithMainitemTypeRepoComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
-{path:'EMSRCDashbord',component:EMSRCDashbordComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
-{path:'EMSNEWRC',component:EMSNEWRCComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'MastterSupplierDash',component:MastterSupplierDashComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
+{path:'ItemsBME',component:ItemsBMEComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
+{path:'MapitemsEithType',component:MapitemsEithTypeComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
+{path:'MapitemswithTypeUpdate',component:MapitemswithTypeUpdateComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
+{path:'MapitemswithMainitemTypeRepo',component:MapitemswithMainitemTypeRepoComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
+{path:'EMSRCDashbord',component:EMSRCDashbordComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
+{path:'EMSNEWRC',component:EMSNEWRCComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
+{path:'PlanaTenderD',component:PlanaTenderDComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
 // MD logins 
 {path:'RCDetailReport',component:RCDetailReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
 {path:'AcceptedReort',component:AcceptedReortComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
-{path:'IndentFromFacilities',component:IndentFromFacilitiesComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
-{path:'ComplainReportBME',component:ComplainReportBMEComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
-{path:'FacilityAuthPOValuePOCell',component:FacilityAuthPOValuePOCellComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
-{path:'POPaidReport',component:POPaidReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
-{path:'FPOPaidReport',component:POPaidReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
-{path:'ChequeWisePaymentReport',component:ChequeWisePaymentRComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
-{path:'POSummaryReport',component:POSummaryReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
-{path:'TendersStatus',component:TendersStatusComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
-{path:'PORecdsummary',component:PORecdsummaryComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
-{path:'TenterStatusItemWise',component:TenterStatusItemWiseComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
-{path:'POSummaryDrillDwnQtyReagent',component:POSummaryDrillDwnQtyReagentComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'IndentFromFacilities',component:IndentFromFacilitiesComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
+{path:'ComplainReportBME',component:ComplainReportBMEComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
+{path:'FacilityAuthPOValuePOCell',component:FacilityAuthPOValuePOCellComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
+{path:'POPaidReport',component:POPaidReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
+{path:'FPOPaidReport',component:POPaidReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
+{path:'ChequeWisePaymentReport',component:ChequeWisePaymentRComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
+{path:'POSummaryReport',component:POSummaryReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
+{path:'TendersStatus',component:TendersStatusComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
+{path:'PORecdsummary',component:PORecdsummaryComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
+{path:'TenterStatusItemWise',component:TenterStatusItemWiseComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
+{path:'POSummaryDrillDwnQtyReagent',component:POSummaryDrillDwnQtyReagentComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
+{path:'report-specification',component:ReportSpecificationComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
+{path:'cme-eel-suggestion',component:CmeEelSuggestionComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
+{path:'stock-report',component:StockReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
+{path:'opening-stock-entry',component:OpeningStockEntryComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
+{path:'purchase-order-dashboard',component:PurchaseOrderDashboardComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
+{path:'purchase-order-receipts',component:PurchaseOrderReceiptsComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
 
 
 // {path:'generate-GenerationFileNonasti',component:GenerationFileNonastiComponent,canActivate:[RouteGuardService],data: { allowedRoles: ['TPO']}},
 
+<<<<<<< HEAD
 {path:'consigee-information',component:ConsigeeInformationComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
+=======
+{path:'consigee-information',component:ConsigeeInformationComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME','FU','PRINCIPAL','FDA'] }},
+{path:'store-home',component:ConsigeeInformationComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME','FU','PRINCIPAL','FDA'] }},
+>>>>>>> main
 
 { path: '**', redirectTo: 'login' }
 

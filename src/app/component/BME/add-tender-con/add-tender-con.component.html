@@ -1,0 +1,510 @@
+<section class="container-fluid bg-light min-vh-100 py-4 px-lg-5">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+    <h2 class="fw-bold text-primary mb-1">
+        <i class="bi bi-chat-dots me-2"></i> Pre Bid Entry
+    </h2>
+    <p class="text-muted mb-0 small">Record pre-bid meeting details, supplier queries, and official clarifications for this tender.</p>
+</div>
+       
+        <button class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm" (click)="goBack()">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </button>
+    </div>
+        <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden">
+    <div class="card-header bg-white py-3 border-bottom-0 d-flex justify-content-between align-items-center">
+        <h6 class="fw-bold text-secondary mb-0">
+            <i class="bi bi-info-circle-fill text-primary me-2"></i>Tender Reference
+        </h6>
+        <!-- Status Badge based on FinalStatus -->
+        <span class="badge rounded-pill bg-warning-subtle text-dark border border-warning-alpha px-3">
+            {{TenderDetails?.FinalStatus}}
+        </span>
+    </div>
+    <div class="table-responsive px-3 pb-3">
+        <table class="table table-sm table-borderless align-middle mb-0 bg-light rounded-3">
+            <thead class="text-muted small text-uppercase">
+                <tr>
+                    <th class="ps-3 py-2">Tender No.</th>
+                    <th class="py-2">Live Date</th>
+                    <th class="py-2">Last Date</th>
+                    <th class="py-2 pe-3">Items Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="TenderDetails">
+                    <td class="ps-3 fw-bold text-primary">{{TenderDetails.TenderNo}}</td>
+                    <td>
+                        <span class="badge bg-white text-dark border shadow-sm px-2">
+                            {{TenderDetails.LiveDT}}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge bg-white text-danger border shadow-sm px-2">
+                            {{TenderDetails.TLast}}
+                        </span>
+                    </td>
+                    <td class="pe-3 fw-semibold">
+                        <i class="bi bi-box-seam me-1"></i> {{TenderDetails.NoSitems}} Items
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+    <!-- <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden">
+        <div class="card-header bg-white py-3 border-bottom-0">
+            <h6 class="fw-bold text-secondary mb-0">
+                <i class="bi bi-info-circle-fill text-primary me-2"></i>Tender Reference
+            </h6>
+        </div>
+        <div class="table-responsive px-3 pb-3">
+            <table class="table table-sm table-borderless align-middle mb-0 bg-light rounded-3">
+                <thead class="text-muted small text-uppercase">
+                    <tr>
+                        <th class="ps-3 py-2">Tender No.</th>
+                        <th class="py-2">Release Date</th>
+                        <th class="py-2 pe-3">Brief Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ps-3 fw-bold text-primary">{{TenderDetails.TENDER_NO}}</td>
+                        <td><span class="badge bg-white text-dark border shadow-xs px-2">{{TenderDetails.TENDER_DATE}}</span></td>
+                        <td class="pe-3 text-truncate" style="max-width: 400px;">{{TenderDetails.TENDER_DESCRIPTION}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div> -->
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4">
+       <div class="card-body bg-light bg-opacity-50">
+        <form #penaltyForm="ngForm" (ngSubmit)="onSubmit(penaltyForm)">
+    <div class="row g-3 mb-4 animate__animated animate__fadeIn">
+        <div class="col-12">
+            <h6 class="fw-bold text-primary border-bottom pb-2">
+                <i class="bi bi-chat-left-text me-2"></i> Pre Bid / HOD Conversation
+            </h6>
+        </div>
+
+        <!-- HOD Selection -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-floating shadow-sm">
+                <ng-select class="form-control border" [items]="FacilityList" 
+                           appendTo="body"
+                           bindLabel="FacilityAutCode" 
+                           bindValue="FacilityAutId" 
+                           placeholder="Search HOD..."
+                           name="FacilityAutId" 
+                           [(ngModel)]="hodData.FacilityAutId"
+                           required>
+                </ng-select>
+                    <!-- <ng-select class="form-control border" [items]="FacilityList" appendTo="body"
+                            bindLabel="FacilityAutCode" bindValue="FacilityAutId" placeholder="Search HOD..."
+                            name="FacilityAutId">
+                        </ng-select> -->
+                <label class="d-none">Select HOD</label> <!-- ng-select doesn't use standard floating label -->
+            </div>
+        </div>
+
+        <!-- Send Date -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-floating shadow-sm">
+                <input type="date" class="form-control border" name="SendDate" [(ngModel)]="hodData.SendDate" required>
+                <label>Send Date</label>
+            </div>
+        </div>
+
+        <!-- Letter Date -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-floating shadow-sm">
+                <input type="date" class="form-control border" name="LetterDate" [(ngModel)]="hodData.LetterDate" required>
+                <label>Letter Date</label>
+            </div>
+        </div>
+
+        <!-- Letter Number -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-floating shadow-sm">
+                <input type="text" class="form-control border" name="LetterNo" [(ngModel)]="hodData.LetterNo" placeholder="Letter No" required>
+                <label>Letter Number</label>
+            </div>
+        </div>
+
+        <!-- Remarks -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-floating shadow-sm">
+                <textarea class="form-control border" name="Remarks" [(ngModel)]="hodData.Remarks" placeholder="Remarks" style="height: 58px;"></textarea>
+                <label>Remarks</label>
+            </div>
+        </div>
+
+        <!-- File Upload -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-floating shadow-sm">
+                <input type="file" class="form-control border" id="fileUpload" (change)="onFileSelected($event)" accept=".pdf" required>
+                <label for="fileUpload">Select File (.pdf Max 2MB)</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center pt-3 border-top gap-3">
+            <button type="submit" class="btn btn-success px-5 shadow-sm rounded-pill fw-bold" [disabled]="!penaltyForm.valid">
+                <i class="bi bi-save me-2"></i> Save Data
+            </button>
+            <button type="button" (click)="penaltyForm.reset()" class="btn btn-outline-secondary px-4 rounded-pill fw-semibold">
+                <i class="bi bi-arrow-counterclockwise me-2"></i> Reset
+            </button>
+        </div>
+    </div>
+</form>
+        <!-- <form #penaltyForm="ngForm">
+            <div class="row g-3 mb-4 animate__animated animate__fadeIn">
+                <div class="col-12">
+                    <h6 class="fw-bold text-primary border-bottom pb-2">
+                        <i class="bi bi-shield-exclamation me-2"></i>Cancellation & Penalty Terms
+                    </h6>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 ">
+                    <div class="form-floating shadow-sm">
+                        <ng-select class="form-control border" [items]="FacilityList" appendTo="body"
+                            bindLabel="FacilityAutCode" bindValue="FacilityAutId" placeholder="Search HOD..."
+                            name="FacilityAutId">
+                        </ng-select>
+                        <label for="canDays">Select HOD</label>
+                    </div>
+                </div>
+        
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="form-floating shadow-sm">
+                        <input type="date" class="form-control border" id="canPercent" placeholder="%" name="canPercent">
+                        <label for="canPercent">Send Date</label>
+                    </div>
+                </div>
+        
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="form-floating shadow-sm">
+                        <input type="date" class="form-control border" id="penalty1" placeholder="%" name="penalty60_120">
+                        <label for="penalty1">Letter Date</label>
+                    </div>
+                </div>
+        
+        
+        
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="form-floating shadow-sm">
+                        <input type="text" class="form-control border" id="penalty2" placeholder="%" name="penalty121_180">
+                        <label for="penalty2">Letter Number</label>
+                    </div>
+                </div>
+        
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="form-floating shadow-sm">
+                        <textarea type="number" class="form-control border" id="logoCharges" placeholder="Amount"
+                            name="logoCharges"></textarea>
+                        <label for="logoCharges">Remarks</label>
+                    </div>
+                </div>
+        
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="form-floating shadow-sm">
+                        <input type="file" class="form-control border" id="logoLimit" placeholder="Limit" name="logoLimit">
+                        <label for="logoLimit">Select File(.pdf Max 2 mb Size)</label>
+                    </div>
+                </div>
+            </div>
+        
+        
+        
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center pt-3 border-top gap-3">
+                    <button type="submit" class="btn btn-success px-5 shadow-sm rounded-pill fw-bold">
+                        <i class="bi bi-save me-2"></i> Save Data
+                    </button>
+                    <button type="button" (click)="reset()" class="btn btn-outline-secondary px-4 rounded-pill fw-semibold">
+                        <i class="bi bi-arrow-counterclockwise me-2"></i> Reset
+                    </button>
+                    <button type="button" (click)="goBack()" class="btn btn-outline-danger px-4 rounded-pill fw-semibold">
+                        <i class="bi bi-arrow-left me-2"></i> Go Back
+                    </button>
+                </div>
+            </div>
+        </form> -->
+
+  
+</div> 
+    </div>
+
+<!-- Table Card Start -->
+<div class="card shadow border-0 rounded-4 overflow-hidden">
+  <div class="table-responsive">
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="w-100 custom-table">
+      
+      <ng-container matColumnDef="sno">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center py-3" style="width: 80px;">
+                    S.No </th>
+                <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold">  {{element.sno}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="SCHEMENAME">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Scheme Name</th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
+                        {{element.SCHEMENAME}}
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="FACILITYTYPECODE">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">HOD Name </th>
+                <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> {{element.FACILITYTYPECODE}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="LetterNo">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center">Letter No</th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                    <span class="fw-bold">{{element.LetterNo}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="LetterDate">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-end pe-4">Letter Date </th>
+                <td mat-cell *matCellDef="let element" class="text-end pe-4 text-success fw-bold">
+                    {{element.LetterDate}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="SendDate">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-end pe-4">Send Date </th>
+                <td mat-cell *matCellDef="let element" class="text-end pe-4 text-dark fw-bold">
+                    {{element.SendDate}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Remarks">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-end pe-4">Remarks </th>
+                <td mat-cell *matCellDef="let element" class="text-end pe-4 text-dark fw-bold">
+                    {{element.Remarks}}
+                </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="Download">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-end pe-4">Download</th>
+                <td mat-cell *matCellDef="let element" class="text-end pe-4 text-info fw-bold">
+                    {{element.FileName}}
+                </td>
+            </ng-container> -->
+            <ng-container matColumnDef="Download">
+                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Download </th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                    <button mat-icon-button color="primary" (click)="viewPdf(element.Convid)">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                    </button>
+                </td>
+            </ng-container>
+      <!-- Action Column -->
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Action </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <button mat-mini-fab color="primary" data-bs-toggle="modal"
+                        data-bs-target="#SendModall" (click)="openReplyModal(element.Convid)" matTooltip="Reply">
+            <i class="bi bi-reply"></i>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Reply Toggle Column -->
+      <ng-container matColumnDef="Reply">
+        <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Details </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <button mat-icon-button (click)="toggleDetails(element); $event.stopPropagation()">
+            <i class="bi" [ngClass]="expandedElement === element ? 'bi-chevron-up text-danger' : 'bi-chevron-down text-primary'"></i>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Expanded Content Column -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length" class="p-0 border-0">
+          <div class="detail-container" [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
+            <div class="inner-detail-card m-3 p-3 shadow-sm rounded-3 bg-white border">
+              <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary">
+                <i class="bi bi-info-circle me-2"></i>Reply History (ID: {{element.Convid}})
+              </h6>
+              
+              <div class="table-responsive rounded-3 border">
+                <table class="table table-hover table-sm mb-0">
+                  <thead class="table-light">
+                    <tr class="small text-uppercase">
+                      <th class="text-center">S.No</th>
+                      <th>Letter No</th>
+                      <th>Letter Date</th>
+                      <th>Recv Date</th>
+                      <th>Remarks</th>
+                      <th class="text-center">File</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let d of HodReplyDTO" class="align-middle">
+                      <td class="text-center fw-bold">{{d.sno}}</td>
+                      <td class="fw-medium">{{d.LetterNo}}</td>
+                      <td>{{d.LetterDT}}</td>
+                      <td>{{d.RecvDate}}</td>
+                      <td>{{d.Remarks}}</td>
+                      <td class="text-center">
+                        <button class="btn btn-sm btn-outline-info" (click)="viewPdf(d.CONVID)">
+                          <i class="bi bi-file-pdf"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr *ngIf="HodReplyDTO.length === 0">
+                      <td colspan="6" class="text-center py-3 text-muted">No reply records found.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Table Rows Configuration -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+          class="element-row" [class.expanded-row]="expandedElement === element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+
+    </table>
+  </div>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
+</section>
+
+
+
+<div class="modal fade rounded" id="SendModall" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <div class="modal-header bg-success text-white py-3 border-0 rounded-top-4">
+                <h5 class="modal-title d-flex align-items-center">
+                    <i class="bi bi-plus-circle me-2"></i> Add Reply
+                </h5>
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-4 bg-light-subtle">
+               
+               <form #forwardForm="ngForm" (ngSubmit)="submitReply(forwardForm)">
+    <div class="row g-4">
+        <!-- Letter Number -->
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Letter Number <span class="text-danger">*</span></label>
+            <textarea class="form-control border-2 shadow-none rounded-3" rows="1" 
+                      [(ngModel)]="replyData.LetterNo" name="LetterNo" 
+                      placeholder="Type letter number..." required></textarea>
+        </div>
+
+        <!-- Letter Date -->
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Letter Date <span class="text-danger">*</span></label>
+            <div class="input-group">
+                <span class="input-group-text bg-white border-2 border-end-0 text-muted"><i class="bi bi-calendar3"></i></span>
+                <input type="date" class="form-control border-2 border-start-0 shadow-none py-2 rounded-end-3" 
+                       [(ngModel)]="replyData.LetterDt" name="LetterDt" required>
+            </div>
+        </div>
+
+        <!-- Received Date -->
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Received Date <span class="text-danger">*</span></label>
+            <div class="input-group">
+                <span class="input-group-text bg-white border-2 border-end-0 text-muted"><i class="bi bi-calendar3"></i></span>
+                <input type="date" class="form-control border-2 border-start-0 shadow-none py-2 rounded-end-3" 
+                       [(ngModel)]="replyData.RecvDate" name="RecvDate" required>
+            </div>
+        </div>
+
+        <!-- Remarks -->
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Remarks/Description <span class="text-danger">*</span></label>
+            <textarea class="form-control border-2 shadow-none rounded-3" rows="1" 
+                      [(ngModel)]="replyData.Remarks" name="Remarks" 
+                      placeholder="Type your comments here..." required></textarea>
+        </div>
+
+        <!-- File Upload -->
+        <div class="col-md-12">
+            <label class="form-label fw-bold small text-muted">Upload File (PDF Max 2MB)<span class="text-danger">*</span></label>
+            <div class="input-group">
+                <input type="file" class="form-control border-2 shadow-none py-2 rounded-end-3" 
+                       (change)="onReplyFileSelected($event)" accept=".pdf" required>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-center gap-3 mt-5">
+        <button type="button" class="btn btn-light border px-5 py-2 rounded-pill fw-semibold text-muted" data-bs-dismiss="modal">
+            Cancel
+        </button>
+        <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-bold shadow" [disabled]="!forwardForm.valid">
+            <i class="bi bi-cloud-arrow-up me-2"></i> Save & Add
+        </button>
+    </div>
+</form>
+        <!-- <form #forwardForm="ngForm">
+          <div class="row g-4">
+             <div class="col-md-6">
+                <label class="form-label fw-bold small text-muted">Letter Number <span class="text-danger">*</span></label>
+                <textarea class="form-control border-2 shadow-none rounded-3" rows="1" 
+                          name="remarks" placeholder="Type your comments here..." required></textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-muted">Letter Date <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-2 border-end-0 text-muted"><i class="bi bi-calendar3"></i></span>
+                    <input type="date" class="form-control border-2 border-start-0 shadow-none py-2 rounded-end-3" name="TenderDate" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-muted">Received Date <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-2 border-end-0 text-muted"><i class="bi bi-calendar3"></i></span>
+                    <input type="date" class="form-control border-2 border-start-0 shadow-none py-2 rounded-end-3" name="TenderDate" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-muted">Remarks/Description <span class="text-danger">*</span></label>
+                <textarea class="form-control border-2 shadow-none rounded-3" rows="1" 
+                          name="remarks" placeholder="Type your comments here..." required></textarea>
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label fw-bold small text-muted">Upload File(PDF Max 2 mb size)<span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <input type="file" class="form-control border-2 shadow-none py-2 rounded-end-3" placeholder="Type Tender Value (In Cr)" name="TenderDate" required>
+                </div>
+            </div>
+
+            
+          </div>
+          <div class="d-flex justify-content-center gap-3 mt-5">
+            <button type="button" class="btn btn-light border px-5 py-2 rounded-pill fw-semibold text-muted" data-bs-dismiss="modal">
+                Cancel
+            </button>
+            <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-bold shadow">
+                <i class="bi bi-cloud-arrow-up me-2"></i> Save & Add
+            </button>
+          </div>
+        </form>  -->
+            </div>
+
+        </div>
+    </div>
+</div>

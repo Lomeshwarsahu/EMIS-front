@@ -1,0 +1,34 @@
+<div class="legacy-page">
+  <div class="legacy-title">EEL Suggestion Report</div>
+
+  <div class="legacy-card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Authorised Person</th>
+            <th>Mob No</th>
+            <th>Email</th>
+            <th>Supplier</th>
+            <th>Item Name</th>
+            <th>Suggestion</th>
+            <th>Entry Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ row.authorizedPerson }}</td>
+            <td>{{ row.mobile }}</td>
+            <td>{{ row.email }}</td>
+            <td>{{ row.supplier }}</td>
+            <td>{{ row.itemName }}</td>
+            <td>{{ row.suggestion }}</td>
+            <td>{{ row.entryDate }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,301 @@
+<section class="container-fluid bg-light min-vh-100 py-4 px-lg-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="fw-bold text-primary mb-1">
+                <i class="bi bi-box-seam me-2"></i>Item Management
+            </h2>
+            <p class="text-muted mb-0 small">Add or remove items and Excel specifically for this tender.</p>
+        </div>
+        <button class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm" (click)="goBack()">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </button>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden">
+        <div class="card-header bg-white py-3 border-bottom-0">
+            <h6 class="fw-bold text-secondary mb-0">
+                <i class="bi bi-info-circle-fill text-primary me-2"></i>Tender Reference
+            </h6>
+        </div>
+        <div class="table-responsive px-3 pb-3">
+            <table class="table table-sm table-borderless align-middle mb-0 bg-light rounded-3">
+                <thead class="text-muted small text-uppercase">
+                    <tr>
+                        <th class="ps-3 py-2">Tender No.</th>
+                        <th class="py-2">Release Date</th>
+                        <th class="py-2 pe-3">Brief Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ps-3 fw-bold text-primary">{{TenderDetails.TENDER_NO}}</td>
+                        <td><span
+                                class="badge bg-white text-dark border shadow-xs px-2">{{TenderDetails.TENDER_DATE}}</span>
+                        </td>
+                        <td class="pe-3 text-truncate" style="max-width: 400px;">{{TenderDetails.TENDER_DESCRIPTION}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4">
+        <div class="card-body p-4">
+            <!-- Main Card Container -->
+<div class="card shadow-sm border-0 rounded-3 mb-4 animate__animated animate__fadeIn">
+      <div class="card-header bg-white py-3 border-bottom-0">
+            <h6 class="fw-bold text-secondary mb-0">
+                <i class="bi bi-info-circle-fill text-primary me-2"></i>Tender Reference
+            </h6>
+        </div>
+    <div class="card-body p-4">
+        
+        <!-- Header: Icon and Text -->
+        <!-- <div class="d-flex align-items-center mb-4">
+            <div class="p-3 bg-primary bg-opacity-10 rounded-circle me-3">
+                <i class="bi bi-file-earmark-excel-fill text-primary fs-4"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold mb-0 text-dark">Bulk Item Import</h5>
+                <small class="text-muted">Excel file ke zariye items ko link karein</small>
+            </div>
+        </div> -->
+        
+        <form>
+            <div class="row g-3 align-items-end">
+                
+                <!-- Step 1: Download Format -->
+                <div class="col-12 col-md-auto">
+                    <p class="text-uppercase mb-2 small fw-bold text-muted" style="letter-spacing: 1px;">Step 1</p>
+                    <button type="button" class="btn btn-outline-primary px-4 py-2 w-100 d-flex align-items-center justify-content-center fw-semibold">
+                        <i class="bi bi-download me-2"></i> Download Format
+                    </button>
+                </div>
+
+                <!-- Step 2: File Selection -->
+                <div class="col-12 col-md">
+                    <p class="text-uppercase mb-2 small fw-bold text-muted" style="letter-spacing: 1px;">Step 2: Select File</p>
+                    <div class="input-group overflow-hidden border rounded">
+                        <span class="input-group-text bg-light border-0">
+                            <i class="bi bi-folder2-open"></i>
+                        </span>
+                        <input type="file" class="form-control border-0 py-2 shadow-none" id="excelFile">
+                    </div>
+                </div>
+
+                <!-- Step 3: Action Button -->
+                <div class="col-12 col-lg-auto">
+                    <!-- spacing ke liye mb-0 utility -->
+                    <button type="submit" class="btn btn-primary px-5 py-2 w-100 fw-bold shadow-sm d-flex align-items-center justify-content-center" 
+                            (click)="GetItemEligibility()">
+                        <i class="bi bi-cloud-arrow-up-fill me-2"></i> Link Items to Tender
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Optional Information Alert -->
+        <div class="mt-4 p-3 bg-warning bg-opacity-10 border border-warning border-opacity-25 rounded-3">
+            <div class="d-flex">
+                <i class="bi bi-info-circle-fill text-warning me-2"></i>
+                <small class="text-dark-emphasis">
+                    <strong>Note:</strong> Sirf <strong>.xlsx</strong> ya <strong>.xls</strong> files hi upload karein. Item codes database se match hona zaruri hai.
+                </small>
+            </div>
+        </div>
+
+    </div>
+</div>
+            <!-- <form>
+                <div class="row align-items-end g-3">
+                    <div class="col-12 col-lg-9">
+                        <label class="form-label fw-bold text-dark small mb-2">
+                            <i class="bi bi-search me-1"></i>Upload Items Through Excel
+                        </label>
+                     
+                            <input type="file" class="custom-select shadow-sm" 
+                            placeholder="select file" 
+                            name="FinancialYearId">
+                    </div>
+                    <div class="col-12 col-lg-3">
+                        <button type="submit" class="btn btn-primary w-100 shadow rounded-3 py-2 fw-bold"
+                           >
+                            <i class="bi bi-funnel me-2"></i>Download Format
+                        </button>
+                        <button type="submit" class="btn btn-primary w-100 shadow rounded-3 py-2 fw-bold"
+                             (click)="GetItemEligibility()">
+                            <i class="bi bi-funnel me-2"></i>Link Items to Tender
+                        </button>
+                    </div>
+                </div>
+            </form> -->
+        </div>
+    </div>
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden" *ngIf="itemsDtails?.length > 0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-dark text-white">
+                    <tr class="text-center small">
+                        <th class="py-3">S.No</th>
+                        <th class="py-3">Category</th>
+                        <th class="py-3 text-start">Item CODE</th>
+                        <th class="py-3 text-start">Item Details</th>
+                        <th class="py-3" style="width: 130px;">Tender Qty</th>
+                        <th class="py-3" style="width: 150px;">EMD Amount</th>
+                        <th class="py-3">RC Status</th>
+                        <th class="py-3">RC Days Valid</th>
+                        <th class="py-3">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center border-top-0">
+                    <!-- Loop start here -->
+                    <tr *ngFor="let item of itemsDtails; let i = index" class="animate__animated animate__fadeInUp">
+                        <td class="text-muted fw-bold">{{ i + 1 }}</td>
+                        <td>
+                            <span class="badge rounded-pill bg-info-subtle text-info border border-info-subtle px-3">
+                                {{ item.Eqtype }}
+                            </span>
+                        </td>
+                        <td class="text-start">
+                            <!-- <div class="fw-bold text-dark">{{ item.item_name }}</div> -->
+                            <div class="text-muted x-small">CODE: {{ item.item_code_as_per_tender || 'N/A' }}</div>
+                        </td>
+                        <td class="text-start">
+                            <div class="fw-bold text-dark">{{ item.item_name }}</div>
+                            <!-- <div class="text-muted x-small">CODE: {{ item.item_code_as_per_tender || 'N/A' }}</div> -->
+                        </td>
+
+                        <td>
+                            <!-- Quantity binding -->
+                            <input type="number" class="form-control form-control-sm text-center shadow-xs border-2"
+                                [(ngModel)]="item.tender_qty" placeholder="0">
+                        </td>
+                        <td>
+                            <div class="input-group input-group-sm shadow-xs border-2">
+                                <span class="input-group-text bg-white border-end-0">₹</span>
+                                <input type="number" class="form-control border-start-0" [(ngModel)]="item.emd_amt"
+                                    placeholder="0">
+                            </div>
+                        </td>
+                        <td>
+                            <!-- RC Status Conditional Color   -->
+                            <span [ngClass]="item.RCStatus === 'RC Valid' ? 'text-success' : 'text-danger'"
+                                class="fw-bold small">
+                                <i [ngClass]="item.RCStatus === 'RC Valid' ? 'bi bi-check-circle' : 'bi bi-x-circle'"
+                                    class="me-1"></i>
+                                {{ item.RCStatus }}
+                            </span>
+                        </td>
+                        <td>
+                            <!--RC Days Valid -->
+                            <span class="fw-bold small">
+                                <!-- <i [ngClass]="item.RCStatus === 'RC Valid' ? 'bi bi-check-circle' : 'bi bi-x-circle'" class="me-1"></i> -->
+                                {{ item.daysRCValid }}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-dark btn-sm rounded-pill px-3 hover-add-btn"
+                                (click)="addItemToTender(item)">
+                                <i class="bi bi-plus-lg me-1"></i> Add
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- No Data Message -->
+                    <tr *ngIf="itemsDtails?.length === 0">
+                        <td colspan="7" class="py-5 text-center text-muted">
+                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                            No items found. Please search and select an item.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer remains same -->
+    </div>
+    <!-- Table Card Start -->
+
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden animate__animated animate__fadeIn">
+        <!-- Header Section -->
+        <!-- <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+        <h6 class="mb-0 fw-bold text-primary">
+            <i class="bi bi-list-stars me-2"></i>Linked Tender Items
+        </h6>
+        <div class="btn-group">
+            <button class="btn btn-sm btn-outline-success rounded-pill px-3" (click)="exporter.exportTable('xlsx')">
+                <i class="bi bi-file-earmark-excel me-1"></i> Export Excel
+            </button>
+        </div>
+    </div> -->
+
+        <!-- Table Body -->
+        <div class="table-responsive custom-design-container rounded">
+            <table class="table table-bordered align-middle mb-0 custom-brown-table" mat-table [dataSource]="dataSource"
+                matSort>
+
+                <!-- S.No -->
+                <ng-container matColumnDef="sno">
+                    <th mat-header-cell *matHeaderCellDef> S.No. </th>
+                    <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
+                </ng-container>
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef> Item Code </th>
+                    <td mat-cell *matCellDef="let element">
+                        <input type="checkbox" class="form-check-input border-secondary">
+                    </td>
+                </ng-container>
+
+                <!-- Item Code (Text) -->
+                <ng-container matColumnDef="ItemCode">
+                    <th mat-header-cell *matHeaderCellDef> Item Code </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ItemCode}} </td>
+                </ng-container>
+
+                <!-- Item Name -->
+                <ng-container matColumnDef="ItemName">
+                    <th mat-header-cell *matHeaderCellDef> Item Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ItemName}} </td>
+                </ng-container>
+
+                <!-- Category Name (Static based on your EqType or DTO) -->
+                <ng-container matColumnDef="CategoryName">
+                    <th mat-header-cell *matHeaderCellDef> Category Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.CategoryName}} </td>
+                </ng-container>
+
+                <!-- Tender Qty (Input Box) -->
+                <ng-container matColumnDef="TenderQuantity">
+                    <th mat-header-cell *matHeaderCellDef> Tender Qty </th>
+                    <td mat-cell *matCellDef="let element">
+                        <input type="number" class="form-control table-input" [(ngModel)]="element.TenderQuantity">
+                    </td>
+                </ng-container>
+
+                <!-- EMD Amt (Input Box) -->
+                <ng-container matColumnDef="EmdAmount">
+                    <th mat-header-cell *matHeaderCellDef> EMD Amt </th>
+                    <td mat-cell *matCellDef="let element">
+                        <input type="number" class="form-control table-input" [(ngModel)]="element.EmdAmount">
+                    </td>
+                </ng-container>
+
+                <!-- Header and Row -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+
+
+        <!-- Paginator Footer -->
+        <div class="bg-light border-top">
+            <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="bg-transparent"></mat-paginator> -->
+            <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons
+                class="bg-transparent"></mat-paginator>
+        </div>
+    </div>
+</section>

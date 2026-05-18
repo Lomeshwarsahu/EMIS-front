@@ -1,0 +1,35 @@
+.legacy-page {
+  padding: 16px;
+}
+
+.legacy-title {
+  margin: 0 auto 16px;
+  width: fit-content;
+  padding: 10px 24px;
+  background: #4d67a0;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.legacy-card {
+  background: #fff;
+  border: 1px solid #d5d5d5;
+  padding: 14px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #d0d0d0;
+  padding: 8px;
+  font-size: 13px;
+}
+
+th {
+  background: #f1f4fa;
+}

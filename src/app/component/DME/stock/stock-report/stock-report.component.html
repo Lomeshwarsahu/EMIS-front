@@ -1,0 +1,46 @@
+<div class="legacy-page">
+  <div class="legacy-title">Stock Summary</div>
+
+  <div class="legacy-card">
+    <div class="filter-row">
+      <label>
+        Directorate/HOD
+        <select [(ngModel)]="authority">
+          <option value="DME">DME</option>
+          <option value="CME">CME</option>
+          <option value="DHS">DHS</option>
+        </select>
+      </label>
+      <button type="button" class="btn-show">Show</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Hospital/District</th>
+          <th>No. of Equipment in OP Stock (A)</th>
+          <th>Received/Installed from EMIS (B)</th>
+          <th>Total Stock (A+B)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rows; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ row.hospital }}</td>
+          <td>{{ row.openingStock }}</td>
+          <td>{{ row.receivedInstalled }}</td>
+          <td>{{ row.openingStock + row.receivedInstalled }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2"><strong>Total</strong></td>
+          <td>{{ totalOpeningStock }}</td>
+          <td>{{ totalReceivedInstalled }}</td>
+          <td>{{ totalOpeningStock + totalReceivedInstalled }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

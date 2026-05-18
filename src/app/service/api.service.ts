@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { DashLoginDDL } from '../Model/DashLoginDDL';
 // import { DelvieryDash } from '../Model/DelvieryDash';
 
@@ -15,10 +16,8 @@ export class ApiService {
   private VREGAPI = 'https://dpdmis.in/VREGAPI/api';
   private himis_apin = 'https://www.cgmsc.gov.in/himis_apin/api';
   private API = 'https://cgmsc.gov.in/EMIS_API';
-  // testing
-  // private apiUrll = 'https://localhost:5001/api/Auth';
-  private apiUrll = 'http://localhost:5169/api/Auth';
-  private apiUrls = 'http://localhost:5169/api/';
+  private apiUrll = `${environment.apiUrl}/Auth`;
+  private apiUrls = `${environment.apiUrl}/`;
 
   private tokenSubject = new BehaviorSubject<string | null>(null);
 
@@ -26,6 +25,11 @@ export class ApiService {
 //#region 
   getUsers(id: number) {
     return this.http.get(`${this.apiUrll}/${id}`);
+  }
+  GetUserEmail(userId: number) {
+    return this.http.get<{ Email?: string; UserName?: string }>(
+      `${this.apiUrll}/GetUserEmail/${userId}`,
+    );
   }
   // https://localhost:7036/api/GenerateNasti/Getyear
   // public get(url: string, data?: FormData, options?: any){
