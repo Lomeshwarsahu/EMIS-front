@@ -1,47 +1,128 @@
 <div class="legacy-page">
-  <div class="legacy-title">CME EEL - Specifications Upload</div>
+  <h1 class="legacy-title">Equipment Essential List- CME</h1>
 
-  <div class="legacy-card">
-    <div class="filters">
-      <label>
-        Category
-        <select [(ngModel)]="selectedCategory">
-          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
-        </select>
-      </label>
-
-      <label>
-        Search Equipment
-        <input type="text" [(ngModel)]="searchText" placeholder="Search item..." />
+  <div class="legacy-toolbar">
+    <div class="toolbar-line centered">
+      <label class="legacy-label" for="eqpCategory">Select Equipment Category:</label>
+      <select
+        id="eqpCategory"
+        class="legacy-select"
+        [(ngModel)]="selectedCategoryId"
+        (ngModelChange)="onCategoryDropdownChange()"
+      >
+        <option *ngFor="let c of categories" [ngValue]="c.EqpCatId">{{ c.EqpCatName }}</option>
+      </select>
+      <label class="show-all-check">
+        <input type="checkbox" [(ngModel)]="showAllChecked" (change)="onShowAllCheckChange()" />
+        Show All Items
       </label>
     </div>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>S.No</th>
-            <th>Equipment Code</th>
-            <th>Equipment Name</th>
-            <th>Category</th>
-            <th>Specification</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of filteredRows; index as i">
-            <td>{{ i + 1 }}</td>
-            <td>{{ row.equipmentCode }}</td>
-            <td>{{ row.equipmentName }}</td>
-            <td>{{ row.category }}</td>
-            <td>
-              <span [class.pending]="row.uploadStatus === 'Pending'">{{ row.uploadStatus }}</span>
+    <div class="toolbar-line search-line centered">
+      <label class="legacy-label" for="eqpSearch">Search Equipment:</label>
+      <input
+        id="eqpSearch"
+        type="text"
+        class="legacy-search"
+        placeholder="Search item..."
+        [(ngModel)]="searchInput"
+        list="equipmentSearchList"
+        (change)="onSearchPick()"
+      />
+      <datalist id="equipmentSearchList">
+        <option *ngFor="let opt of searchOptions" [value]="opt.DisplayText"></option>
+      </datalist>
+      <button type="button" class="btn-clear-all" (click)="clearAll()">Clear All</button>
+    </div>
+  </div>
+
+    <div class="legacy-summary" *ngIf="summaryVisible && summary">
+    <p class="summary-heading">Summary Of Equipment Essential List - Specification</p>
+    <div class="summary-links">
+      <button
+        type="button"
+        class="summary-link"
+        *ngFor="let row of summary.Categories"
+        [class.active]="activeSummaryKey === row.CategoryName"
+        (click)="filterBySummaryCategory(row)"
+      >
+        Category {{ row.CategoryName }}: {{ row.Uploaded }}/{{ row.Total }}
+      </button>
+      <button
+        type="button"
+        class="summary-link"
+        [class.active]="activeSummaryKey === 'ALL'"
+        (click)="filterBySummaryTotal()"
+      >
+        Total Uploaded: {{ summary.TotalUploaded }}/{{ summary.TotalItems }}
+      </button>
+      <button type="button" class="summary-close-inline" (click)="closeSummary()">Close</button>
+    </div>
+    
+  </div>
+
+  <div class="legacy-grid-wrap">
+    <table class="legacy-grid">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Equipment Code</th>
+          <th>Equipment Name</th>
+          <th>Category</th>
+          <th>Specification</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of items; index as i">
+          <ng-container *ngIf="editingItemId !== row.ItemId; else editRow">
+            <td class="col-sno">{{ i + 1 }}</td>
+            <td>{{ row.ItemCode }}</td>
+            <td>{{ row.ItemName }}</td>
+            <td class="col-cat">{{ displayCategory(row.EqpCatName) }}</td>
+            <td class="col-spec">
+              <button
+                *ngIf="row.HasSpecification"
+                type="button"
+                class="pdf-icon-btn"
+                title="Download PDF"
+                (click)="download(row.ItemId)"
+              >
+                <span class="pdf-icon" aria-hidden="true"></span>
+              </button>
+              <span *ngIf="!row.HasSpecification" class="spec-missing">Not Uploaded</span>
+              <button
+                type="button"
+                class="upload-icon-btn"
+                title="Upload Specification"
+                (click)="startEdit(row.ItemId)"
+              >
+                ✎
+              </button>
             </td>
-          </tr>
-          <tr *ngIf="filteredRows.length === 0">
-            <td colspan="5" class="empty">No equipment found.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+          </ng-container>
+          <ng-template #editRow>
+            <td class="col-sno">{{ i + 1 }}</td>
+            <td>{{ row.ItemCode }}</td>
+            <td>{{ row.ItemName }}</td>
+            <td class="col-cat">{{ displayCategory(row.EqpCatName) }}</td>
+            <td class="col-spec edit-spec">
+              <input type="file" accept=".pdf,application/pdf" (change)="onFileSelected($event)" />
+              <button type="button" class="btn-upload-sm" [disabled]="uploading" (click)="upload(row.ItemId)">
+                {{ uploading ? '…' : 'Upload' }}
+              </button>
+              <button type="button" class="btn-cancel-sm" (click)="cancelEdit()">Cancel</button>
+            </td>
+          </ng-template>
+        </tr>
+        <tr *ngIf="loading">
+          <td colspan="5" class="grid-empty">Loading…</td>
+        </tr>
+        <tr *ngIf="!loading && items.length === 0">
+          <td colspan="5" class="grid-empty">
+            No equipment found for selected category.
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

@@ -1,27 +1,24 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { DashLoginDDL } from '../Model/DashLoginDDL';
-// import { DelvieryDash } from '../Model/DelvieryDash';
-
 import { BehaviorSubject } from 'rxjs';
 import { masddlUser } from '../Model/masddlUser';
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private apiUrl = 'https://cgmsc.gov.in/HIMIS_APIN/api';
-  private CGMSCHO_API2 = 'https://dpdmis.in/CGMSCHO_API2/api';
-  private VREGAPI = 'https://dpdmis.in/VREGAPI/api';
-  private himis_apin = 'https://www.cgmsc.gov.in/himis_apin/api';
-  private API = 'https://cgmsc.gov.in/EMIS_API';
-  private apiUrll = `${environment.apiUrl}/Auth`;
-  private apiUrls = `${environment.apiUrl}/`;
+  private readonly apiUrl = 'https://cgmsc.gov.in/HIMIS_APIN/api';
+  private readonly CGMSCHO_API2 = 'https://dpdmis.in/CGMSCHO_API2/api';
+  private readonly VREGAPI = 'https://dpdmis.in/VREGAPI/api';
+  private readonly himis_apin = 'https://www.cgmsc.gov.in/himis_apin/api';
+  private readonly API = 'https://cgmsc.gov.in/EMIS_API';
+  private readonly apiUrll = `${environment.apiUrl}/Auth`;
+  private readonly apiUrls = `${environment.apiUrl}/`;
 
-  private tokenSubject = new BehaviorSubject<string | null>(null);
+  private readonly tokenSubject = new BehaviorSubject<string | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 //#region 
   getUsers(id: number) {
     return this.http.get(`${this.apiUrll}/${id}`);
@@ -71,10 +68,8 @@ public put(url: string, data: any) {
 
 
 
-  masddlUser(Usertype: any): Observable<any> {
-
+  masddlUser(Usertype: any) {
     return this.http.get<masddlUser[]>(`${this.CGMSCHO_API2}/Master/masddlUser?Usertype=${Usertype}`);
-
   }
  
   VerifyOTPLogin(otp: any, userid: any) {

@@ -1,140 +1,57 @@
-<div class="store-home-page">
-  <div class="title-wrap">
-    <span class="heading-bar">
-      Medical College/Hospital Contact Details
-      <span *ngIf="loading" class="loading-hint">Loading…</span>
-    </span>
-  </div>
+<div class="consignee-page">
+  <div class="header-strip">Equipment Essential List - Consignee</div>
 
-  <div class="datagrid">
-    <table class="ui-accordion contact-table">
-      <tbody>
-        <tr>
-          <td colspan="6" class="inner-cell">
-            <table class="inner-table">
-              <tbody>
-                <tr class="row-divider">
-                  <td class="col-label">UserID(for Login)</td>
-                  <td class="col-field">
-                    <span class="login-id">{{ model.LoginEmail || '—' }}</span>
-                  </td>
-                  <td class="col-spacer"></td>
-                  <td class="col-spacer"></td>
-                  <td class="col-spacer"></td>
-                  <td class="col-spacer-narrow"></td>
-                </tr>
+  <div class="card">
+    <div class="card-title">Update Consignee Information</div>
+    <div class="subtitle">Medical College / Hospital Contact Details</div>
 
-                <tr class="row-divider">
-                  <td class="col-label"><strong>Dean/Supritendent Name</strong></td>
-                  <td class="col-field">
-                    <input type="text" class="ems-input" [(ngModel)]="model.DeanName" name="deanName" />
-                    <span class="req">*</span>
-                  </td>
-                  <td class="col-label"><strong>Dean Mobile No</strong></td>
-                  <td class="col-field">
-                    <input
-                      type="text"
-                      class="ems-input ems-input-sm"
-                      maxlength="10"
-                      [(ngModel)]="model.DeanMobile"
-                      name="deanMobile"
-                      (keypress)="digitsOnly($event)"
-                    />
-                  </td>
-                  <td class="col-spacer"></td>
-                  <td class="col-spacer-narrow"></td>
-                </tr>
+    <div class="meta-row">
+      <div class="meta-label">UserID (for Login)</div>
+      <div class="meta-value">{{ model.LoginEmail || '—' }}</div>
+      <div class="meta-actions">
+        <button (click)="load()" class="btn small">Refresh</button>
+      </div>
+    </div>
 
-                <tr class="row-divider">
-                  <td class="col-label"><strong>Store Officer</strong></td>
-                  <td class="col-field">
-                    <input type="text" class="ems-input" [(ngModel)]="model.StoreOfficerName" name="storeOfficer" />
-                    <span class="req">*</span>
-                  </td>
-                  <td class="col-label col-label-wide">
-                    <strong>Store Officer Mobile No (for login &amp; indent finalization)</strong>
-                  </td>
-                  <td class="col-field">
-                    <input
-                      type="text"
-                      class="ems-input ems-input-sm"
-                      maxlength="10"
-                      [(ngModel)]="model.StoreOfficerMobile"
-                      name="storeMobile"
-                      (keypress)="digitsOnly($event)"
-                    />
-                    <span class="req">*</span>
-                  </td>
-                  <td class="col-spacer"></td>
-                  <td class="col-spacer-narrow"></td>
-                </tr>
+    <form class="form-grid" (ngSubmit)="save()">
+      <div class="form-col">
+        <label for="deanName">Dean / Superintendent Name</label>
+        <input id="deanName" name="deanName" type="text" [(ngModel)]="model.DeanName" />
 
-                <tr class="row-divider">
-                  <td class="col-label"><strong>Email (office)</strong></td>
-                  <td class="col-field">
-                    <input type="email" class="ems-input" [(ngModel)]="model.OfficeEmail" name="officeEmail" />
-                  </td>
-                  <td class="col-label"><strong>Contact No (office)</strong></td>
-                  <td class="col-field" colspan="3">
-                    <input type="text" class="ems-input ems-input-sm" [(ngModel)]="model.OfficeContactNo" name="officePhone" />
-                  </td>
-                </tr>
+        <label for="storeOfficer">Store Officer</label>
+        <input id="storeOfficer" name="storeOfficer" type="text" [(ngModel)]="model.StoreOfficerName" />
 
-                <tr class="row-divider">
-                  <td class="col-label"><strong>Address Line 1</strong></td>
-                  <td class="col-field" colspan="2">
-                    <input type="text" class="ems-input" [(ngModel)]="model.AddressLine1" name="addr1" />
-                    <span class="req">*</span>
-                    <span class="inline-hint">Add1:for ex. Medical college Hospital</span>
-                  </td>
-                  <td colspan="3"></td>
-                </tr>
+        <label for="officeEmail">Email (office)</label>
+        <input id="officeEmail" name="officeEmail" type="email" [(ngModel)]="model.OfficeEmail" />
 
-                <tr class="row-divider">
-                  <td class="col-label"><strong>Address Line 2</strong></td>
-                  <td class="col-field" colspan="2">
-                    <textarea rows="2" class="ems-input" [(ngModel)]="model.AddressLine2" name="addr2"></textarea>
-                    <span class="req">*</span>
-                    <span class="inline-hint">Add2:for ex. xyz Chowk Main RoadAddress Line 2</span>
-                  </td>
-                  <td colspan="3"></td>
-                </tr>
+        <label for="addr1">Address Line 1</label>
+        <input id="addr1" name="addr1" type="text" [(ngModel)]="model.AddressLine1" />
+      </div>
 
-                <tr class="row-divider">
-                  <td class="col-label"><strong>Address Line 3</strong></td>
-                  <td class="col-field" colspan="2">
-                    <textarea rows="2" class="ems-input" [(ngModel)]="model.AddressLine3" name="addr3"></textarea>
-                    <span class="inline-hint">Add:for ex. District : Raipur</span>
-                  </td>
-                  <td colspan="3"></td>
-                </tr>
+      <div class="form-col">
+        <label for="deanMobile">Dean Mobile No</label>
+        <input id="deanMobile" name="deanMobile" type="text" [(ngModel)]="model.DeanMobile" />
 
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td class="col-action">
-                    <button
-                      type="button"
-                      class="button button1 update-btn"
-                      (click)="save()"
-                      [disabled]="saving || loading"
-                    >
-                      {{ saving ? 'Updating…' : 'Update Contacts' }}
-                    </button>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td class="col-spacer-narrow"></td>
-                </tr>
+        <label for="storeMobile">Store Officer Mobile No (for login & indent finalization)</label>
+        <input id="storeMobile" name="storeMobile" type="text" [(ngModel)]="model.StoreOfficerMobile" />
 
-                <tr class="spacer-row">
-                  <td colspan="6"></td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <label for="officePhone">Contact No (office)</label>
+        <input id="officePhone" name="officePhone" type="text" [(ngModel)]="model.OfficeContactNo" />
+
+        <label for="addr2">Address Line 2</label>
+        <textarea id="addr2" name="addr2" rows="2" [(ngModel)]="model.AddressLine2"></textarea>
+      </div>
+
+      <div class="form-grid single">
+        <div class="form-col wide">
+          <label for="addr3">Address Line 3</label>
+          <textarea id="addr3" name="addr3" rows="2" [(ngModel)]="model.AddressLine3"></textarea>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button type="submit" class="btn primary" [disabled]="saving || loading">{{ saving ? 'Saving…' : 'Update Contacts' }}</button>
+      </div>
+    </form>
   </div>
 </div>

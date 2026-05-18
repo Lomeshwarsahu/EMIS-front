@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class BasicAuthenticationService {
-  private approle : any| null = null;
+  private approle: string | null = null;
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   executeAuthenticationService(emailid: string, pwd: string) {
     
@@ -102,16 +102,11 @@ getRole() {
 }
 
   isUserLogedIn() {
-    let user = sessionStorage.getItem('authenticatedUser');
-    return !(user === null);
+    const user = sessionStorage.getItem('authenticatedUser');
+    return user !== null;
   }
   getUserRole() {
-    // return sessionStorage.getItem('role');
-     const data = JSON.parse(localStorage.getItem('loginData') || '{}');
-
-  return {
-    roleName: this.approle ?? data.user_type
-  };
+    return this.getRole();
   }
 
   logout() {
