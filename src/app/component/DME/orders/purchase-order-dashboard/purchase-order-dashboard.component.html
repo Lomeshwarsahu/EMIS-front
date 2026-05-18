@@ -1,40 +1,106 @@
-<div class="legacy-page">
-  <div class="legacy-title">Purchase Orders</div>
+<div class="ems-legacy-page">
+  <div class="header-wrap">
+    <span class="header-bar wide">Purchase Orders</span>
+  </div>
 
-  <div class="legacy-card">
-    <div class="filter-row">
-      <label>
-        PO Financial Year
-        <input type="text" [(ngModel)]="poFinancialYear" />
-      </label>
-      <label>
-        Equipment
-        <input type="text" [(ngModel)]="equipmentFilter" placeholder="Search equipment" />
-      </label>
-      <button type="button" class="btn-show">Show</button>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>S.No</th>
-          <th>Equipment</th>
-          <th>Indent Date</th>
-          <th>Indent Qty</th>
-          <th>PO No</th>
-          <th>PO Qty</th>
-          <th>Supplier</th>
-        </tr>
-      </thead>
+  <div class="datagrid">
+    <table class="panel-table">
       <tbody>
-        <tr *ngFor="let row of rows; index as i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ row.equipment }}</td>
-          <td>{{ row.indentDate }}</td>
-          <td>{{ row.indentQty }}</td>
-          <td>{{ row.poNo }}</td>
-          <td>{{ row.poQty }}</td>
-          <td>{{ row.supplierName }}</td>
+        <tr>
+          <td align="center">PO Financial Year</td>
+          <td>
+            <select class="legacy-select" [(ngModel)]="selectedFinancialYearId">
+              <option *ngFor="let y of financialYears" [ngValue]="y.FinancialYearId">{{ y.Year }}</option>
+            </select>
+          </td>
+          <td>Equipments:</td>
+          <td>
+            <select class="legacy-select" [(ngModel)]="selectedItemCode">
+              <option *ngFor="let e of equipmentOptions" [ngValue]="e.ItemCodeAsPerTender">
+                {{ e.ItemName }}
+              </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4" class="filter-center">
+            <button type="button" class="btn-legacy" (click)="show()" [disabled]="loading">
+              {{ loading ? 'Loading…' : 'Show' }}
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <table class="legacy-grid">
+              <thead>
+                <tr>
+                  <th>S.no</th>
+                  <th>Equipment</th>
+                  <th>Indent_Date<br />Year</th>
+                  <th>Indent_QTY</th>
+                  <th>PO Details</th>
+                  <th>PO_QTY</th>
+                  <th>Tender No.</th>
+                  <th>Tender Date</th>
+                  <th>SUPPLIER_NAME</th>
+                  <th>Reagent List</th>
+                  <th>Accessories List</th>
+                  <th>Print</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of rows; index as i">
+                  <td class="center">{{ i + 1 }}</td>
+                  <td>
+                    {{ row.ItemName }}
+                    <span class="sub-code">{{ row.Code }}</span>
+                  </td>
+                  <td class="center">
+                    {{ row.IndentDt }}<br />{{ row.IndentYear }}
+                  </td>
+                  <td class="center qty-red">{{ row.IndentQuantity }}</td>
+                  <td>
+                    {{ row.PoNo }}<br />{{ row.PoDate }}<br />{{ row.PoYear }}
+                  </td>
+                  <td class="center qty-green">{{ row.PoQty }}</td>
+                  <td class="center qty-green">{{ row.TenderNo }}</td>
+                  <td class="center qty-green">{{ row.TenderDate }}</td>
+                  <td>{{ row.SupplierName }}</td>
+                  <td class="center">
+                    <button
+                      type="button"
+                      class="icon-btn"
+                      [class.icon-pdf]="hasFile(row.FilePathReagent)"
+                      [disabled]="!hasFile(row.FilePathReagent)"
+                      title="Reagent list"
+                    >
+                      {{ hasFile(row.FilePathReagent) ? 'PDF' : '—' }}
+                    </button>
+                  </td>
+                  <td class="center">
+                    <button
+                      type="button"
+                      class="icon-btn"
+                      [class.icon-pdf]="hasFile(row.FilePathAccessories)"
+                      [disabled]="!hasFile(row.FilePathAccessories)"
+                      title="Accessories list"
+                    >
+                      {{ hasFile(row.FilePathAccessories) ? 'PDF' : '—' }}
+                    </button>
+                  </td>
+                  <td class="center">
+                    <button type="button" class="icon-btn icon-print" title="Print PO">🖨</button>
+                  </td>
+                </tr>
+                <tr *ngIf="loading">
+                  <td colspan="12" class="grid-empty">Loading…</td>
+                </tr>
+                <tr *ngIf="!loading && !rows.length">
+                  <td colspan="12" class="grid-empty">No purchase orders found. Select PO Year or Equipment and click Show.</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
         </tr>
       </tbody>
     </table>

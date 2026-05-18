@@ -367,15 +367,15 @@ DME: {
       label: 'Stock',
       route: '',
       submenu: [
-        { label: 'Stock Report', route: '/stock-report' },
-        { label: 'Opening Stock Entry', route: '/opening-stock-entry' }
+        { label: 'COVID Stock (MC)', route: '/stock-report' },
+        { label: 'Opening Stock Reports', route: '/opening-stock-entry' }
       ]
     },
     {
       label: 'Orders',
       route: '',
       submenu: [
-        { label: 'Purchase Order Dashboard', route: '/purchase-order-dashboard' },
+        { label: 'Purchase Orders (Facility)', route: '/purchase-order-dashboard' },
         { label: 'Purchase Order Receipts', route: '/purchase-order-receipts' }
       ]
     },
