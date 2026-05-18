@@ -1,106 +1,140 @@
-<div class="page-wrapper">
-  <div class="top-bar">
-    <div class="actions">
-      <button type="button" class="circle-btn white" aria-label="Fullscreen">⛶</button>
-      <button type="button" class="circle-btn cyan" (click)="load()" aria-label="Refresh">↻</button>
-      <button type="button" class="circle-btn orange" aria-label="Minimize">−</button>
-    </div>
-  </div>
-
-  <div class="content-card">
-    <div class="title-box">
+<div class="store-home-page">
+  <div class="title-wrap">
+    <span class="heading-bar">
       Medical College/Hospital Contact Details
-      <span *ngIf="loading" class="text-muted ms-2">Loading…</span>
-    </div>
-
-    <hr />
-
-    <div class="row">
-      <div class="label">UserID (for Login)</div>
-      <div class="value blue-link">{{ model.LoginEmail || '—' }}</div>
-    </div>
-
-    <hr />
-
-    <div class="grid-row">
-      <div class="field">
-        <label for="deanName">Dean/Superintendent Name</label>
-        <input id="deanName" type="text" [(ngModel)]="model.DeanName" name="deanName" />
-      </div>
-
-      <div class="field">
-        <label for="deanMobile">Dean Mobile No</label>
-        <input id="deanMobile" type="text" [(ngModel)]="model.DeanMobile" name="deanMobile" />
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="grid-row">
-      <div class="field">
-        <label for="storeOfficer">Store Officer</label>
-        <input id="storeOfficer" type="text" [(ngModel)]="model.StoreOfficerName" name="storeOfficer" />
-      </div>
-
-      <div class="field">
-        <label for="storeMobile">Store Officer Mobile No (login & indent)</label>
-        <input id="storeMobile" type="text" [(ngModel)]="model.StoreOfficerMobile" name="storeMobile" />
-      </div>
-    </div>
-
-    <div class="close-text" *ngIf="model.LocationName">
-      {{ model.LocationName }}
-    </div>
-
-    <hr />
-
-    <div class="grid-row">
-      <div class="field">
-        <label for="officeEmail">Email (office)</label>
-        <input id="officeEmail" type="email" [(ngModel)]="model.OfficeEmail" name="officeEmail" />
-      </div>
-
-      <div class="field">
-        <label for="officePhone">Contact No (office)</label>
-        <input id="officePhone" type="text" [(ngModel)]="model.OfficeContactNo" name="officePhone" />
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="grid-row single">
-      <div class="field wide">
-        <label for="addr1">Address Line 1</label>
-        <input id="addr1" type="text" [(ngModel)]="model.AddressLine1" name="addr1" />
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="grid-row single">
-      <div class="field wide">
-        <label for="addr2">Address Line 2</label>
-        <textarea id="addr2" rows="2" [(ngModel)]="model.AddressLine2" name="addr2"></textarea>
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="grid-row single">
-      <div class="field wide">
-        <label for="addr3">Address Line 3</label>
-        <textarea id="addr3" rows="2" [(ngModel)]="model.AddressLine3" name="addr3"></textarea>
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="btn-wrapper">
-      <button type="button" class="update-btn" (click)="save()" [disabled]="saving || loading">
-        {{ saving ? 'Saving…' : 'Update Contacts' }}
-      </button>
-    </div>
+      <span *ngIf="loading" class="loading-hint">Loading…</span>
+    </span>
   </div>
 
-  <div class="gear-box" aria-hidden="true">⚙</div>
+  <div class="datagrid">
+    <table class="ui-accordion contact-table">
+      <tbody>
+        <tr>
+          <td colspan="6" class="inner-cell">
+            <table class="inner-table">
+              <tbody>
+                <tr class="row-divider">
+                  <td class="col-label">UserID(for Login)</td>
+                  <td class="col-field">
+                    <span class="login-id">{{ model.LoginEmail || '—' }}</span>
+                  </td>
+                  <td class="col-spacer"></td>
+                  <td class="col-spacer"></td>
+                  <td class="col-spacer"></td>
+                  <td class="col-spacer-narrow"></td>
+                </tr>
+
+                <tr class="row-divider">
+                  <td class="col-label"><strong>Dean/Supritendent Name</strong></td>
+                  <td class="col-field">
+                    <input type="text" class="ems-input" [(ngModel)]="model.DeanName" name="deanName" />
+                    <span class="req">*</span>
+                  </td>
+                  <td class="col-label"><strong>Dean Mobile No</strong></td>
+                  <td class="col-field">
+                    <input
+                      type="text"
+                      class="ems-input ems-input-sm"
+                      maxlength="10"
+                      [(ngModel)]="model.DeanMobile"
+                      name="deanMobile"
+                      (keypress)="digitsOnly($event)"
+                    />
+                  </td>
+                  <td class="col-spacer"></td>
+                  <td class="col-spacer-narrow"></td>
+                </tr>
+
+                <tr class="row-divider">
+                  <td class="col-label"><strong>Store Officer</strong></td>
+                  <td class="col-field">
+                    <input type="text" class="ems-input" [(ngModel)]="model.StoreOfficerName" name="storeOfficer" />
+                    <span class="req">*</span>
+                  </td>
+                  <td class="col-label col-label-wide">
+                    <strong>Store Officer Mobile No (for login &amp; indent finalization)</strong>
+                  </td>
+                  <td class="col-field">
+                    <input
+                      type="text"
+                      class="ems-input ems-input-sm"
+                      maxlength="10"
+                      [(ngModel)]="model.StoreOfficerMobile"
+                      name="storeMobile"
+                      (keypress)="digitsOnly($event)"
+                    />
+                    <span class="req">*</span>
+                  </td>
+                  <td class="col-spacer"></td>
+                  <td class="col-spacer-narrow"></td>
+                </tr>
+
+                <tr class="row-divider">
+                  <td class="col-label"><strong>Email (office)</strong></td>
+                  <td class="col-field">
+                    <input type="email" class="ems-input" [(ngModel)]="model.OfficeEmail" name="officeEmail" />
+                  </td>
+                  <td class="col-label"><strong>Contact No (office)</strong></td>
+                  <td class="col-field" colspan="3">
+                    <input type="text" class="ems-input ems-input-sm" [(ngModel)]="model.OfficeContactNo" name="officePhone" />
+                  </td>
+                </tr>
+
+                <tr class="row-divider">
+                  <td class="col-label"><strong>Address Line 1</strong></td>
+                  <td class="col-field" colspan="2">
+                    <input type="text" class="ems-input" [(ngModel)]="model.AddressLine1" name="addr1" />
+                    <span class="req">*</span>
+                    <span class="inline-hint">Add1:for ex. Medical college Hospital</span>
+                  </td>
+                  <td colspan="3"></td>
+                </tr>
+
+                <tr class="row-divider">
+                  <td class="col-label"><strong>Address Line 2</strong></td>
+                  <td class="col-field" colspan="2">
+                    <textarea rows="2" class="ems-input" [(ngModel)]="model.AddressLine2" name="addr2"></textarea>
+                    <span class="req">*</span>
+                    <span class="inline-hint">Add2:for ex. xyz Chowk Main RoadAddress Line 2</span>
+                  </td>
+                  <td colspan="3"></td>
+                </tr>
+
+                <tr class="row-divider">
+                  <td class="col-label"><strong>Address Line 3</strong></td>
+                  <td class="col-field" colspan="2">
+                    <textarea rows="2" class="ems-input" [(ngModel)]="model.AddressLine3" name="addr3"></textarea>
+                    <span class="inline-hint">Add:for ex. District : Raipur</span>
+                  </td>
+                  <td colspan="3"></td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td class="col-action">
+                    <button
+                      type="button"
+                      class="button button1 update-btn"
+                      (click)="save()"
+                      [disabled]="saving || loading"
+                    >
+                      {{ saving ? 'Updating…' : 'Update Contacts' }}
+                    </button>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td class="col-spacer-narrow"></td>
+                </tr>
+
+                <tr class="spacer-row">
+                  <td colspan="6"></td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -54,9 +55,9 @@ export class BasicAuthenticationService {
      EMAIL: email ? 'EMAIL' : ''
     };
   
+  // login1 supports email (e_mail_id) when EMAIL flag is set; login only matches user_name
     return this.http.post<any>(
-      'https://localhost:7036/api/Auth/login1',
-      // 'https://localhost:7036/api/Auth/login',
+      `${environment.apiUrl}/Auth/login1`,
       body
     );
    

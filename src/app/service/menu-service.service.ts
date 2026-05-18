@@ -352,6 +352,7 @@ DME: {
       label: 'Masters',
       route: '',
       submenu: [
+        { label: 'Medical College Contact Details', route: '/store-home' },
         { label: 'Update Consignee Information', route: '/consigee-information' },
         { label: 'Report-Specification', route: '/report-specification' },
         { label: 'CME EEL Suggestion', route: '/cme-eel-suggestion' },

@@ -297,7 +297,8 @@ approle:any;
     sessionStorage.clear();
     localStorage.clear();
 
-    const user_id = this.emailid.toString();
+    const user_id = this.emailid.toString().trim();
+    this.pwd = (this.pwd ?? '').trim();
 
     this.loginService
       .executeAuthenticationService1(user_id, this.pwd, this.EMAIL)
@@ -322,7 +323,9 @@ approle:any;
 
             // this.InsertUserLoginLog();
 
-            if (
+            if (role === 'FU' || role === 'PRINCIPAL' || role === 'FDA') {
+              this.router.navigate(['/store-home']);
+            } else if (
               role === 'AD' ||
               role === 'AU' ||
               role === 'AAO' ||
@@ -333,11 +336,8 @@ approle:any;
               role === 'DKS' ||
               role === 'DME' ||
               role === 'DMT' ||
-              role === 'FDA' ||
-              role === 'FU' ||
               role === 'GMF' ||
               role === 'IT' ||
-              role === 'PRINCIPAL' ||
               role === 'SCI' ||
               role === 'SUP' ||
               role === 'TPO'
@@ -355,7 +355,10 @@ approle:any;
 
         error: (e: any) => {
           console.log('error=', e);
-          this.handleLoginFailure();
+          const msg = e?.error?.message ?? 'Invalid Credentials';
+          this.toastr.error(msg, 'Login Failed');
+          this.invalidLogin = true;
+          this.errorMessage = msg;
         },
       });
   }

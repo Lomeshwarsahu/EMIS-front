@@ -116,7 +116,8 @@ const routes: Routes = [
 
 // {path:'generate-GenerationFileNonasti',component:GenerationFileNonastiComponent,canActivate:[RouteGuardService],data: { allowedRoles: ['TPO']}},
 
-{path:'consigee-information',component:ConsigeeInformationComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
+{path:'consigee-information',component:ConsigeeInformationComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME','FU','PRINCIPAL','FDA'] }},
+{path:'store-home',component:ConsigeeInformationComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME','FU','PRINCIPAL','FDA'] }},
 
 { path: '**', redirectTo: 'login' }
 

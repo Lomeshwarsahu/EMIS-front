@@ -1,80 +1,193 @@
-.page-wrapper {
-  padding: 1rem;
-  max-width: 960px;
+/* Master/StoreHome.aspx — legacy EMSRole layout */
+.store-home-page {
+  padding: 10px 12px 40px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 12px;
+  color: #000;
+  background: #fff;
+}
+
+.title-wrap {
+  display: block;
+  text-align: center;
+}
+
+.heading-bar {
+  display: inline-block;
+  width: 50%;
+  min-width: 320px;
+  margin: 10px auto 12px;
+  padding: 10px 24px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #4d67a0;
+  border: none;
+}
+
+.loading-hint {
+  font-size: 11px;
+  font-weight: normal;
+  margin-left: 6px;
+}
+
+.datagrid {
+  max-width: 100%;
   margin: 0 auto;
 }
 
-.content-card {
-  background: #fff;
-  border-radius: 8px;
-  padding: 1.25rem;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
-}
-
-.title-box {
-  font-size: 1.15rem;
-  font-weight: 600;
-}
-
-.grid-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.grid-row.single {
-  grid-template-columns: 1fr;
-}
-
-.field label {
-  display: block;
-  font-size: 0.85rem;
-  margin-bottom: 0.25rem;
-}
-
-.field input,
-.field textarea {
+.ui-accordion.contact-table {
   width: 100%;
-  padding: 0.4rem 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border-collapse: collapse;
+  text-align: center;
 }
 
-.row {
-  display: flex;
-  gap: 1rem;
-  align-items: baseline;
-}
-
-.label {
-  min-width: 140px;
-  font-weight: 500;
-}
-
-.value.blue-link {
-  color: #0d6efd;
-}
-
-.btn-wrapper {
-  margin-top: 1rem;
-}
-
-.update-btn {
-  padding: 0.5rem 1.25rem;
-  background: #198754;
-  color: #fff;
+.ui-accordion .inner-cell {
+  padding: 0;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
+.inner-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.inner-table td {
+  padding: 6px 8px;
+  vertical-align: middle;
+}
+
+.row-divider td {
+  border-bottom: 1px solid #c8c8c8;
+}
+
+.col-label {
+  text-align: center;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.col-label-wide {
+  max-width: 220px;
+  white-space: normal;
+  line-height: 1.25;
+}
+
+.col-field {
+  text-align: left;
+}
+
+.col-spacer {
+  width: 8%;
+}
+
+.col-spacer-narrow {
+  width: 34px;
+}
+
+.login-id {
+  color: blue;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.ems-input {
+  width: 250px;
+  max-width: 100%;
+  background-color: #ff9999;
+  font-weight: bold;
+  border: 1px solid #808080;
+  padding: 2px 4px;
+  font-family: inherit;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+.ems-input-sm {
+  width: 120px;
+}
+
+textarea.ems-input {
+  resize: vertical;
+  vertical-align: top;
+}
+
+.req {
+  color: red;
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+.inline-hint {
+  display: inline;
+  margin-left: 6px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #000;
+  white-space: normal;
+}
+
+.col-action {
+  text-align: center;
+  padding-top: 8px;
+}
+
+.button.update-btn,
+.update-btn {
+  background-color: #4d67a0;
+  border: none;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 4px 2px;
+  padding: 10px 24px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.button.update-btn:disabled,
 .update-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.65;
   cursor: not-allowed;
 }
 
-@media (max-width: 640px) {
-  .grid-row {
-    grid-template-columns: 1fr;
+.spacer-row td {
+  height: 12px;
+  border: none;
+}
+
+@media (max-width: 900px) {
+  .heading-bar {
+    width: 100%;
+  }
+
+  .inner-table,
+  .inner-table tbody,
+  .inner-table tr,
+  .inner-table td {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+
+  .col-label,
+  .col-field {
+    display: block;
+    width: 100%;
+  }
+
+  .ems-input,
+  .ems-input-sm {
+    width: 100%;
+  }
+
+  .inline-hint {
+    display: block;
+    margin: 4px 0 0;
   }
 }
