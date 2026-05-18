@@ -123,12 +123,22 @@ export class ConsigeeInformationComponent implements OnInit {
     userId: number,
     loginEmail: string,
   ): ConsigneeInformationViewModel {
-    const pick = (...keys: string[]): string => {
+    const asString = (v: unknown): string => {
+      if (v == null) return '';
+      if (typeof v === 'string') return v.trim();
+      if (typeof v === 'number' || typeof v === 'boolean') return String(v);
+      if (Array.isArray(v) && v.length) return String(v[0]);
+      if (v && typeof (v as any).toString === 'function') {
+        const s = (v as any).toString();
+        if (s && s !== '[object Object]') return s.trim();
+      }
+      return '';
+    };
+
+    const pick = (...keys: string[]) => {
       for (const key of keys) {
-        const v = raw[key];
-        if (v != null && String(v).trim() !== '') {
-          return String(v).trim();
-        }
+        const s = asString(raw[key]);
+        if (s) return s;
       }
       return '';
     };
@@ -226,8 +236,9 @@ export class ConsigeeInformationComponent implements OnInit {
   }
 
   digitsOnly(event: KeyboardEvent): boolean {
-    const charCode = event.which ?? event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    const key = event.key;
+    // allow control keys (Backspace, Tab, arrows) and single-digit keys
+    if (key.length === 1 && !/\d/.test(key)) {
       event.preventDefault();
       return false;
     }
