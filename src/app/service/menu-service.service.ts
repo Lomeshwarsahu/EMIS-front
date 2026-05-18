@@ -384,7 +384,8 @@ DME: {
       route: '',
       submenu: [
         { label: 'Contract Dashboard', route: '/EMSRCDashbord' },
-        { label: 'New Contract', route: '/EMSNEWRC' }
+        { label: 'New Contract', route: '/EMSNEWRC' },
+        { label: 'RC Details Report', route: '/RCDetailReport' },
       ]
     },
     {
@@ -402,7 +403,9 @@ DME: {
       label: 'Indents',
       route: '',
       submenu: [
-        { label: 'Indent From Facilities', route: '/IndentFromFacilities' }
+        { label: 'Indent Budget Heads', route: '/dme-fac-heads' },
+        { label: 'Annual Indent', route: '/consolidated-indent-dme' },
+        { label: 'Indent From Facilities', route: '/IndentFromFacilities' },
       ]
     },
     {
@@ -425,6 +428,7 @@ DME: {
       label: 'Reports',
       route: '',
       submenu: [
+        { label: 'CMC Detail', route: '/cmc-detail' },
         { label: 'PO Summary', route: '/POSummaryReport' },
         { label: 'PO Wise Payment Report', route: '/POPaidReport' },
         { label: 'Tenders Status', route: '/TendersStatus' },

@@ -1,0 +1,16 @@
+.btn-export {
+  background: #fff;
+  border: 1px solid #4d67a0;
+  color: #4d67a0;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.legacy-grid {
+  min-width: 900px;
+}

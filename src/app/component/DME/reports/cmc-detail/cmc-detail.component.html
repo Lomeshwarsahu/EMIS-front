@@ -1,0 +1,76 @@
+<div class="ems-legacy-page">
+  <div class="header-wrap">
+    <span class="header-bar narrow">CMC Detail</span>
+  </div>
+
+  <div class="datagrid">
+    <table class="panel-table">
+      <tbody>
+        <tr>
+          <td>
+            <button type="button" class="btn-export" (click)="exportExcel()">Export</button>
+          </td>
+          <td>
+            Item Name:
+            <select class="legacy-select" [(ngModel)]="selectedItemCode" (ngModelChange)="onItemChange()">
+              <option *ngFor="let i of itemOptions" [ngValue]="i.ItemCodeAsPerTender">{{ i.ItemName }}</option>
+            </select>
+          </td>
+          <td>
+            Tender No:
+            <select class="legacy-select" [(ngModel)]="selectedTenderId">
+              <option *ngFor="let t of tenderOptions" [ngValue]="t.TenderId">{{ t.TenderNo }}</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" class="filter-center">
+            <button type="button" class="btn-legacy" (click)="show()" [disabled]="loading">
+              {{ loading ? 'Loading…' : 'Show' }}
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <div class="table-wrap">
+              <table class="legacy-grid">
+                <thead>
+                  <tr>
+                    <th>S.no</th>
+                    <th>Code</th>
+                    <th>Item Name</th>
+                    <th>Tender No</th>
+                    <th>CMC1</th>
+                    <th>CMC2</th>
+                    <th>CMC3</th>
+                    <th>CMC4</th>
+                    <th>CMC5</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of rows; index as i">
+                    <td class="center">{{ i + 1 }}</td>
+                    <td>{{ row.ItemCodeAsPerTender }}</td>
+                    <td>{{ row.ItemName }}</td>
+                    <td>{{ row.TenderNo }}</td>
+                    <td class="center">{{ row.Cmc1 }}</td>
+                    <td class="center">{{ row.Cmc2 }}</td>
+                    <td class="center">{{ row.Cmc3 }}</td>
+                    <td class="center">{{ row.Cmc4 }}</td>
+                    <td class="center">{{ row.Cmc5 }}</td>
+                  </tr>
+                  <tr *ngIf="loading">
+                    <td colspan="9" class="grid-empty">Loading…</td>
+                  </tr>
+                  <tr *ngIf="!loading && !rows.length">
+                    <td colspan="9" class="grid-empty">No Record found.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

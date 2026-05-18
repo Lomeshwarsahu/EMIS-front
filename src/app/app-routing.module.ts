@@ -47,6 +47,9 @@ import { StockReportComponent } from './component/DME/stock/stock-report/stock-r
 import { OpeningStockEntryComponent } from './component/DME/stock/opening-stock-entry/opening-stock-entry.component';
 import { PurchaseOrderDashboardComponent } from './component/DME/orders/purchase-order-dashboard/purchase-order-dashboard.component';
 import { PurchaseOrderReceiptsComponent } from './component/DME/orders/purchase-order-receipts/purchase-order-receipts.component';
+import { DmeFacHeadsComponent } from './component/DME/indent/dme-fac-heads/dme-fac-heads.component';
+import { ConsolidatedIndentDmeComponent } from './component/DME/indent/consolidated-indent-dme/consolidated-indent-dme.component';
+import { CmcDetailComponent } from './component/DME/reports/cmc-detail/cmc-detail.component';
 
 
 const routes: Routes = [
@@ -93,7 +96,7 @@ const routes: Routes = [
 {path:'EMSNEWRC',component:EMSNEWRCComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
 {path:'PlanaTenderD',component:PlanaTenderDComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
 // MD logins 
-{path:'RCDetailReport',component:RCDetailReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
+{path:'RCDetailReport',component:RCDetailReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
 {path:'AcceptedReort',component:AcceptedReortComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},
 {path:'IndentFromFacilities',component:IndentFromFacilitiesComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
 {path:'ComplainReportBME',component:ComplainReportBMEComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
@@ -112,6 +115,9 @@ const routes: Routes = [
 {path:'opening-stock-entry',component:OpeningStockEntryComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
 {path:'purchase-order-dashboard',component:PurchaseOrderDashboardComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
 {path:'purchase-order-receipts',component:PurchaseOrderReceiptsComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
+{path:'dme-fac-heads',component:DmeFacHeadsComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
+{path:'consolidated-indent-dme',component:ConsolidatedIndentDmeComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
+{path:'cmc-detail',component:CmcDetailComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['DME'] }},
 
 
 // {path:'generate-GenerationFileNonasti',component:GenerationFileNonastiComponent,canActivate:[RouteGuardService],data: { allowedRoles: ['TPO']}},

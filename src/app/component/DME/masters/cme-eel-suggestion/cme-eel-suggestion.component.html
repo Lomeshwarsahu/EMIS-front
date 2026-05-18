@@ -1,34 +1,83 @@
-<div class="legacy-page">
-  <div class="legacy-title">EEL Suggestion Report</div>
+<div class="ems-legacy-page eel-page">
+  <div class="header-wrap">
+    <span class="header-bar">EEL Suggestion Report</span>
+  </div>
 
-  <div class="legacy-card">
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>S.No</th>
-            <th>Authorised Person</th>
-            <th>Mob No</th>
-            <th>Email</th>
-            <th>Supplier</th>
-            <th>Item Name</th>
-            <th>Suggestion</th>
-            <th>Entry Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of rows; index as i">
-            <td>{{ i + 1 }}</td>
-            <td>{{ row.authorizedPerson }}</td>
-            <td>{{ row.mobile }}</td>
-            <td>{{ row.email }}</td>
-            <td>{{ row.supplier }}</td>
-            <td>{{ row.itemName }}</td>
-            <td>{{ row.suggestion }}</td>
-            <td>{{ row.entryDate }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="datagrid">
+    <table class="panel-table">
+      <tbody>
+        <tr>
+          <td>
+            <button type="button" class="btn-export" (click)="exportExcel()" title="Export to Excel">
+              Export
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="table-wrap">
+              <table class="legacy-grid">
+                <thead>
+                  <tr>
+                    <th>S.no</th>
+                    <th>Authorised Person</th>
+                    <th>Mob No</th>
+                    <th>Email</th>
+                    <th>Supplier</th>
+                    <th>Item Name</th>
+                    <th>Suggestion</th>
+                    <th>Entry Date</th>
+                    <th>Download Uploaded Letter</th>
+                    <th>Download Relevant Document</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of rows; index as i">
+                    <td class="center">{{ i + 1 }}</td>
+                    <td>{{ row.Name }}</td>
+                    <td>{{ row.MobileNo }}</td>
+                    <td>{{ row.EmailId }}</td>
+                    <td>{{ row.Supplier }}</td>
+                    <td>{{ row.ItemName }}</td>
+                    <td>{{ row.SuggestionCondition }}</td>
+                    <td class="center">{{ row.EntryDt }}</td>
+                    <td class="center">
+                      <button
+                        type="button"
+                        class="icon-btn"
+                        [class.icon-pdf]="hasUpload(row.UploadLetter)"
+                        [disabled]="!hasUpload(row.UploadLetter)"
+                        (click)="onDownloadLetter(row)"
+                        title="Download uploaded letter"
+                      >
+                        {{ hasUpload(row.UploadLetter) ? 'PDF' : '—' }}
+                      </button>
+                    </td>
+                    <td class="center">
+                      <button
+                        type="button"
+                        class="icon-btn"
+                        [class.icon-pdf]="hasUpload(row.UploadRelevantDoc)"
+                        [disabled]="!hasUpload(row.UploadRelevantDoc)"
+                        (click)="onDownloadRelevant(row)"
+                        title="Download relevant document"
+                      >
+                        {{ hasUpload(row.UploadRelevantDoc) ? 'PDF' : '—' }}
+                      </button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="loading">
+                    <td colspan="10" class="grid-empty">Loading…</td>
+                  </tr>
+                  <tr *ngIf="!loading && !rows.length">
+                    <td colspan="10" class="grid-empty">No Record found.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
