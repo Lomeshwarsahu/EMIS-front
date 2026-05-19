@@ -89,7 +89,7 @@ export class DmeFacHeadsComponent implements OnInit {
   }
 
   back(): void {
-    this.router.navigate(['/store-home']);
+    this.router.navigate(['/masters/store-home']);
   }
 
   private mapRows(raw: unknown): BudgetHeadRow[] {

@@ -21,7 +21,7 @@
 
                     <div class="d-flex justify-content-center flex-wrap">
                      <ng-select [items]="yearlist" bindLabel="year" bindValue="financial_year_id" class="form-control"
-                      appendTo="body" [(ngModel)]="selecteditem" name="selecteditem" placeholder="Select year"
+                      appendTo="body" [(ngModel)]="financial_year_id" name="financial_year_id" placeholder="Select year"
                       (change)="onSelectedyearlist($event)">
                     </ng-select>
                     </div>

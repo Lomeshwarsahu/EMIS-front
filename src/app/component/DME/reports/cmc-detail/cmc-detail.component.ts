@@ -32,7 +32,7 @@ interface CmcDetailRow {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './cmc-detail.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './cmc-detail.component.css'],
+  styleUrls: ['../../shared/legacy-ems-page.css'],
 })
 export class CmcDetailComponent implements OnInit {
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;

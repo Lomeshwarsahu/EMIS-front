@@ -198,3 +198,106 @@
   display: block;
   margin-top: 2px;
 }
+
+.ems-legacy-page .header-bar.medium {
+  width: 40%;
+  min-width: 320px;
+}
+
+.ems-legacy-page .legacy-input,
+.ems-legacy-page .legacy-textarea {
+  border: 1px solid #7f9db9;
+  font-family: inherit;
+  font-size: 13px;
+  color: #003399;
+}
+
+.ems-legacy-page .legacy-input {
+  min-width: 140px;
+  height: 25px;
+  padding: 2px 6px;
+}
+
+.ems-legacy-page .legacy-textarea {
+  width: 200px;
+  min-height: 100px;
+  padding: 4px 6px;
+}
+
+.ems-legacy-page .form-table {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.ems-legacy-page .form-table td {
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.ems-legacy-page .form-table .label-col {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.ems-legacy-page .readonly-val {
+  color: #003399;
+}
+
+.ems-legacy-page .btn-secondary {
+  background-color: #6c757d;
+}
+
+.ems-legacy-page .summary-panel {
+  border: 1px solid #c8c8c8;
+  background: #f5f5f5;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.ems-legacy-page .summary-panel .summary-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 18px;
+}
+
+.ems-legacy-page .summary-link {
+  background: none;
+  border: none;
+  color: #0066cc;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 13px;
+  padding: 0;
+}
+
+.ems-legacy-page .summary-link.active {
+  font-weight: 700;
+}
+
+.ems-legacy-page .toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 16px;
+  margin-bottom: 12px;
+}
+
+.ems-legacy-page .btn-clear-all {
+  background: #ff9800;
+  color: #000;
+  border: 1px solid #e65100;
+  padding: 6px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ems-legacy-page .export-cell {
+  width: 90px;
+  vertical-align: middle;
+}

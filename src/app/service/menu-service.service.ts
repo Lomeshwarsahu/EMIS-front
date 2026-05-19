@@ -234,7 +234,7 @@ AD: {
       label: 'Contracts',
       route: '',
       submenu: [
-        { label: 'RC Details Report', route: '/RCDetailReport' },
+        { label: 'RC Details Report', route: '/contracts/rc-detail-report' },
         { label: 'Price Accepted Report', route: '/AcceptedReort' }
       ]
     },
@@ -242,35 +242,35 @@ AD: {
       label: 'Indents',
       route: '',
       submenu: [
-        { label: 'Indent From Facilities', route: '/IndentFromFacilities' }
+        { label: 'Indent From Facilities', route: '/indents/from-facilities' }
       ]
     },
     {
       label: 'Finance Report',
       route: '',
       submenu: [
-        { label: 'Year Wise PO Abstract', route: '/FacilityAuthPOValuePOCell' },
-        { label: 'PO Wise Payment FReport', route: '/FPOPaidReport' },
-        { label: 'Cheque Wise Payment Report', route: '/ChequeWisePaymentReport' }
+        { label: 'Year Wise PO Abstract', route: '/finance/year-wise-po-abstract' },
+        { label: 'PO Wise Payment FReport', route: '/finance/po-wise-payment' },
+        { label: 'Cheque Wise Payment Report', route: '/finance/cheque-wise-payment' }
       ]
     },
     {
       label: 'Complain',
       route: '',
       submenu: [
-       { label: 'Complain Report', route: '/ComplainReportBME' }, //Complain
+       { label: 'Complain Report', route: '/complain/report' },
       ]
     },
     {
       label: 'Reports',
       route: '',
       submenu: [
-        { label: 'PO Summary', route: '/POSummaryReport' },
-        { label: 'PO Wise Payment Report', route: '/POPaidReport' },
-        { label: 'Tenders Status', route: '/TendersStatus' },
-        { label: 'PO Receipts summary', route: '/PORecdsummary' },
-        { label: 'Item Status in Tenter', route: '/TenterStatusItemWise' },
-        { label: 'Reagent PO Report', route: '/POSummaryDrillDwnQtyReagent' },
+        { label: 'PO Summary', route: '/reports/po-summary' },
+        { label: 'PO Wise Payment Report', route: '/reports/po-wise-payment' },
+        { label: 'Tenders Status', route: '/reports/tenders-status' },
+        { label: 'PO Receipts summary', route: '/reports/po-receipts-summary' },
+        { label: 'Item Status in Tenter', route: '/reports/tender-item-status' },
+        { label: 'Reagent PO Report', route: '/reports/reagent-po' },
       ]
     }
   ]
@@ -282,19 +282,19 @@ AU: {
       label: 'Masters',
       route: '',
       submenu: [
-        { label: 'Supplier', route: '/MastterSupplierDash' },
-        { label: 'Add New Items', route: '/ItemsBME' },
-        { label: 'Mapping to Main items', route: '/MapitemsEithType' },
-        { label: 'Update Mapping to Main items', route: '/MapitemswithTypeUpdate' },
-        { label: 'Main Equipment Mapped Report', route: '/MapitemswithMainitemTypeRepo' },
+        { label: 'Supplier', route: '/masters/supplier' },
+        { label: 'Add New Items', route: '/masters/items' },
+        { label: 'Mapping to Main items', route: '/masters/map-items' },
+        { label: 'Update Mapping to Main items', route: '/masters/map-items-update' },
+        { label: 'Main Equipment Mapped Report', route: '/masters/map-items-report' },
       ]
     },
     {
       label: 'Contracts',
       route: '',
       submenu: [
-        { label: 'Contract Dashboard', route: '/EMSRCDashbord' },
-        { label: 'New Contract', route: '/EMSNEWRC' }
+        { label: 'Contract Dashboard', route: '/contracts/dashboard' },
+        { label: 'New Contract', route: '/contracts/new-rc' }
       ]
     },
     {
@@ -312,35 +312,35 @@ AU: {
       label: 'Indents',
       route: '',
       submenu: [
-        { label: 'Indent From Facilities', route: '/IndentFromFacilities' }
+        { label: 'Indent From Facilities', route: '/indents/from-facilities' }
       ]
     },
     {
       label: 'Finance Report',
       route: '',
       submenu: [
-        { label: 'Year Wise PO Abstract', route: '/FacilityAuthPOValuePOCell' },
-        { label: 'PO Wise Payment FReport', route: '/FPOPaidReport' },
-        { label: 'Cheque Wise Payment Report', route: '/ChequeWisePaymentReport' }
+        { label: 'Year Wise PO Abstract', route: '/finance/year-wise-po-abstract' },
+        { label: 'PO Wise Payment FReport', route: '/finance/po-wise-payment' },
+        { label: 'Cheque Wise Payment Report', route: '/finance/cheque-wise-payment' }
       ]
     },
     {
       label: 'Complain',
       route: '',
       submenu: [
-       { label: 'Complain Report', route: '/ComplainReportBME' }, //Complain
+       { label: 'Complain Report', route: '/complain/report' },
       ]
     },
     {
       label: 'Reports',
       route: '',
       submenu: [
-        { label: 'PO Summary', route: '/POSummaryReport' },
-        { label: 'PO Wise Payment Report', route: '/POPaidReport' },
-        { label: 'Tenders Status', route: '/TendersStatus' },
-        { label: 'PO Receipts summary', route: '/PORecdsummary' },
-        { label: 'Item Status in Tenter', route: '/TenterStatusItemWise' },
-        { label: 'Reagent PO Report', route: '/POSummaryDrillDwnQtyReagent' },
+        { label: 'PO Summary', route: '/reports/po-summary' },
+        { label: 'PO Wise Payment Report', route: '/reports/po-wise-payment' },
+        { label: 'Tenders Status', route: '/reports/tenders-status' },
+        { label: 'PO Receipts summary', route: '/reports/po-receipts-summary' },
+        { label: 'Item Status in Tenter', route: '/reports/tender-item-status' },
+        { label: 'Reagent PO Report', route: '/reports/reagent-po' },
       ]
     }
   ]
@@ -352,89 +352,90 @@ DME: {
       label: 'Masters',
       route: '',
       submenu: [
-        { label: 'Medical College Contact Details', route: '/store-home' },
-        { label: 'Update Consignee Information', route: '/consigee-information' },
-        { label: 'Report-Specification', route: '/report-specification' },
-        { label: 'CME EEL Suggestion', route: '/cme-eel-suggestion' },
-        { label: 'Supplier', route: '/MastterSupplierDash' },
-        { label: 'Add New Items', route: '/ItemsBME' },
-        { label: 'Mapping to Main items', route: '/MapitemsEithType' },
-        { label: 'Update Mapping to Main items', route: '/MapitemswithTypeUpdate' },
-        { label: 'Main Equipment Mapped Report', route: '/MapitemswithMainitemTypeRepo' },
+        { label: 'Medical College Contact Details', route: '/masters/store-home' },
+        { label: 'Update Consignee Information', route: '/masters/consignee-information' },
+        { label: 'Report-Specification', route: '/masters/report-specification' },
+        { label: 'CME EEL Suggestion', route: '/masters/cme-eel-suggestion' },
+        { label: 'Supplier', route: '/masters/supplier' },
+        { label: 'Add New Items', route: '/masters/items' },
+        { label: 'Mapping to Main items', route: '/masters/map-items' },
+        { label: 'Update Mapping to Main items', route: '/masters/map-items-update' },
+        { label: 'Main Equipment Mapped Report', route: '/masters/map-items-report' },
       ]
     },
     {
       label: 'Stock',
       route: '',
       submenu: [
-        { label: 'COVID Stock (MC)', route: '/stock-report' },
-        { label: 'Opening Stock Reports', route: '/opening-stock-entry' }
+        { label: 'COVID Stock (MC)', route: '/stock/covid-stock-report' },
+        { label: 'Opening Stock Reports', route: '/stock/opening-stock-entry' }
       ]
     },
     {
       label: 'Orders',
       route: '',
       submenu: [
-        { label: 'Purchase Orders (Facility)', route: '/purchase-order-dashboard' },
-        { label: 'Purchase Order Receipts', route: '/purchase-order-receipts' }
+        { label: 'Purchase Orders (Facility)', route: '/orders/purchase-order-dashboard' },
+        { label: 'Purchase Order Receipts', route: '/orders/purchase-order-receipts' }
       ]
     },
     {
       label: 'Contracts',
       route: '',
       submenu: [
-        { label: 'Contract Dashboard', route: '/EMSRCDashbord' },
-        { label: 'New Contract', route: '/EMSNEWRC' },
-        { label: 'RC Details Report', route: '/RCDetailReport' },
+        { label: 'Contract Dashboard', route: '/contracts/dashboard' },
+        { label: 'New Contract', route: '/contracts/new-rc' },
+        { label: 'RC Details Report', route: '/contracts/rc-detail-report' },
       ]
     },
     {
       label: 'Tender',
       route: '',
       submenu: [
-        { label: 'Plan a Tender', route: '/PlanaTenderD' },
-        { label: 'Evaluation A', route: '/TenderStatusUpdate' },
-        { label: 'Claim-Object Preparation', route: '/AddRTenderItems' },
-        { label: 'Gem-Price Entry Acceptance', route: '/TendersStatus' },
-        { label: 'Gem-Price Entry', route: '/PlanaTenderD' }
+        { label: 'Plan a Tender', route: '/tender/plan' },
+        { label: 'Evaluation A', route: '/tender/evaluation' },
+        { label: 'Claim-Object Preparation', route: '/tender/claim-object' },
+        { label: 'Gem-Price Entry Acceptance', route: '/tender/gem-price-acceptance' },
+        { label: 'Gem-Price Entry', route: '/tender/plan' }
       ]
     },
     {
       label: 'Indents',
       route: '',
       submenu: [
-        { label: 'Indent Budget Heads', route: '/dme-fac-heads' },
-        { label: 'Annual Indent', route: '/consolidated-indent-dme' },
-        { label: 'Indent From Facilities', route: '/IndentFromFacilities' },
+        { label: 'Indent Budget Heads', route: '/indents/budget-heads' },
+        { label: 'Annual Indent', route: '/indents/annual-indent' },
+        { label: 'Indent From Facilities', route: '/indents/from-facilities' },
       ]
     },
     {
       label: 'Finance Report',
       route: '',
       submenu: [
-        { label: 'Year Wise PO Abstract', route: '/FacilityAuthPOValuePOCell' },
-        { label: 'PO Wise Payment FReport', route: '/FPOPaidReport' },
-        { label: 'Cheque Wise Payment Report', route: '/ChequeWisePaymentReport' }
+        { label: 'Year Wise PO Abstract', route: '/finance/year-wise-po-abstract' },
+        { label: 'PO Wise Payment FReport', route: '/finance/po-wise-payment' },
+        { label: 'Cheque Wise Payment Report', route: '/finance/cheque-wise-payment' }
       ]
     },
     {
       label: 'Complain',
       route: '',
       submenu: [
-       { label: 'Complain Report', route: '/ComplainReportBME' }, //Complain
+        { label: 'Facility Complain (Store)', route: '/complain/facility-store' },
+        { label: 'Complain Report', route: '/complain/report' },
       ]
     },
     {
       label: 'Reports',
       route: '',
       submenu: [
-        { label: 'CMC Detail', route: '/cmc-detail' },
-        { label: 'PO Summary', route: '/POSummaryReport' },
-        { label: 'PO Wise Payment Report', route: '/POPaidReport' },
-        { label: 'Tenders Status', route: '/TendersStatus' },
-        { label: 'PO Receipts summary', route: '/PORecdsummary' },
-        { label: 'Item Status in Tenter', route: '/TenterStatusItemWise' },
-        { label: 'Reagent PO Report', route: '/POSummaryDrillDwnQtyReagent' },
+        { label: 'CMC Detail', route: '/reports/cmc-detail' },
+        { label: 'PO Summary', route: '/reports/po-summary' },
+        { label: 'PO Wise Payment Report', route: '/reports/po-wise-payment' },
+        { label: 'Tenders Status', route: '/reports/tenders-status' },
+        { label: 'PO Receipts summary', route: '/reports/po-receipts-summary' },
+        { label: 'Item Status in Tenter', route: '/reports/tender-item-status' },
+        { label: 'Reagent PO Report', route: '/reports/reagent-po' },
       ]
     }
   ]

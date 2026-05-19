@@ -1,29 +1,24 @@
-<div class="ems-legacy-page cmc-legacy-page">
+<div class="ems-legacy-page">
   <div class="header-wrap">
-    <span class="header-bar cmc-title">CMC Deatil</span>
+    <span class="header-bar medium">CMC Deatil</span>
   </div>
 
   <div class="datagrid">
-    <table class="ui-accordion panel-table">
+    <table class="panel-table">
       <tbody>
         <tr>
-          <td colspan="3" class="spacer-row">&nbsp;</td>
-        </tr>
-        <tr class="filter-row">
           <td class="export-cell">
-            <button type="button" class="btn-export" (click)="exportExcel()" title="Export to Excel">
-              Export
-            </button>
+            <button type="button" class="btn-legacy" (click)="exportExcel()">Export</button>
           </td>
           <td>
             Item Name:
-            <select class="legacy-select" [(ngModel)]="selectedItemCode" (ngModelChange)="onItemChange()">
+            <select class="legacy-select" style="min-width: 200px" [(ngModel)]="selectedItemCode" (ngModelChange)="onItemChange()">
               <option *ngFor="let i of itemOptions" [ngValue]="i.ItemCodeAsPerTender">{{ i.ItemName }}</option>
             </select>
           </td>
           <td>
             Tender No:
-            <select class="legacy-select" [(ngModel)]="selectedTenderId">
+            <select class="legacy-select" style="min-width: 150px" [(ngModel)]="selectedTenderId">
               <option *ngFor="let t of tenderOptions" [ngValue]="t.TenderId">{{ t.TenderNo }}</option>
             </select>
           </td>
@@ -36,23 +31,23 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3" class="grid-cell">
-            <table class="cmc-grid" width="1000">
+          <td colspan="3">
+            <table class="legacy-grid" style="max-width: 1000px; margin: 0 auto">
               <thead>
                 <tr>
                   <th>S.no</th>
                   <th>Code</th>
                   <th>Item Name</th>
                   <th>Tender No</th>
-                  <th>CMC1</th>
-                  <th>CMC2</th>
-                  <th>CMC3</th>
-                  <th>CMC4</th>
-                  <th>CMC5</th>
+                  <th class="center">CMC1</th>
+                  <th class="center">CMC2</th>
+                  <th class="center">CMC3</th>
+                  <th class="center">CMC4</th>
+                  <th class="center">CMC5</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
+                <tr *ngFor="let row of rows; index as i">
                   <td class="center">{{ i + 1 }}</td>
                   <td>{{ row.ItemCodeAsPerTender }}</td>
                   <td>{{ row.ItemName }}</td>

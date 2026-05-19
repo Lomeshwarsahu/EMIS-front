@@ -1,0 +1,88 @@
+<div class="ems-legacy-page">
+  <div class="header-wrap">
+    <span class="header-bar">Complaint of Warranty Valid Equipments</span>
+  </div>
+
+  <div class="datagrid">
+    <table class="panel-table">
+      <tbody>
+        <tr>
+          <td>
+            <table class="form-table">
+              <tr>
+                <td class="label-col">Equipment</td>
+                <td>
+                  <select class="legacy-select" style="min-width: 210px" [(ngModel)]="selectedItemId" (ngModelChange)="onItemChange()">
+                    <option *ngFor="let i of items" [ngValue]="i.ItemId">{{ i.ItemName }}</option>
+                  </select>
+                </td>
+                <td class="label-col">Complain Date</td>
+                <td><input class="legacy-input" [(ngModel)]="complainDate" readonly /></td>
+              </tr>
+              <tr>
+                <td class="label-col">Equipment Not Functioning Since</td>
+                <td><input class="legacy-input" [(ngModel)]="notFunctionDate" placeholder="dd/MM/yyyy" /></td>
+                <td class="label-col">Problems</td>
+                <td>
+                  <select class="legacy-select" style="min-width: 210px" [(ngModel)]="selectedTroubleId">
+                    <option *ngFor="let t of troubles" [ngValue]="t.TroubleId">{{ t.TroubleText }}</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="label-col">Equipment/Serial No/Department</td>
+                <td colspan="3">
+                  <select class="legacy-select" style="min-width: 210px" [(ngModel)]="selectedDeptId" (ngModelChange)="onDeptChange()">
+                    <option *ngFor="let d of departments" [ngValue]="d.ItemDetailId">{{ d.Label }}</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="label-col">Supplier Name</td>
+                <td class="readonly-val">{{ detail?.SupplierName || '---' }}</td>
+                <td class="label-col" rowspan="3">Complain Summary</td>
+                <td rowspan="3">
+                  <textarea class="legacy-textarea" [(ngModel)]="complainDetails"></textarea>
+                </td>
+              </tr>
+              <tr>
+                <td class="label-col">Supplier Contact</td>
+                <td class="readonly-val">{{ detail?.SupplierMobile || '---' }}</td>
+              </tr>
+              <tr>
+                <td class="label-col">Supplier Email</td>
+                <td class="readonly-val">{{ detail?.SupplierEmail || '---' }}</td>
+              </tr>
+              <tr>
+                <td class="label-col">Warranty Valid Date</td>
+                <td class="readonly-val">{{ detail?.WarrantyValidDate || '---' }}</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="label-col">Location</td>
+                <td class="readonly-val" colspan="3">{{ detail?.LocationName || '---' }}</td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <strong>Upload PDF Signed Copy of Authorized Incharge</strong>
+                  <input type="file" accept=".pdf,application/pdf" (change)="onFileSelected($event)" />
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <button type="button" class="btn-legacy" (click)="sendComplain()" [disabled]="saving">
+                    {{ saving ? 'Sending…' : 'Send Complain' }}
+                  </button>
+                </td>
+                <td colspan="2">
+                  <button type="button" class="btn-legacy btn-secondary" (click)="reset()">Reset</button>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
