@@ -125,14 +125,16 @@ Did:any;
 
   //https://localhost:7036/api/Contract/FinanceRep/Facility?financial_year_id=14
   GetFinanceRep() {
-    debugger
+    if (!this.financial_year_id) {
+      this.toastr.warning('Please select financial year.');
+      return;
+    }
     try {
       this.spinner.show();
       const params = {
-        // Did: this.Did??0,
-     financial_year_id: this.financial_year_id 
+        financial_year_id: this.financial_year_id,
       };
-      this.api.get('Contract/FinanceRep/Facility?', { params }).subscribe(
+      this.api.get('Contract/FinanceRep/Facility', { params }).subscribe(
         (res: any) => {
           this.dispatchData = res.map((item: FacilityReportDTO, index: number) => ({
             ...item,
@@ -174,14 +176,22 @@ Did:any;
     // force UI refresh
   this.cd.detectChanges();
 }
-  onSelectedyearlist(years: any) {
-    // debugger
-    this.financial_year_id = years.financial_year_id;
-    this.year = years.year;
-
-  //    if (this.ItemId) {
-  // } else {
-  // }
+  onSelectedyearlist(selected: number | { financial_year_id?: number; year?: string } | null) {
+    if (selected == null) {
+      this.financial_year_id = null;
+      this.year = '';
+      return;
+    }
+    if (typeof selected === 'object') {
+      this.financial_year_id = selected.financial_year_id ?? null;
+      this.year = selected.year ?? '';
+    } else {
+      this.financial_year_id = selected;
+      const match = this.yearlist.find(
+        (y: { financial_year_id?: number }) => y.financial_year_id === selected,
+      );
+      this.year = match?.year ?? '';
+    }
   }
   // http://localhost:55385/Reports/POSummaryDrillDwnQtyPOWise.aspx?finYrId=18&directorateId=5&Potype=Normal%20PO
    GetitemFulldetail(directorateId:any,Potype :any,FacilityAutName:any) {

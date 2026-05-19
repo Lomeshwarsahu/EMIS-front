@@ -1,0 +1,52 @@
+<div class="ems-legacy-page">
+  <div class="header-wrap">
+    <span class="header-bar narrow">Indent Budget Heads</span>
+  </div>
+
+  <div class="form-panel">
+    <table class="panel-table">
+      <tbody>
+        <tr>
+          <td>Head No:</td>
+          <td><input class="legacy-input" [(ngModel)]="headNo" maxlength="500" /></td>
+        </tr>
+        <tr>
+          <td>Head Name:</td>
+          <td><input class="legacy-input" [(ngModel)]="headName" maxlength="500" /></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="filter-center">
+            <button type="button" class="btn-legacy" (click)="save()" [disabled]="saving">
+              {{ saving ? 'Saving…' : 'Save' }}
+            </button>
+            <button type="button" class="btn-legacy btn-secondary" (click)="back()">Back</button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table class="legacy-grid">
+              <thead>
+                <tr>
+                  <th>Head No</th>
+                  <th>Head Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of rows">
+                  <td>{{ row.HeadNo }}</td>
+                  <td>{{ row.HeadName }}</td>
+                </tr>
+                <tr *ngIf="loading">
+                  <td colspan="2" class="grid-empty">Loading…</td>
+                </tr>
+                <tr *ngIf="!loading && !rows.length">
+                  <td colspan="2" class="grid-empty">No budget heads found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

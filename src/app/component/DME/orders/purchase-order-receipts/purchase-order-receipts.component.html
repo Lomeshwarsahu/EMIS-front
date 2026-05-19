@@ -1,30 +1,121 @@
-<div class="legacy-page">
-  <div class="legacy-title">Receipt/Installation Desk</div>
+<div class="ems-legacy-page">
+  <div class="header-wrap">
+    <span class="header-bar wide">Purchase Order Receipt Desk</span>
+  </div>
 
-  <div class="legacy-card">
-    <table>
-      <thead>
-        <tr>
-          <th>S.No</th>
-          <th>Item Code</th>
-          <th>Equipment Name</th>
-          <th>PO No</th>
-          <th>Consignee</th>
-          <th>PO Qty For Consignee</th>
-          <th>Supplied Qty</th>
-          <th>Balance Qty</th>
-        </tr>
-      </thead>
+  <div class="datagrid">
+    <table class="panel-table">
       <tbody>
-        <tr *ngFor="let row of rows; index as i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ row.itemCode }}</td>
-          <td>{{ row.equipmentName }}</td>
-          <td>{{ row.poNo }}</td>
-          <td>{{ row.consignee }}</td>
-          <td>{{ row.poQtyForConsignee }}</td>
-          <td>{{ row.suppliedQty }}</td>
-          <td>{{ row.balanceQty }}</td>
+        <tr>
+          <td align="center" colspan="4">
+            <table class="filter-inner">
+              <tr>
+                <td>Financial Year:</td>
+                <td>
+                  <select class="legacy-select" [(ngModel)]="selectedFinancialYearId">
+                    <option [ngValue]="0">Select Fin Year</option>
+                    <option *ngFor="let y of financialYears" [ngValue]="y.FinancialYearId">{{ y.Year }}</option>
+                  </select>
+                </td>
+                <td>Item Name:</td>
+                <td>
+                  <select class="legacy-select item-select" [(ngModel)]="selectedItemCode">
+                    <option *ngFor="let e of itemOptions" [ngValue]="e.ItemCodeAsPerTender">{{ e.ItemName }}</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3"></td>
+                <td>
+                  <button type="button" class="btn-legacy" (click)="show()" [disabled]="loading">
+                    {{ loading ? 'Loading…' : 'Show' }}
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <div class="grid-scroll">
+              <table class="legacy-grid main-grid">
+                <thead>
+                  <tr>
+                    <th>S.no</th>
+                    <th>Consignees</th>
+                    <th>PO Number</th>
+                    <th>PO Date</th>
+                    <th>Item Name/Code</th>
+                    <th>Supplier</th>
+                    <th>Order Qty</th>
+                    <th>Gross Value</th>
+                    <th>Dispatch/Receipt Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of rows; index as i">
+                    <td class="center">{{ i + 1 }}</td>
+                    <td>{{ row.LocationName }}</td>
+                    <td>{{ row.PoNo }}</td>
+                    <td class="center">{{ row.PoDate }}</td>
+                    <td class="center">
+                      {{ row.ItemName }}<br />
+                      <span class="sub-code">{{ row.ItemCode }}</span>
+                    </td>
+                    <td class="center">{{ row.SupplierName }}</td>
+                    <td class="center">{{ row.Quantity }}</td>
+                    <td class="right">{{ formatPrice(row.TotalPrice) }}</td>
+                    <td class="nested-cell">
+                      <table class="legacy-grid nested-grid" *ngIf="row.Batches.length; else noBatches">
+                        <thead>
+                          <tr>
+                            <th>DispatchNo/Date<br />Tentative Supply Date</th>
+                            <th>Receipt No<br />Receipt Date</th>
+                            <th>Supplied QTY</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let batch of row.Batches">
+                            <td class="center">
+                              {{ batch.DispatchNo }}<br />
+                              {{ batch.DispatchDate }}<br />
+                              {{ batch.TentativeSupplyDate }}
+                            </td>
+                            <td class="center">
+                              {{ batch.ReceiptNo || '—' }}<br />
+                              {{ batch.ReceiptDate }}
+                            </td>
+                            <td class="center">{{ batch.SuppliedQty }}</td>
+                            <td class="center">
+                              <button
+                                type="button"
+                                class="link-action"
+                                (click)="onReceiptAction(row, batch)"
+                              >
+                                {{ batch.SupplyStatus }}
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <ng-template #noBatches>
+                        <span class="muted">No dispatch/receipt records</span>
+                      </ng-template>
+                    </td>
+                  </tr>
+                  <tr *ngIf="loading">
+                    <td colspan="9" class="grid-empty">Loading…</td>
+                  </tr>
+                  <tr *ngIf="!loading && !rows.length">
+                    <td colspan="9" class="grid-empty">
+                      No records found. Select filters and click Show.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>

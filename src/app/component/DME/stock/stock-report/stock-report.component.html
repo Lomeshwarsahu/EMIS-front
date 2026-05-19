@@ -1,46 +1,89 @@
-<div class="legacy-page">
-  <div class="legacy-title">Stock Summary</div>
+<div class="ems-legacy-page">
+  <div class="header-wrap">
+    <span class="header-bar">
+      Stock of COVID19 related Equipment in Medical College/Hospital
+    </span>
+  </div>
 
-  <div class="legacy-card">
-    <div class="filter-row">
-      <label>
-        Directorate/HOD
-        <select [(ngModel)]="authority">
-          <option value="DME">DME</option>
-          <option value="CME">CME</option>
-          <option value="DHS">DHS</option>
-        </select>
-      </label>
-      <button type="button" class="btn-show">Show</button>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>S.No</th>
-          <th>Hospital/District</th>
-          <th>No. of Equipment in OP Stock (A)</th>
-          <th>Received/Installed from EMIS (B)</th>
-          <th>Total Stock (A+B)</th>
-        </tr>
-      </thead>
+  <div class="datagrid">
+    <table class="panel-table">
       <tbody>
-        <tr *ngFor="let row of rows; index as i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ row.hospital }}</td>
-          <td>{{ row.openingStock }}</td>
-          <td>{{ row.receivedInstalled }}</td>
-          <td>{{ row.openingStock + row.receivedInstalled }}</td>
+        <tr>
+          <td class="note-cell" colspan="2">
+            Note: Health Facility Stock 1) Supplied through CGMSC against Purchase Order &amp; 2) Local
+            Purchase/Donation/CSR &amp; GOI Supplied
+          </td>
+        </tr>
+        <tr>
+          <td class="filter-center" colspan="2">
+            <strong>Select Equipment</strong>
+            <select class="legacy-select" [(ngModel)]="selectedPid">
+              <option *ngFor="let t of equipmentTypes" [ngValue]="t.Pid">{{ t.PItemName }}</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="filter-center" colspan="2">
+            <div class="radio-group">
+              <label><input type="radio" name="poFilter" value="All" [(ngModel)]="filterType" /> All</label>
+              <label><input type="radio" name="poFilter" value="OR" [(ngModel)]="filterType" /> Only Received</label>
+              <label
+                ><input type="radio" name="poFilter" value="RI" [(ngModel)]="filterType" /> Received &amp;
+                Installed</label
+              >
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="filter-center" colspan="2">
+            <button type="button" class="btn-legacy" (click)="showDetails()" [disabled]="loading">
+              {{ loading ? 'Loading…' : 'Show Details' }}
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table class="legacy-grid" *ngIf="rows.length || loading">
+              <thead>
+                <tr>
+                  <th>S.no</th>
+                  <th>Equipment</th>
+                  <th>Serial No.</th>
+                  <th>Make</th>
+                  <th>Model</th>
+                  <th>Installation Location</th>
+                  <th>Received Date</th>
+                  <th>Installed Date</th>
+                  <th>Warranty Upto</th>
+                  <th>Supply Source</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of rows; index as i">
+                  <td class="center">{{ i + 1 }}</td>
+                  <td>{{ row.ItemName }}</td>
+                  <td>{{ row.MakeSerialNo }}</td>
+                  <td>{{ row.Make }}</td>
+                  <td>{{ row.ModelNo }}</td>
+                  <td>{{ row.InstallLocation }}</td>
+                  <td class="center">{{ row.ReceiptDate || '—' }}</td>
+                  <td class="center">{{ row.InstallationDate || '—' }}</td>
+                  <td class="center">{{ row.WarrantyUpto || '—' }}</td>
+                  <td class="center">{{ row.SuppliedFrom }}</td>
+                  <td>{{ row.Remarks }}</td>
+                </tr>
+                <tr *ngIf="loading">
+                  <td colspan="11" class="grid-empty">Loading…</td>
+                </tr>
+                <tr *ngIf="!loading && !rows.length">
+                  <td colspan="11" class="grid-empty">No records found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
         </tr>
       </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="2"><strong>Total</strong></td>
-          <td>{{ totalOpeningStock }}</td>
-          <td>{{ totalReceivedInstalled }}</td>
-          <td>{{ totalOpeningStock + totalReceivedInstalled }}</td>
-        </tr>
-      </tfoot>
     </table>
   </div>
 </div>

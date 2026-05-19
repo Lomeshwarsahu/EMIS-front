@@ -324,7 +324,7 @@ approle:any;
             // this.InsertUserLoginLog();
 
             if (role === 'FU' || role === 'PRINCIPAL' || role === 'FDA') {
-              this.router.navigate(['/store-home']);
+              this.router.navigate(['/masters/store-home']);
             } else if (
               role === 'AD' ||
               role === 'AU' ||

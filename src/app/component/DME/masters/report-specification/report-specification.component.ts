@@ -41,7 +41,7 @@ interface ReportSpecificationSummary {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './report-specification.component.html',
-  styleUrls: ['./report-specification.component.css'],
+  styleUrls: ['../../shared/legacy-ems-page.css', './report-specification.component.css'],
 })
 export class ReportSpecificationComponent implements OnInit {
   private readonly apiRoot = `${environment.apiUrl}/ReportSpecification/`;

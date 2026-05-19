@@ -1,0 +1,303 @@
+/* Shared legacy EMSRole Stock/Order page styling */
+.ems-legacy-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 12px 16px 32px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 13px;
+  color: #003399;
+  background: #fff;
+}
+
+.ems-legacy-page .header-bar {
+  display: inline-block;
+  width: 50%;
+  max-width: 720px;
+  margin: 0 auto 16px;
+  padding: 10px 24px;
+  background-color: #4d67a0;
+  color: #fff;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+}
+
+.ems-legacy-page .header-bar.narrow {
+  width: 30%;
+  min-width: 280px;
+}
+
+.ems-legacy-page .header-bar.wide {
+  width: 20%;
+  min-width: 200px;
+}
+
+.ems-legacy-page .header-wrap {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.ems-legacy-page .datagrid {
+  width: 100%;
+}
+
+.ems-legacy-page .panel-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ems-legacy-page .panel-table td {
+  padding: 8px 6px;
+  vertical-align: middle;
+}
+
+.ems-legacy-page .note-cell {
+  font-size: 12px;
+  color: #003399;
+}
+
+.ems-legacy-page .note-red {
+  color: red;
+  text-align: left;
+}
+
+.ems-legacy-page .filter-center {
+  text-align: center;
+}
+
+.ems-legacy-page .legacy-select {
+  min-width: 280px;
+  height: 25px;
+  font-size: 13px;
+  border: 1px solid #7f9db9;
+}
+
+.ems-legacy-page .btn-legacy {
+  background-color: #4d67a0;
+  border: none;
+  color: #fff;
+  padding: 10px 24px;
+  font-size: 12px;
+  cursor: pointer;
+  margin: 4px 2px;
+}
+
+.ems-legacy-page .btn-legacy:hover {
+  background-color: #3d5588;
+}
+
+.ems-legacy-page .btn-clear {
+  background: #ff9800;
+  color: #000;
+  border: 1px solid #e65100;
+  padding: 6px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ems-legacy-page .btn-add {
+  text-decoration: none;
+  display: inline-block;
+}
+
+.ems-legacy-page .radio-group {
+  display: inline-flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ems-legacy-page .radio-group label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.ems-legacy-page .legacy-grid {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #3366cc;
+}
+
+.ems-legacy-page .legacy-grid th {
+  background: #003399;
+  color: #ccccff;
+  font-weight: 700;
+  padding: 8px 6px;
+  border: 1px solid #3366cc;
+  text-align: left;
+  font-size: 12px;
+}
+
+.ems-legacy-page .legacy-grid td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #c5d4e4;
+  color: #003399;
+  background: #fff;
+  font-size: 12px;
+  vertical-align: top;
+}
+
+.ems-legacy-page .legacy-grid tr:nth-child(even) td {
+  background: #fafbfc;
+}
+
+.ems-legacy-page .legacy-grid .center {
+  text-align: center;
+}
+
+.ems-legacy-page .qty-red {
+  color: darkred;
+  font-weight: 700;
+}
+
+.ems-legacy-page .qty-green {
+  color: darkgreen;
+  font-weight: 700;
+}
+
+.ems-legacy-page .icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.ems-legacy-page .icon-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ems-legacy-page .icon-pdf {
+  color: #c62828;
+  font-weight: 700;
+  font-size: 11px;
+  border: 1px solid #c62828;
+  padding: 2px 6px;
+  background: #fff;
+}
+
+.ems-legacy-page .icon-print {
+  font-size: 18px;
+}
+
+.ems-legacy-page .grid-empty {
+  text-align: center;
+  padding: 24px;
+  color: #666;
+}
+
+.ems-legacy-page .actions-right {
+  text-align: right;
+}
+
+.ems-legacy-page .sub-code {
+  display: block;
+  margin-top: 2px;
+}
+
+.ems-legacy-page .header-bar.medium {
+  width: 40%;
+  min-width: 320px;
+}
+
+.ems-legacy-page .legacy-input,
+.ems-legacy-page .legacy-textarea {
+  border: 1px solid #7f9db9;
+  font-family: inherit;
+  font-size: 13px;
+  color: #003399;
+}
+
+.ems-legacy-page .legacy-input {
+  min-width: 140px;
+  height: 25px;
+  padding: 2px 6px;
+}
+
+.ems-legacy-page .legacy-textarea {
+  width: 200px;
+  min-height: 100px;
+  padding: 4px 6px;
+}
+
+.ems-legacy-page .form-table {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.ems-legacy-page .form-table td {
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.ems-legacy-page .form-table .label-col {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.ems-legacy-page .readonly-val {
+  color: #003399;
+}
+
+.ems-legacy-page .btn-secondary {
+  background-color: #6c757d;
+}
+
+.ems-legacy-page .summary-panel {
+  border: 1px solid #c8c8c8;
+  background: #f5f5f5;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.ems-legacy-page .summary-panel .summary-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 18px;
+}
+
+.ems-legacy-page .summary-link {
+  background: none;
+  border: none;
+  color: #0066cc;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 13px;
+  padding: 0;
+}
+
+.ems-legacy-page .summary-link.active {
+  font-weight: 700;
+}
+
+.ems-legacy-page .toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 16px;
+  margin-bottom: 12px;
+}
+
+.ems-legacy-page .btn-clear-all {
+  background: #ff9800;
+  color: #000;
+  border: 1px solid #e65100;
+  padding: 6px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ems-legacy-page .export-cell {
+  width: 90px;
+  vertical-align: middle;
+}

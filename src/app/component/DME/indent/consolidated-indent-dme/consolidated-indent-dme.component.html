@@ -1,0 +1,138 @@
+<div class="ems-legacy-page">
+  <div class="header-wrap">
+    <span class="header-bar">Annual Indent</span>
+  </div>
+
+  <div class="datagrid">
+    <table class="panel-table">
+      <tbody>
+        <tr>
+          <td class="filter-center" colspan="2">
+            <strong>Financial Year</strong>
+            <select class="legacy-select" [(ngModel)]="selectedFinancialYearId">
+              <option [ngValue]="0">All</option>
+              <option *ngFor="let y of financialYears" [ngValue]="y.FinancialYearId">{{ y.Year }}</option>
+            </select>
+            <button type="button" class="btn-legacy" (click)="show()" [disabled]="loading">Show</button>
+            <button type="button" class="btn-legacy" (click)="openNewIndent()">New Indent</button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div class="grid-scroll">
+              <table class="legacy-grid">
+                <thead>
+                  <tr>
+                    <th>S.no</th>
+                    <th>MC/MCH Name</th>
+                    <th>Indent Initiation Date</th>
+                    <th>AS Letter No</th>
+                    <th>AS Letter Date</th>
+                    <th>Letter No/Dispatch No</th>
+                    <th>Dispatch Date</th>
+                    <th>No of Items</th>
+                    <th>Indent Status</th>
+                    <th>AI Letter Upload</th>
+                    <th>Add Indent</th>
+                    <th>Indent Report</th>
+                    <th>Download</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of rows; index as i">
+                    <td class="center">{{ i + 1 }}</td>
+                    <td>{{ row.McName }}</td>
+                    <td class="center">{{ row.ConsolidatedDate }}</td>
+                    <td>{{ row.AsLetterNo }}</td>
+                    <td class="center">{{ row.AsDate }}</td>
+                    <td class="center">{{ row.DispatchNo }}</td>
+                    <td class="center">{{ row.DispatchDate }}</td>
+                    <td class="center">{{ row.NosIndentQty }}</td>
+                    <td>{{ row.EStatus }}</td>
+                    <td>{{ row.UploadStatus }}</td>
+                    <td class="center">
+                      <button
+                        type="button"
+                        class="icon-btn"
+                        [disabled]="isCompleted(row.EStatus)"
+                        (click)="onAddIndent(row)"
+                        title="Add indent items"
+                      >
+                        +
+                      </button>
+                    </td>
+                    <td class="center">
+                      <button type="button" class="link-action" (click)="onShowIndent(row)">Show Indent</button>
+                    </td>
+                    <td class="center">
+                      <button
+                        type="button"
+                        class="icon-btn"
+                        [class.icon-pdf]="row.UploadStatus === 'Uploaded'"
+                        [disabled]="row.UploadStatus !== 'Uploaded'"
+                        (click)="onDownload(row)"
+                      >
+                        PDF
+                      </button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="loading">
+                    <td colspan="13" class="grid-empty">Loading…</td>
+                  </tr>
+                  <tr *ngIf="!loading && !rows.length">
+                    <td colspan="13" class="grid-empty">No records found.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="showNewModal" (click)="closeNewIndent()"></div>
+  <div class="modal-panel" *ngIf="showNewModal">
+    <h3>New Indent No Generation</h3>
+    <table class="modal-form">
+      <tr>
+        <td>Financial Year:</td>
+        <td>
+          <select class="legacy-select" [(ngModel)]="newFinancialYearId">
+            <option [ngValue]="0">Select</option>
+            <option *ngFor="let y of financialYears" [ngValue]="y.FinancialYearId">{{ y.Year }}</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Indent Date:</td>
+        <td><input class="legacy-input" [(ngModel)]="newIndentDate" placeholder="dd/MM/yyyy" /></td>
+      </tr>
+      <tr>
+        <td>Select Fund/Budget:</td>
+        <td>
+          <select class="legacy-select" [(ngModel)]="newBudgetId">
+            <option [ngValue]="0">Select</option>
+            <option *ngFor="let h of budgetHeads" [ngValue]="h.HeadId">{{ h.HeadName }}</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>AS Letter No:</td>
+        <td><input class="legacy-input" [(ngModel)]="newAsLetterNo" /></td>
+      </tr>
+      <tr>
+        <td>AS Date:</td>
+        <td><input class="legacy-input" [(ngModel)]="newAsDate" placeholder="dd/MM/yyyy" /></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="filter-center">
+          <button type="button" class="btn-legacy" (click)="saveNewIndent()" [disabled]="saving">
+            {{ saving ? 'Saving…' : 'Save' }}
+          </button>
+          <button type="button" class="btn-legacy btn-secondary" (click)="closeNewIndent()">Close</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

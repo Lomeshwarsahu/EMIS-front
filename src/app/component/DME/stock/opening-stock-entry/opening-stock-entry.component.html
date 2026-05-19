@@ -1,37 +1,88 @@
-<div class="legacy-page">
-  <div class="legacy-title">Opening Stock Entry</div>
+<div class="ems-legacy-page">
+  <div class="header-wrap">
+    <span class="header-bar narrow">Opening Stock Reports</span>
+  </div>
 
-  <div class="legacy-card">
-    <div class="grid-form">
-      <label>
-        Financial Year
-        <input type="text" [(ngModel)]="financialYear" />
-      </label>
-      <label>
-        Hospital / District
-        <input type="text" [(ngModel)]="hospital" />
-      </label>
-      <label>
-        Equipment Code
-        <input type="text" [(ngModel)]="equipmentCode" />
-      </label>
-      <label>
-        Equipment Name
-        <input type="text" [(ngModel)]="equipmentName" />
-      </label>
-      <label>
-        Quantity
-        <input type="number" [(ngModel)]="quantity" />
-      </label>
-      <label>
-        Remarks
-        <input type="text" [(ngModel)]="remarks" />
-      </label>
-    </div>
-
-    <div class="actions">
-      <button type="button" class="btn-primary">Save Entry</button>
-      <button type="button" class="btn-secondary">Reset</button>
-    </div>
+  <div class="datagrid">
+    <table class="panel-table">
+      <tbody>
+        <tr>
+          <td class="note-cell" colspan="4">
+            नोट 1 : सी.एस.आर./दान , डी.एम.एफ,स्थानीय क्रय ,जी.ओ.आई सप्लाई के प्राप्ति और इंस्टालेशन की जानकारी भरें |
+          </td>
+        </tr>
+        <tr>
+          <td class="note-red" colspan="4">
+            नोट 2 :- कृपया सी.जी.एम.एस.सी द्वारा सप्लाई किये गए उपकरण (जिनकी एंट्री EMIS में ना हो ) उन्हें ओपनिंग
+            स्टॉक में एंट्री करें |
+          </td>
+        </tr>
+        <tr>
+          <td class="filter-center" colspan="4">
+            <strong>Select Main Equipment Type</strong>
+            <select class="legacy-select" [(ngModel)]="selectedPid" (ngModelChange)="onEquipmentChange()">
+              <option *ngFor="let t of equipmentTypes" [ngValue]="t.Pid">{{ t.PItemName }}</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="actions-right" colspan="4">
+            <button type="button" class="btn-legacy btn-add">Add New</button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <table class="legacy-grid">
+              <thead>
+                <tr>
+                  <th>S.no</th>
+                  <th>Equipment</th>
+                  <th>Serial No.</th>
+                  <th>Make</th>
+                  <th>Model</th>
+                  <th>Installation Location</th>
+                  <th>Received Date</th>
+                  <th>Installed Date</th>
+                  <th>Warranty Upto</th>
+                  <th>Supply Source</th>
+                  <th>Remarks</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of rows; index as i">
+                  <td class="center">{{ i + 1 }}</td>
+                  <td>
+                    {{ row.ItemName }}
+                    <span class="sub-code">{{ row.ItemCode }}</span>
+                  </td>
+                  <td>{{ row.MakeSerialNo }}</td>
+                  <td>
+                    {{ row.Make }}
+                    <span class="sub-code">{{ row.ModelNo }}</span>
+                  </td>
+                  <td class="center">{{ row.ModelNo }}</td>
+                  <td>{{ row.InstallLocation }}</td>
+                  <td class="center">{{ row.ReceiptDate || '—' }}</td>
+                  <td class="center">{{ row.InstallationDate || '—' }}</td>
+                  <td class="center">{{ row.WarrantyUpto || '—' }}</td>
+                  <td class="center">{{ row.SuppliedFrom }}</td>
+                  <td>{{ row.Remarks }}</td>
+                  <td class="center">
+                    <button type="button" class="icon-btn" title="Edit">✎</button>
+                  </td>
+                </tr>
+                <tr *ngIf="loading">
+                  <td colspan="12" class="grid-empty">Loading…</td>
+                </tr>
+                <tr *ngIf="!loading && !rows.length">
+                  <td colspan="12" class="grid-empty">No records found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

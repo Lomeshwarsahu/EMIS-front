@@ -1,35 +1,51 @@
-.legacy-page {
-  padding: 16px;
+.filter-inner td {
+  padding: 6px 10px;
 }
 
-.legacy-title {
-  margin: 0 auto 16px;
-  width: fit-content;
-  padding: 10px 24px;
-  background: #4d67a0;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 4px;
+.item-select {
+  min-width: 200px;
 }
 
-.legacy-card {
-  background: #fff;
-  border: 1px solid #d5d5d5;
-  padding: 14px;
+.grid-scroll {
+  overflow-x: auto;
 }
 
-table {
+.main-grid {
+  min-width: 960px;
+}
+
+.nested-cell {
+  padding: 4px;
+  vertical-align: top;
+}
+
+.nested-grid {
   width: 100%;
-  border-collapse: collapse;
+  font-size: 12px;
 }
 
-th,
-td {
-  border: 1px solid #d0d0d0;
-  padding: 8px;
-  font-size: 13px;
+.nested-grid th {
+  background: #003399;
+  color: #ccf;
+  font-size: 11px;
 }
 
-th {
-  background: #f1f4fa;
+.right {
+  text-align: right;
+}
+
+.link-action {
+  background: none;
+  border: none;
+  color: #003399;
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  padding: 0;
+}
+
+.muted {
+  color: #666;
+  font-size: 12px;
 }

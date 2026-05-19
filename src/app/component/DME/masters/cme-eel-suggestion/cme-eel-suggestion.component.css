@@ -1,36 +1,30 @@
-.legacy-page {
-  padding: 16px;
+.eel-page .header-bar {
+  width: 90%;
+  max-width: 1000px;
 }
 
-.legacy-title {
-  margin: 0 auto 16px;
-  width: fit-content;
-  padding: 10px 24px;
-  background: #4d67a0;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 4px;
-}
-
-.legacy-card {
+.btn-export {
   background: #fff;
-  border: 1px solid #d5d5d5;
-  padding: 14px;
+  border: 1px solid #4d67a0;
+  color: #4d67a0;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 2px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  border: 1px solid #d0d0d0;
-  padding: 8px;
-  font-size: 13px;
-  vertical-align: top;
-}
-
-th {
+.btn-export:hover {
   background: #f1f4fa;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.eel-page .legacy-grid {
+  min-width: 1000px;
+}
+
+.eel-page .legacy-grid td {
+  vertical-align: top;
 }
