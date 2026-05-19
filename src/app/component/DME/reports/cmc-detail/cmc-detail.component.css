@@ -1,16 +1,84 @@
-.btn-export {
+.cmc-legacy-page {
+  max-width: 1050px;
+  font-family: 'Times New Roman', Times, serif;
+  color: #003399;
+}
+
+.cmc-legacy-page .cmc-title {
+  width: 40%;
+  min-width: 280px;
+}
+
+.cmc-legacy-page .spacer-row {
+  height: 23px;
+}
+
+.cmc-legacy-page .filter-row td {
+  padding: 8px 10px;
+  vertical-align: middle;
+}
+
+.cmc-legacy-page .export-cell {
+  width: 80px;
+}
+
+.cmc-legacy-page .btn-export {
   background: #fff;
   border: 1px solid #4d67a0;
   color: #4d67a0;
-  padding: 4px 12px;
+  padding: 4px 10px;
   font-size: 12px;
   cursor: pointer;
 }
 
-.table-wrap {
-  overflow-x: auto;
+.cmc-legacy-page .legacy-select {
+  min-width: 150px;
+  height: 25px;
+  border: 1px solid #7f9db9;
+  font-family: inherit;
+  font-size: 13px;
 }
 
-.legacy-grid {
-  min-width: 900px;
+.cmc-legacy-page .grid-cell {
+  text-align: center;
+  padding-top: 8px;
+}
+
+.cmc-legacy-page .cmc-grid {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  border: 1px solid #999;
+}
+
+.cmc-legacy-page .cmc-grid th {
+  background: #003399;
+  color: #ccf;
+  font-weight: 700;
+  padding: 6px 8px;
+  border: 1px solid #999;
+  font-size: 13px;
+}
+
+.cmc-legacy-page .cmc-grid td {
+  padding: 6px 8px;
+  border: 1px solid #999;
+  font-size: 13px;
+  color: #003399;
+  vertical-align: top;
+}
+
+.cmc-legacy-page .cmc-grid tbody tr {
+  background: #fff;
+}
+
+.cmc-legacy-page .cmc-grid tbody tr.alt-row {
+  background: #ccc;
+}
+
+.cmc-legacy-page .grid-empty {
+  text-align: center;
+  padding: 12px;
+  color: #003399;
 }

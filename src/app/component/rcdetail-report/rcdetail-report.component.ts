@@ -65,8 +65,8 @@ import { ContractItem } from 'src/app/Model/models';
   styleUrl: './rcdetail-report.component.css',
 })
 export class RCDetailReportComponent {
-Tenterlist:any[]=[];
-tender_id:any;
+Tenterlist: { tender_id: number; tender_no: string }[] = [];
+tender_id: number | null = 0;
 CategoryType='E';//1;
 RcType='R';
 CaType:any;
@@ -118,46 +118,42 @@ CaType:any;
 
   // https://localhost:7036/api/Contract/GetConTenterlist
 
-GetConTenterlist(){
-    // this.spinner.show();
+GetConTenterlist(): void {
     this.api.get('Contract/GetConTenterlist').subscribe({
-      next: (res: any) => {
-        this.Tenterlist = res;
-        // t.tender_no,t.tender_id
-        // console.log(' this.Tenterlist:', this.Tenterlist);
+      next: (res: unknown) => {
+        const arr = Array.isArray(res) ? res : [];
+        const mapped = arr.map((r: Record<string, unknown>) => ({
+          tender_id: Number(r['tender_id'] ?? r['TenderId'] ?? 0),
+          tender_no: String(r['tender_no'] ?? r['TenderNo'] ?? ''),
+        }));
+        const hasAll = mapped.some((t) => t.tender_id === 0);
+        this.Tenterlist = hasAll ? mapped : [{ tender_id: 0, tender_no: '--All--' }, ...mapped];
+        this.tender_id = 0;
         this.spinner.hide();
       },
-      error: (err: any) => {
+      error: (err: unknown) => {
         this.spinner.hide();
         console.error(err);
       },
     });
 }
-
-onSelectedItem(tenders: any) {
-  this.tender_id=tenders.tender_id;
-
-}
   // https://localhost:7036/api/GenerateNasti/Getyear
 
 //  https://localhost:7036/api/Contract/GetRcDetailReport?TenderId=66&CategoryId=1&RcType=R
   GetRcDetailReport() {
-    // debugger
     try {
       this.spinner.show();
-      if(this.CategoryType=='E')
-      {
-      this.CaType=1
-      }else{
-      this.CaType=2
+      this.CaType = this.CategoryType === 'E' ? 1 : 2;
+
+      const params: Record<string, string | number> = {
+        CategoryId: this.CaType,
+        RcType: this.RcType,
+      };
+      if (this.tender_id != null && this.tender_id > 0) {
+        params['TenderId'] = this.tender_id;
       }
 
-      const params = {
-        TenderId: this.tender_id,
-        CategoryId:   this.CaType ,
-        RcType: this.RcType ,
-      };
-      this.api.get('Contract/GetRcDetailReport?', { params }).subscribe(
+      this.api.get('Contract/GetRcDetailReport', { params }).subscribe(
         (res: any) => {
           this.dispatchData = res.map((item: ContractItem, index: number) => ({
             ...item,

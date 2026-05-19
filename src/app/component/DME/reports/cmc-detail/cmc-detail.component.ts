@@ -35,7 +35,7 @@ interface CmcDetailRow {
   styleUrls: ['../../shared/legacy-ems-page.css', './cmc-detail.component.css'],
 })
 export class CmcDetailComponent implements OnInit {
-  private readonly apiRoot = `${environment.apiUrl}/DMEReports/`;
+  private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
 
   itemOptions: CmcItemOption[] = [];
   tenderOptions: CmcTenderOption[] = [];

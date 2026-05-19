@@ -38,7 +38,6 @@ interface FacilityIndentRow {
   styleUrls: ['../../shared/legacy-ems-page.css', './consolidated-indent-dme.component.css'],
 })
 export class ConsolidatedIndentDmeComponent implements OnInit {
-  private readonly indentApi = `${environment.apiUrl}/DMEIndent/`;
   private readonly orderApi = `${environment.apiUrl}/DMEOrder/`;
 
   financialYears: FinancialYearOption[] = [];
@@ -78,7 +77,7 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
     this.loading = true;
     const yearQ = this.selectedFinancialYearId > 0 ? `&financialYearId=${this.selectedFinancialYearId}` : '';
     this.http
-      .get<FacilityIndentRow[]>(`${this.indentApi}facility-indents?userId=${this.userId}${yearQ}`)
+      .get<FacilityIndentRow[]>(`${this.orderApi}facility-indents?userId=${this.userId}${yearQ}`)
       .subscribe({
         next: (res) => {
           this.rows = this.mapIndents(res);
@@ -116,7 +115,7 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
 
     this.saving = true;
     this.http
-      .post(`${this.indentApi}facility-indents`, {
+      .post(`${this.orderApi}facility-indents`, {
         UserId: this.userId,
         BudgetId: this.newBudgetId,
         FinancialYearId: this.newFinancialYearId,
@@ -172,7 +171,7 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
 
   private loadBudgetHeads(): void {
     if (!this.userId) return;
-    this.http.get<BudgetHeadOption[]>(`${this.indentApi}budget-heads?userId=${this.userId}`).subscribe({
+    this.http.get<BudgetHeadOption[]>(`${this.orderApi}budget-heads?userId=${this.userId}`).subscribe({
       next: (res) => (this.budgetHeads = this.mapHeads(res)),
       error: () => (this.budgetHeads = []),
     });

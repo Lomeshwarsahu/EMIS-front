@@ -21,7 +21,7 @@ interface BudgetHeadRow {
   styleUrls: ['../../shared/legacy-ems-page.css', './dme-fac-heads.component.css'],
 })
 export class DmeFacHeadsComponent implements OnInit {
-  private readonly apiRoot = `${environment.apiUrl}/DMEIndent/`;
+  private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
 
   rows: BudgetHeadRow[] = [];
   headNo = '';
