@@ -51,6 +51,11 @@ import { DmeFacHeadsComponent } from './component/DME/indent/dme-fac-heads/dme-f
 import { ConsolidatedIndentDmeComponent } from './component/DME/indent/consolidated-indent-dme/consolidated-indent-dme.component';
 import { CmcDetailComponent } from './component/DME/reports/cmc-detail/cmc-detail.component';
 import { FacilityComplainStoreComponent } from './component/DME/complain/facility-complain-store/facility-complain-store.component';
+import { TenderCoverAComponent } from './component/BME/tender-cover-a/tender-cover-a.component';
+import { TenderCoverAObClaimComponent } from './tender-cover-aob-claim/tender-cover-aob-claim.component';
+import { TenderItemsPriceGEMComponent } from './component/BME/tender-items-price-gem/tender-items-price-gem.component';
+import { TenderDetailsPriceEntryGEMComponent } from './component/BME/tender-details-price-entry-gem/tender-details-price-entry-gem.component';
+import { ConsolidatedIndentPOCellComponent } from './component/BME/consolidated-indent-pocell/consolidated-indent-pocell.component';
 
 
 const routes: Routes = [
@@ -96,6 +101,11 @@ const routes: Routes = [
 {path:'EMSRCDashbord',component:EMSRCDashbordComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
 {path:'EMSNEWRC',component:EMSNEWRCComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
 {path:'PlanaTenderD',component:PlanaTenderDComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU','DME'] }},
+{path:'TenderCoverA',component:TenderCoverAComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'TenderCoverAObClaim',component:TenderCoverAObClaimComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'TenderItemsPriceGEM',component:TenderItemsPriceGEMComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'TenderDetailsPriceEntryGEM',component:TenderDetailsPriceEntryGEMComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
+{path:'ConsolidatedIndentPOCell',component:ConsolidatedIndentPOCellComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
 // MD logins 
 {path:'RCDetailReport',component:RCDetailReportComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD','DME'] }},
 {path:'AcceptedReort',component:AcceptedReortComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AD'] }},

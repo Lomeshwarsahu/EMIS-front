@@ -21,9 +21,11 @@ export class ApiService {
   constructor(private readonly http: HttpClient) {}
 //#region 
   getUsers(id: number) {
+    // debugger
     return this.http.get(`${this.apiUrll}/${id}`);
   }
   GetUserEmail(userId: number) {
+    // debugger;
     return this.http.get<{ Email?: string; UserName?: string }>(
       `${this.apiUrll}/GetUserEmail/${userId}`,
     );
@@ -65,7 +67,11 @@ public put(url: string, data: any) {
 
 
 
+post3(endpoint: string, payload: any) {
 
+  const absoluteUrl = `https://localhost:7036/api/${endpoint}`;
+  return this.http.post(absoluteUrl, payload);
+}
 
 
   masddlUser(Usertype: any) {

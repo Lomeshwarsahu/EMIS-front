@@ -22,3 +22,142 @@
 .mat-column-IsEligibleB {
     padding-right: 8px !important;
 }
+
+/* Zoom aur Blur hatane ke liye */
+.modal.fade .modal-dialog {
+    transition: transform 0.2s ease-out;
+}
+
+/* Modal backdrop fix taaki typing block na ho */
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+.modal {
+    z-index: 1050 !important;
+    pointer-events: auto !important;
+}
+
+/* Input Focus Effects */
+.form-control:focus, .form-select:focus {
+    border-color: #198754 !important; /* Green focus */
+    background-color: #fff !important;
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.1) !important;
+}
+
+/* Radio Button Button-like appearance */
+.btn-check:checked + .btn-outline-success {
+    background-color: #198754;
+    color: white;
+    box-shadow: 0 4px 10px rgba(25, 135, 84, 0.2);
+}
+
+/* Label styling */
+.form-label {
+    margin-bottom: 0.4rem;
+    display: block;
+}
+
+
+.modal-content {
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5) !important;
+    border: none !important;
+}
+
+
+
+
+
+
+
+
+/* data table */
+
+/* Table Base Styles */
+.custom-table {
+  border-collapse: collapse;
+}
+
+.element-row {
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.element-row:hover {
+  background: #f8f9ff !important;
+}
+
+.element-row:active {
+  background: #ebefff;
+}
+
+/* Detail Row Specifics */
+.detail-row {
+  height: 0 !important; /* Collapsed state */
+}
+
+.detail-container {
+  overflow: hidden; /* Important for animation */
+  display: flex;
+  flex-direction: column;
+}
+
+.inner-detail-card {
+  border-left: 4px solid #0d6efd !important; /* Visual cue for nested data */
+}
+
+/* Responsive Table Fix */
+@media (max-width: 992px) {
+  .custom-table {
+    min-width: 1200px; /* Force scroll on small screens */
+  }
+}
+
+/* Expand Animation Icons */
+.bi-chevron-up, .bi-chevron-down {
+  transition: transform 0.3s ease;
+}
+
+/* Smooth Row Transition */
+.expanded-row {
+  background: #f1f4ff;
+  font-weight: 500;
+}
+
+
+
+
+
+/* lomesh
+
+*/
+/* Core Structural Definitions for Material multiTemplateDataRows */
+.custom-table {
+  width: 100%;
+}
+
+.element-row {
+  cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.element-row:hover {
+  background-color: #fcfdfe !important;
+}
+
+.expanded-row {
+  background-color: #f4f7fe !important;
+}
+
+/* Row height controls to prevent animation jitters */
+tr.detail-row {
+  height: 0 !important;
+}
+
+.detail-container {
+  overflow: hidden;
+  display: flex;
+}
+
+.inner-detail-card {
+  width: 100%;
+}

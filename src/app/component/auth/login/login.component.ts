@@ -238,7 +238,7 @@ approle:any;
   userdatas: any;
   EMAIL: any;
   getallusers(id: any) {
-    // debugger;
+    debugger;
     this.api.getUsers(id).subscribe((res) => {
       this.userdatas = res;
       console.log('login api drop', res);
@@ -247,6 +247,7 @@ approle:any;
   // https://localhost:7036/api/Auth/GetUserEmail/5
 
   GetUserEmail(userid: any) {
+    // debugger;
     const uid = Number(userid);
     this.api.GetUserEmail(uid).subscribe({
       next: (res) => {
