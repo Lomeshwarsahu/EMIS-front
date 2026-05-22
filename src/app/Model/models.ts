@@ -609,6 +609,7 @@ export interface HodConversationDTO {
   Convid: number;
 }
 export interface TenderSupplierParticipationDto {
+  [x: string]: any
   sno:number
    SlNo:number
     SchStatusDid: number
@@ -634,7 +635,13 @@ export interface TenderSupplierParticipationDto {
     IsCOVFinEli: string,
     CovATechRemarksBefore_OBClM: string,
     CovAFINRemarksBefore_OBClM: string,
-    Csid: number
+    Csid: number,
+    ItemId:number,
+    TenderItemId:number,
+    ItemName:string,
+    ItemCodeAsPerTender:string,
+    ItemCode:string,
+    TenderQuantity:number
 }
 export interface GetTenderItemsDTO {
   sno:number
