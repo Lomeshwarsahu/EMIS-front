@@ -1,1 +1,221 @@
-<p>tender-details-price-entry-gem works!</p>
+<section class="container-fluid bg-light min-vh-100 py-4 px-lg-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="fw-bold text-primary mb-1">
+                <i class="bi bi-box-seam me-2"></i>Price Bid Entry
+            </h2>
+            <p class="text-muted mb-0 small">Add or remove items specifically for this tender.</p>
+        </div>
+        <button class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm" (click)="goBack()">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </button>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden p-3">
+        <div class="col-12 col-md-6 mb-3 mx-auto text-center">
+            <label class="form-label fw-bold small text-muted mb-2">Select Tender COVER-B Opened</label>
+             <ng-select class="border-2 rounded shadow-none form-control" appendTo="body" [items]="TenderList"
+                bindLabel="Tenderno" bindValue="Tenderid" placeholder="Search & Select Tender" name="Tenderid"
+                [(ngModel)]="selectedTenderId" (change)="onTenderChange($event)">
+            </ng-select>
+        </div>
+    </div> 
+    
+    <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden" *ngIf="show">
+        <div class="card-header bg-white py-3 border-bottom-0">
+            <h6 class="fw-bold text-secondary mb-0">
+                <i class="bi bi-info-circle-fill text-primary me-2"></i>Tender Reference
+            </h6>
+        </div>
+        <div class="table-responsive px-3 pb-3">
+            <table class="table table-sm table-borderless align-middle mb-0 bg-light rounded-3">
+                <thead class="text-muted small text-uppercase">
+                    <tr>
+                        <th class="ps-3 py-2">Tender No.</th>
+                        <th class="py-2">Start Date</th>
+                        <th class="py-2 pe-3">Cov-A Date</th>
+                        <th class="py-2 pe-3">CoverB</th>
+                        <th class="py-2 pe-3">Scheme ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ps-3 fw-bold text-primary">{{TenderDetails.TenderNo}}</td>
+                        <td><span class="badge bg-white text-dark border shadow-xs px-2">{{TenderDetails.TenderDate}}</span></td>
+                        <td class="pe-3 text-truncate">{{TenderDetails.EndDate}}</td>
+                        <td class="pe-3 text-truncate">{{TenderDetails.CoverB}}</td>
+                        <td class="pe-3 text-truncate">{{TenderDetails.TenderId}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div> 
+   
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden animate__animated animate__fadeIn" *ngIf="show">
+        <div class="table-responsive custom-table-height">
+            
+            <table class="table table-hover align-middle mb-0" mat-table [dataSource]="dataSource"
+                   multiTemplateDataRows matSort #sort="matSort">
+                
+                <ng-container matColumnDef="sno">
+                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center py-3" style="width: 80px;"> S.No </th>
+                    <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold"> {{element.sno}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ItemName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Item Name</th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1 text-wrap">
+                            {{element.ItemName}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ItemCodeAsPerTender">
+                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center">Item Code As Per Tender</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        <span class="fw-bold">{{element.ItemCodeAsPerTender}}</span>
+                    </td>
+                </ng-container>
+
+              
+
+                <!-- <ng-container matColumnDef="rejectdate">
+                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white">Reject Data</th>
+                    <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> 
+                         <input type="date" class="form-control table-input form-control-sm" [(ngModel)]="element.rejectdate" placeholder="Reason..."/>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Action">
+                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Action </th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        <a (click)="rejectItem(element.rejectdate,element.TenderItemId)" class="custom-link text-decoration-none text-danger fw-bold role-button">
+                             Reject
+                        </a>
+                    </td>
+                </ng-container> -->
+              <ng-container matColumnDef="rejectdate">
+    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white">Reject Data</th>
+    <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> 
+        <input type="date" class="form-control table-input form-control-sm" [(ngModel)]="element.rejectdate"/>
+    </td>
+</ng-container>
+
+<ng-container matColumnDef="Action">
+    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Action </th>
+    <td mat-cell *matCellDef="let element" class="text-center">
+        <a (click)="rejectItem(element)" class="custom-link text-decoration-none text-danger fw-bold role-button">
+             Reject
+        </a>
+    </td>
+</ng-container>
+                <!-- <ng-container matColumnDef="Reply">
+                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Details </th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                      <button mat-icon-button (click)="toggleDetails(element); $event.stopPropagation()">
+                        <i class="bi" [ngClass]="expandedElement === element ? 'bi-chevron-up text-danger' : 'bi-chevron-down text-primary'"></i>
+                      </button>
+                    </td>
+                </ng-container> -->
+                 <ng-container matColumnDef="PriceDetails">
+                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center">Price Details</th>
+                     <td mat-cell *matCellDef="let element" class="text-center">
+                      <button mat-icon-button (click)="toggleDetails(element); $event.stopPropagation()">
+                        <i class="bi" [ngClass]="expandedElement === element ? 'bi-chevron-up text-danger' : 'bi-chevron-down text-primary'"></i>
+                      </button>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="expandedDetail">
+                    <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length" class="p-0 border-0">
+                      <div class="detail-container" [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
+                        <div class="inner-detail-card m-3 p-3 shadow-sm rounded-3 bg-white border-start border-4 border-primary w-100">
+                          <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary">
+                            <i class="bi bi-currency-exchange me-2"></i>Live Financial Pricing (Item Reference ID: {{element.TenderItemId}})
+                          </h6>
+                          
+                          <div class="table-responsive rounded-3 border">
+                            <table class="table table-hover table-sm mb-0 align-middle">
+                              <thead class="table-light text-secondary small text-uppercase">
+                                <tr>
+                                  <th class="text-center">S.No</th>
+                                  <th class="text-center">Item ID</th>
+                                  <th>Supplier Name</th>
+                                  <th class="text-end">Basic Rate</th>
+                                  <th class="text-center">GST (%)</th>
+                                  <!-- <th class="text-center">Negotiation Price</th>
+                                  <th class="text-center">CMC Price 1st Year</th>
+                                  <th class="text-center">CMC Price 2st Year</th>
+                                  <th class="text-center">CMC Price 3st Year</th>
+                                  <th class="text-center">CMC Price 4st Year</th>
+                                  <th class="text-center">CMC Price 5st Year</th>
+                                  <th class="text-center">Reagent Status</th>
+                                  <th class="text-center">Accessories Status</th>
+                                  <th class="text-center">Negotiation Date</th> -->
+                                  <th class="text-center">Action</th>
+                                  <!-- <th class="text-center">Status</th>
+                                  <th class="text-center">Accepted</th> -->
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let p of liveTenderPrices">
+                                  <td class="text-center fw-bold text-muted">{{p.SlNo}}</td>
+                                  <td class="fw-semibold text-dark">{{p.SupplierName}}</td>
+                                  <td class="text-end text-success fw-bold">₹{{p.BasicRate | number:'1.2-2'}}</td>
+                                  <td class="text-center">{{p.Gst}}%</td>
+                                  <!-- <td class="text-center">{{p.FBasicRate}}</td> 
+                                  <td class="text-center"><input class="border-2 rounded shadow-none form-control" [(ngModel)]="p.Cmc1" type="text"/></td>
+                                  <td class="text-center"><input class="border-2 rounded shadow-none form-control" [(ngModel)]="p.Cmc2" type="text"/></td>
+                                  <td class="text-center"><input class="border-2 rounded shadow-none form-control" [(ngModel)]="p.Cmc3" type="text"/></td>
+                                  <td class="text-center"><input class="border-2 rounded shadow-none form-control" [(ngModel)]="p.Cmc4" type="text"/></td>
+                                  <td class="text-center"><input class="border-2 rounded shadow-none form-control" [(ngModel)]="p.Cmc5" type="text"/></td>
+                                  <td class="text-center"><input class="border-2 rounded shadow-none form-control" type="file"/></td>
+                                  <td class="text-center"><input class="border-2 rounded shadow-none form-control" type="file"/></td>
+                                  <td class="text-center"><input class="border-2 rounded shadow-none form-control" [(ngModel)]="p.FDate" type="date"/></td> -->
+                                  <td class="text-center">
+                                     <a (click)="Acepted(element)" class="custom-link text-decoration-none text-success fw-bold role-button">
+                                        Accept
+                                   </a></td>
+                                  <!-- <td class="text-center">
+                                    <span class="badge" [ngClass]="p.TPriceStatus === 'P' ? 'bg-warning-subtle text-warning' : 'bg-success-subtle text-success'">
+                                      {{p.TPriceStatus === 'P' ? 'Pending' : p.TPriceStatus}}
+                                    </span>
+                                  </td>
+                                  <td class="text-center">
+                                    <i class="bi" [ngClass]="p.IsAccept === 'Y' ? 'bi-check-circle-fill text-success fs-5' : 'bi-x-circle-fill text-danger fs-5'"></i>
+                                  </td> -->
+                                </tr>
+                                <tr *ngIf="liveTenderPrices.length === 0">
+                                  <td colspan="7" class="text-center py-3 text-muted fw-medium">
+                                    <i class="bi bi-exclamation-circle me-1"></i> No financial transaction records found.
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                </ng-container> 
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+                    class="element-row" [class.expanded-row]="expandedElement === element">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+
+                <tr *matNoDataRow>
+                    <td class="text-center py-5 text-muted" [attr.colspan]="displayedColumns.length">
+                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                        No data found for this tender.
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="bg-light border-top">
+            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons class="bg-transparent"></mat-paginator>
+        </div>
+    </div> 
+</section>

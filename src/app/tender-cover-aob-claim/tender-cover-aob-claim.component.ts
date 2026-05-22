@@ -283,6 +283,40 @@ export class TenderCoverAObClaimComponent {
 
     // window.open(url, '_blank');
   }
+// isExpansionDetailRow = (i: number, row: any) => row.detailRow === true;
+// toggleDetails(element: any) {
+//     this.expandedElement = this.expandedElement === element ? null : element;
+//     if (this.expandedElement) {
+//       this.GetHodReplyList(element.Convid);
+//     }
+//   }
+// toggleDetails1(row: any, Convid: any) {
+//   if (this.expandedElement === row) {
+//     this.expandedElement = null;
+
+//     this.dataSource.data = this.dataSource.data.filter(r => !r.detailRow);
+//     return;
+//   }
+
+//   this.expandedElement = row;
+
+//   const updatedRows: any[] = [];
+
+//   this.dataSource.data.forEach(r => {
+//     updatedRows.push(r);
+
+//     if (r === row) {
+//       updatedRows.push({
+//         detailRow: true,
+//         data: row
+//       });
+//     }
+//   });
+
+//   this.dataSource.data = updatedRows;
+
+//   this.GetHodReplyList(Convid);
+// }
 
   //#endregion
 }

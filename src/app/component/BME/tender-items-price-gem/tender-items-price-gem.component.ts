@@ -32,7 +32,7 @@ import {
   TenderLinkedItemDto,
   TenderSupplierParticipationDto,
 } from 'src/app/Model/models';
-
+import { animate, state, style, transition, trigger } from '@angular/animations';
 @Component({
   selector: 'app-tender-items-price-gem',
   standalone: true,
@@ -55,6 +55,13 @@ import {
   ],
   templateUrl: './tender-items-price-gem.component.html',
   styleUrl: './tender-items-price-gem.component.css',
+   animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', opacity: 0, padding: '0' })),
+      state('expanded', style({ height: '*', opacity: 1 })),
+      transition('expanded <=> collapsed', animate('250ms ease-in-out')),
+    ])
+  ],
 })
 export class TenderItemsPriceGEMComponent {
 
@@ -66,11 +73,11 @@ export class TenderItemsPriceGEMComponent {
   selectedStatus: any;
   Remarks: any;
   IsEligibleB: any;
-
+  expandedElement: any | null = null;
   tenderNo: string | null = null;
   TenderDetails: any = {};
   itemsDtails: any;
-
+rejectdate:any;
   item_id: any;
 
   dispatchData: TenderSupplierParticipationDto[] = [];
@@ -79,19 +86,12 @@ export class TenderItemsPriceGEMComponent {
   @ViewChild('sort') sort!: MatSort;
   displayedColumns: string[] = [
     'sno',
-    'SupplierName',
-    'ReqEMDAMt',
-    'SubmittedEMDAMT',
-    'Emd',
-    'TpAmount',
-    'EmdDocType',
-    'EmdDocNo',
-    'Remark',
-    'PItems',
-    'IsEligibleB',
-    'Remarksclarification',
-    'ADDItems',
+    'ItemName',
+    'ItemCodeAsPerTender',
+    'rejectdate',
+    'PriceDetails',
     'Action',
+   
   ];
   constructor(
     private spinner: NgxSpinnerService,
@@ -130,12 +130,18 @@ export class TenderItemsPriceGEMComponent {
     });
   }
   onTenderChange(values: any) {
-    // debugger;
-    //  "Tenderid": 680,
-    // "Tenderno": "GEM/2025/B/6375542 (FOR DH GPM) ,OpenDT-29/04/2026"
-    const tid = values.Tenderid;
-    this.fetchTenderDetails(tid);
+  if (values && values.Tenderid) {
+    this.show = true; // Set view visible condition
+    this.fetchTenderDetails(values.Tenderid);
   }
+}
+  // onTenderChange(values: any) {
+  //   // debugger;
+  //   //  "Tenderid": 680,
+  //   // "Tenderno": "GEM/2025/B/6375542 (FOR DH GPM) ,OpenDT-29/04/2026"
+  //   const tid = values.Tenderid;
+  //   this.fetchTenderDetails(tid);
+  // }
   // https://localhost:7036/api/BME/GetTenderDetails/680
   fetchTenderDetails(tenderNo: any) {
     this.show = true;
@@ -147,7 +153,7 @@ export class TenderItemsPriceGEMComponent {
             ...data,
             TenderDate: this.formatDate(data.TenderDate),
             EndDate: this.formatDate(data.CoverA),
-
+CoverB:this.formatDate(data.CoverB),
   //           "CoverA": "26/11/2024",
   // "CoverB": "",
   // "CoverDemo": "",
@@ -180,9 +186,11 @@ export class TenderItemsPriceGEMComponent {
 
   GetLinkedItems(tid: any) {
     // https://localhost:7036/api/BME/GetSupplierParticipationDetails/680/0
+    // https://localhost:7036/api/BME/GetSupplierParticipationDetails/680/2
+    debugger;
     try {
       this.spinner.show();
-      this.api.get(`BME/GetSupplierParticipationDetails/${tid}/${1}`).subscribe(
+      this.api.get(`BME/GetSupplierParticipationDetails/${tid}/${2}`).subscribe(
         (res: any) => {
           this.dispatchData = res.map(
             (item: TenderSupplierParticipationDto, index: number) => ({
@@ -283,12 +291,108 @@ export class TenderItemsPriceGEMComponent {
       },
     });
 
-    // const url = this.router.serializeUrl(
-    //   this.router.createUrlTree(['/CovAItemsEntry'], { queryParams: { sid: supplierId, tid: tenderId,ssdid:SchStatusDid } })
-    // );
-
-    // window.open(url, '_blank');
   }
+
+liveTenderPrices: any[] = []; 
+isExpansionDetailRow = (i: number, row: any) => true; 
+toggleDetails(element: any) {
+
+  this.expandedElement = this.expandedElement === element ? null : element;
+  
+  if (this.expandedElement) {
+  
+    this.GetLiveTenderPriceDetails(element.TenderItemId); 
+  }
+}
+
+GetLiveTenderPriceDetails(tenderItemId: any) {
+
+
+  this.liveTenderPrices = []; 
+  this.spinner.show();
+  
+ 
+  this.api.get(`BME/GetLiveTenderPrice/${tenderItemId}`).subscribe({
+    next: (res: any) => {
+     
+      this.liveTenderPrices = res.map((p: any) => {
+        if (p.FDate && p.FDate.includes('/')) {
+          const parts = p.FDate.split('/'); // ["26", "01", "2024"]
+          p.FDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // "2024-01-26"
+        }
+        return p;
+      });
+      this.spinner.hide();
+      console.log('Live Tender Data Loaded:', res);
+    },
+    error: (err) => {
+      console.error('API Error:', err);
+      this.liveTenderPrices = [];
+      this.spinner.hide();
+    }
+  });
+}
+
+
+Acepted(element:any){
+  // curl -X 'POST' \
+  // 'https://localhost:7036/api/BME/AcceptTenderPrice' \
+  // -H 'accept: */*' \
+  // -H 'Content-Type: multipart/form-data' \
+  // -F 'TPriceId=0' \
+  // -F 'NegoPrice=0' \
+  // -F 'NegoDate=2026-05-21T06:53:39.726Z' \
+  // -F 'Cmc1=0' \
+  // -F 'Cmc2=0' \
+  // -F 'Cmc3=0' \
+  // -F 'Cmc4=0' \
+  // -F 'Cmc5=0' \
+  // -F 'FileUploadReagent=string' \
+  // -F 'FileUploadAccessories=string'
+}
+rejectItem(element: any) {
+  // 1. Row se safely date pick karein
+  const targetDate = element.rejectdate; 
+  
+  if (!targetDate) {
+    this.toastr.warning("Please select a Rejection Date first!");
+    return;
+  }
+
+  // 2. Safe Fallback Mapping (TenderItemId ya tender_item_id jo bhi backend se aaye)
+  const targetItemId = element.TenderItemId || element.tender_item_id;
+
+  if (!targetItemId) {
+    this.toastr.error("Tender Item ID not found in this row!");
+    return;
+  }
+
+  // 3. Payload allocation with explicit Number casting
+  const payload = {
+    TenderItemId: Number(targetItemId), // String to strict Integer typecast
+    RejectDate: targetDate              // Format: "YYYY-MM-DD"
+  };
+
+  console.log('Sending Validated Payload to API:', payload);
+
+  this.spinner.show();
+  this.api.post1('BME/RejectTenderItem', payload).subscribe({
+    next: (res: any) => {
+      this.spinner.hide();
+      this.toastr.success(res.message || "Item Rejected Successfully");
+      
+      // Dynamic grid reload operation
+      if (this.selectedTenderId) {
+        this.GetLinkedItems(this.selectedTenderId);
+      }
+    },
+    error: (err) => {
+      this.spinner.hide();
+      console.error('Validation Failure:', err.error?.errors);
+      this.toastr.error(err.error?.message || "Validation Error occurred on Server.");
+    }
+  });
+}
 
   //#endregion
 }

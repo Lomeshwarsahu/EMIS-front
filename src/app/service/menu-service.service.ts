@@ -312,7 +312,8 @@ AU: {
       label: 'Indents',
       route: '',
       submenu: [
-        { label: 'Indent From Facilities', route: '/indents/from-facilities' }
+        { label: 'Add Indent DME', route: 'ConsolidatedIndentPOCell' }
+        // { label: 'Indent From Facilities', route: '/indents/from-facilities' }
       ]
     },
     {
@@ -395,7 +396,7 @@ DME: {
         { label: 'Plan a Tender', route: '/tender/plan' },
         { label: 'Evaluation A', route: '/tender/evaluation' },
         { label: 'Claim-Object Preparation', route: '/tender/claim-object' },
-        { label: 'Gem-Price Entry Acceptance', route: '/tender/gem-price-acceptance' },
+        { label: 'Gem-Price EAcceptance', route: '/tender/gem-price-acceptance' },
         { label: 'Gem-Price Entry', route: '/tender/plan' }
       ]
     },
