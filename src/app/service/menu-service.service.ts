@@ -353,14 +353,8 @@ DME: {
       route: '',
       submenu: [
         { label: 'Medical College Contact Details', route: '/masters/store-home' },
-        { label: 'Update Consignee Information', route: '/masters/consignee-information' },
         { label: 'Report-Specification', route: '/masters/report-specification' },
-        { label: 'CME EEL Suggestion', route: '/masters/cme-eel-suggestion' },
-        { label: 'Supplier', route: '/masters/supplier' },
-        { label: 'Add New Items', route: '/masters/items' },
-        { label: 'Mapping to Main items', route: '/masters/map-items' },
-        { label: 'Update Mapping to Main items', route: '/masters/map-items-update' },
-        { label: 'Main Equipment Mapped Report', route: '/masters/map-items-report' },
+      
       ]
     },
     {
@@ -383,22 +377,10 @@ DME: {
       label: 'Contracts',
       route: '',
       submenu: [
-        { label: 'Contract Dashboard', route: '/contracts/dashboard' },
-        { label: 'New Contract', route: '/contracts/new-rc' },
         { label: 'RC Details Report', route: '/contracts/rc-detail-report' },
       ]
     },
-    {
-      label: 'Tender',
-      route: '',
-      submenu: [
-        { label: 'Plan a Tender', route: '/tender/plan' },
-        { label: 'Evaluation A', route: '/tender/evaluation' },
-        { label: 'Claim-Object Preparation', route: '/tender/claim-object' },
-        { label: 'Gem-Price Entry Acceptance', route: '/tender/gem-price-acceptance' },
-        { label: 'Gem-Price Entry', route: '/tender/plan' }
-      ]
-    },
+    
     {
       label: 'Indents',
       route: '',
@@ -408,13 +390,13 @@ DME: {
         { label: 'Indent From Facilities', route: '/indents/from-facilities' },
       ]
     },
+    
     {
-      label: 'Finance Report',
+      label: 'Reports',
       route: '',
       submenu: [
-        { label: 'Year Wise PO Abstract', route: '/finance/year-wise-po-abstract' },
-        { label: 'PO Wise Payment FReport', route: '/finance/po-wise-payment' },
-        { label: 'Cheque Wise Payment Report', route: '/finance/cheque-wise-payment' }
+        { label: 'CMC Detail', route: '/reports/cmc-detail' },
+       
       ]
     },
     {
@@ -425,19 +407,6 @@ DME: {
         { label: 'Complain Report', route: '/complain/report' },
       ]
     },
-    {
-      label: 'Reports',
-      route: '',
-      submenu: [
-        { label: 'CMC Detail', route: '/reports/cmc-detail' },
-        { label: 'PO Summary', route: '/reports/po-summary' },
-        { label: 'PO Wise Payment Report', route: '/reports/po-wise-payment' },
-        { label: 'Tenders Status', route: '/reports/tenders-status' },
-        { label: 'PO Receipts summary', route: '/reports/po-receipts-summary' },
-        { label: 'Item Status in Tenter', route: '/reports/tender-item-status' },
-        { label: 'Reagent PO Report', route: '/reports/reagent-po' },
-      ]
-    }
   ]
 },
 
@@ -680,12 +649,7 @@ DME: {
       },
     },
 
-    DME: {
-      items: [
-        { label: 'Home', route: '/home' },
-        { label: 'Consigee Information', route: '/consigee-information' }
-      ],
-    },
+    
 
     HR: {
       items: [
