@@ -288,7 +288,7 @@ ngAfterViewInit(){
 }
 
 // Initializing the model
-newTender1: any = {
+newTender111: any = {
   tenderNo: '',
   description: '',
   tenderDate: '',
@@ -297,7 +297,7 @@ newTender1: any = {
   gemBidNo: '',
   tenderValue: 0
 };
-generateTender(form: NgForm) {
+generateTenderrr(form: NgForm) {
   if (form.invalid) {
     Object.keys(form.controls).forEach(key => {
       form.controls[key].markAsTouched();
@@ -375,5 +375,72 @@ resetTenderForm() {
         gemBidNo: '',
         tenderValue: 0
     };
+}
+
+// Component ke top section me variables ko properly initialize rakhein
+newTender1: any = {
+  selectedUserId: '',
+  finYearId: '',
+  tenderDate: '',
+  description: ''
+};
+
+generateTender(form: NgForm) {
+  if (form.invalid) {
+    Object.keys(form.controls).forEach(key => {
+      form.controls[key].markAsTouched();
+    });
+    this.toastr.warning("Please fill all required fields correctly.");
+    return;
+  }
+
+  this.spinner.show();
+
+  // FIX: Mapping exact C# DTO keys that successfully run in your 200 OK Curl execution
+  const payload = {
+    IndentDateStr: this.newTender1.tenderDate,            // "2026-05-22" format mapping
+    FinancialYearId: Number(this.newTender1.finYearId),   // Int conversion safety
+    SelectedUserId: Number(this.newTender1.selectedUserId), // Int conversion safety
+    IndentDescription: this.newTender1.description.trim(),
+    DirectorateId: 12                                      // Pre-configured constant default values
+  };
+
+  console.log('Sending Form Payload to API:', payload);
+
+  // Endpoint hit updated to BME/SaveIndentConsolidation context route
+  this.api.post1('BME/SaveIndentConsolidation', payload).subscribe({
+    next: (res: any) => {
+      this.spinner.hide();
+      this.toastr.success(res.message || "Indent Saved Successfully!");
+      
+      // Reset form controls safely
+      form.resetForm({
+        selectedUserId: '',
+        finYearId: '',
+        tenderDate: '',
+        description: ''
+      }); 
+      
+      this.closeModal(); // Target overlay hide trigger
+      
+      // Agar main interface dashboard update function exist karta hai toh call karein
+      if (typeof (this as any).loadGridDataReport === 'function') {
+         (this as any).loadGridDataReport();
+      }
+    },
+    error: (err) => {
+      this.spinner.hide();
+      console.error('API Error Response:', err);
+      this.toastr.error(err.error?.message || "Error occurred while saving transaction.");
+    }
+  });
+}
+
+closeModal1() {
+  // Modal close element bootstrap trigger execution standard system fallback
+  const modalCloseBtn = document.querySelector('[data-bs-dismiss="modal"]') as HTMLElement;
+  if (modalCloseBtn) {
+    modalCloseBtn.click();
+  }
 }
 }

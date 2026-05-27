@@ -1,0 +1,368 @@
+<section class="container-fluidd">
+  <div class="card">
+    <div class="card p-4 mb-4 shadow-smm text-center bg-light border-0 rounded-3">
+      <!-- Main Heading Centered -->
+      <h2 class="fw-bold text-primary mb-2">Pending Rate Contract of Accepted Equipment</h2>
+
+      <!-- Optional small subtitle for clarity -->
+      <p class="text-muted mb-0 fs-6">
+        List of accepted equipment with pending rate contract processing details
+      </p>
+    </div>
+    <div class="card shadow-lgg p-2 border-0 bg-white rounded ">
+      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lighty"
+        style="height: auto; overflow: hidden; position: relative;">
+        <div class="mb-0 Fon-family" style="text-align: justify;">
+          <form class="p-2">
+            <div class="card shadow-sm p-3 mt-2">
+
+              <div class="row text-center align-items-start">
+
+                <!-- PO TYPES -->
+                <div class="col-md-4 border-end">
+
+                  <h6 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-folder me-1"></i>Select Tender
+                  </h6>
+
+                  <div class="d-flex justify-content-center flex-wrap">
+                    <!-- <div class="row g-3 justify-content-center"> -->
+                    <!-- <div class="col-md-6 mx-auto text-center"> -->
+                    <!-- <label class="form-label fw-semibold">Select Tender</label> -->
+                    <!-- appendTo=".form-group" -->
+                    <!-- <ng-select [items]="Tenterlist" bindLabel="tender_no" bindValue="tender_id" 
+                                        class="form-control" appendTo="body"    [(ngModel)]="tender_id" [disabled]="CategoryType !== 'supplier'"
+                                        name="selecteditem" placeholder="Select Tender" (change)="onSelectedItem($event)">
+                                    </ng-select> [readonly]="CategoryType !== 'tender'" -->
+                    <ng-select [items]="Tenterlist" bindLabel="Tenderno" bindValue="Tenderid" [(ngModel)]="Tenderid"
+                      class="form-control" appendTo="body"
+                      placeholder="Select Tender" (change)="onSelectedItem($event)">
+                    </ng-select>
+                    <!-- </div> -->
+                    <!-- </div> -->
+
+                  </div>
+
+
+                </div>
+                <div class="col-md-4 border-end">
+
+                  <h6 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-folder me-1"></i>Select Supplier
+                  </h6>
+
+                  <div class="d-flex justify-content-center flex-wrap">
+                    <!-- <div class="row g-3 justify-content-center"> -->
+                    <!-- <div class="col-md-6 mx-auto text-center"> -->
+                    <!-- <label class="form-label fw-semibold">Select Tender</label> -->
+                    <!-- appendTo=".form-group"  [readonly]="CategoryType !== 'supplier'"-->
+                    <ng-select [items]="Supplierlist" bindLabel="ContractNumber" bindValue="AwardOfContractId" [(ngModel)]="AwardOfContractId"
+                      class="form-control" appendTo="body"
+                      placeholder="Select Supplier" (change)="onSelectedItem1($event)">
+                    </ng-select>
+                    <!-- <ng-select [items]="Supplierlist" bindLabel="name" bindValue="supplier_id"
+                                        class="form-control" appendTo="body" [(ngModel)]="supplier_id"  [disabled]="CategoryType !== 'tender'"
+                                        name="selecteditem" placeholder="Select Supplier" (change)="onSelectedItem1($event)">
+                                    </ng-select> -->
+
+                    <!-- </div> -->
+                    <!-- </div> -->
+
+                  </div>
+
+
+                </div>
+
+
+                <!-- PAYMENT TYPES -->
+                <div class="col-md-4 border-end">
+
+                  <h6 class="fw-bold text-success mb-3">
+                    <i class="bi bi-cash-coin me-1"></i> Category Types
+                  </h6>
+
+                  <div class="d-flex justify-content-center flex-wrap">
+
+                    <!-- <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="paymentType" value="All"
+                        [(ngModel)]="paymentType">
+                      <label class="form-check-label">All</label>
+                    </div> -->
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="CategoryType" value="contract"
+                        [(ngModel)]="CategoryType" (change)="onCategoryChange()">
+                      <label class="form-check-label">Contract Based</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="CategoryType" value="item"
+                        [(ngModel)]="CategoryType" (change)="onCategoryChange()">
+                      <label class="form-check-label">Item Based</label>
+                    </div>
+
+                  </div>
+
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                  <button type="submit" class="btn btn-primary" (click)="GetTenderSupplierData()">
+                    Show Details
+                  </button>
+                </div>
+                <!-- [disabled]="fileForm.invalid" -->
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+      <div class="card shadow-lgg p-2 border-0 bg-white rounded ">
+      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lighty"
+        style="height: auto; overflow: hidden; position: relative;">
+        <div class="mb-0 Fon-family" style="text-align: justify;">
+            <form #extendForm="ngForm" (ngSubmit)="ExtendContract(extendForm)" class="p-2">
+    <div class="card shadow-sm p-3 mt-2">
+        <div class="row text-center align-items-start">
+            
+            <div class="col-md-4 border-end">
+                <h6 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-calendar-event me-1"></i>Contract New End Date <span class="text-danger">*</span>
+                </h6>
+                <div class="d-flex justify-content-center flex-wrap">
+                    <input type="date" 
+                           [(ngModel)]="txtContNewEndDate"
+                           name="txtContNewEndDate"
+                           class="form-control" 
+                           required />
+                </div>
+            </div>
+
+            <div class="col-md-4 border-end">
+                <h6 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-file-earmark-text me-1"></i>Notesheet and Page No
+                </h6>
+                <div class="d-flex justify-content-center flex-wrap">
+                    <input type="text" 
+                           [(ngModel)]="txtRmrk"
+                           name="txtRmrk"
+                           class="form-control" 
+                           placeholder="Enter notesheet / remarks details..." />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <h6 class="fw-bold text-success mb-3">
+                    <i class="bi bi-check-circle me-1"></i>Status Action
+                </h6>
+                <div class="d-flex justify-content-center flex-wrap gap-2">
+                    <div class="form-check form-check-inline m-0 w-100 mb-2">
+                        <input class="form-control bg-light" 
+                               type="text" 
+                               name="CategoryType" 
+                               [(ngModel)]="CategoryType" 
+                               placeholder="Status Category" 
+                               readonly>
+                    </div>
+                    
+                    <button type="submit" 
+                            class="btn btn-primary w-100" 
+                            [disabled]="extendForm.invalid || !AwardOfContractId">
+                        <i class="bi bi-cloud-arrow-up me-1"></i> Extend Contract
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+          <!-- <form class="p-2">
+            <div class="card shadow-sm p-3 mt-2">
+
+              <div class="row text-center align-items-start">
+                <div class="col-md-4 border-end">
+
+                  <h6 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-folder me-1"></i>Contract New End Date
+                  </h6>
+
+                  <div class="d-flex justify-content-center flex-wrap">
+               
+                    <input type="date" [(ngModel)]="txtContNewEndDate"
+                      class="form-control" 
+                      placeholder="Select Tender"/>
+
+                  </div>
+
+
+                </div>
+                <div class="col-md-4 border-end">
+
+                  <h6 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-folder me-1"></i>Notesheet and Page No 
+                  </h6>
+
+                  <div class="d-flex justify-content-center flex-wrap">
+                    <input type="text" [(ngModel)]="txtRmrk"
+                      class="form-control" placeholder="Select Supplier" />
+
+                  </div>
+
+
+                </div>
+                <div class="col-md-4 border-end">
+
+                  <h6 class="fw-bold text-success mb-3">
+                    <i class="bi bi-cash-coin me-1"></i>Status
+                  </h6>
+
+                  <div class="d-flex justify-content-center flex-wrap">
+
+                    <div class="form-check form-check-inline">
+                      <input class="form-control" type="text" name="CategoryType" [(ngModel)]="CategoryType" >
+                    </div>
+                    <button type="submit" class="btn btn-primary" (click)="ExtendContract()">
+                    Extend Contract
+                  </button>
+                  </div>
+
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                  <button type="submit" class="btn btn-primary" (click)="GetTenderSupplierData()">
+                    Extend Contract
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </form> -->
+
+        </div>
+      </div>
+    </div>
+    <!-- data table -->
+    <div class="card shadow-lgg p-2 mt-0 pt-0 border-0 bg-white rounded ">
+      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lightt"
+        style="height: auto; overflow: hidden; position: relative;">
+
+        <div class="container-fluid p-3 m-0">
+          <div class="row justify-content-center g-4 ">
+
+            <div class="col-lg-12 mb-2">
+              <div class=" card row shadow ">
+                <div class="d-flex justify-content-between align-items-center m-2">
+                  <div class="filter-field flex-grow-1">
+                    <input type="text" class="form-control" placeholder="Search" (keyup)="applyTextFilter($event)">
+                  </div>
+
+
+                  <div class="export-menu-container m-2">
+
+                    <button type="button" class="btn border rounded btn-outline-secondary" mat-button
+                      [matMenuTriggerFor]="exportMenu">Export</button>
+                    <mat-menu #exportMenu="matMenu">
+                      <button mat-menu-item
+                        (click)="exporter.exportTable('xlsx', { fileName: 'PODetails', sheet: 'PODetails', Props: { Author: 'cgmsc' }})">Excel</button>
+                    </mat-menu>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped border rounded " mat-table matTableExporter
+                    [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+                    <ng-container matColumnDef="sno">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No </th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                        {{element.sno}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ItemCodeE">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Equipment Code</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.ItemCodeE}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ItemNameE">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Equipment</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.ItemNameE}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="SupplierName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.SupplierName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="TenderNo">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">{{element.TenderNo}}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ContractDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Date </th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.ContractDate}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ContractEndDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract End Date</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.ContractEndDate}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="BasicRate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Basic Rate</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.BasicRate}} </td>
+
+                    </ng-container>
+                    <ng-container matColumnDef="GST">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tax</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.GST}} </td>
+
+                    </ng-container>
+                    <ng-container matColumnDef="AcceptedBasicRate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Accepted Basic Rate</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.AcceptedBasicRate}} </td>
+
+                    </ng-container>
+
+                    <ng-container matColumnDef="Percentage">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tax</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.Percentage}} </td>
+
+                    </ng-container>
+                    <ng-container matColumnDef="SingleUnitPrice">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total value</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.SingleUnitPrice}} </td>
+
+                    </ng-container>
+                    <ng-container matColumnDef="ContractNewEndDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>New End Date</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.ContractNewEndDate}} </td>
+
+                    </ng-container>
+                    <ng-container matColumnDef="Remark">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Note sheet No</th>
+                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.Remark}} </td>
+
+                    </ng-container>
+
+
+                    <!-- <ng-container matColumnDef="action">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Download IDetails</th>
+                      <td mat-cell *matCellDef="let element" class="text-center">
+                        <span class="d-flex  flex-row-reverse p-2 ">
+                          <button
+                            class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
+                            mat-button (click)="onButtonClick(element.PoId)">
+                            <i class="bi bi-arrow-down text-primary"></i>
+                          </button>
+                        </span>
+                      </td>
+                    </ng-container> -->
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                  <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons></mat-paginator>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

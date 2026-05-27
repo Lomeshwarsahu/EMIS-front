@@ -302,6 +302,61 @@ export interface TenderSupplierDataDTO {
   TenderId: number
   SupplierId: number
 }
+export interface ContractGridDetailDTO {
+     sno:number
+  AwardOfContractId: number
+  ContractItemId: number
+  ItemId: number
+  ItemCodeE: string
+  ItemNameE: string
+  BasicRate: number
+  Percentage: number
+  SingleUnitPrice: number
+  Model: string
+  ContractDate: string
+  ContractDuration: string
+  ContractEndDate: string
+  SupplierName: string
+  TenderNo: string
+  TenderId: number
+  ContractNewEndDate: string
+  Remark: string
+}
+export interface PoExtensionReportDto {
+     sno:number
+ SupplierId: number
+  SupplierName: string
+  ItemId: number
+  PoId: number
+  Code: string
+  ItemName: string
+  OutwardNo: string
+  PoDate: string
+  PoNo: string
+  Quantity: number
+  NoOfConsignee: number
+  BasicRate: number
+  Percentage: number
+  SingleUnitPrice: number
+  TotalPoValue: number
+  TenderNo: string
+  Status: string
+  Sd: string
+  SubmissionStatus: string
+  TrancheDays: number
+  PoEndDate: string
+  LetterId: string
+  ExtensionId: number
+  Remark: string
+  Days: number
+  ExtendedDate: string
+  LastPoEndDate: string
+  Path: string
+  LetterDate: string
+  LetterNo: string
+  SysGenApplyDate: string
+  LetterStatus: string
+}
 export interface IndentConsolidationDTO {
      sno:number
   IndentConsolidationId: number
