@@ -142,7 +142,7 @@ fetchTenderDetails(tenderNo: any) {
 // https://localhost:7036/api/BME/GetItemEligibility/902
 
 GetItemEligibility1() {
-debugger;
+// debugger;
   this.api.get(`BME/GetItemEligibility/${this.item_id}`).subscribe({
     next: (res: any) => {
       this.itemsDtails=res;

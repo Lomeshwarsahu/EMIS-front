@@ -327,19 +327,24 @@
             <div class="modal-body p-4 bg-light-subtle">
                 <form #forwardForm="ngForm" (ngSubmit)="generateTender(forwardForm)" novalidate>
                     <div class="row g-4">
+
                         <div class="col-md-6">
-                            <label class="form-label fw-bold small text-muted">Select Facility<span
+                            <label class="form-label fw-bold small text-muted">Select Facility <span
                                     class="text-danger">*</span></label>
-                            <select class="form-select border-2 shadow-none py-2 rounded-3" name="finYearId"
-                                  [(ngModel)]="newTender1.finYearId" #finYear="ngModel"
-                                [ngClass]="{'is-invalid': finYear.invalid && (finYear.dirty || finYear.touched)}"
+                            <select class="form-select border-2 shadow-none py-2 rounded-3" name="selectedUserId"
+                                [(ngModel)]="newTender1.selectedUserId" #facility="ngModel"
+                                [ngClass]="{'is-invalid': facility.invalid && (facility.dirty || facility.touched)}"
                                 required>
                                 <option value="" selected disabled>-- Select Facility --</option>
                                 <option *ngFor="let Dlist of DMElist" [value]="Dlist.USER_ID">{{Dlist.USER_NAME}}
                                 </option>
                             </select>
-                          
+                            <div class="invalid-feedback"
+                                *ngIf="facility.invalid && (facility.dirty || facility.touched)">
+                                Please select a facility.
+                            </div>
                         </div>
+
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">Select Financial Year <span
                                     class="text-danger">*</span></label>
@@ -360,8 +365,9 @@
                             <label class="form-label fw-bold small text-muted">Indent Date <span
                                     class="text-danger">*</span></label>
                             <div class="input-group">
-                                <span class="input-group-text bg-white border-2 border-end-0 text-muted"><i
-                                        class="bi bi-calendar3"></i></span>
+                                <span class="input-group-text bg-white border-2 border-end-0 text-muted">
+                                    <i class="bi bi-calendar3"></i>
+                                </span>
                                 <input type="date"
                                     class="form-control border-2 border-start-0 shadow-none py-2 rounded-end-3"
                                     name="tenderDate" [(ngModel)]="newTender1.tenderDate" #tDate="ngModel"
@@ -373,68 +379,26 @@
                             </div>
                         </div>
 
-                        <!-- <div class="col-md-6">
-                            <label class="form-label fw-bold small text-muted">Tender Value (In Cr) <span
-                                    class="text-danger">*</span></label>
-                            <input type="number" class="form-control border-2 shadow-none py-2 rounded-3"
-                                placeholder="0.00" name="tenderValue" [(ngModel)]="newTender1.tenderValue"
-                                #tValue="ngModel"
-                                [ngClass]="{'is-invalid': tValue.invalid && (tValue.dirty || tValue.touched)}"
-                                min="0.01" required>
-                            <div class="invalid-feedback"
-                                *ngIf="tValue.errors?.['required'] && (tValue.dirty || tValue.touched)">Value is
-                                required.</div>
-                            <div class="invalid-feedback" *ngIf="tValue.errors?.['min']">Value must be greater than 0.
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small text-muted">Tender Number <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" class="form-control border-2 shadow-none rounded-3 py-2" name="tenderNo"
-                                [(ngModel)]="newTender1.tenderNo" #tNo="ngModel"
-                                [ngClass]="{'is-invalid': tNo.invalid && (tNo.dirty || tNo.touched)}"
-                                placeholder="Tender No" required>
-                            <div class="invalid-feedback" *ngIf="tNo.invalid && (tNo.dirty || tNo.touched)">Tender
-                                number is required.</div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small text-muted">Gem Bid No (Optional)</label>
-                            <input type="text" class="form-control border-2 shadow-none rounded-3 py-2" name="gemBidNo"
-                                [(ngModel)]="newTender1.gemBidNo" placeholder="Gem Bid No">
-                        </div> -->
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">Description/Letter No <span
                                     class="text-danger">*</span></label>
                             <textarea class="form-control border-2 shadow-none rounded-3" rows="1" name="description"
                                 [(ngModel)]="newTender1.description" #tDesc="ngModel"
                                 [ngClass]="{'is-invalid': tDesc.invalid && (tDesc.dirty || tDesc.touched)}"
-                                placeholder="Enter tender details..." required minlength="10"></textarea>
-                            <div class="invalid-feedback"
-                                *ngIf="tDesc.errors?.['required'] && (tDesc.dirty || tDesc.touched)">Description is
-                                required.</div>
-                            <div class="invalid-feedback" *ngIf="tDesc.errors?.['minlength']">Minimum 10 characters
-                                required.</div>
+                                placeholder="Enter description or letter no..." required></textarea>
+                            <div class="invalid-feedback" *ngIf="tDesc.invalid && (tDesc.dirty || tDesc.touched)">
+                                Description or Letter No is required.
+                            </div>
                         </div>
 
                     </div>
 
-                    <!-- <div class="d-flex justify-content-center gap-3 mt-5">
-        <button type="button" class="btn btn-light border px-5 py-2 rounded-pill fw-semibold text-muted" data-bs-dismiss="modal">
-            Cancel
-        </button>
-        <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-bold shadow" 
-                [disabled]="forwardForm.invalid">
-            <i class="bi bi-cloud-arrow-up me-2"></i> Save & Add
-        </button>
-    </div> -->
                     <div class="d-flex justify-content-center gap-2 gap-md-3 mt-4 mt-md-5 px-2">
                         <button type="button"
                             class="btn btn-light border px-3 px-md-5 py-2 rounded-pill fw-semibold text-muted w-auto"
                             data-bs-dismiss="modal">
                             Cancel
                         </button>
-
                         <button type="submit"
                             class="btn btn-primary px-3 px-md-5 py-2 rounded-pill fw-bold shadow w-auto"
                             [disabled]="forwardForm.invalid">
@@ -442,7 +406,8 @@
                         </button>
                     </div>
                 </form>
-              
+
+
             </div>
 
         </div>

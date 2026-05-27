@@ -1,0 +1,41 @@
+/* Custom Header Styling Extensions */
+.table-header {
+  background-color: #f8f9fa !important;
+  color: #5c636a !important;
+  font-weight: 600 !important;
+  font-size: 0.825rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  border-bottom: 2px solid #dee2e6 !important;
+  vertical-align: middle;
+}
+
+/* Row Hover Smooth Transitions Layout */
+.table-row {
+  transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.table-row:hover {
+  background-color: rgba(var(--bs-primary-rgb), 0.03) !important;
+  cursor: pointer;
+}
+
+/* Custom Scrollbar Polish for Modern Browser Layouts */
+.style-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.style-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.style-scrollbar::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+.style-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Tracking utility helper */
+.tracking-wide {
+  letter-spacing: 0.5px;
+}
