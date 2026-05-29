@@ -451,8 +451,9 @@ export class MenuServiceService {
           label: 'Indents',
           route: '',
           submenu: [
-            // { label: 'Add Indent DME', route: 'ConsolidatedIndentPOCell' }
-            // { label: 'Indent From Facilities', route: '/indents/from-facilities' }
+            { label: 'Add Indent DME', route: 'ConsolidatedIndentPOCell' },
+            { label: 'Add Indent', route: '/ConsolidatedIndentDHSPO' },
+            { label: 'Indent Item Wise Remarks', route: '/IndentWiseItemRemarks' }
           ],
         },
         {

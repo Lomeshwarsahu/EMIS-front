@@ -1,0 +1,46 @@
+/* Core Grid Header Style Configuration */
+.table-header {
+  background-color: #f8f9fa !important;
+  color: #495057 !important;
+  font-weight: 600 !important;
+  font-size: 0.8rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border-bottom: 2px solid #e3e6f0 !important;
+  vertical-align: middle;
+}
+
+/* Micro Transitions for Grid Rows Mapping Actions */
+.table-row {
+  transition: background-color 0.15s ease-in-out;
+}
+.table-row:hover {
+  background-color: rgba(var(--bs-primary-rgb), 0.02) !important;
+  cursor: pointer;
+}
+
+/* Eye action icon wrapper animations hover fallback rules */
+.btn-hover-info:hover {
+  background-color: #e0f7fa !important;
+  border-color: #b2ebf2 !important;
+}
+
+/* Custom Standard WebKit Scrollbar styling extensions */
+.style-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.style-scrollbar::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+.style-scrollbar::-webkit-scrollbar-thumb {
+  background: #ccd1d9;
+  border-radius: 4px;
+}
+.style-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #aab2bd;
+}
+
+.tracking-wide {
+  letter-spacing: 0.5px;
+}

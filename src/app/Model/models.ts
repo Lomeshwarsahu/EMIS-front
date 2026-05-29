@@ -257,6 +257,22 @@ export interface DistrictWiseDetailDTO {
   receiptQTY: number
   insqty: number
 }
+export interface IndentConsolidationReportDto {
+    sno:number
+  EquipmentCount: number
+  IndentConsolidationId: number
+  Description: string
+  UserId: number
+  DirectorateId: number
+  FinancialYearId: number
+  ProposedQty: number
+  IndentConNo: string
+  ConsolidatedDate: string
+  FinalQty: number
+  EStatus: string
+  UploadStatus: string
+  CreatedOn: string
+}
 export interface ContractItem {
       sno:number
   contractItemId: number;

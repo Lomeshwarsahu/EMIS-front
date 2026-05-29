@@ -62,6 +62,9 @@ import { EMSPODashboardComponent } from './component/PO-Cell/emspodashboard/emsp
 import { EMSNEWPOComponent } from './component/PO-Cell/emsnewpo/emsnewpo.component';
 import { RCExtendComponent } from './component/PO-Cell/rcextend/rcextend.component';
 import { AppliedPoExtensionComponent } from './component/PO-Cell/applied-po-extension/applied-po-extension.component';
+import { ConsolidatedIndentDHSPOComponent } from './component/PO-Cell/consolidated-indent-dhs-po/consolidated-indent-dhs-po.component';
+import { IndentWiseItemRemarksComponent } from './component/PO-Cell/indent-wise-item-remarks/indent-wise-item-remarks.component';
+import { IndentEditDHSPOComponent } from './component/PO-Cell/indent-edit-dhs-po/indent-edit-dhs-po.component';
 
 
 const routes: Routes = [
@@ -87,6 +90,7 @@ const routes: Routes = [
   },
   { path: 'POSummaryDrillDwnQty', component: POSummaryDrillDwnQtyComponent },
   { path: 'EMSNEWPO', component: EMSNEWPOComponent },
+  { path: 'IndentEditDHSPO', component: IndentEditDHSPOComponent },
   {
     path: 'TenderStatusUpdate',
     component: TenderStatusUpdateComponent,
@@ -280,7 +284,7 @@ const routes: Routes = [
     path: 'ConsolidatedIndentPOCell',
     component: ConsolidatedIndentPOCellComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU'] },
+    data: { allowedRoles: ['AU','AUPO'] },
   },
   // POCell
   // {path:'MasFacilityUsers',component:MasFacilityUsersComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
@@ -327,6 +331,26 @@ const routes: Routes = [
   {
     path: 'EMSPODashboard',
     component: EMSPODashboardComponent,
+    canActivate: [RouteGuardService],
+    data: {
+      allowedRoles: ['AUPO'],
+      // allowedUsersid: [2307]
+      // allowedUsers: ['rahul_au', 'amit_au']
+    },
+  },
+  {
+    path: 'ConsolidatedIndentDHSPO',
+    component: ConsolidatedIndentDHSPOComponent,
+    canActivate: [RouteGuardService],
+    data: {
+      allowedRoles: ['AUPO'],
+      // allowedUsersid: [2307]
+      // allowedUsers: ['rahul_au', 'amit_au']
+    },
+  },
+  {
+    path: 'IndentWiseItemRemarks',
+    component: IndentWiseItemRemarksComponent,
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO'],

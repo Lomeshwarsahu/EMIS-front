@@ -1,0 +1,534 @@
+<section class="container-fluidt">
+    <div class="card">
+        <div class="card p-4 mb-4 shadow-sm text-center bg-light border-0 rounded-3">
+            <h2 class="fw-bold text-primary mb-2">Annual Indent</h2>
+
+            <p class="text-muted mb-0 fs-6">View detailed  of selected valus and purchase orders</p>
+        </div>
+        <div class="card shadow-lg p-2 border-0 bg-white rounded ">
+            <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-light"
+                style="height: auto; overflow: hidden; position: relative;">
+                <div class="mb-0 Fon-family" style="text-align: justify;">
+                    <form class="p-2">
+                        <div class="card shadow-sm p-3 mt-1">
+                            <div class="row g-3 justify-content-center">
+                                <div class="col-md-6 mx-auto text-center">
+                                    <label class="form-label fw-semibold">Select PO Financial Year</label>
+                                    <ng-select [items]="Yearlist" bindLabel="year" bindValue="financial_year_id"
+                                        class="form-control" appendTo="body" [(ngModel)]="selecteditem"
+                                        name="selecteditem" placeholder="Select year" (change)="onSelectedItem($event)">
+                                    </ng-select>
+
+                                </div>
+                                <div class="col-md-6 mx-auto text-center">
+                                    <label class="form-label fw-semibold">Select Diectorate</label>
+                                    <!-- appendTo=".form-group" -->
+                                    <ng-select [items]="Diectoratelist" bindLabel="facility_aut_name" bindValue="facility_aut_id"
+                                        class="form-control" appendTo="body" 
+                                        name="selectedDiectorate" placeholder="Select Diectorate" (change)="onSelectedDiectorate($event)">
+                                    </ng-select>
+
+                                </div>
+                                <!-- <div class="col-md-6 mx-auto text-center">
+                                    <label class="form-label fw-semibold">Select Districts</label>
+                                    <ng-select [items]="Districtslist" bindLabel="DBStart_Name_En" bindValue="DP_DistrictID"
+                                        class="form-control" appendTo="body" 
+                                        name="selectedDistricts" placeholder="Select Districts" (change)="onSelectedDistricts($event)">
+                                    </ng-select>
+
+                                </div> -->
+                             
+                            </div>
+
+                            <!-- <div class="d-flex justify-content-center mt-3">
+                                <button type="submit" class="btn btn-primary"
+                                    (click)=" Getitemwisedetail()">Show</button>
+                            </div> -->
+                             <div class="row">
+                    <div
+                        class="col-12 d-flex flex-wrap justify-content-center pt-3 border-top gap-2 gap-md-3 mt-4 mt-md-5 px-2">
+
+                        <button type="submit"
+                            class="btn btn-primary px-3 px-md-5 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center"
+                           (click)=" Getitemwisedetail(0,0)">
+                            <i class="bi bi-search me-2"></i> <span>Show Data</span>
+                        </button>
+
+                        <!-- <button type="button"
+                            class="btn btn-outline-secondary px-3 px-md-4 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center"
+                            (click)="onResetFilter(filterForm)">
+                            <i class="bi bi-arrow-counterclockwise me-2"></i> <span>Reset</span>
+                        </button> -->
+
+                        <button type="button"
+                            class="btn btn-outline-success px-3 px-md-4 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#SendModall">
+                            <i class="bi bi-plus-circle-fill me-2"></i> <span>New Indent</span>
+                        </button>
+
+                    </div>
+                </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- data table -->
+         <div class="card shadow-sm border border-light-subtle rounded-3 overflow-hidden m-3">
+  
+  <div class="card-header bg-light border-bottom border-light-subtle d-flex justify-content-between align-items-center py-3 px-4">
+    <h5 class="card-title text-dark fw-bold mb-0 d-flex align-items-center">
+      <i class="bi bi-file-earmark-spreadsheet text-primary me-2"></i> Indent Consolidation Summary
+    </h5>
+    <div class="card-actions">
+      <button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-semibold" (click)="exporter.exportTable('xlsx')">
+        <i class="bi bi-download me-1"></i> Export Excel
+      </button>
+    </div>
+  </div>
+
+  <div class="table-responsive w-100 style-scrollbar" style="max-height: 60vh; overflow-y: auto;">
+    <table class="table table-hover align-middle mb-0 text-nowrap w-100" mat-table matTableExporter
+           [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+      <ng-container matColumnDef="sno">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> S.No </th>
+        <td mat-cell *matCellDef="let element; let i = index" class="text-center fw-medium text-muted px-3"> 
+          {{ i + 1 }} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="IndentConNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header px-3"> Indent No </th>
+        <td mat-cell *matCellDef="let element" class="fw-bold text-primary px-3"> 
+          {{element.IndentConNo || '-'}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="IndentConsolidationId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header px-3"> Indent Letter No </th>
+        <td mat-cell *matCellDef="let element" class="fw-medium text-dark-emphasis px-3"> 
+          {{element.IndentConsolidationId || '-'}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ConsolidatedDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Indent Date </th>
+        <td mat-cell *matCellDef="let element" class="text-center text-muted px-3"> 
+          {{element.ConsolidatedDate || '-'}} 
+        </td>
+      </ng-container>
+
+   
+
+      <ng-container matColumnDef="ProposedQty">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Requested Qty </th>
+        <td mat-cell *matCellDef="let element" class="text-center fw-bold text-secondary px-3"> 
+          {{element.ProposedQty | number}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="FinalQty">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Approved Qty </th>
+        <td mat-cell *matCellDef="let element" class="text-center fw-bold text-success px-3"> 
+          {{element.FinalQty | number}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="EStatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Status </th>
+        <td mat-cell *matCellDef="let element" class="text-center px-3"> 
+          <span class="badge bg-opacity-10 px-2.5 py-1.5 rounded-2 text-uppercase fw-bold tracking-wide"
+                [ngClass]="{
+                  'bg-success text-success border border-success-subtle': element.EStatus === 'Completed',
+                  'bg-warning text-warning border border-warning-subtle': element.EStatus === 'Incomplete'
+                }">
+            <i class="bi me-1" [ngClass]="element.EStatus === 'Completed' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill'"></i>
+            {{element.EStatus || 'Unknown'}}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="UploadStatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> File Upload </th>
+        <td mat-cell *matCellDef="let element" class="text-center px-3"> 
+          <span class="badge rounded-pill px-2.5 py-1 fw-medium"
+                [ngClass]="element.UploadStatus === 'Uploaded' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'">
+            <i class="bi me-1" [ngClass]="element.UploadStatus === 'Uploaded' ? 'bi-cloud-check' : 'bi-cloud-slash'"></i>
+            {{element.UploadStatus || 'Not Uploaded'}}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="EquipmentCount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Equipments </th>
+        <td mat-cell *matCellDef="let element" class="text-center px-3"> 
+          <span class="badge rounded-circle bg-dark bg-opacity-10 text-dark fw-bold px-2 py-1">
+            {{element.EquipmentCount || 0}}
+          </span>
+        </td>
+      </ng-container>
+           <ng-container matColumnDef="AddItem">
+        <th mat-header-cell *matHeaderCellDef class="table-header text-center px-3"> Add Item </th>
+        <td mat-cell *matCellDef="let element" class="text-center px-3"> 
+          <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold shadow-none transition-all" (click)="GetitemFulldetail(element.IndentConsolidationId)">
+            <i class="bi bi-plus-circle me-1"></i> Add Item
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef class="table-header text-center px-3"> Actions </th>
+        <td mat-cell *matCellDef="let element" class="text-center px-3">
+          <button type="button" class="btn btn-sm btn-light border btn-hover-info rounded p-2 d-inline-flex align-items-center justify-content-center"
+                  title="View Full Details">
+            <i class="bi bi-eye text-info fs-6"></i>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-light border-bottom border-light-subtle"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell text-center py-5 text-muted" [attr.colspan]="displayedColumns.length">
+          <div class="d-flex flex-column align-items-center justify-content-center py-4">
+            <i class="bi bi-folder-x fs-1 opacity-40 text-secondary mb-2"></i>
+            <span class="fw-medium text-secondary">No consolidation data grids available matching selected context.</span>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card-footer bg-white border-top border-light-subtle p-0">
+    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons class="border-0"></mat-paginator>
+  </div>
+</div>
+        <!-- <div class="card shadow-lg p-2 mt-0 pt-0 border-0 bg-white rounded ">
+            <div class="card-body border rounded px-0 pt-2 pb-3 bg-light"
+                style="height: auto; overflow: hidden; position: relative;">
+
+                <div class="container-fluid p-3 m-0">
+                    <div class="row justify-content-center g-4 ">
+
+                        <div class="col-lg-12 mb-2">
+                            <div class=" card row shadow ">
+                                <div class="d-flex justify-content-between align-items-center m-2">
+                                    <div class="filter-field flex-grow-1">
+                                        <input type="text" class="form-control" placeholder="Search"
+                                            (keyup)="applyTextFilter($event)">
+                                    </div>
+
+
+                                    <div class="export-menu-container m-2">
+
+                                        <button type="button" class="btn border rounded btn-outline-secondary"
+                                            mat-button [matMenuTriggerFor]="exportMenu">Export</button>
+                                        <mat-menu #exportMenu="matMenu">
+                                            <button mat-menu-item
+                                                (click)="exporter.exportTable('xlsx', { fileName: 'PODetails', sheet: 'PODetails', Props: { Author: 'cgmsc' }})">Excel</button>
+
+                                        </mat-menu>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped border rounded " mat-table
+                                        matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort
+                                        #sort="matSort">
+
+                                        <ng-container matColumnDef="sno">
+                                            <th mat-header-cell *matHeaderCellDef> S.No </th>
+                                            <td mat-cell *matCellDef="let element; let i = index">
+                                                {{element.sno}}
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IndentConNo">
+                                            <th mat-header-cell *matHeaderCellDef>Indent No</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                {{element.IndentConNo}}
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IndentConsolidationId">
+                                            <th mat-header-cell *matHeaderCellDef>Indent Letter No</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                {{element.IndentConsolidationId}}
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="ConsolidatedDate">
+                                            <th mat-header-cell *matHeaderCellDef>Indent Date</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                {{element.ConsolidatedDate}}
+                                            </td>
+                                        </ng-container>
+
+                                   
+                                        <ng-container matColumnDef="AddItem">
+                                            <th mat-header-cell *matHeaderCellDef>Add Item</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                Add Item
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="ProposedQty">
+                                            <th mat-header-cell *matHeaderCellDef>Total Requested QTY</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                {{element.ProposedQty}}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="FinalQty">
+                                            <th mat-header-cell *matHeaderCellDef>Total Approved QTY</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                {{element.FinalQty}}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="EStatus">
+                                            <th mat-header-cell *matHeaderCellDef>Status</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                {{element.EStatus}}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="UploadStatus">
+                                            <th mat-header-cell *matHeaderCellDef>File Upload</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                {{element.UploadStatus}}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="EquipmentCount">
+                                            <th mat-header-cell *matHeaderCellDef>No of Equipment</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                {{element.EquipmentCount}}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="action">
+                                            <th mat-header-cell *matHeaderCellDef>Action</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                <span class="d-flex  flex-row-reverse p-2">action
+                                                    <a type="link" class="download-link text-info" (click)="GetitemFulldetail(element.IndentConsolidationId)">
+                                                    </a>
+                                                </span>
+                                            </td>
+                                        </ng-container>
+
+
+
+
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                    </table>
+                                    <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]"
+                                        showFirstLastButtons></mat-paginator>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+
+</section>
+
+<div class="modal fade rounded" id="SendModall" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <div class="modal-header bg-success text-white py-3 border-0 rounded-top-4">
+                <h5 class="modal-title d-flex align-items-center">
+                    <i class="bi bi-plus-circle me-2"></i>New Indent No Generation
+                </h5>
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-4 bg-light-subtle">
+                <!-- <form #forwardForm="ngForm" (ngSubmit)="generateTender(forwardForm)" novalidate>
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Select Facility <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-select border-2 shadow-none py-2 rounded-3" name="selectedUserId"
+                                [(ngModel)]="newTender1.selectedUserId" #facility="ngModel"
+                                [ngClass]="{'is-invalid': facility.invalid && (facility.dirty || facility.touched)}"
+                                required>
+                                <option value="" selected disabled>-- Select Facility --</option>
+                                <option *ngFor="let Dlist of Diectoratelist" [value]="Dlist.facility_aut_id">{{Dlist.facility_aut_name}}
+                                </option>
+                            </select>
+                            <div class="invalid-feedback"
+                                *ngIf="facility.invalid && (facility.dirty || facility.touched)">
+                                Please select a facility.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Select Financial Year <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-select border-2 shadow-none py-2 rounded-3" name="finYearId"
+                                [(ngModel)]="newTender1.finYearId" #finYear="ngModel"
+                                [ngClass]="{'is-invalid': finYear.invalid && (finYear.dirty || finYear.touched)}"
+                                required>
+                                <option value="" selected disabled>-- Select Year --</option>
+                                <option *ngFor="let fYear of Yearlist" [value]="fYear.financial_year_id">{{fYear.year}}
+                                </option>
+                            </select>
+                            <div class="invalid-feedback" *ngIf="finYear.invalid && (finYear.dirty || finYear.touched)">
+                                Please select a financial year.
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold small text-muted">Select Fund Head <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-select border-2 shadow-none py-2 rounded-3" name="BudgetId"
+                                [(ngModel)]="newTender1.BudgetId" #Budget="ngModel"
+                                [ngClass]="{'is-invalid': Budget.invalid && (Budget.dirty || Budget.touched)}"
+                                required>
+                                <option value="" selected disabled>-- Select  Fund Head --</option>
+                                <option *ngFor="let bug of BudgetList" [value]="bug.BudgetId">{{bug.BudgetName}}
+                                </option>
+                            </select>
+                            <div class="invalid-feedback" *ngIf="Budget.invalid && (Budget.dirty || Budget.touched)">
+                                Please select a  Fund Head.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Indent Date <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-2 border-end-0 text-muted">
+                                    <i class="bi bi-calendar3"></i>
+                                </span>
+                                <input type="date"
+                                    class="form-control border-2 border-start-0 shadow-none py-2 rounded-end-3"
+                                    name="tenderDate" [(ngModel)]="newTender1.tenderDate" #tDate="ngModel"
+                                    [ngClass]="{'is-invalid': tDate.invalid && (tDate.dirty || tDate.touched)}"
+                                    required>
+                                <div class="invalid-feedback" *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)">
+                                    Date is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Description/Letter No <span
+                                    class="text-danger">*</span></label>
+                            <textarea class="form-control border-2 shadow-none rounded-3" rows="1" name="description"
+                                [(ngModel)]="newTender1.description" #tDesc="ngModel"
+                                [ngClass]="{'is-invalid': tDesc.invalid && (tDesc.dirty || tDesc.touched)}"
+                                placeholder="Enter description or letter no..." required></textarea>
+                            <div class="invalid-feedback" *ngIf="tDesc.invalid && (tDesc.dirty || tDesc.touched)">
+                                Description or Letter No is required.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-2 gap-md-3 mt-4 mt-md-5 px-2">
+                        <button type="button"
+                            class="btn btn-light border px-3 px-md-5 py-2 rounded-pill fw-semibold text-muted w-auto"
+                            data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="btn btn-primary px-3 px-md-5 py-2 rounded-pill fw-bold shadow w-auto"
+                            [disabled]="forwardForm.invalid">
+                            <i class="bi bi-cloud-arrow-up me-2"></i> Save & Add
+                        </button>
+                    </div>
+                </form> -->
+
+                <form #forwardForm="ngForm" (ngSubmit)="generateTender(forwardForm)" novalidate>
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Select Facility <span class="text-danger">*</span></label>
+            <select class="form-select border-2 shadow-none py-2 rounded-3" name="selectedUserId"
+                    [(ngModel)]="newTender1.selectedUserId" #facility="ngModel"
+                    [ngClass]="{'is-invalid': facility.invalid && (facility.dirty || facility.touched)}" required>
+                <option value="" selected disabled>-- Select Facility --</option>
+                <option *ngFor="let Dlist of Diectoratelist" [value]="Dlist.facility_aut_id">
+                    {{Dlist.facility_aut_name}}
+                </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="facility.invalid && (facility.dirty || facility.touched)">
+                Please select a facility.
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Select Financial Year <span class="text-danger">*</span></label>
+            <select class="form-select border-2 shadow-none py-2 rounded-3" name="finYearId"
+                    [(ngModel)]="newTender1.finYearId" #finYear="ngModel"
+                    [ngClass]="{'is-invalid': finYear.invalid && (finYear.dirty || finYear.touched)}" required>
+                <option value="" selected disabled>-- Select Year --</option>
+                <option *ngFor="let fYear of Yearlist" [value]="fYear.financial_year_id">
+                    {{fYear.year}}
+                </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="finYear.invalid && (finYear.dirty || finYear.touched)">
+                Please select a financial year.
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <label class="form-label fw-bold small text-muted">Select Fund Head <span class="text-danger">*</span></label>
+            <select class="form-select border-2 shadow-none py-2 rounded-3" name="BudgetId"
+                    [(ngModel)]="newTender1.BudgetId" #Budget="ngModel"
+                    [ngClass]="{'is-invalid': Budget.invalid && (Budget.dirty || Budget.touched)}" required>
+                <option value="" selected disabled>-- Select Fund Head --</option>
+                <option *ngFor="let bug of BudgetList" [value]="bug.BudgetId">
+                    {{bug.BudgetName}}
+                </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="Budget.invalid && (Budget.dirty || Budget.touched)">
+                Please select a Fund Head.
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Indent Date <span class="text-danger">*</span></label>
+            <div class="input-group">
+                <span class="input-group-text bg-white border-2 border-end-0 text-muted">
+                    <i class="bi bi-calendar3"></i>
+                </span>
+                <input type="date" class="form-control border-2 border-start-0 shadow-none py-2 rounded-end-3"
+                       name="tenderDate" [(ngModel)]="newTender1.tenderDate" #tDate="ngModel"
+                       [ngClass]="{'is-invalid': tDate.invalid && (tDate.dirty || tDate.touched)}" required>
+                <div class="invalid-feedback" *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)">
+                    Date is required.
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Description/Letter No <span class="text-danger">*</span></label>
+            <textarea class="form-control border-2 shadow-none rounded-3" rows="1" name="description"
+                      [(ngModel)]="newTender1.description" #tDesc="ngModel"
+                      [ngClass]="{'is-invalid': tDesc.invalid && (tDesc.dirty || tDesc.touched)}"
+                      placeholder="Enter description or letter no..." required></textarea>
+            <div class="invalid-feedback" *ngIf="tDesc.invalid && (tDesc.dirty || tDesc.touched)">
+                Description or Letter No is required.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="d-flex justify-content-center gap-2 gap-md-3 mt-4 mt-md-5 px-2">
+        <button type="button" class="btn btn-light border px-3 px-md-5 py-2 rounded-pill fw-semibold text-muted w-auto" data-bs-dismiss="modal">
+            Cancel
+        </button>
+        <button type="submit" class="btn btn-primary px-3 px-md-5 py-2 rounded-pill fw-bold shadow w-auto" [disabled]="forwardForm.invalid">
+            <i class="bi bi-cloud-arrow-up me-2"></i> Save & Add
+        </button>
+    </div>
+</form>
+            </div>
+
+        </div>
+    </div>
+</div>
