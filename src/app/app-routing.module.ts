@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/auth/login/login.component';
+import { SupplierLoginComponent } from './component/auth/supplier-login/supplier-login.component';
+import { ParticularSupplierAddComponent } from './component/Suppliers/particular-supplier-add/particular-supplier-add.component';
+import { SupplierGstEntryComponent } from './component/Suppliers/supplier-gst-entry/supplier-gst-entry.component';
 import { LogoutComponent } from './component/auth/logout/logout.component';
 import { RouteGuardService } from './service/authentication/route-guard.service';
 import { OtpComponent } from './component/auth/otp/otp.component';
@@ -71,6 +74,30 @@ import { DHSindentAddBulkConsigneePOComponent } from './component/PO-Cell/dhsind
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'supplier-login', component: SupplierLoginComponent },
+  { path: 'LoginEmsSup', redirectTo: 'supplier-login', pathMatch: 'full' },
+  {
+    path: 'masters/particular-supplier-add',
+    component: ParticularSupplierAddComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'ParticularSupplierAdd',
+    redirectTo: 'masters/particular-supplier-add',
+    pathMatch: 'full',
+  },
+  {
+    path: 'masters/supplier-gst-entry',
+    component: SupplierGstEntryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'SupplierGSTentry1',
+    redirectTo: 'masters/supplier-gst-entry',
+    pathMatch: 'full',
+  },
   { path: 'Registration', component: Registration },
   { path: 'otp', component: OtpComponent },
   // {path:'GenerationFileNonasti',component:GenerationFileNonastiComponent},

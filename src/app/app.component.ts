@@ -135,6 +135,8 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
       if (event instanceof NavigationEnd) {
         this.isLoginPage =
           event.urlAfterRedirects === '/login' ||
+          event.urlAfterRedirects === '/supplier-login' ||
+          event.urlAfterRedirects === '/LoginEmsSup' ||
           event.urlAfterRedirects === '/otp' ||
           event.urlAfterRedirects === '/collector-login' ||
           event.urlAfterRedirects === '/public-view' ||
@@ -257,7 +259,7 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   // अगर submenu है
-  if (item.submenu) {
+  if (item.submenu?.length) {
     return item.submenu.some((sub: any) =>
       this.router.url === sub.route
     );

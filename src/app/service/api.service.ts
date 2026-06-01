@@ -25,9 +25,94 @@ export class ApiService {
     return this.http.get(`${this.apiUrll}/${id}`);
   }
   GetUserEmail(userId: number) {
-    // debugger;
-    return this.http.get<{ Email?: string; UserName?: string }>(
-      `${this.apiUrll}/GetUserEmail/${userId}`,
+    return this.http.get<{
+      Email?: string;
+      email?: string;
+      e_mail_id?: string;
+      UserName?: string;
+    }>(`${this.apiUrll}/GetUserEmail/${userId}`);
+  }
+
+  getSupplierProfile(id: number, mode: 'login' | 'new' | 'reset') {
+    return this.http.get<{
+      supplierId?: number;
+      SupplierId?: number;
+      name?: string;
+      Name?: string;
+      maskedMobile?: string;
+      MaskedMobile?: string;
+      email?: string;
+      Email?: string;
+      userEmail?: string;
+      UserEmail?: string;
+    }>(`${this.apiUrll}/supplier/profile/${id}?mode=${mode}`);
+  }
+
+  sendSupplierOtp(supplierId: number) {
+    return this.http.post<{ message: string }>(`${this.apiUrll}/supplier/send-otp`, {
+      supplierId,
+    });
+  }
+
+  completeSupplierPassword(payload: {
+    supplierId: number;
+    otp: string;
+    newPassword: string;
+    repeatPassword: string;
+    mode: 'new' | 'reset';
+    desiredUserId: string;
+  }) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/complete-password`,
+      payload,
+    );
+  }
+
+  getParticularSupplierDetails(userId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/details/by-user/${userId}`,
+    );
+  }
+
+  updateParticularSupplierDetails(payload: {
+    supplierId: number;
+    mobileNo: string;
+    email: string;
+    gstNo: string;
+    gstNo2: string;
+    gstNo3: string;
+    phoneNo: string;
+    address: string;
+  }) {
+    return this.http.put<{ message: string }>(`${this.apiUrll}/supplier/details`, {
+      supplierId: payload.supplierId,
+      mobileNo: payload.mobileNo,
+      email: payload.email,
+      gstNo: payload.gstNo,
+      gstNo2: payload.gstNo2,
+      gstNo3: payload.gstNo3,
+      phoneNo: payload.phoneNo,
+      address: payload.address,
+    });
+  }
+
+  getSupplierGstEntries(userId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/gst-entries/by-user/${userId}`,
+    );
+  }
+
+  addSupplierGstEntry(payload: { userId: number; supplierId: number; gstNo: string }) {
+    return this.http.post<{ message: string }>(`${this.apiUrll}/supplier/gst-entries`, payload);
+  }
+
+  updateSupplierGstEntry(gstId: number, payload: { userId: number; supplierId: number; gstNo: string }) {
+    return this.http.put<{ message: string }>(`${this.apiUrll}/supplier/gst-entries/${gstId}`, payload);
+  }
+
+  deleteSupplierGstEntry(gstId: number, userId: number) {
+    return this.http.delete<{ message: string }>(
+      `${this.apiUrll}/supplier/gst-entries/${gstId}?userId=${userId}`,
     );
   }
   // https://localhost:7036/api/GenerateNasti/Getyear

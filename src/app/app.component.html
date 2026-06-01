@@ -75,7 +75,7 @@
             </button>
           </mat-list-item>
 
-          <div class="submenu" [class.open]="expandedMenus[item.label]">
+          <div class="submenu" *ngIf="item.submenu" [class.open]="expandedMenus[item.label]">
             <mat-list-item *ngFor="let sub of item.submenu; let i = index" class="sub-nav-item" [style.transition-delay]="(i * 0.05) + 's'">
               <button mat-button class="submenu-btn"
                       [routerLink]="sub.route"
