@@ -31,8 +31,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { TenderLinkedItemDto } from 'src/app/Model/models';
 
 @Component({
-  selector: 'app-add-rtender-items',
-  standalone: true,
+  selector: 'app-indent-edit-dhs-po',
+    standalone: true,
   imports: [
     NgSelectModule,
     CommonModule,
@@ -50,13 +50,13 @@ import { TenderLinkedItemDto } from 'src/app/Model/models';
     MatOptionModule,
     MatTableExporterModule
   ],
-  templateUrl: './add-rtender-items.component.html',
-  styleUrl: './add-rtender-items.component.css',
+  templateUrl: './indent-edit-dhs-po.component.html',
+  styleUrl: './indent-edit-dhs-po.component.css',
 })
-export class AddRTenderItemsComponent {
-    tenderNo: string | null = null;
+export class IndentEditDHSPOComponent {
+    IndentCId: string | null = null;
   CoverStatusList:any;
- TenderDetails: any = {};
+ SingleIndentDetail: any = {};
  itemsDtails:any;
  item_id:any;
   dispatchData: TenderLinkedItemDto[] = [];
@@ -81,20 +81,29 @@ export class AddRTenderItemsComponent {
    this.dataSource = new MatTableDataSource<TenderLinkedItemDto>([]);
   }
     ngOnInit(): void {
+      // S/IndentEditDHSPO?IndentConsolidationId=2953
     this.route.queryParams.subscribe(params => {
-      this.tenderNo = params['tender_no'];
-      console.log('Tender Number from URL:', this.tenderNo);
+      this.IndentCId = params['IndentConsolidationId'];
+      console.log('Tender Number from URL:', this.IndentCId);
       
-      if (this.tenderNo) {
-        this.fetchTenderDetails(this.tenderNo);
+      if (this.IndentCId) {
+        this.fetchTenderDetails(this.IndentCId);
       }
     });
-    this.GetCoverStatusList();
+    // this.GetCoverStatusList();
    this.GetLinkedItems();
   }
-    GetCoverStatusList() {
-      // https://localhost:7036/api/BME/GetSelectableItems
-    this.api.get('BME/GetSelectableItems').subscribe({
+  onSelectedItem1(event:any){
+let EEL=event.EEL;
+if(EEL='EEL'){
+this.GetCoverStatusList('EEL');
+}else{
+  this.GetCoverStatusList('NON EEL');
+}
+  }
+    GetCoverStatusList(val:any) {
+     // https://localhost:7036/api/POCell/GetSearchItemsDropdown?checkType=NO%20EEL
+    this.api.get(`POCell/GetSearchItemsDropdown?checkType=${val}`).subscribe({
       next: (res: any) => {
         this.CoverStatusList = res;
         // console.log('year 1=',   this.CoverStatusList);
@@ -116,24 +125,20 @@ formatDate(dateStr: string) {
   return '';
 }
 
-fetchTenderDetails(tenderNo: any) {
-  this.api.get(`BME/GetTenderDetailsById/${tenderNo}`).subscribe({
+
+// https://localhost:7036/api/POCell/GetSingleIndentDetail/2953
+fetchTenderDetails(IndentCId: any) {
+  this.api.get(`POCell/GetSingleIndentDetail/${IndentCId}`).subscribe({
     next: (res: any) => {
       const data = Array.isArray(res) ? res[0] : res;
       
       if (data) {
-        this.TenderDetails = {
+        this.SingleIndentDetail = {
           ...data,
-          TENDER_DATE: this.formatDate(data.TENDER_DATE),
-          ENDDate: this.formatDate(data.ENDDate),
-          cover_a: this.formatDate(data.cover_a),
-          cover_b: this.formatDate(data.cover_b),
-          cover_c: this.formatDate(data.cover_c),
-          cover_Demo: this.formatDate(data.cover_Demo),
-          cover_Demo2: this.formatDate(data.cover_Demo2),
-          cover_Demo3: this.formatDate(data.cover_Demo3),
+          ConsolidatedDate: this.formatDate(data.ConsolidatedDate),
+        
         };
-        console.log('Final Mapped Data:', this.TenderDetails);
+        console.log('Final Mapped Data:', this.SingleIndentDetail);
       }
     },
     error: (err: any) => console.log('Error:', err),
@@ -146,7 +151,7 @@ GetItemEligibility1() {
   this.api.get(`BME/GetItemEligibility/${this.item_id}`).subscribe({
     next: (res: any) => {
       this.itemsDtails=res;
-      console.log('Final Mapped Data:', this.TenderDetails);
+      console.log('Final Mapped Data:', this.SingleIndentDetail);
   
     },
     error: (err: any) => console.log('Error:', err),
@@ -189,7 +194,7 @@ addItemToTender(item: any) {
   }
 
   const payload = {
-    TenderId: Number(this.tenderNo),
+    TenderId: Number(this.IndentCId),
     ItemId: item.item_id,
     TenderQuantity: item.tender_qty,
     EmdAmount: item.emd_amt
@@ -217,7 +222,7 @@ GetLinkedItems() {
   
     try {
       this.spinner.show();
-      this.api.get(`BME/GetLinkedItemsByTender/${this.tenderNo}/${'A'}`).subscribe(
+      this.api.get(`BME/GetLinkedItemsByTender/${this.IndentCId}/${'A'}`).subscribe(
         (res: any) => {
           this.dispatchData = res.map((item: TenderLinkedItemDto, index: number) => ({
             ...item,

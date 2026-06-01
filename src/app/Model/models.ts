@@ -257,6 +257,22 @@ export interface DistrictWiseDetailDTO {
   receiptQTY: number
   insqty: number
 }
+export interface IndentConsolidationReportDto {
+    sno:number
+  EquipmentCount: number
+  IndentConsolidationId: number
+  Description: string
+  UserId: number
+  DirectorateId: number
+  FinancialYearId: number
+  ProposedQty: number
+  IndentConNo: string
+  ConsolidatedDate: string
+  FinalQty: number
+  EStatus: string
+  UploadStatus: string
+  CreatedOn: string
+}
 export interface ContractItem {
       sno:number
   contractItemId: number;
@@ -301,6 +317,61 @@ export interface TenderSupplierDataDTO {
   AcceptedDate: string
   TenderId: number
   SupplierId: number
+}
+export interface ContractGridDetailDTO {
+     sno:number
+  AwardOfContractId: number
+  ContractItemId: number
+  ItemId: number
+  ItemCodeE: string
+  ItemNameE: string
+  BasicRate: number
+  Percentage: number
+  SingleUnitPrice: number
+  Model: string
+  ContractDate: string
+  ContractDuration: string
+  ContractEndDate: string
+  SupplierName: string
+  TenderNo: string
+  TenderId: number
+  ContractNewEndDate: string
+  Remark: string
+}
+export interface PoExtensionReportDto {
+     sno:number
+ SupplierId: number
+  SupplierName: string
+  ItemId: number
+  PoId: number
+  Code: string
+  ItemName: string
+  OutwardNo: string
+  PoDate: string
+  PoNo: string
+  Quantity: number
+  NoOfConsignee: number
+  BasicRate: number
+  Percentage: number
+  SingleUnitPrice: number
+  TotalPoValue: number
+  TenderNo: string
+  Status: string
+  Sd: string
+  SubmissionStatus: string
+  TrancheDays: number
+  PoEndDate: string
+  LetterId: string
+  ExtensionId: number
+  Remark: string
+  Days: number
+  ExtendedDate: string
+  LastPoEndDate: string
+  Path: string
+  LetterDate: string
+  LetterNo: string
+  SysGenApplyDate: string
+  LetterStatus: string
 }
 export interface IndentConsolidationDTO {
      sno:number

@@ -305,8 +305,22 @@ approle:any;
       .executeAuthenticationService1(user_id, this.pwd, this.EMAIL)
       .subscribe({
         next: (res: any) => {
+          // console.log('res:', res);
+          // localStorage.setItem('loginData', JSON.stringify(res));
           console.log('res:', res);
-          localStorage.setItem('loginData', JSON.stringify(res));
+
+// 1. Response ki ek shallow copy bana lo taaki original data directly mutate na ho
+let updatedRes = { ...res };
+
+// 2. Check karo agar username 'PO-Cell' hai
+if (updatedRes.username === 'PO-Cell') {
+  // user_type ko badal kar 'AUPO' kar do
+  updatedRes.user_type = 'AUPO'; 
+}
+
+// 3. Ab modified ya normal (else ki zarurat nahi padegi kyuki condition match nahi hui toh purana hi rahega) 
+// response ko localStorage mein set kar do
+localStorage.setItem('loginData', JSON.stringify(updatedRes));
 
           if (
             res?.message === 'Login Successful' ||

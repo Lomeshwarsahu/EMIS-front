@@ -40,8 +40,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
-  selector: 'app-emsrcdashbord',
-   standalone: true,
+  selector: 'app-emspodashboard',
+    standalone: true,
   imports: [
     NgSelectModule,
     CommonModule,
@@ -59,10 +59,10 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatOptionModule,
     MatTableExporterModule,
   ],
-  templateUrl: './emsrcdashbord.component.html',
-  styleUrl: './emsrcdashbord.component.css',
+  templateUrl: './emspodashboard.component.html',
+  styleUrl: './emspodashboard.component.css',
 })
-export class EMSRCDashbordComponent {
+export class EMSPODashboardComponent {
 mappingForm!: FormGroup; 
   showForm: boolean = true; 
   
@@ -77,11 +77,11 @@ suppId:any;
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
   
-  // displayedColumns: string[] = ['sno','PItemName', 'ItemCode', 'ItemName', 'IsElectrical','ProgReq','SRorBulkEntry','AmcReq'];
-displayedColumns: string[] = [
+  displayedColumns: string[] = [
   'sno',
   'contractNumber', 
   'contractDate', 
+  'supplierId',      // <-- Ensure this is listed here so the template can render it
   'supplierName', 
   'tenderNo', 
   'tenderDate', 
@@ -90,9 +90,10 @@ displayedColumns: string[] = [
   'contractEndDate',
   'status'
 ];
-  selectedItems: number[] = [];
-status=[{value:0,name:'All'},{value:'C',name:'Completed'},{value:'I',name:'Incomplete'}
 
+  selectedItems: number[] = [];
+status=[{value:0,name:'All'},{value:'Completed',name:'Completed'},{value:'InComplete',name:'Incomplete'}
+,{value:'Waiting For Approval',name:'Waiting For Approval'},{value:'Order Placed',name:'Order Placed'}
 ]
   tenderId: any;
   constructor(
@@ -116,8 +117,11 @@ status=[{value:0,name:'All'},{value:'C',name:'Completed'},{value:'I',name:'Incom
 //https://localhost:7036/api/BME/GetSuppliersByTenderId/120
 GetSuppliersByTenderId(event: any) {
     if (event) {
-     this.tenderId= event.Tenderid;
-        const selectedTenderId = event.Tenderid;
+      debugger
+    //  this.tenderId= event.Tenderid;
+    //     const selectedTenderId = event.Tenderid;
+     this.tenderId= event.TenderId;
+        const selectedTenderId = event.TenderId;
         console.log('Selected Tender ID:', selectedTenderId);
             this.api.get(`BME/GetSuppliersByTenderId/${selectedTenderId}`).subscribe({
       next: (res: any) => {
@@ -143,24 +147,26 @@ GetSuppliersByTenderId(event: any) {
        const ylist= res; 
         //  this.yearlist  = ylist.filter((y: { financial_year_id: number; }) => y.financial_year_id >= 14);
          this.yearlist = ylist
-  .filter((y: { financial_year_id: number; }) => y.financial_year_id >= 14)
-  .sort((a: { financial_year_id: number; }, b: { financial_year_id: number; }) => a.financial_year_id - b.financial_year_id);
+  // .filter((y: { financial_year_id: number; }) => y.financial_year_id >= 14)
+  // .sort((a: { financial_year_id: number; }, b: { financial_year_id: number; }) => a.financial_year_id - b.financial_year_id);
       },
       error: (err: any) => {
         console.log('Error fetching mapped items:', err);
       }
     });
   }
-  // https://localhost:7036/api/BME/GetTenderlist
+    // https://localhost:7036/api/POCell/GetTenderList/RC
+  // https://localhost:7036/api/POCell/GetTenderList/RC
   GetTenderlist(event: any) {
-   if (event) {
+  //  if (event) {
     this.yearId=event.financial_year_id;
-    console.log('yearId',  this.yearId)
+  //   console.log('yearId',  this.yearId)
 
-        const selectedyearId = event.financial_year_id;
-        // console.log('financial_year_id:', selectedyearId);
+  //       const selectedyearId = event.financial_year_id;
+  //       // console.log('financial_year_id:', selectedyearId);
 
-    this.api.get(`BME/GetTenderlist/${selectedyearId}`).subscribe({
+  //   this.api.get(`BME/GetTenderlist/${selectedyearId}`).subscribe({
+    this.api.get(`POCell/GetTenderList/${'RC'}`).subscribe({
       next: (res: any) => {
      this.Tenderlist= res; 
       },
@@ -169,11 +175,11 @@ GetSuppliersByTenderId(event: any) {
       }
     });
         
-        // this.api.get(`BME/GetSuppliersByTenderId/${selectedTenderId}`)...
-    } else {
-        console.log('Tender cleared');
-        // this.supplierList = []; 
-    }
+    //     // this.api.get(`BME/GetSuppliersByTenderId/${selectedTenderId}`)...
+    // } else {
+    //     console.log('Tender cleared');
+    //     // this.supplierList = []; 
+    // }
   }
   OnselectSupplierrlist(event:any){
     // debugger;
@@ -186,31 +192,96 @@ GetSuppliersByTenderId(event: any) {
     console.log('staus',  this.statusvalue)
   }
 // https://localhost:7036/api/BME/GetRCreports?financialYearId=14&tenderId=12&supplierId=0&status=0
-  GetRCreports() {
-    // debugger;
-    this.spinner.show();
+  // GetRCreports() {
+  //   debugger;
+  //   this.spinner.show();
 
-    this.api.get( `BME/GetRCreports?financialYearId=${this.yearId}&tenderId=${this.tenderId}&supplierId=${this.suppId}&status=${this.statusvalue}`).subscribe({
-      next: (res: any) => {
+  //   this.api.get( `BME/GetRCreports?financialYearId=${this.yearId}&tenderId=${this.tenderId}&supplierId=${this.suppId}&status=${this.statusvalue}`).subscribe({
+  //     next: (res: any) => {
+  //       this.dispatchData = res.map((item: any, index: number) => ({
+  //         ...item,
+  //         sno: index + 1,
+  //       }));
+  //       console.log('this.dispatchData=',this.dispatchData);
+
+  //       this.dataSource.data = this.dispatchData;
+  //       this.dataSource.paginator = this.paginator;
+  //       this.dataSource.sort = this.sort;
+  //       this.cdr.detectChanges();
+  //       this.spinner.hide();
+  //     },
+  //     error: (err: any) => {
+  //       this.spinner.hide();
+  //       console.log('Error fetching table data:', err);
+  //     }
+  //   });
+  // }
+GetRCreports() {
+  this.spinner.show();
+// debugger
+  // 1. Setup exact JSON payload structure matching your working Curl command
+  const payload = {
+    YearId: String(this.yearId || '0'),
+    TenderId: String(this.tenderId || '0'),
+    SupplierId: String(this.suppId || ''),
+    StatusId: String(this.statusvalue || '0')
+  };
+
+  console.log('Sending Dashboard Request Payload:', payload);
+
+  // 2. Changed from .get() to .post1() to match the backend route
+  // this.api.post1('POCell/GetPoDashboardActual', payload).subscribe({
+  //   next: (res: any[]) => {
+  (this.api.post1('POCell/GetPoDashboardActual', payload) as any).subscribe({
+  next: (res: any[]) => {
+      if (res && res.length > 0) {
+        // 3. Map API camelCase response to your HTML custom structural properties
         this.dispatchData = res.map((item: any, index: number) => ({
-          ...item,
           sno: index + 1,
+          
+          // Matching HTML element.ContractNumber / element.ContractDate binding patterns
+          ContractNumber: item.poNo || item.outwardNo || '-',
+          ContractDate: item.poDate || '-',
+          SupplierId: item.supplierId,
+          SupplierName: item.supplierName || 'N/A',
+          ContractType: item.poType || 'Normal PO',
+          ContractDescription: item.remarks || 'No Description',
+          TenderNo: item.tenderNo || '-',
+          TenderDate: item.poDate || '-', // Safe fallback fallback placement
+          TenderId: item.tenderId,
+          ContractDuration: item.poItemsKey ? `${item.poItemsKey} Items` : '0 Items',
+          ContractSignDate: item.poDate || '-',
+          ContractEndDate: item.poDate || '-',
+          DocumentType: item.potype || 'Normal',
+          DocumentNumber: item.poNo || '-',
+          DocumentDate: item.poDate || '-',
+          DocumentExpiryDate: '-',
+          FinancialYearId: item.financialYearId,
+          Year: item.year || '-',
+          DocumentValue: item.totalPoValue || item.poValue || 0,
+          AwardOfContractId: item.poId,
+          Status: item.status === 'Completed' || item.status === 'C' ? 'C' : 'I' // UI Status match
         }));
-        console.log('this.dispatchData=',this.dispatchData);
-
-        this.dataSource.data = this.dispatchData;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.cdr.detectChanges();
-        this.spinner.hide();
-      },
-      error: (err: any) => {
-        this.spinner.hide();
-        console.log('Error fetching table data:', err);
+      } else {
+        this.dispatchData = [];
       }
-    });
-  }
 
+      console.log('Processed Material Table Data:', this.dispatchData);
+
+      // 4. Update Angular Material DataSource pipelines
+      this.dataSource.data = this.dispatchData;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.cdr.detectChanges();
+      this.spinner.hide();
+    },
+    error: (err: any) => {
+      this.spinner.hide();
+      console.error('Error fetching dashboard table data:', err);
+      this.toastr.error("Failed to load dashboard report matrix.");
+    }
+  });
+}
   applyTextFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -242,7 +313,8 @@ GetSuppliersByTenderId(event: any) {
 
 
  AddnewRC() {
-  this.router.navigate(['/EMSNEWRC']);
+  // this.router.navigate(['/EMSNEWRC']);
+  this.router.navigate(['/EMSNEWPO']);
 }
   // ==========================================
   // Submit Logic (API Call)
@@ -289,6 +361,5 @@ GetSuppliersByTenderId(event: any) {
 
   // https://localhost:7036/api/BME/GetSuppliersByTenderId/680
 
-  // https://localhost:7036/api/POCell/GetTenderList/RC
-  // https://localhost:7036/api/POCell/GetTenderList/RC
+
 }
