@@ -664,6 +664,31 @@ export interface TenderLinkedItemDto {
     CategoryName: string
     ItemDesc: string
 }
+export interface IndentConsolidationDetailDto {
+  sno:number
+  ItemId: number
+  ItemCodeAsPerTender: string
+  RcEndDate: string
+  ItemDesc: string
+  ItemName: string
+  FileName: string
+  UploadDocId: any
+  UploadFolderName: string
+  SingleUnitPrice: number
+  EstimatedCost: number
+  ContractItemId: number
+  IndentConsItemsId: any
+  IndentConsolidationId: any
+  ProposedQty: number
+  OtherFundName: string
+  FinalQtyI: number
+  FinalQty: number
+  IndentFundId: any
+  IndentMonthId: any
+  IndentFundName: string
+  IndentMonth: string
+  Status: string
+}
 export interface HodConversationDTO {
     detailRow: any;
   sno: number;
