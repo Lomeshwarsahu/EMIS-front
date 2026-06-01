@@ -649,20 +649,6 @@ export class MenuServiceService {
         },
       ],
     },
-    {
-      label: 'Reports',
-      route: '',
-      submenu: [
-        { label: 'PO Summary', route: '/reports/po-summary' },
-        { label: 'PO Wise Payment Report', route: '/reports/po-wise-payment' },
-        { label: 'Tenders Status', route: '/reports/tenders-status' },
-        { label: 'PO Receipts summary', route: '/reports/po-receipts-summary' },
-        { label: 'Item Status in Tenter', route: '/reports/tender-item-status' },
-        { label: 'Reagent PO Report', route: '/reports/reagent-po' },
-      ]
-    }
-  ]
-},
 AU: {
   items: [
     { label: 'Home', route: '/home' },
@@ -731,8 +717,8 @@ AU: {
         { label: 'Item Status in Tenter', route: '/reports/tender-item-status' },
         { label: 'Reagent PO Report', route: '/reports/reagent-po' },
       ]
-    }
-  ]
+    },
+  ],
 },
 DME: {
   items: [
@@ -806,7 +792,7 @@ DME: {
         { label: 'Complain Report', route: '/complain/report' },
       ]
     },
-  ]
+  ],
 },
 
     TPO: {
