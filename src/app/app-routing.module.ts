@@ -65,6 +65,7 @@ import { AppliedPoExtensionComponent } from './component/PO-Cell/applied-po-exte
 import { ConsolidatedIndentDHSPOComponent } from './component/PO-Cell/consolidated-indent-dhs-po/consolidated-indent-dhs-po.component';
 import { IndentWiseItemRemarksComponent } from './component/PO-Cell/indent-wise-item-remarks/indent-wise-item-remarks.component';
 import { IndentEditDHSPOComponent } from './component/PO-Cell/indent-edit-dhs-po/indent-edit-dhs-po.component';
+import { DHSindentAddBulkConsigneePOComponent } from './component/PO-Cell/dhsindent-add-bulk-consignee-po/dhsindent-add-bulk-consignee-po.component';
 
 
 const routes: Routes = [
@@ -291,6 +292,16 @@ const routes: Routes = [
   {
     path: 'MasFacilityUsers',
     component: MasFacilityUsersComponent,
+    canActivate: [RouteGuardService],
+    data: {
+      allowedRoles: ['AUPO'],
+      // allowedUsersid: [2307]
+      // allowedUsers: ['rahul_au', 'amit_au']
+    },
+  },
+  {
+    path: 'DHSindentAddBulkConsigneePO',
+    component: DHSindentAddBulkConsigneePOComponent,
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO'],

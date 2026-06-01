@@ -21,14 +21,14 @@ import { MaterialModule } from 'src/app/material-module';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 declare var bootstrap: any;
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TenderLinkedItemDto } from 'src/app/Model/models';
+import { IndentConsolidationDetailDto, TenderLinkedItemDto } from 'src/app/Model/models';
 
 @Component({
   selector: 'app-indent-edit-dhs-po',
@@ -59,16 +59,22 @@ export class IndentEditDHSPOComponent {
  SingleIndentDetail: any = {};
  itemsDtails:any;
  item_id:any;
-  dispatchData: TenderLinkedItemDto[] = [];
-   dataSource!: MatTableDataSource<TenderLinkedItemDto>;
+  dispatchData: IndentConsolidationDetailDto[] = [];
+   dataSource!: MatTableDataSource<IndentConsolidationDetailDto>;
    @ViewChild('paginator') paginator!: MatPaginator;
    @ViewChild('sort') sort!: MatSort;
   displayedColumns: string[] = [
   'sno', 
-  'ItemCodeAsPerTender', 
   'ItemName', 
-  'TenderQuantity', 
-  'EmdAmount'
+  'ItemCodeAsPerTender', 
+  'RcEndDate', 
+  'Specification', 
+  'EstimatedCost',
+  'FinalQty',
+  'FinalQtyI',
+  'add',
+  'delete',
+  'Action'
 ];
  constructor(
     private spinner: NgxSpinnerService,
@@ -78,7 +84,7 @@ export class IndentEditDHSPOComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,private route: ActivatedRoute,private location: Location,
   ) {
-   this.dataSource = new MatTableDataSource<TenderLinkedItemDto>([]);
+   this.dataSource = new MatTableDataSource<IndentConsolidationDetailDto>([]);
   }
     ngOnInit(): void {
       // S/IndentEditDHSPO?IndentConsolidationId=2953
@@ -93,14 +99,21 @@ export class IndentEditDHSPOComponent {
     // this.GetCoverStatusList();
    this.GetLinkedItems();
   }
-  onSelectedItem1(event:any){
-let EEL=event.EEL;
-if(EEL='EEL'){
-this.GetCoverStatusList('EEL');
-}else{
-  this.GetCoverStatusList('NON EEL');
-}
+
+
+
+onSelectedItem1(event: any) {
+  const selectedValue = event.target.value; 
+  
+  console.log('Selected Radio Value:', selectedValue);
+
+  if (selectedValue === 'EEL') {
+    this.GetCoverStatusList('EEL'); 
+  } else {
+    this.GetCoverStatusList('NON EEL'); 
   }
+}
+
     GetCoverStatusList(val:any) {
      // https://localhost:7036/api/POCell/GetSearchItemsDropdown?checkType=NO%20EEL
     this.api.get(`POCell/GetSearchItemsDropdown?checkType=${val}`).subscribe({
@@ -158,23 +171,21 @@ GetItemEligibility1() {
   });
 }
 onSelectedItem(item: any) {
-  this.item_id=item.item_id;
+  this.item_id=item.ItemId;
   // console.log(item.item_id);
   // console.log(item.item_name);
 }
 
 GetItemEligibility() {
-  if (!this.item_id) {
-    this.toastr.warning('Please select an item first');
-    return;
-  }
-  
+
+  //  https://localhost:7036/api/POCell/GetConsolidationItemDetails/3948
   this.spinner.show();
-  this.api.get(`BME/GetItemEligibility/${this.item_id}`).subscribe({
+  this.api.get(`POCell/GetConsolidationItemDetails/${this.IndentCId}`).subscribe({
     next: (res: any) => {
       this.spinner.hide();
-      // API se array aata hai, isliye hum use direct assign karenge
+   
       this.itemsDtails = res; 
+      console.log('itemsDtails=',res);
     },
     error: (err: any) => {
       this.spinner.hide();
@@ -206,7 +217,7 @@ addItemToTender(item: any) {
       this.spinner.hide();
       this.toastr.success(res.message);
       // Item add hone ke baad list refresh karein
-      this.GetItemEligibility(); 
+      // this.GetItemEligibility(); 
       this.GetLinkedItems(); 
     },
     error: (err: any) => {
@@ -215,16 +226,19 @@ addItemToTender(item: any) {
     }
   });
 }
+// https://localhost:7036/api/POCell/GetConsolidationItemDetails/3948
 
+// https://localhost:7036/api/POCell/GetIndentConsolidationDetailsGrid?finYearId=18&indentConsolidationId=2955&itemId=4883
 
 GetLinkedItems() {
     // debugger
-  
+
+  let finYearId=  this.SingleIndentDetail.FinancialYearId;
     try {
       this.spinner.show();
-      this.api.get(`BME/GetLinkedItemsByTender/${this.IndentCId}/${'A'}`).subscribe(
+      this.api.get(`POCell/GetIndentConsolidationDetailsGrid?finYearId=${finYearId}&indentConsolidationId=${this.IndentCId}&itemId=${this.item_id}`).subscribe(
         (res: any) => {
-          this.dispatchData = res.map((item: TenderLinkedItemDto, index: number) => ({
+          this.dispatchData = res.map((item: IndentConsolidationDetailDto, index: number) => ({
             ...item,
             sno: index + 1,
           }));
@@ -253,4 +267,53 @@ GetLinkedItems() {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+  GetitemFulldetail(id:any){
+    
+  }
+  onDeleteRow(valu:any){
+
+  }
+
+  onAddRow(value: any) {
+  console.log('Row Values Received for Routing:', value);
+  // {
+  //   "ItemId": 4883,
+  //   "ItemCodeAsPerTender": "PATH038",
+  //   "RcEndDate": "",
+  //   "ItemDesc": "",
+  //   "ItemName": "-80° C DEEP FREEZER",
+  //   "FileName": "",
+  //   "UploadDocId": null,
+  //   "UploadFolderName": "",
+  //   "SingleUnitPrice": 0,
+  //   "EstimatedCost": 0,
+  //   "ContractItemId": 0,
+  //   "IndentConsItemsId": null,
+  //   "IndentConsolidationId": null,
+  //   "ProposedQty": 0,
+  //   "OtherFundName": "",
+  //   "FinalQtyI": 0,
+  //   "FinalQty": 0,
+  //   "IndentFundId": null,
+  //   "IndentMonthId": null,
+  //   "IndentFundName": "",
+  //   "IndentMonth": "",
+  //   "Status": ""
+  // }
+  // 1. Query Parameters Object Create karein (Exact C# / Query Fields Ke Hisab Se)
+  const queryParamsData: NavigationExtras = {
+    queryParams: {
+      itemid: value.ItemId,                           
+      estcost: value.EstimatedCost,                    
+      fqty: value.FinalQty,                            
+      indentid: value.IndentConsolidationId,            
+      finid: this.SingleIndentDetail.FinancialYearId,                      
+      IndentCId: this.IndentCId ,         
+      ItemName: value.ItemName,         
+      ItemCodeAsPerTender: value.ItemCodeAsPerTender         
+    }
+  };
+
+  this.router.navigate(['/DHSindentAddBulkConsigneePO'], queryParamsData);
+}
 }
