@@ -1,4 +1,7 @@
-import { Component, OnInit, HostListener, DoCheck, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, HostListener, DoCheck, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { MatDrawerMode } from '@angular/material/sidenav';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Router, NavigationEnd } from '@angular/router';
 import { HardcodedAuthenticationService } from './service/authentication/hardcoded-authentication.service';
 import { ToastrService } from 'ngx-toastr';
@@ -17,8 +20,11 @@ import { ApiService } from './service/api.service';
     standalone: false
 })
 
-export class AppComponent implements OnInit, DoCheck {
- isMobile: boolean = false;
+export class AppComponent implements OnInit, DoCheck, OnDestroy {
+  private readonly destroy$ = new Subject<void>();
+  isMobile = false;
+  drawerMode: MatDrawerMode = 'side';
+  isDrawerOpen = true;
   deferredPrompt: any;
   showButton = false;
   title!: 'VENDER REGISTRATION PORTAL'
@@ -55,10 +61,19 @@ export class AppComponent implements OnInit, DoCheck {
     this.expandedMenus[menuLabel] = !this.expandedMenus[menuLabel];
   }
   role: any = ''; // Dynamic role
-  constructor(private location: Location,private cdr: ChangeDetectorRef, private menuService: MenuServiceService,
-     private toastr: ToastrService, private router: Router,
-      public basicAuthentication: BasicAuthenticationService, private api:ApiService,private breakpointObserver: BreakpointObserver,
-      private https: HttpClient) { }
+  constructor(
+    private location: Location,
+    private cdr: ChangeDetectorRef,
+    private menuService: MenuServiceService,
+    private toastr: ToastrService,
+    private router: Router,
+    public basicAuthentication: BasicAuthenticationService,
+    private api: ApiService,
+    private breakpointObserver: BreakpointObserver,
+    private https: HttpClient,
+  ) {
+    this.applyDrawerLayout(window.innerWidth <= 991.98, true);
+  }
 
   logout() {
     if (sessionStorage.getItem('roleId') === '482') {
@@ -81,20 +96,66 @@ export class AppComponent implements OnInit, DoCheck {
     this.location.back();
   }
 
-  ngOnInit(): void {
-  
-    this.router.events.subscribe(event => {
-      
-      if (event instanceof NavigationEnd) {
-        this.isLoginPage = (event.urlAfterRedirects === '/login' || event.urlAfterRedirects === '/otp' || event.urlAfterRedirects === '/collector-login' || event.urlAfterRedirects === '/public-view' || event.urlAfterRedirects === '/GrowthInProcurmentTabPublic' || event.urlAfterRedirects === '/distributionPublic' || event.urlAfterRedirects === '/IndentPendingWHdashPublic' || event.urlAfterRedirects === '/Registration'   );
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
-        this.role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
+  toggleDrawer(): void {
+    this.isDrawerOpen = !this.isDrawerOpen;
+  }
+
+  closeDrawer(): void {
+    this.isDrawerOpen = false;
+  }
+
+  onDrawerOpenedChange(opened: boolean): void {
+    if (!this.isLoginPage) {
+      this.isDrawerOpen = opened;
+    }
+  }
+
+  closeDrawerOnNavigate(): void {
+    if (this.isMobile) {
+      this.closeDrawer();
+    }
+  }
+
+  private applyDrawerLayout(isMobile: boolean, forceOpenState = false): void {
+    const breakpointChanged = this.isMobile !== isMobile;
+    this.isMobile = isMobile;
+    this.drawerMode = isMobile ? 'over' : 'side';
+    if (forceOpenState || breakpointChanged) {
+      this.isDrawerOpen = !isMobile;
+    }
+  }
+
+  ngOnInit(): void {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isLoginPage =
+          event.urlAfterRedirects === '/login' ||
+          event.urlAfterRedirects === '/otp' ||
+          event.urlAfterRedirects === '/collector-login' ||
+          event.urlAfterRedirects === '/public-view' ||
+          event.urlAfterRedirects === '/GrowthInProcurmentTabPublic' ||
+          event.urlAfterRedirects === '/distributionPublic' ||
+          event.urlAfterRedirects === '/IndentPendingWHdashPublic' ||
+          event.urlAfterRedirects === '/Registration';
+
+        this.role = this.basicAuthentication.getRole().roleName;
         this.updateMenu();
+        this.closeDrawerOnNavigate();
       }
     });
-this.breakpointObserver.observe(['(max-width: 768px)']).subscribe(result => {
-    this.isMobile = result.matches;
-  });
+
+    this.breakpointObserver
+      .observe(['(max-width: 991.98px)'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result) => {
+        this.applyDrawerLayout(result.matches, false);
+        this.cdr.markForCheck();
+      });
     // this.GetVendorDetailsID(sessionStorage.getItem('facilityid'));
 
   }

@@ -1,9 +1,14 @@
 .grid-scroll {
-  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .legacy-grid {
-  min-width: 1100px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  table-layout: fixed;
 }
 
 .link-action {
