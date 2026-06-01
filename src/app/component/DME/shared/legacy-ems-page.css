@@ -1,18 +1,28 @@
 /* Shared legacy EMSRole Stock/Order page styling */
 .ems-legacy-page {
-  max-width: 1100px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   padding: 12px 16px 32px;
   font-family: 'Times New Roman', Times, serif;
   font-size: 13px;
   color: #003399;
   background: #fff;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.ems-legacy-page .grid-scroll {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .ems-legacy-page .header-bar {
-  display: inline-block;
-  width: 50%;
-  max-width: 720px;
+  display: block;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto 16px;
   padding: 10px 24px;
   background-color: #4d67a0;
@@ -63,11 +73,18 @@
 }
 
 .ems-legacy-page .filter-center {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   text-align: center;
 }
 
 .ems-legacy-page .legacy-select {
-  min-width: 280px;
+  width: 100%;
+  max-width: 280px;
+  min-width: 0;
   height: 25px;
   font-size: 13px;
   border: 1px solid #7f9db9;
@@ -118,6 +135,9 @@
 
 .ems-legacy-page .legacy-grid {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  table-layout: fixed;
   border-collapse: collapse;
   border: 1px solid #3366cc;
 }
@@ -126,19 +146,27 @@
   background: #003399;
   color: #ccccff;
   font-weight: 700;
-  padding: 8px 6px;
+  padding: 6px 4px;
   border: 1px solid #3366cc;
   text-align: left;
-  font-size: 12px;
+  font-size: 11px;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  line-height: 1.25;
 }
 
 .ems-legacy-page .legacy-grid td {
-  padding: 6px 8px;
+  padding: 5px 4px;
   border-bottom: 1px solid #c5d4e4;
   color: #003399;
   background: #fff;
-  font-size: 12px;
+  font-size: 11px;
   vertical-align: top;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  line-height: 1.25;
 }
 
 .ems-legacy-page .legacy-grid tr:nth-child(even) td {

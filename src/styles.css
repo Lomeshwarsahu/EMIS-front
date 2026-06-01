@@ -1,35 +1,210 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global EMIS layout — fit inside screen, no horizontal page overflow */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html {
+  -webkit-text-size-adjust: 100%;
+}
 
+html,
+body {
+  height: 100%;
+  width: 100%;
+  max-width: 100vw;
+  margin: 0;
+  overflow: hidden;
+}
 
-.row-red td   { background-color: #f56571 !important; }
-.row-yellow td { background-color: #faaaa6 !important; }
-.row-pink td   { background-color: #fdae80 !important; }
-.row-gray td   { background-color: #f8f081 !important; }
-.row-magenta td { background-color: #b3eaff !important;}
-.row-green td  { background-color: #7effb4 !important; }
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
 
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
 
+/* All routed pages stay inside viewport width */
+.page-outlet-wrapper,
+.page-outlet-wrapper > *,
+.emis-page-content section,
+.emis-page-content .container-fluid,
+.page-outlet-wrapper section,
+.page-outlet-wrapper .container-fluid {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+.page-outlet-wrapper .row {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 100%;
+}
+
+.page-outlet-wrapper .row > [class*='col-'] {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Tables shrink to screen — wrap text instead of overflowing */
+.page-outlet-wrapper table,
+.emis-page-content table,
+.table-responsive table,
+.table-container table,
+.grid-scroll table {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.page-outlet-wrapper th,
+.page-outlet-wrapper td,
+.emis-page-content th,
+.emis-page-content td,
+.table-responsive th,
+.table-responsive td {
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  vertical-align: top;
+  hyphens: auto;
+}
+
+.page-outlet-wrapper .grid-scroll,
+.page-outlet-wrapper .table-responsive,
+.page-outlet-wrapper .table-container,
+.page-outlet-wrapper .datagrid {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.page-outlet-wrapper .ems-legacy-page {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Bootstrap / material wide blocks */
+.page-outlet-wrapper .card,
+.page-outlet-wrapper mat-card,
+.page-outlet-wrapper .mat-mdc-card {
+  max-width: 100%;
+}
+
+.page-outlet-wrapper .mat-mdc-form-field,
+.page-outlet-wrapper input,
+.page-outlet-wrapper select,
+.page-outlet-wrapper textarea {
+  max-width: 100%;
+}
+
+.page-outlet-wrapper section.min-vh-100 {
+  min-height: auto !important;
+}
+
+.page-outlet-wrapper .table-responsive {
+  overflow-x: hidden !important;
+}
+
+.table {
+  width: 100%;
+  min-width: 0 !important;
+}
+
+@media (max-width: 991.98px) {
+  .page-outlet-wrapper table,
+  .emis-page-content table {
+    font-size: 0.8rem;
+  }
+
+  .page-outlet-wrapper th,
+  .page-outlet-wrapper td {
+    padding: 5px 4px;
+  }
+
+  .mat-mdc-form-field,
+  .filter-field,
+  .export-menu-container {
+    width: 100% !important;
+    max-width: 100%;
+  }
+
+  .d-flex.flex-wrap,
+  .row.g-2,
+  .row.g-3 {
+    row-gap: 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-outlet-wrapper table,
+  .emis-page-content table {
+    font-size: 0.72rem;
+  }
+
+  section.container-fluid,
+  section.bg-light {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  h1,
+  .h1,
+  h2,
+  .h2 {
+    font-size: clamp(1rem, 4vw, 1.35rem);
+  }
+
+  .btn,
+  button.mat-mdc-button,
+  button.mat-mdc-raised-button {
+    white-space: normal;
+    line-height: 1.25;
+  }
+}
+
+/* Legacy row highlight colors */
+.row-red td {
+  background-color: #f56571 !important;
+}
+.row-yellow td {
+  background-color: #faaaa6 !important;
+}
+.row-pink td {
+  background-color: #fdae80 !important;
+}
+.row-gray td {
+  background-color: #f8f081 !important;
+}
+.row-magenta td {
+  background-color: #b3eaff !important;
+}
+.row-green td {
+  background-color: #7effb4 !important;
+}
 
 .spinner-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 150px; 
-    
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+}
 
- 
-  .link-hoverr:hover {
-    color: #6200ff;         
-    text-decoration: underline; 
-
-    cursor: pointer;
-    font-weight: bold;
-  }
-
-
-   
-  
+.link-hoverr:hover {
+  color: #6200ff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: bold;
+}

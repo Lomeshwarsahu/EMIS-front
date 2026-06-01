@@ -18,13 +18,24 @@
   }
   
   .table-container {
-    overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
   
   .table {
     width: 100%;
-    min-width: 1000px;
+    max-width: 100%;
+    min-width: 0;
+    table-layout: fixed;
     border-collapse: collapse;
+  }
+
+  .table th,
+  .table td {
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
   }
   
   .table th {
@@ -62,7 +73,8 @@
     }
   
     .table {
-      font-size: 14px;
+      font-size: 12px;
+      min-width: 0;
     }
   
     .filter-field,
