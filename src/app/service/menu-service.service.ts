@@ -440,9 +440,9 @@ export class MenuServiceService {
           label: 'Tender',
           route: '',
           submenu: [
-            // { label: 'Plan a Tender', route: '/PlanaTenderD' },
-            // { label: 'Evaluation A', route: '/TenderCoverA' },
-            // { label: 'Claim-Object Preparation', route: '/TenderCoverAObClaim' },
+            { label: 'Plan a Tender', route: '/PlanaTenderD' },
+            { label: 'Terms & Conditions', route: '/Termsconditions' },
+            { label: 'RDLC Tender Summary', route: '/RDLCTenderSummary' },
             // { label: 'Gem-Price Entry Acceptance', route: '/TenderItemsPriceGEM' },
             // { label: 'Gem-Price Entry', route: '/TenderDetailsPriceEntryGEM' }
           ],
@@ -460,16 +460,16 @@ export class MenuServiceService {
           label: 'Finance Report',
           route: '',
           submenu: [
-            // { label: 'Year Wise PO Abstract', route: '/finance/year-wise-po-abstract' },
-            // { label: 'PO Wise Payment FReport', route: '/finance/po-wise-payment' },
+            { label: 'Year Wise PO Abstract', route: '/finance/year-wise-po-abstract' },
+            { label: 'PO Wise Payment FReport', route: '/finance/po-wise-payment' },
             // { label: 'Cheque Wise Payment Report', route: '/finance/cheque-wise-payment' }
           ],
         },
-        {
-          label: 'Complain',
-          route: '',
-          submenu: [{ label: 'Complain Report', route: '/complain/report' }],
-        },
+        // {
+        //   label: 'Complain',
+        //   route: '',
+        //   submenu: [{ label: 'Complain Report', route: '/complain/report' }],
+        // },
         {
           label: 'Reports',
           route: '',
@@ -489,6 +489,102 @@ export class MenuServiceService {
               route: '/reports/tender-item-status',
             },
             { label: 'Reagent PO Report', route: '/reports/reagent-po' },
+          ],
+        },
+      ],
+    },
+    AUGMF: {
+      items: [
+        { label: 'Home', route: '/home' },
+        {
+          label: 'Masters',
+          route: '',
+          submenu: [
+            { label: 'Health Facility Users', route: '/EditReceivedAndInstallationDate' },
+            // { label: 'Add New Items', route: '/ItemsBME' },
+            // { label: 'Program Master', route: 'ProgramMaster' },
+            // { label: 'Mapping to Main items', route: '/masters/map-items' },
+            // { label: 'Update Mapping to Main items', route: '/masters/map-items-update' },
+            // { label: 'Main Equipment Mapped Report', route: '/masters/map-items-report' },
+          ],
+        },
+        {
+          label: 'Orders',
+          route: '',
+          submenu: [
+            // { label: 'Extension HO Detail', route: '/ExtensionHODetail' },
+            // { label: 'Purchase Order', route: '/EMSPODashboard' },
+            // { label: 'Extension HO Detail', route: '/ExtensionHODetail' },
+          ],
+        },
+        {
+          label: 'Contracts',
+          route: '',
+          submenu: [
+            // { label: 'Contract Dashboard', route: 'contracts/dashboard' },
+            // { label: 'New Contract', route: '/contracts/new-rc' },
+            // { label: 'RC Extension', route: '/RCExtend' },
+            // { label: 'PO Extension', route: '/AppliedPoExtension' },
+            // {
+            //   label: 'RC Details Report',
+            //   route: '/contracts/rc-detail-report',
+            // },
+            // { label: 'Price Accepted Report', route: '/AcceptedReort' },
+          ],
+        },
+        {
+          label: 'Tender',
+          route: '',
+          submenu: [
+            // { label: 'Plan a Tender', route: '/PlanaTenderD' },
+            // { label: 'Terms & Conditions', route: '/Termsconditions' },
+            // { label: 'RDLC Tender Summary', route: '/RDLCTenderSummary' },
+            // { label: 'Gem-Price Entry Acceptance', route: '/TenderItemsPriceGEM' },
+            // { label: 'Gem-Price Entry', route: '/TenderDetailsPriceEntryGEM' }
+          ],
+        },
+        {
+          label: 'Indents',
+          route: '',
+          submenu: [
+            // { label: 'Add Indent DME', route: 'ConsolidatedIndentPOCell' },
+            // { label: 'Add Indent', route: '/ConsolidatedIndentDHSPO' },
+            // { label: 'Indent Item Wise Remarks', route: '/IndentWiseItemRemarks' }
+          ],
+        },
+        {
+          label: 'Finance Report',
+          route: '',
+          submenu: [
+            // { label: 'Year Wise PO Abstract', route: '/finance/year-wise-po-abstract' },
+            // { label: 'PO Wise Payment FReport', route: '/finance/po-wise-payment' },
+            // { label: 'Cheque Wise Payment Report', route: '/finance/cheque-wise-payment' }
+          ],
+        },
+        // {
+        //   label: 'Complain',
+        //   route: '',
+        //   submenu: [{ label: 'Complain Report', route: '/complain/report' }],
+        // },
+        {
+          label: 'Reports',
+          route: '',
+          submenu: [
+            // { label: 'PO Summary', route: '/reports/po-summary' },
+            // {
+            //   label: 'PO Wise Payment Report',
+            //   route: '/reports/po-wise-payment',
+            // },
+            // { label: 'Tenders Status', route: '/reports/tenders-status' },
+            // {
+            //   label: 'PO Receipts summary',
+            //   route: '/reports/po-receipts-summary',
+            // },
+            // {
+            //   label: 'Item Status in Tenter',
+            //   route: '/reports/tender-item-status',
+            // },
+            // { label: 'Reagent PO Report', route: '/reports/reagent-po' },
           ],
         },
       ],

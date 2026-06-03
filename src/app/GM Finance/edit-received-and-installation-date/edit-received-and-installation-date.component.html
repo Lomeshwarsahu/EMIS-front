@@ -1,0 +1,381 @@
+<section class="container-fluid bg-light min-vh-100 py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold text-primary mb-1">Update in Received/Installation Date</h2>
+        <p class="text-muted mb-0 fs-6">Manage and track supplier rate contracts.</p>
+    </div>
+    <div class="card shadow-sm border-0 rounded-3 mb-4 border-top border-primary border-4">
+        <div class="card-header bg-white border-bottom-0 pt-3">
+            <h5 class="fw-bold text-secondary mb-0"><i class="bi bi-funnel me-2"></i>Filter Contracts</h5>
+        </div>
+        <div class="card-body">
+           
+            <form #contractForm="ngForm" (ngSubmit)="onSubmit(contractForm)">
+
+                <div class="row align-items-end g-3 mb-4">
+
+                    <div class="col-12 col-md-4">
+                        <label class="form-label fw-semibold text-muted small">Search & Select Year <span
+                                class="text-danger">*</span></label>
+                        <ng-select class="form-control" [items]="yearlist" appendTo="body" bindLabel="year"
+                            bindValue="financial_year_id" placeholder="Type to search Year..."
+                            (change)="GetActivePurchaseOrders($event)" [(ngModel)]="contractData.FinancialYearId"
+                            name="FinancialYearId" required>
+                        </ng-select>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <label class="form-label fw-semibold text-muted small">Search & Select PO No. <span
+                                class="text-danger">*</span></label>
+                        <ng-select class="form-control" [items]="ActivePurchaseOrderslist" appendTo="body" bindLabel="PoNo"
+                            (change)="GetConsigneesByPo($event)" bindValue="PoId"
+                            placeholder="Type to search PO No..." [(ngModel)]="contractData.PoId" name="PoId"
+                            required>
+                        </ng-select>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <label class="form-label fw-semibold text-muted small">Search & Select Consignee <span
+                                class="text-danger">*</span></label>
+                        <ng-select class="form-control" [items]="ConsigneesByPolist" appendTo="body" bindLabel="LocationName"
+                            (change)="OnselectConsigneelist($event)" bindValue="ConsigneeId"
+                            placeholder="Type to search Consignee..." [(ngModel)]="contractData.ConsigneeId"
+                            name="ConsigneeId" required>
+                        </ng-select>
+                    </div>
+
+                    <!-- <div class="col-12 col-md-3">
+                        <label class="form-label fw-semibold text-muted small">Contract Date <span
+                                class="text-danger">*</span></label>
+                        <input type="date" class="form-control" [(ngModel)]="contractData.ContractDate"
+                            name="ContractDate" required>
+                    </div> -->
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary px-4 shadow-sm me-3"
+                            [disabled]="contractForm.invalid">
+                            <i class="bi bi-save me-2"></i> Submit
+                        </button>
+
+                        <button type="button" class="btn btn-secondary px-4 shadow-sm" (click)="onReset(contractForm)">
+                            <i class="bi bi-arrow-counterclockwise me-2"></i> Reset
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+<div class="card shadow-sm border-0 rounded-3 mb-4 border-top border-warning border-4 animate__animated animate__fadeIn">
+    <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+        <ul class="nav nav-tabs border-bottom-0" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link fw-bold fs-6 px-4 py-2 bg-transparent active border-0 border-bottom border-warning border-3 text-warning" type="button">
+                    <i class="bi bi-box-seam me-2"></i>Update Received Changes 
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-body p-4 bg-light bg-opacity-50">
+        <form #receivedChangesForm="ngForm" (ngSubmit)="onUpdateReceived(receivedChangesForm)">
+            <div class="bg-white p-4 rounded-3 shadow-sm border mb-2">
+                <div class="row g-4 align-items-center">
+
+                    <div class="col-12 col-md-6">
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Invoice Date:</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control shadow-sm bg-light text-secondary" 
+                                       [(ngModel)]="receivedFormModel.invoiceDate" name="invoiceDate" [disabled]="isDataLoaded">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-4 col-form-label text-muted fw-bold text-md-start text-primary">Received Date <span class="text-danger">*</span>:</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control shadow-sm border-primary fw-bold" 
+                                       [(ngModel)]="receivedFormModel.recievedDate" name="recievedDate" [disabled]="!isDataLoaded" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Supplier Dispatch Date:</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control shadow-sm bg-light text-secondary" 
+                                       [(ngModel)]="receivedFormModel.DispatchDate" name="DispatchDate" [disabled]="isDataLoaded">
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Challan Date:</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control shadow-sm bg-light text-secondary" 
+                                       [(ngModel)]="receivedFormModel.challanDate" name="challanDate" [disabled]="isDataLoaded">
+                            </div>
+                        </div>
+                    </div> 
+
+                </div>
+
+                <div class="row mt-4" *ngIf="isDataLoaded">
+                    <div class="col-12 text-center border-top pt-4">
+                        <button type="submit" class="btn btn-warning px-5 py-2 shadow-sm rounded-pill fw-semibold" [disabled]="receivedChangesForm.invalid">
+                            <i class="bi bi-check2-circle me-2"></i>Update Received Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 rounded-3 mb-4 border-top border-success border-4 animate__animated animate__fadeIn">
+    <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+        <ul class="nav nav-tabs border-bottom-0" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link fw-bold fs-6 px-4 py-2 bg-transparent active border-0 border-bottom border-success border-3 text-success" type="button">
+                    <i class="bi bi-gear-wide-connected me-2"></i>Update Installation Changes 
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-body p-4 bg-light bg-opacity-50">
+        <form #installationChangesForm="ngForm" (ngSubmit)="onUpdateInstallation(installationChangesForm)">
+            <div class="bg-white p-4 rounded-3 shadow-sm border mb-2">
+                <div class="row g-4 align-items-center">
+
+                    <div class="col-12 col-md-10">
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-4 col-form-label text-muted fw-bold text-md-start text-success">Installation Date <span class="text-danger">*</span>:</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control shadow-sm border-success fw-bold" 
+                                       [(ngModel)]="installationFormModel.installationDate" name="installationDate" [disabled]="!isDataLoaded" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Warranty From:</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control shadow-sm bg-light text-secondary" 
+                                       [(ngModel)]="installationFormModel.warentyFrom" name="warentyFrom" [disabled]="isDataLoaded">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Warranty To:</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control shadow-sm bg-light text-secondary" 
+                                       [(ngModel)]="installationFormModel.warentyTo" name="warentyTo" [disabled]="isDataLoaded">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row mt-4" *ngIf="isDataLoaded">
+                    <div class="col-12 text-center border-top pt-4">
+                        <button type="submit" class="btn btn-success px-5 py-2 shadow-sm rounded-pill fw-semibold" [disabled]="installationChangesForm.invalid">
+                            <i class="bi bi-shield-check me-2"></i>Update Installation Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+      <!-- <div class="card shadow-sm border-0 rounded-3 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn">
+
+        <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+            <ul class="nav nav-tabs border-bottom-0" id="contractTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fw-bold fs-6 px-4 py-2 bg-transparent"
+                        [ngClass]="activeTab === 1 ? 'active border-0 border-bottom border-primary border-3 text-primary' : 'border-0 text-muted hover-text-primary'"
+                         type="button">
+                        <i class="bi bi-box-seam me-2"></i>Update Received Changes 
+
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body p-4 bg-light bg-opacity-50">
+            <div class="tab-content" id="contractTabsContent">
+
+                <div class="tab-pane fade show active" [ngClass]="{'show active': activeTab === 1}" id="equipments"
+                    role="tabpanel" aria-labelledby="equipments-tab">
+                    <form #addItemsForm="ngForm" (ngSubmit)="onSubmitItem(addItemsForm)">
+                        <div class="bg-white p-4 rounded-3 shadow-sm border mb-4">
+                            <div class="row g-4 align-items-center">
+
+                                <div class="col-12 col-md-6">
+                                <div class="row mb-3 align-items-center">
+                                        <label class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Invoice Date
+                                            <span class="text-danger">*</span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control shadow-sm" placeholder="Enter Model"
+                                                [(ngModel)]="itemData.Model" name="Model" required>
+                                        </div>
+                                    </div>
+                                      <div class="row mb-3 align-items-center">
+                                        <label class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Installation Date
+                                             <span class="text-danger">*</span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control shadow-sm" placeholder="0.00"
+                                                [(ngModel)]="itemData.BasicRate" name="BasicRate">
+                                        </div>
+                                    </div>
+
+                                   
+
+                                    
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                      
+
+                                    <div class="row mb-3 align-items-center">
+                                        <label
+                                            class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Challan Date
+                                            <span class="text-danger">*</span>:</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group shadow-sm">
+                                                <input type="date" class="form-control" placeholder="0"
+                                                    [(ngModel)]="itemData.Percentage" name="Percentage"
+                                                   required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="row mb-3 align-items-center">
+                                        <label
+                                            class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Received Date
+                                            No <span class="text-danger">*</span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control shadow-sm"
+                                                placeholder="Enter Licence No" [(ngModel)]="itemData.LicenceNumber"
+                                                name="LicenceNumber" required>
+                                        </div>
+                                    </div>
+                                </div> 
+
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12 text-center border-top pt-4">
+                                    <button type="submit"
+                                        class="btn btn-primary px-5 py-2 shadow-sm rounded-pill fw-semibold"
+                                        [disabled]="addItemsForm.invalid">
+                                        <i class="bi bi-save me-2"></i>Update
+                                    </button>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-3 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn">
+
+        <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+            <ul class="nav nav-tabs border-bottom-0" id="contractTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fw-bold fs-6 px-4 py-2 bg-transparent"
+                        [ngClass]="activeTab === 1 ? 'active border-0 border-bottom border-primary border-3 text-primary' : 'border-0 text-muted hover-text-primary'"
+                         type="button">
+                        <i class="bi bi-box-seam me-2"></i>Update Installation Changes 
+
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body p-4 bg-light bg-opacity-50">
+            <div class="tab-content" id="contractTabsContent">
+
+                <div class="tab-pane fade show active" [ngClass]="{'show active': activeTab === 1}" id="equipments"
+                    role="tabpanel" aria-labelledby="equipments-tab">
+                    <form #addItemsForm="ngForm" (ngSubmit)="onSubmitItem(addItemsForm)">
+                        <div class="bg-white p-4 rounded-3 shadow-sm border mb-4">
+                            <div class="row g-4 align-items-center">
+
+                                <div class="col-12 col-md-10">
+                                <div class="row mb-3 align-items-center">
+                                        <label class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Installation Date
+                                            <span class="text-danger">*</span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control shadow-sm" placeholder="Enter Model"
+                                                [(ngModel)]="itemData.Model" name="Model" required>
+                                        </div>
+                                    </div>
+                                      <div class="row mb-3 align-items-center">
+                                        <label class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Warranty From
+                                             <span class="text-danger">*</span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control shadow-sm" placeholder="0.00"
+                                                [(ngModel)]="itemData.BasicRate" name="BasicRate">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 align-items-center">
+                                        <label
+                                            class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Warranty To
+                                            <span class="text-danger">*</span>:</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group shadow-sm">
+                                                <input type="date" class="form-control" placeholder="0"
+                                                    [(ngModel)]="itemData.Percentage" name="Percentage"
+                                                   required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+
+                                    
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                      
+
+                                   
+                                     <div class="row mb-3 align-items-center">
+                                        <label
+                                            class="col-sm-4 col-form-label text-muted fw-medium text-md-start">Received Date
+                                            No <span class="text-danger">*</span>:</label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control shadow-sm"
+                                                placeholder="Enter Licence No" [(ngModel)]="itemData.LicenceNumber"
+                                                name="LicenceNumber" required>
+                                        </div>
+                                    </div>
+                                </div> 
+
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12 text-center border-top pt-4">
+                                    <button type="submit"
+                                        class="btn btn-primary px-5 py-2 shadow-sm rounded-pill fw-semibold"
+                                        [disabled]="addItemsForm.invalid">
+                                        <i class="bi bi-save me-2"></i>Update
+                                    </button>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+
+    
+</section>
