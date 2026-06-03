@@ -1,0 +1,44 @@
+/* Styling settings for the tabular grid header panels */
+.grid-header {
+  background-color: #343a40 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 0.78rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+  padding: 12px 8px !important;
+}
+
+/* Row hover transitions tracking triggers mapping */
+.grid-row-effect {
+  transition: background-color 0.12s ease-in-out;
+}
+.grid-row-effect:hover {
+  background-color: rgba(var(--bs-success-rgb), 0.03) !important;
+  cursor: pointer;
+}
+
+.text-purple {
+  color: #6f42c1;
+}
+
+.tracking-wide {
+  letter-spacing: 0.4px;
+}
+
+/* Custom layout view custom scrollbars setup configuration */
+.style-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.style-scrollbar::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+.style-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.style-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
