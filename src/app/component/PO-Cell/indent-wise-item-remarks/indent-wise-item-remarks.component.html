@@ -12,7 +12,7 @@
                     <form class="p-2">
                         <div class="card shadow-sm p-3 mt-1">
                             <div class="row g-3 justify-content-center">
-                                <div class="col-md-6 mx-auto text-center">
+                                <div class="col-md-4 mx-auto text-center">
                                     <label class="form-label fw-semibold">Select PO Financial Year</label>
                                     <ng-select [items]="Yearlist" bindLabel="year" bindValue="financial_year_id"
                                         class="form-control" appendTo="body" [(ngModel)]="selecteditem"
@@ -20,7 +20,7 @@
                                     </ng-select>
 
                                 </div>
-                                <div class="col-md-6 mx-auto text-center">
+                                <div class="col-md-4 mx-auto text-center">
                                     <label class="form-label fw-semibold">Select Diectorate</label>
                                     <!-- appendTo=".form-group" -->
                                     <ng-select [items]="Diectoratelist" bindLabel="facility_aut_name" bindValue="facility_aut_id"
@@ -29,6 +29,16 @@
                                     </ng-select>
 
                                 </div>
+                                  <div class="col-md-4 mx-auto text-center">
+                        <label class="form-label fw-bold text-dark small mb-2">
+                            <i class="bi bi-search me-1"></i>Search & Select District
+                        </label>
+                        <ng-select class="border-2 rounded shadow-none form-control" appendTo="body" [items]="Districtslist"
+                            bindLabel="DBStart_Name_En" bindValue="DP_DistrictID" placeholder="Select Status"
+                            name="csid" (change)="onSelectedDistricts($event)"
+                            required>
+                        </ng-select>
+                    </div>
                                 <!-- <div class="col-md-6 mx-auto text-center">
                                     <label class="form-label fw-semibold">Select Districts</label>
                                     <ng-select [items]="Districtslist" bindLabel="DBStart_Name_En" bindValue="DP_DistrictID"
@@ -60,11 +70,11 @@
                             <i class="bi bi-arrow-counterclockwise me-2"></i> <span>Reset</span>
                         </button> -->
 
-                        <button type="button"
+                        <!-- <button type="button"
                             class="btn btn-outline-success px-3 px-md-4 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center"
                             data-bs-toggle="modal" data-bs-target="#SendModall">
                             <i class="bi bi-plus-circle-fill me-2"></i> <span>New Indent</span>
-                        </button>
+                        </button> -->
 
                     </div>
                 </div>
@@ -74,7 +84,7 @@
             </div>
         </div>
         <!-- data table -->
-        <div class="card shadow-lg p-2 mt-0 pt-0 border-0 bg-white rounded ">
+        <!-- <div class="card shadow-lg p-2 mt-0 pt-0 border-0 bg-white rounded ">
             <div class="card-body border rounded px-0 pt-2 pb-3 bg-light"
                 style="height: auto; overflow: hidden; position: relative;">
 
@@ -106,7 +116,7 @@
                                         matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort
                                         #sort="matSort">
 
-                                        <!-- S.No -->
+                                     
                                         <ng-container matColumnDef="sno">
                                             <th mat-header-cell *matHeaderCellDef> S.No </th>
                                             <td mat-cell *matCellDef="let element; let i = index">
@@ -197,7 +207,147 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <div class="card shadow-sm border-0 rounded-4 overflow-hidden animate__animated animate__fadeIn m-3">
+  
+  <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center border-bottom gap-2">
+    <h6 class="mb-0 fw-bold text-dark d-flex align-items-center">
+      <i class="bi bi-journal-check text-success fs-5 me-2"></i> Saved Indent Analytics Summary Report
+    </h6>
+    
+    <div class="d-flex align-items-center gap-2">
+      <div class="input-group input-group-sm" style="max-width: 240px;">
+        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control border-start-0 shadow-none bg-light" 
+               placeholder="Search grid metrics..." (keyup)="applyGridSearchFilter($event)">
+      </div>
+      
+      <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-semibold" 
+              (click)="exporter.exportTable('xlsx')">
+        <i class="bi bi-file-earmark-excel me-1"></i> Export Excel
+      </button>
+    </div>
+  </div>
+
+  <div class="table-responsive style-scrollbar w-100" style="max-height: 65vh; overflow-y: auto;">
+    <table class="table table-hover align-middle mb-0 text-nowrap w-100" mat-table matTableExporter 
+           [dataSource]="dataSource" #exporter="matTableExporter" matSort>
+
+      <ng-container matColumnDef="sno">
+        <th mat-header-cell *matHeaderCellDef class="grid-header text-center"> S.No </th>
+        <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold small"> 
+          {{ i + 1 }} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="IndentDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Indent Date </th>
+        <td mat-cell *matCellDef="let element" class="text-center text-secondary small fw-medium"> 
+          {{element.IndentDate}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="LocationName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header"> Consignee Location / Facility </th>
+        <td mat-cell *matCellDef="let element" class="fw-semibold text-dark small" style="max-width: 200px; white-space: normal;"> 
+          {{element.LocationName}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ItemName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header"> Equipment Item Name </th>
+        <td mat-cell *matCellDef="let element" class="text-dark-emphasis text-wrap small" style="max-width: 220px;"> 
+          {{element.ItemName}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="EqpCode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Item Code </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> 
+          <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1 tracking-wide">
+            {{element.EqpCode || '-'}} 
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="IndentQuantity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Indent Qty </th>
+        <td mat-cell *matCellDef="let element" class="text-center fw-bold text-dark"> 
+          {{element.IndentQuantity | number}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="EstimatedCost">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-end"> Est. Cost </th>
+        <td mat-cell *matCellDef="let element" class="text-end text-muted fw-medium"> 
+          {{element.EstimatedCost | currency:'INR':'symbol':'1.0-0'}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Value">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-end pe-3"> Total Indent Value </th>
+        <td mat-cell *matCellDef="let element" class="text-end fw-bold text-primary pe-3"> 
+          {{element.Value | currency:'INR':'symbol':'1.0-0'}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="RCEndDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> RC Expiry Date </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> 
+          <span class="badge rounded-pill px-2.5 py-1"
+                [ngClass]="element.RCEndDate === 'RC Not Valid' ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success'">
+            <i class="bi me-1" [ngClass]="element.RCEndDate === 'RC Not Valid' ? 'bi-exclamation-triangle' : 'bi-calendar-check'"></i>
+            {{element.RCEndDate}}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Supplier">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header"> Linked Supplier Vendor </th>
+        <td mat-cell *matCellDef="let element" class="text-muted text-truncate small" style="max-width: 150px;" title="{{element.Supplier}}"> 
+          {{element.Supplier || '-'}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="PONo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Active PO No </th>
+        <td mat-cell *matCellDef="let element" class="text-center fw-medium text-purple text-uppercase"> 
+          {{element.PONo || 'No PO Raised'}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="POQTY">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> PO Ordered Qty </th>
+        <td mat-cell *matCellDef="let element" class="text-center fw-bold" [class.text-muted]="element.POQTY === 0" [class.text-info]="element.POQTY > 0"> 
+          {{element.POQTY | number}} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="POValueWithTax">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-end pe-4"> PO Value (Inc. Tax) </th>
+        <td mat-cell *matCellDef="let element" class="text-end fw-bold text-success pe-4"> 
+          {{element.POValueWithTax > 0 ? (element.POValueWithTax | currency:'INR':'symbol':'1.0-0') : '-'}} 
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-light border-bottom"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="grid-row-effect"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell text-center py-5 text-muted" [attr.colspan]="displayedColumns.length">
+          <div class="py-4">
+            <i class="bi bi-inbox-fill fs-1 opacity-25 text-secondary d-block mb-2"></i>
+            <span class="fw-medium">No archived logs data matched for the selected indices parameters context.</span>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card-footer bg-white border-top p-0">
+    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons class="border-0 bg-transparent"></mat-paginator>
+  </div>
+</div>
     </div>
 
 </section>
@@ -313,7 +463,7 @@
                     </div>
                 </form> -->
 
-                <form #forwardForm="ngForm" (ngSubmit)="generateTender(forwardForm)" novalidate>
+                <!-- <form #forwardForm="ngForm" (ngSubmit)="generateTender(forwardForm)" novalidate>
     <div class="row g-4">
 
         <div class="col-md-6">
@@ -397,7 +547,7 @@
             <i class="bi bi-cloud-arrow-up me-2"></i> Save & Add
         </button>
     </div>
-</form>
+</form> -->
             </div>
 
         </div>

@@ -194,7 +194,7 @@ GetItemEligibility() {
   });
 }
 addItemToTender(item: any) {
-  // Check karein ki values empty na hon
+
   if (!item.tender_qty || item.tender_qty <= 0) {
     this.toastr.warning("Please Enter Tender QTY");
     return;

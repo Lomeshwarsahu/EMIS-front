@@ -73,32 +73,51 @@ selecteditem:any;
 yearid:any;
 BudgetList:any;
 facility_aut_id:any;
+
 Districtslist:any;
 fromdate:any;
 todate:any;
 Districtsid:any;
 Diectorateid:any;
+dataSource = new MatTableDataSource<any>([]);
+  reportRawDataList: any[] = [];
     dispatchData: IndentConsolidationReportDto[] = [];
-  dataSource!: MatTableDataSource<IndentConsolidationReportDto>;
-  @ViewChild('paginator') paginator!: MatPaginator;
-  @ViewChild('sort') sort!: MatSort;
-  displayedColumns: string[] = [
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  selectedFinYearId: number = 19;
+  selectedDirectorateId: number = 12;
+  selectedDmeDistrictId: number = 2212;
+  // dataSource!: MatTableDataSource<IndentConsolidationReportDto>;
+  // @ViewChild('paginator') paginator!: MatPaginator;
+  // @ViewChild('sort') sort!: MatSort;
+  // displayedColumns: string[] = [
+  //   'sno',
+  //   'IndentConNo',
+  //   'IndentConsolidationId',
+  //   'ConsolidatedDate',
+  //   'EquipmentCount',
+  //   'ProposedQty',
+  //   'FinalQty',
+  //   'EStatus',
+  //   'UploadStatus',
+  //   'AddItem',
+  //    'action'
+  // ];
+displayedColumns: string[] = [
     'sno',
-    'IndentConNo',
-    'IndentConsolidationId',
-    'ConsolidatedDate',
-    'EquipmentCount',
-    'ProposedQty',
-    'FinalQty',
-    'EStatus',
-    'UploadStatus',
-    'AddItem',
-     'action'
-
-
-
+    'IndentDate',
+    'LocationName',
+    'ItemName',
+    'EqpCode',
+    'IndentQuantity',
+    'EstimatedCost',
+    'Value',
+    'RCEndDate',
+    'Supplier',
+    'PONo',
+    'POQTY',
+    'POValueWithTax'
   ];
-
   constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
@@ -190,20 +209,20 @@ let  directorateId =5 ;
     },
   });
 }
-//https://localhost:7036/api/POCell/GetConsolidationReport?yearId=19&directorateId=12
  Getitemwisedetail(yearid:any,Diectorateid:any) {
     // debugger
 let yearid1 = yearid ? yearid : this.yearid;
 let Diectorateid1 = Diectorateid ? Diectorateid : this.Diectorateid;
     try {
       this.spinner.show();
-      this.api.get(`POCell/GetConsolidationReport?yearId=${yearid1}&directorateId=${Diectorateid1}`).subscribe(
+      const url = `POCell/GetSavedDataGridReport?finYearId=${yearid1}&directorateId=${Diectorateid1}&dmeDstic=${this.Districtsid}`;
+      this.api.get(url).subscribe(
         (res: any) => {
-          this.dispatchData = res.map((item: IndentConsolidationReportDto, index: number) => ({
+          this.dispatchData = res.map((item: any, index: number) => ({
             ...item,
             sno: index + 1,
           }));
-          console.log('GetConsolidationReport=:', this.dispatchData);
+          // console.log('GetConsolidationReport=:', this.dispatchData);
           this.dataSource.data = this.dispatchData;
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -244,82 +263,8 @@ onSelectedDistricts(Districts: any) {
   console.log(Districts.year);
 }
 
- GetitemFulldetail() {
-  //  this.router.navigate(['/ItemWiseDetailPOCellByPOid'], {
-  //     queryParams: { yearid: yearid, Icode:Icode,POid:POid,tender_no:tender_no,po_no:po_no},
-  //   });
-  }
-  newTender1: any = {
-  selectedUserId: '', 
-  finYearId: '',      
-  BudgetId: '',        
-  tenderDate: '',      
-  description: ''      
-};
 
-generateTender(form: NgForm) {
-  // 1. Session check to fetch logged-in user context identity safely
-  const storedData = localStorage.getItem('loginData');
-  let currentUserId = 0;
 
-  if (storedData) {
-    const loginObj = JSON.parse(storedData);
-    currentUserId = Number(loginObj.user_id || loginObj.userId || 0);
-  }
-
-  // 2. Client Side Form Validation Guard
-  if (form.invalid) {
-    Object.keys(form.controls).forEach(key => {
-      form.controls[key].markAsTouched();
-    });
-    this.toastr.warning("Please fill all required fields correctly.");
-    return;
-  }
-
-  this.spinner.show();
-
-  // 3. CORRECT KEY MAPPING: Form UI data mapped into strict backend DTO properties
-  const payload = {
-    FundId: Number(this.newTender1.BudgetId),
-    IndentDescription: this.newTender1.description ? this.newTender1.description.trim() : '',
-    IndentDateStr: this.newTender1.tenderDate, // Browser returns standard "YYYY-MM-DD"
-    UserId: currentUserId,                     // Automatically bound from local storage session
-    DirectorateId: Number(this.newTender1.selectedUserId),
-    FinancialYearId: Number(this.newTender1.finYearId)
-  };
-
-  console.log('Dispatching Final Bound Curl Payload Container:', payload);
-  // 'https://localhost:7036/api/POCell/SaveIndentConsolidationActual
-  // 4. API Request Triggering
-  this.api.post1('POCell/SaveIndentConsolidationActual', payload).subscribe({
-    next: (res: any) => {
-      this.spinner.hide();
-      this.toastr.success(res.message || "Indent Saved Successfully!");
-       this.Getitemwisedetail(this.newTender1.finYearId,this.newTender1.selectedUserId);
-      // 5. Clean Reset Form Fields Properties
-      form.resetForm();
-      this.newTender1 = {
-        selectedUserId: '',
-        finYearId: '',
-        BudgetId: '',
-        tenderDate: '',
-        description: ''
-      };
-      
-      this.closeModal(); // Hide modal popup container layout overlays
-      
-      // 6. Refresh active reporting dashboard grid tables if method exists
-      if (typeof (this as any).loadGridDataReport === 'function') {
-         (this as any).loadGridDataReport();
-      }
-    },
-    error: (err) => {
-      this.spinner.hide();
-      console.error('API Error Response:', err);
-      this.toastr.error(err.error?.message || "Error occurred while saving transaction.");
-    }
-  });
-}
 
 closeModal() {
   const modalElement = document.getElementById('tenderModal');
@@ -336,5 +281,18 @@ ngAfterViewInit(){
   });
 
 }
+
+// / 2. Core API Streaming calling pipeline method
+
+
+  // Grid global filter search mechanism trigger
+  applyGridSearchFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 }
 

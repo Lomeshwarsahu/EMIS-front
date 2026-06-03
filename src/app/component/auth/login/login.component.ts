@@ -435,6 +435,11 @@ if (updatedRes.username === 'PO-Cell') {
   updatedRes.user_type = 'AUPO'; 
 }
 
+if (updatedRes.username === 'GM Finance') {
+
+  updatedRes.user_type = 'AUGMF'; 
+}
+
 // 3. Ab modified ya normal (else ki zarurat nahi padegi kyuki condition match nahi hui toh purana hi rahega) 
 // response ko localStorage mein set kar do
 localStorage.setItem('loginData', JSON.stringify(updatedRes));

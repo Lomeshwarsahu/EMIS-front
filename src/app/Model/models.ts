@@ -689,6 +689,15 @@ export interface IndentConsolidationDetailDto {
   IndentMonth: string
   Status: string
 }
+export interface distcDetailsGrid {
+  sno:number
+  LocationId: number
+  LocationName: string
+  DpDistrictId: number
+  IndentQuantity: string
+  IndentItemId: any
+  FacilityTypeId: number
+}
 export interface HodConversationDTO {
     detailRow: any;
   sno: number;
@@ -779,3 +788,35 @@ export interface HodReplyDTO {
   EntryBy: string;
   EntryDate: string;
 }
+
+export interface RDLCRport {
+  TenderNo: string
+  LiveDT: string
+  TLast: string
+  NoSitems: number
+  FinalStatus: string
+  NosItemsA: string
+  AItemsSupplier: string
+  CoverA: string
+  COVALastDays: any
+  NositemsDA: string
+  AdaItemsSupplier: string
+  ObjClaimLastDate: string
+  ObjCStartDT: string
+  COVBDT: string
+  COVCDT: string
+  NoofPriceFound: number
+  NosAccepted: number
+  NosRejected: number
+  DaysTakenFromLiveDT: number
+  COVAToObjStartDays: any
+  OBJDays: any
+  ClaimEndToBDays: any
+  CovBToCovCDays: any
+  Csid: number
+  TenderId: number
+  DaysClosed: number
+  Show: number
+  NosRC: number
+}
+

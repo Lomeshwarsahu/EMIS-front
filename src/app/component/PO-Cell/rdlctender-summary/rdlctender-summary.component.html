@@ -1,0 +1,248 @@
+<section class="container-fluid py-4 animate__animated animate__fadeIn">
+    
+    <div class="card p-4 mb-4 shadow-sm text-center bg-gradient bg-light border-0 rounded-3">
+        <h2 class="fw-bold text-primary mb-2 tracking-tight">
+            <i class="bi bi-file-earmark-text-fill me-2"></i>Tender Status Matrix Report
+        </h2>
+        <p class="text-muted mb-0 fs-6">
+            Comprehensive multi-stage lifecycle analysis tracking system for active procurement and rate contracts.
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+
+        <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center border-bottom gap-3 px-4">
+            <div class="d-flex align-items-center">
+                <h5 class="mb-0 fw-bold text-dark d-flex align-items-center fs-6">
+                    <i class="bi bi-table text-success me-2 fs-5"></i> Active Tender Progress Registry
+                </h5>
+            </div>
+
+            <div class="d-flex align-items-center flex-wrap gap-2">
+                <div class="input-group input-group-sm" style="min-width: 260px; max-width: 300px;">
+                    <span class="input-group-text bg-light border-end-0 text-muted shadow-none">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control border-start-0 shadow-none bg-light"
+                           placeholder="Search dynamic metrics..." (keyup)="applyTextFilter($event)">
+                </div>
+                
+                <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-semibold d-inline-flex align-items-center shadow-none"
+                        (click)="exporter.exportTable('xlsx')">
+                    <i class="bi bi-file-earmark-spreadsheet me-1.5"></i> Export Excel
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive style-scrollbar w-100" style="max-height: 65vh; overflow-y: auto;">
+            <table class="table table-hover align-middle mb-0 text-nowrap w-100" mat-table matTableExporter
+                [dataSource]="dataSource" #exporter="matTableExporter" matSort>
+
+                <ng-container matColumnDef="sno">
+                    <th mat-header-cell *matHeaderCellDef class="grid-header text-center" style="min-width: 70px;"> S.No </th>
+                    <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold small">
+                        {{ i + 1 }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="TenderNo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center" style="min-width: 160px;"> Tender No </th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2.5 py-1.5 fw-bold tracking-wide">
+                            {{element.TenderNo || '-'}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="LiveDT">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Live Date </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-dark small fw-medium">
+                        {{element.LiveDT || '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="TLast">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Last Date </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-danger small fw-semibold">
+                        {{element.TLast || '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="NoSitems">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Total Items </th>
+                    <td mat-cell *matCellDef="let element" class="text-center fw-bold small">
+                        {{element.NoSitems | number}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="FinalStatus">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header" style="min-width: 250px;"> Status Context Description </th>
+                    <td mat-cell *matCellDef="let element" class="small fw-semibold text-wrap text-dark-emphasis px-3" style="white-space: normal;">
+                        {{element.FinalStatus || '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="NosItemsA">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Cov-A Items </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-secondary small fw-bold">
+                        {{element.NosItemsA || '0'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="AItemsSupplier">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Cov-A Suppliers </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-muted small">
+                        {{element.AItemsSupplier || '0'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="CoverA">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Cov-A Date </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-muted small">
+                        {{element.CoverA || '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="COVALastDays">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Cov-A Open Days </th>
+                    <td mat-cell *matCellDef="let element" class="text-center small text-indigo fw-medium">
+                        {{element.COVALastDays != null ? element.COVALastDays : '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="NositemsDA">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Cov-B Eligible Items </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-success small fw-semibold">
+                        {{element.NositemsDA || '0'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="AdaItemsSupplier">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Cov-B Eligible Suppliers </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-muted small">
+                        {{element.AdaItemsSupplier || '0'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ObjClaimLastDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Objection End Date </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-secondary small">
+                        {{element.ObjClaimLastDate || '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ObjCStartDT">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Objection Start Date </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-secondary small">
+                        {{element.ObjCStartDT || '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="COVBDT">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Cov-B Date </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-muted small">
+                        {{element.COVBDT || '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="COVCDT">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Cov-C Date </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-muted small">
+                        {{element.COVCDT || '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="NoofPriceFound">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Prices Found </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-dark fw-medium small">
+                        {{element.NoofPriceFound | number}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="NosAccepted">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Accepted Items </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-success fw-bold small">
+                        {{element.NosAccepted | number}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="NosRejected">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Rejected Items </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-danger fw-bold small">
+                        {{element.NosRejected | number}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="DaysTakenFromLiveDT">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Cycle Days (Live to Cov-C) </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-dark-emphasis fw-semibold small">
+                        {{element.DaysTakenFromLiveDT | number}} Days
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="COVAToObjStartDays">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Cov-A to Obj Days </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-muted small">
+                        {{element.COVAToObjStartDays != null ? element.COVAToObjStartDays : '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="OBJDays">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Claim Window (Days) </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-muted small">
+                        {{element.OBJDays != null ? element.OBJDays : '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ClaimEndToBDays">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Claim End to Cov-B (Days) </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-muted small">
+                        {{element.ClaimEndToBDays != null ? element.ClaimEndToBDays : '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="CovBToCovCDays">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Cov-B to Cov-C (Days) </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-muted small">
+                        {{element.CovBToCovCDays != null ? element.CovBToCovCDays : '-'}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="DaysClosed">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Days Closed </th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        <span class="badge rounded-pill px-2 py-1" 
+                              [ngClass]="element.DaysClosed > 0 ? 'bg-amber-subtle text-amber' : 'bg-light text-muted border'">
+                            {{element.DaysClosed > 0 ? element.DaysClosed + ' Days' : 'Active'}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="NosRC">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center pe-3"> Total RC Items </th>
+                    <td mat-cell *matCellDef="let element" class="text-center fw-bold text-teal pe-3">
+                        {{element.NosRC | number}}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-light border-bottom"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="grid-row-effect"></tr>
+
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell text-center py-5 text-muted" [attr.colspan]="displayedColumns.length">
+                        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+                            <i class="bi bi-inbox-fill text-secondary opacity-30 mb-3" style="font-size: 3.5rem;"></i>
+                            <h6 class="fw-bold text-secondary mb-1">No Active Record Logs Matching Matrix</h6>
+                            <p class="text-muted small mb-0">Please verify filter strings context configurations.</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card-footer bg-white border-top p-0 px-3">
+            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons
+                class="border-0 bg-transparent"></mat-paginator>
+        </div>
+    </div>
+</section>

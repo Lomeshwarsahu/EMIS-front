@@ -69,6 +69,9 @@ import { ConsolidatedIndentDHSPOComponent } from './component/PO-Cell/consolidat
 import { IndentWiseItemRemarksComponent } from './component/PO-Cell/indent-wise-item-remarks/indent-wise-item-remarks.component';
 import { IndentEditDHSPOComponent } from './component/PO-Cell/indent-edit-dhs-po/indent-edit-dhs-po.component';
 import { DHSindentAddBulkConsigneePOComponent } from './component/PO-Cell/dhsindent-add-bulk-consignee-po/dhsindent-add-bulk-consignee-po.component';
+import { TermsconditionsComponent } from './component/PO-Cell/termsconditions/termsconditions.component';
+import { RDLCTenderSummaryComponent } from './component/PO-Cell/rdlctender-summary/rdlctender-summary.component';
+import { EditReceivedAndInstallationDateComponent } from './GM Finance/edit-received-and-installation-date/edit-received-and-installation-date.component';
 
 
 const routes: Routes = [
@@ -147,6 +150,7 @@ const routes: Routes = [
         'AD',
         'AU',
         'AUPO',
+        'AUGMF',
         'AAO',
         'AYUSH',
         'CGMSC',
@@ -282,7 +286,7 @@ const routes: Routes = [
     path: 'PlanaTenderD',
     component: PlanaTenderDComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU', 'DME'] },
+    data: { allowedRoles: ['AU', 'DME','AUPO'] },
   },
   {
     path: 'TenderCoverA',
@@ -329,6 +333,26 @@ const routes: Routes = [
   {
     path: 'DHSindentAddBulkConsigneePO',
     component: DHSindentAddBulkConsigneePOComponent,
+    canActivate: [RouteGuardService],
+    data: {
+      allowedRoles: ['AUPO'],
+      // allowedUsersid: [2307]
+      // allowedUsers: ['rahul_au', 'amit_au']
+    },
+  },
+  {
+    path: 'Termsconditions',
+    component: TermsconditionsComponent,
+    canActivate: [RouteGuardService],
+    data: {
+      allowedRoles: ['AUPO'],
+      // allowedUsersid: [2307]
+      // allowedUsers: ['rahul_au', 'amit_au']
+    },
+  },
+  {
+    path: 'RDLCTenderSummary',
+    component: RDLCTenderSummaryComponent,
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO'],
@@ -613,13 +637,13 @@ const routes: Routes = [
     path: 'finance/year-wise-po-abstract',
     component: FacilityAuthPOValuePOCellComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME'] },
+    data: { allowedRoles: ['AD', 'DME','AUPO'] },
   },
   {
     path: 'finance/po-wise-payment',
     component: POPaidReportComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME'] },
+    data: { allowedRoles: ['AD', 'DME','AUPO'] },
   },
   {
     path: 'finance/cheque-wise-payment',
@@ -833,7 +857,15 @@ const routes: Routes = [
     redirectTo: 'masters/map-items-report',
     pathMatch: 'full',
   },
-
+//#region GM Finance
+// 
+  {
+    path: 'EditReceivedAndInstallationDate',
+    component: EditReceivedAndInstallationDateComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+//#endregion
   { path: '**', redirectTo: 'login' },
 ];
 
