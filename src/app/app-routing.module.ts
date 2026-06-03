@@ -72,6 +72,7 @@ import { DHSindentAddBulkConsigneePOComponent } from './component/PO-Cell/dhsind
 import { TermsconditionsComponent } from './component/PO-Cell/termsconditions/termsconditions.component';
 import { RDLCTenderSummaryComponent } from './component/PO-Cell/rdlctender-summary/rdlctender-summary.component';
 import { EditReceivedAndInstallationDateComponent } from './GM Finance/edit-received-and-installation-date/edit-received-and-installation-date.component';
+<<<<<<< HEAD
 import { SuppliersComponent } from './GM Finance/suppliers/suppliers.component';
 import { SupplierBankAccountsComponent } from './GM Finance/supplier-bank-accounts/supplier-bank-accounts.component';
 import { SupplierGSTentryComponent } from './GM Finance/supplier-gstentry/supplier-gstentry.component';
@@ -81,6 +82,8 @@ import { FundMapComponent } from './GM Finance/fund-map/fund-map.component';
 import { BudgentEntryComponent } from './GM Finance/budgent-entry/budgent-entry.component';
 import { BudgetDetailsProvisionalComponent } from './GM Finance/budget-details-provisional/budget-details-provisional.component';
 
+=======
+>>>>>>> 4d2e6a0 (pocell contll update new value)
 
 
 const routes: Routes = [
@@ -878,6 +881,7 @@ const routes: Routes = [
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
+<<<<<<< HEAD
   {
     path: 'Supplier',
     component: SuppliersComponent,
@@ -908,6 +912,8 @@ const routes: Routes = [
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
+=======
+>>>>>>> 4d2e6a0 (pocell contll update new value)
 //#endregion
   { path: '**', redirectTo: 'login' },
 ];
