@@ -502,12 +502,17 @@ export class MenuServiceService {
           submenu: [
             { label: 'Health Facility Users', route: '/EditReceivedAndInstallationDate' },
 <<<<<<< HEAD
+<<<<<<< HEAD
             { label: 'Suppliers Accounts/GST', route: '/Supplier' },
             { label: 'CGMSCL Bank Accounts', route: '/CgmscBankAccounts' },
 =======
             // { label: 'Add New Items', route: '/ItemsBME' },
             // { label: 'Program Master', route: 'ProgramMaster' },
 >>>>>>> 4d2e6a0 (pocell contll update new value)
+=======
+            { label: 'Suppliers Accounts/GST', route: '/Supplier' },
+            { label: 'CGMSCL Bank Accounts', route: '/CgmscBankAccounts' },
+>>>>>>> bfbbf5c (pocell contll update new value)
             // { label: 'Mapping to Main items', route: '/masters/map-items' },
             // { label: 'Update Mapping to Main items', route: '/masters/map-items-update' },
             // { label: 'Main Equipment Mapped Report', route: '/masters/map-items-report' },
@@ -515,6 +520,9 @@ export class MenuServiceService {
         },
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bfbbf5c (pocell contll update new value)
           label: 'Funds',
           route: '',
           submenu: [
@@ -524,8 +532,11 @@ export class MenuServiceService {
           ],
         },
         {
+<<<<<<< HEAD
 =======
 >>>>>>> 4d2e6a0 (pocell contll update new value)
+=======
+>>>>>>> bfbbf5c (pocell contll update new value)
           label: 'Orders',
           route: '',
           submenu: [

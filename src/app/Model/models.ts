@@ -821,6 +821,9 @@ export interface RDLCRport {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bfbbf5c (pocell contll update new value)
 export interface SupplierGridDto {
   sno: number;
   SupplierId: number
@@ -838,6 +841,10 @@ export interface SupplierGridDto {
   Phone: string
   Fax: string
   Email: string
+<<<<<<< HEAD
 }
 =======
 >>>>>>> 4d2e6a0 (pocell contll update new value)
+=======
+}
+>>>>>>> bfbbf5c (pocell contll update new value)

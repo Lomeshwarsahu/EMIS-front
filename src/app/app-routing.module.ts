@@ -73,6 +73,9 @@ import { TermsconditionsComponent } from './component/PO-Cell/termsconditions/te
 import { RDLCTenderSummaryComponent } from './component/PO-Cell/rdlctender-summary/rdlctender-summary.component';
 import { EditReceivedAndInstallationDateComponent } from './GM Finance/edit-received-and-installation-date/edit-received-and-installation-date.component';
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bfbbf5c (pocell contll update new value)
 import { SuppliersComponent } from './GM Finance/suppliers/suppliers.component';
 import { SupplierBankAccountsComponent } from './GM Finance/supplier-bank-accounts/supplier-bank-accounts.component';
 import { SupplierGSTentryComponent } from './GM Finance/supplier-gstentry/supplier-gstentry.component';
@@ -80,10 +83,14 @@ import { CgmscBankAccountsComponent } from './GM Finance/cgmsc-bank-accounts/cgm
 import { NewFundMasterComponent } from './GM Finance/new-fund-master/new-fund-master.component';
 import { FundMapComponent } from './GM Finance/fund-map/fund-map.component';
 import { BudgentEntryComponent } from './GM Finance/budgent-entry/budgent-entry.component';
+<<<<<<< HEAD
 import { BudgetDetailsProvisionalComponent } from './GM Finance/budget-details-provisional/budget-details-provisional.component';
 
 =======
 >>>>>>> 4d2e6a0 (pocell contll update new value)
+=======
+
+>>>>>>> bfbbf5c (pocell contll update new value)
 
 
 const routes: Routes = [
@@ -136,7 +143,10 @@ const routes: Routes = [
   { path: 'IndentEditDHSPO', component: IndentEditDHSPOComponent },
   { path: 'SupplierBankAccounts', component: SupplierBankAccountsComponent },
   { path: 'SupplierGSTentry', component: SupplierGSTentryComponent },
+<<<<<<< HEAD
   { path: 'BudgetDetailsProvisional', component: BudgetDetailsProvisionalComponent },
+=======
+>>>>>>> bfbbf5c (pocell contll update new value)
 
   {
     path: 'TenderStatusUpdate',
@@ -882,6 +892,9 @@ const routes: Routes = [
     data: { allowedRoles: ['AUGMF'] },
   },
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bfbbf5c (pocell contll update new value)
   {
     path: 'Supplier',
     component: SuppliersComponent,
@@ -912,8 +925,11 @@ const routes: Routes = [
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
+<<<<<<< HEAD
 =======
 >>>>>>> 4d2e6a0 (pocell contll update new value)
+=======
+>>>>>>> bfbbf5c (pocell contll update new value)
 //#endregion
   { path: '**', redirectTo: 'login' },
 ];

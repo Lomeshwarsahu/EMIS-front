@@ -158,6 +158,7 @@
                     <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold small"> {{ i + 1 }} </td>
                 </ng-container>
 
+<<<<<<< HEAD
                 <ng-container matColumnDef="UserName">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> Directorate </th>
                     <td mat-cell *matCellDef="let element" class="px-3 small text-dark fw-semibold"> {{ element.UserName | uppercase }} </td>
@@ -171,15 +172,35 @@
                 <ng-container matColumnDef="BudgetName">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> Fund Head </th>
                     <td mat-cell *matCellDef="let element" class="px-3 small text-dark fw-medium"> {{ element.BudgetName | uppercase }} </td>
+=======
+                <ng-container matColumnDef="Directorate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> Directorate </th>
+                    <td mat-cell *matCellDef="let element" class="px-3 small text-dark fw-semibold"> {{ element.userName | uppercase }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="College">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> College / Institute </th>
+                    <td mat-cell *matCellDef="let element" class="px-3 small text-secondary"> {{ element.facName | titlecase }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Fund">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> Fund Head </th>
+                    <td mat-cell *matCellDef="let element" class="px-3 small text-dark fw-medium"> {{ element.budgetName | uppercase }} </td>
+>>>>>>> bfbbf5c (pocell contll update new value)
                 </ng-container>
 
                 <ng-container matColumnDef="RecDate">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Received Date </th>
+<<<<<<< HEAD
                     <td mat-cell *matCellDef="let element" class="text-center font-monospace small"> {{ element.RecDate }} </td>
+=======
+                    <td mat-cell *matCellDef="let element" class="text-center font-monospace small"> {{ element.recDate }} </td>
+>>>>>>> bfbbf5c (pocell contll update new value)
                 </ng-container>
 
                 <ng-container matColumnDef="Amount">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-end"> Allotted Fund </th>
+<<<<<<< HEAD
                     <td mat-cell *matCellDef="let element" class="text-end fw-bold text-primary px-3 small"> {{ element.Amount | currency:'INR':'symbol':'1.0-0' }} </td>
                 </ng-container>
 
@@ -208,11 +229,37 @@
                     </td>
                 </ng-container>
              
+=======
+                    <td mat-cell *matCellDef="let element" class="text-end fw-bold text-primary px-3 small"> {{ element.amount | currency:'INR':'symbol':'1.0-0' }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Remark">
+                    <th mat-header-cell *matHeaderCellDef class="grid-header px-3"> Remarks </th>
+                    <td mat-cell *matCellDef="let element" class="text-muted small text-truncate px-3" style="max-width: 140px;" title="{{element.remarks}}"> {{ element.remarks || '-' }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="BalanceType">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Allotment Category </th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        <span class="badge rounded-pill px-2.5 py-1 small fw-medium" [ngClass]="element.recType === 'Opening Balance' ? 'bg-indigo-subtle text-indigo border border-indigo' : 'bg-success-subtle text-success border border-success'">
+                            {{ element.recType }}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ActualAmount">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-end"> Actual Received </th>
+                    <td mat-cell *matCellDef="let element" class="text-end fw-bold px-3 small" [ngClass]="element.actualAmountReceived === element.amount ? 'text-success' : 'text-danger'"> 
+                        {{ element.actualAmountReceived | currency:'INR':'symbol':'1.0-0' }} 
+                    </td>
+                </ng-container>
+>>>>>>> bfbbf5c (pocell contll update new value)
 
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef class="grid-header text-center" style="width: 200px;"> Operations Workflow </th>
                     <td mat-cell *matCellDef="let element" class="text-center py-2 gap-1">
                         <button type="button" class="btn btn-xs btn-outline-success rounded-pill px-2.5 py-1 font-size-11 border shadow-none me-1" 
+<<<<<<< HEAD
                                 *ngIf="element.fileName" (click)="onDownloadFileStream(element.Bgid)">
                             <i class="bi bi-file-earmark-arrow-down-fill me-1"></i> PDF File
                         </button>
@@ -222,6 +269,17 @@
                                 (click)="onExecuteActionLink(element)">
                             <i class="bi me-1" [ngClass]="(element.Pentry === 'Provisional' && element.ActualAmountReceived !== element.Amount) ? 'bi-plus-circle-fill' : 'bi-dash-circle-fill'"></i>
                             {{ (element.Pentry === 'Provisional' && element.ActualAmountReceived !== element.Amount) ? 'Add Fund' : 'Not Req' }}
+=======
+                                *ngIf="element.fileName" (click)="onDownloadFileStream(element.bgid)">
+                            <i class="bi bi-file-earmark-arrow-down-fill me-1"></i> PDF File
+                        </button>
+                        <button type="button" class="btn btn-xs rounded-pill px-2.5 py-1 font-size-11 border shadow-none btn-transition text-nowrap"
+                                [ngClass]="(element.pentry === 'Provisional' && element.actualAmountReceived !== element.amount) ? 'btn-danger text-white border-danger animate__animated animate__pulse animate__infinite' : 'btn-light text-muted border-light-subtle'"
+                                [disabled]="!(element.pentry === 'Provisional' && element.actualAmountReceived !== element.amount)"
+                                (click)="onExecuteActionLink(element)">
+                            <i class="bi me-1" [ngClass]="(element.pentry === 'Provisional' && element.actualAmountReceived !== element.amount) ? 'bi-plus-circle-fill' : 'bi-dash-circle-fill'"></i>
+                            {{ (element.pentry === 'Provisional' && element.actualAmountReceived !== element.amount) ? 'Add Fund' : 'Not Req' }}
+>>>>>>> bfbbf5c (pocell contll update new value)
                         </button>
                     </td>
                 </ng-container>

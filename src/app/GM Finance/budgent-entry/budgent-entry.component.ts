@@ -62,9 +62,13 @@ export class BudgentEntryComponent {
   bankAccountsList: any[] = [];
 
   // Table grid mappings parameters
+<<<<<<< HEAD
   displayedColumns: string[] = ['sno', 'UserName', 'FacName', 
     'BudgetName', 'RecDate', 'Amount', 'Remarks', 'RecType',
      'ActualAmountReceived','download', 'actions'];
+=======
+  displayedColumns: string[] = ['sno', 'Directorate', 'College', 'Fund', 'RecDate', 'Amount', 'Remark', 'BalanceType', 'ActualAmount', 'actions'];
+>>>>>>> bfbbf5c (pocell contll update new value)
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
@@ -305,9 +309,15 @@ debugger
 
   onExecuteActionLink(rowElement: any) {
     // Dynamic conditional logic evaluated from GVDetail_RowDataBound rules row parsing
+<<<<<<< HEAD
     if (rowElement.Pentry === 'Provisional' && rowElement.ActualAmountReceived !== rowElement.Amount) {
       this.toastr.info(`Redirecting to dynamic allocations: BudgetDetailsProvisional for BGID: ${rowElement.Bgid}`);
       this.router.navigate(['/BudgetDetailsProvisional'], { queryParams: { BGID: rowElement.Bgid } });
+=======
+    if (rowElement.pentry === 'Provisional' && rowElement.actualAmountReceived !== rowElement.amount) {
+      this.toastr.info(`Redirecting to dynamic allocations: BudgetDetailsProvisional for BGID: ${rowElement.bgid}`);
+      // this.router.navigate(['/BudgetDetailsProvisional'], { queryParams: { BGID: rowElement.bgid } });
+>>>>>>> bfbbf5c (pocell contll update new value)
     }
   }
 
