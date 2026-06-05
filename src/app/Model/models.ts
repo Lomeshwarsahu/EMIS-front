@@ -820,3 +820,21 @@ export interface RDLCRport {
   NosRC: number
 }
 
+export interface SupplierGridDto {
+  sno: number;
+  SupplierId: number
+  SupplierCode: string
+  SupplierName: string
+  CountryName: string
+  IsActive: string
+  Deletable: string
+  Address1: string
+  Address2: string
+  Address3: string
+  City: string
+  Zip: string
+  ContactPerson: string
+  Phone: string
+  Fax: string
+  Email: string
+}

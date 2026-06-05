@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { DashLoginDDL } from '../Model/DashLoginDDL';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { masddlUser } from '../Model/masddlUser';
 @Injectable({
   providedIn: 'root',
@@ -135,6 +135,27 @@ export class ApiService {
 }
 public post2(url: string, data: any) {
   return this.http.post(this.apiUrls + url, data);
+}
+
+
+// delete<T>(url: string): Observable<T> {
+//   return this.http.delete<T>(`${this.apiUrls}/${url}`);
+// }
+
+delete<T>(url: string): Observable<T> {
+  let fullUrl = `${this.apiUrls}/${url}`;
+
+
+  fullUrl = fullUrl.replace(/([^:]\/)\/+/g, "$1");
+
+
+  if (fullUrl.includes('localhost:4200')) {
+    fullUrl = fullUrl.replace('http://localhost:4200', 'https://localhost:7036');
+  }
+
+  // console.log('Sanitized Fixed Execution URL Container:', fullUrl);
+
+  return this.http.delete<T>(fullUrl);
 }
 //     public put(url: string, data: FormData, options?: any) {
 // debugger;

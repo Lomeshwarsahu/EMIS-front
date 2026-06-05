@@ -1,0 +1,24 @@
+/* Custom rows interaction animation behaviors */
+.grid-row-effect {
+  transition: background-color 0.12s ease-in-out;
+}
+.grid-row-effect:hover {
+  background-color: rgba(var(--bs-primary-rgb), 0.03) !important;
+}
+
+.tracking-tight { letter-spacing: -0.5px; }
+.tracking-wider { letter-spacing: 0.5px; }
+.letter-spacing-05 { letter-spacing: 0.3px; }
+
+/* Custom clean scrollbars configurations pipeline */
+.style-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.style-scrollbar::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+.style-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}

@@ -1,0 +1,108 @@
+<section class="container-fluid py-4 animate__animated animate__fadeIn">
+
+    <div class="card p-4 mb-4 shadow-sm text-center bg-gradient bg-light border-0 rounded-4">
+        <h2 class="fw-bold text-primary mb-1 tracking-tight">
+            <i class="bi bi-cash-coin text-primary me-2"></i>Addition of New Funds
+        </h2>
+        <p class="text-muted mb-0 fs-6">
+            Initialize, define, and catalogue sovereign capital grants allocation budgets directories.
+        </p>
+    </div>
+
+    <div class="row g-4 m-1 justify-content-center">
+        
+        <div class="col-12 col-lg-5">
+            <div class="card shadow-sm border-0 rounded-4 border-top border-primary border-4 p-3 bg-white h-100">
+                <div class="card-header bg-white border-bottom-0 pt-2 pb-3">
+                    <h5 class="fw-bold text-dark mb-0 small text-uppercase tracking-wider">
+                        <i class="bi bi-plus-circle text-success me-2"></i>Register Fund Model
+                    </h5>
+                </div>
+                
+                <div class="card-body">
+                    <form #fundEntryForm="ngForm" (ngSubmit)="onSaveNewFund(fundEntryForm)" novalidate>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-muted small">Enter New Fund Name <span class="text-danger">*</span></label>
+                            <div class="input-group shadow-sm">
+                                <span class="input-group-text bg-light text-secondary border-end-0"><i class="bi bi-bank"></i></span>
+                                <input type="text" class="form-control border-start-0 shadow-none text-uppercase fw-semibold" 
+                                       placeholder="e.g., NHM FINANCIAL GRANT..." 
+                                       [(ngModel)]="newFundNameString" name="newFund" #newFund="ngModel" required
+                                       [ngClass]="{'is-invalid': newFund.invalid && (newFund.dirty || newFund.touched)}">
+                            </div>
+                            
+                            <div class="text-danger small fw-bold mt-1.5 ms-1 animate__animated animate__fadeIn" *ngIf="newFund.invalid && (newFund.dirty || newFund.touched)">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Please specify a valid non-empty fund configuration title!
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-top gap-2 d-flex">
+                            <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm fw-bold w-100 d-inline-flex align-items-center justify-content-center"
+                                    [disabled]="fundEntryForm.invalid">
+                                <i class="bi bi-check-circle-fill me-1.5"></i> Add New Fund
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary px-3 py-2 rounded-pill shadow-sm fw-medium" 
+                                    (click)="fundEntryForm.resetForm()">
+                                <i class="bi bi-x-circle"></i> 
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-7">
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden bg-white h-100">
+                <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center border-bottom gap-2 px-4">
+                    <h6 class="mb-0 fw-bold text-dark d-flex align-items-center fs-6">
+                        <i class="bi bi-table text-success me-2 fs-5"></i> Current Active Allotments Matrix
+                    </h6>
+                    <div class="input-group input-group-sm" style="max-width: 220px;">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0 shadow-none bg-light" 
+                               placeholder="Filter logs..." (keyup)="applyInstantSearchFilter($event)">
+                    </div>
+                </div>
+
+                <div class="table-responsive style-scrollbar w-100" style="max-height: 48vh; overflow-y: auto;">
+                    <table class="table table-hover table-striped align-middle mb-0 text-nowrap w-100 border-0">
+                        <thead class="table-dark sticky-top" style="z-index: 5; top: 0;">
+                            <tr class="text-uppercase small tracking-wider">
+                                <th class="text-center text-primary py-3" style="width: 90px;">S.No</th>
+                                <th class="px-4 text-primary">Registered Fund Nomenclature</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let fund of filteredFundsList; let i = index" class="grid-row-effect">
+                                <td class="text-center text-muted fw-bold small py-2.5">
+                                    {{ i + 1 }}
+                                </td>
+                                <td class="fw-bold text-dark-emphasis small px-4 letter-spacing-05 text-wrap">
+                                    {{ fund.Budgetname | uppercase }}
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="!filteredFundsList || filteredFundsList.length === 0">
+                                <td colspan="2" class="text-center py-5 text-muted bg-white">
+                                    <div class="py-4">
+                                        <i class="bi bi-folder-x text-secondary opacity-25 fs-1 mb-2 d-block"></i>
+                                        No matched grants funds configurations records located inside master lookup files.
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer bg-white border-top py-2 px-4 d-flex justify-content-between align-items-center flex-wrap">
+                    <span class="text-muted small fw-medium">
+                        Total Ledger Count: <strong class="text-dark">{{ filteredFundsList.length }}</strong> allocation streams logs rows
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

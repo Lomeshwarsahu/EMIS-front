@@ -1,0 +1,17 @@
+.grid-header {
+  background-color: #2b3035 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 0.76rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+  padding: 12px 8px !important;
+}
+.grid-row-effect { transition: background-color 0.12s ease-in-out; }
+.grid-row-effect:hover { background-color: rgba(var(--bs-primary-rgb), 0.02) !important; cursor: pointer; }
+.cursor-pointer { cursor: pointer; }
+.tracking-tight { letter-spacing: -0.5px; }
+.style-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+.style-scrollbar::-webkit-scrollbar-track { background: #f8f9fa; }
+.style-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
