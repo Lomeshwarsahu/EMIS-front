@@ -69,6 +69,14 @@ import { DHSindentAddBulkConsigneePOComponent } from './component/PO-Cell/dhsind
 import { TermsconditionsComponent } from './component/PO-Cell/termsconditions/termsconditions.component';
 import { RDLCTenderSummaryComponent } from './component/PO-Cell/rdlctender-summary/rdlctender-summary.component';
 import { EditReceivedAndInstallationDateComponent } from './GM Finance/edit-received-and-installation-date/edit-received-and-installation-date.component';
+import { SuppliersComponent } from './GM Finance/suppliers/suppliers.component';
+import { SupplierBankAccountsComponent } from './GM Finance/supplier-bank-accounts/supplier-bank-accounts.component';
+import { SupplierGSTentryComponent } from './GM Finance/supplier-gstentry/supplier-gstentry.component';
+import { CgmscBankAccountsComponent } from './GM Finance/cgmsc-bank-accounts/cgmsc-bank-accounts.component';
+import { NewFundMasterComponent } from './GM Finance/new-fund-master/new-fund-master.component';
+import { FundMapComponent } from './GM Finance/fund-map/fund-map.component';
+import { BudgentEntryComponent } from './GM Finance/budgent-entry/budgent-entry.component';
+
 
 
 const routes: Routes = [
@@ -95,6 +103,9 @@ const routes: Routes = [
   { path: 'POSummaryDrillDwnQty', component: POSummaryDrillDwnQtyComponent },
   { path: 'EMSNEWPO', component: EMSNEWPOComponent },
   { path: 'IndentEditDHSPO', component: IndentEditDHSPOComponent },
+  { path: 'SupplierBankAccounts', component: SupplierBankAccountsComponent },
+  { path: 'SupplierGSTentry', component: SupplierGSTentryComponent },
+
   {
     path: 'TenderStatusUpdate',
     component: TenderStatusUpdateComponent,
@@ -835,6 +846,36 @@ const routes: Routes = [
   {
     path: 'EditReceivedAndInstallationDate',
     component: EditReceivedAndInstallationDateComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'Supplier',
+    component: SuppliersComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'CgmscBankAccounts',
+    component: CgmscBankAccountsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'NewFundMaster',
+    component: NewFundMasterComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'FundMap',
+    component: FundMapComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'BudgentEntry',
+    component: BudgentEntryComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },

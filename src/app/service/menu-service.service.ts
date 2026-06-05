@@ -501,11 +501,20 @@ export class MenuServiceService {
           route: '',
           submenu: [
             { label: 'Health Facility Users', route: '/EditReceivedAndInstallationDate' },
-            // { label: 'Add New Items', route: '/ItemsBME' },
-            // { label: 'Program Master', route: 'ProgramMaster' },
+            { label: 'Suppliers Accounts/GST', route: '/Supplier' },
+            { label: 'CGMSCL Bank Accounts', route: '/CgmscBankAccounts' },
             // { label: 'Mapping to Main items', route: '/masters/map-items' },
             // { label: 'Update Mapping to Main items', route: '/masters/map-items-update' },
             // { label: 'Main Equipment Mapped Report', route: '/masters/map-items-report' },
+          ],
+        },
+        {
+          label: 'Funds',
+          route: '',
+          submenu: [
+            { label: 'Add Funds', route: '/NewFundMaster' },
+            { label: 'Fund Map', route: '/FundMap' },
+            { label: 'Budgent Entry', route: '/BudgentEntry' },
           ],
         },
         {

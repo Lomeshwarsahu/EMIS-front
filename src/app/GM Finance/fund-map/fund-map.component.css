@@ -1,0 +1,18 @@
+/* Real-time transitions layout updates */
+.style-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.style-scrollbar::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+.style-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.cursor-pointer { cursor: pointer; }
+.tracking-tight { letter-spacing: -0.5px; }
+.tracking-wider { letter-spacing: 0.5px; }
+.bg-success-subtle.bg-opacity-15 {
+  background-color: rgba(25, 135, 84, 0.05) !important;
+}
