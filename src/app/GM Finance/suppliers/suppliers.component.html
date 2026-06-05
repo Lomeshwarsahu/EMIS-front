@@ -1,0 +1,104 @@
+<section class="container-fluid py-4 animate__animated animate__fadeIn">
+
+    <div class="card p-4 mb-4 shadow-sm text-center bg-gradient bg-light border-0 rounded-4">
+        <h2 class="fw-bold text-primary mb-1 tracking-tight">
+            <i class="bi bi-person-badge-fill me-2"></i>Supplier Details Master
+        </h2>
+        <p class="text-muted mb-0 fs-6">
+            List of accepted equipment with pending rate contract processing details and regulatory profiles.
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        
+        <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center border-bottom gap-3 px-4">
+            <div class="d-flex align-items-center">
+                <h5 class="mb-0 fw-bold text-dark d-flex align-items-center fs-6">
+                    <i class="bi bi-grid-3x3-gap text-success me-2 fs-5"></i> Supplier Master Repositories
+                </h5>
+            </div>
+
+            <div class="d-flex align-items-center flex-wrap gap-2 ms-auto">
+                
+                <div class="input-group input-group-sm" style="min-width: 260px; max-width: 320px;">
+                    <span class="input-group-text bg-light border-end-0 text-muted shadow-none">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control border-start-0 shadow-none bg-light"
+                           placeholder="Search supplier matrix..." (keyup)="applyTextFilter($event)">
+                </div>
+
+                <div class="export-menu-container">
+                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-semibold d-inline-flex align-items-center shadow-none"
+                            mat-button [matMenuTriggerFor]="exportMenu">
+                        <i class="bi bi-file-earmark-spreadsheet me-1.5"></i> Export Report
+                    </button>
+                    <mat-menu #exportMenu="matMenu" class="rounded-3 shadow border-0">
+                        <button mat-menu-item class="small fw-medium py-2 text-dark"
+                                (click)="exporter.exportTable('xlsx', { fileName: 'PODetails', sheet: 'PODetails', Props: { Author: 'cgmsc' }})">
+                            <i class="bi bi-filetype-xlsx text-success me-2 fs-5"></i> Download Excel
+                        </button>
+                    </mat-menu>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive style-scrollbar w-100" style="max-height: 60vh; overflow-y: auto;">
+            <table class="table table-hover align-middle mb-0 text-nowrap w-100" mat-table matTableExporter
+                   [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+                <ng-container matColumnDef="sno">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center" style="width: 80px;"> S.No </th>
+                    <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold small">
+                        {{ i + 1 }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="SupplierName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-4"> Supplier Name </th>
+                    <td mat-cell *matCellDef="let element" class="fw-semibold text-dark small px-4 text-wrap" style="max-width: 380px; white-space: normal; line-height: 1.5;">
+                        {{element.SupplierName || element.supplierName}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Addbank">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center" style="width: 220px;"> Add Bank Account </th>
+                    <td mat-cell *matCellDef="let element" class="text-center px-2">
+                        <button type="button" class="btn btn-sm btn-light border btn-hover-info rounded-pill px-3 fw-bold btn-transition d-inline-flex align-items-center shadow-none"
+                                (click)="onButtonClick(element.SupplierName,element.SupplierId)">
+                            <i class="bi bi-bank text-info me-1.5"></i> View/Edit Bank
+                        </button>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center" style="width: 220px;"> Add GST No </th>
+                    <td mat-cell *matCellDef="let element" class="text-center px-2">
+                        <button type="button" class="btn btn-sm btn-light border btn-hover-warning rounded-pill px-3 fw-bold btn-transition d-inline-flex align-items-center shadow-none"
+                                (click)="onButtonClick1(element.SupplierName,element.SupplierId)">
+                            <i class="bi bi-file-earmark-text text-warning me-1.5"></i> View/Edit GST
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-light border-bottom"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="grid-row-effect"></tr>
+
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell text-center py-5 text-muted" [attr.colspan]="displayedColumns.length">
+                        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+                            <i class="bi bi-folder-x text-secondary opacity-30 mb-3" style="font-size: 3.5rem;"></i>
+                            <h6 class="fw-bold text-secondary mb-1">No Suppliers Records Found</h6>
+                            <p class="text-muted small mb-0">No archived log files matched current parameters filter query criteria.</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card-footer bg-white border-top p-0 px-3">
+            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons
+                           class="border-0 bg-transparent"></mat-paginator>
+        </div>
+    </div>
+</section>
