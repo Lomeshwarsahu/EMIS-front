@@ -76,7 +76,9 @@ approle:any;
 
   days: any = 0;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getallusers('6');
+  }
 
   onUserChange(event: Event): void {
     // const emailid = (event.target as HTMLSelectElement).value; // Get the selected email ID
@@ -234,14 +236,14 @@ approle:any;
   //#region  by lomesh
   selectedStatus: any;
   selectedStatusDHS: any;
-  selectedStatussup: any;
+  selectedStatussup: any = '0';
+  supplierUserId: number | null = null;
+  supplierLoginEmail = '';
   userdatas: any;
   EMAIL: any;
   getallusers(id: any) {
-    debugger;
     this.api.getUsers(id).subscribe((res) => {
-      this.userdatas = res;
-      console.log('login api drop', res);
+      this.userdatas = Array.isArray(res) ? res : [];
     });
   }
   // https://localhost:7036/api/Auth/GetUserEmail/5
@@ -284,6 +286,121 @@ approle:any;
     } else if (this.selectedStatussup == '1') {
     } else {
     }
+  }
+
+  onSupplierTabSelect(): void {
+    this.supplierLoginEmail = '';
+    if (!this.supplierUserId) {
+      return;
+    }
+
+    const fromList = this.getSupplierEmailFromList(this.supplierUserId);
+    if (fromList) {
+      this.supplierLoginEmail = fromList;
+      this.EMAIL = 'EMAIL';
+      return;
+    }
+
+    this.api.GetUserEmail(this.supplierUserId).subscribe({
+      next: (res) => {
+        this.supplierLoginEmail = this.pickSupplierEmail(res);
+        this.EMAIL = 'EMAIL';
+      },
+      error: () => {
+        this.supplierLoginEmail = '';
+      },
+    });
+  }
+
+  private getSupplierEmailFromList(userId: number): string {
+    const selected = Array.isArray(this.userdatas)
+      ? this.userdatas.find(
+          (row: Record<string, unknown>) =>
+            Number(row['user_id'] ?? row['User_Id']) === userId,
+        )
+      : null;
+
+    return String(
+      selected?.['e_mail_id'] ?? selected?.['E_Mail_Id'] ?? selected?.['e_mail_Id'] ?? '',
+    ).trim();
+  }
+
+  private pickSupplierEmail(res: {
+    Email?: string;
+    email?: string;
+    e_mail_id?: string;
+    UserName?: string;
+  } | null | undefined): string {
+    return (res?.Email ?? res?.email ?? res?.e_mail_id ?? res?.UserName ?? '').trim();
+  }
+
+  handleSupplierLogin(): void {
+    if (!this.supplierUserId) {
+      this.toastr.warning('Please select supplier.');
+      return;
+    }
+
+    if (!this.pwd.trim()) {
+      this.toastr.error('Password is required.');
+      return;
+    }
+
+    const loginWithEmail = (email: string) => {
+      if (!email?.trim()) {
+        this.toastr.error('User id not found for selected supplier.');
+        return;
+      }
+
+      sessionStorage.clear();
+      localStorage.clear();
+
+      this.loginService
+        .executeAuthenticationService1(email.trim(), this.pwd.trim(), 'EMAIL')
+        .subscribe({
+          next: (res: any) => {
+            if (res?.message === 'Login Successful' || res?.message === 'Successfully Login') {
+              localStorage.setItem('loginData', JSON.stringify(res));
+              if (res?.token) {
+                sessionStorage.setItem('token', res.token);
+              }
+              sessionStorage.setItem('authenticatedUser', email.trim());
+              sessionStorage.setItem('firstname', res?.username ?? 'Supplier');
+              sessionStorage.setItem('roleId', res?.roleid ?? '');
+              sessionStorage.setItem('userid', res?.user_id ?? '');
+              localStorage.setItem('roleName', 'Suppliers');
+              this.loginService.setRole('Suppliers');
+              this.toastr.success('Login successful');
+              this.router.navigate(['/welcome']);
+            } else {
+              this.toastr.error('Login failed');
+            }
+          },
+          error: (err) => {
+            this.toastr.error(err?.error?.message ?? 'Invalid credentials', 'Login Failed');
+          },
+        });
+    };
+
+    if (this.supplierLoginEmail?.trim()) {
+      loginWithEmail(this.supplierLoginEmail);
+      return;
+    }
+
+    const fromList = this.getSupplierEmailFromList(this.supplierUserId);
+    if (fromList) {
+      loginWithEmail(fromList);
+      return;
+    }
+
+    this.api.GetUserEmail(this.supplierUserId).subscribe({
+      next: (res) => {
+        this.supplierLoginEmail = this.pickSupplierEmail(res);
+        loginWithEmail(this.supplierLoginEmail);
+      },
+      error: () => {
+        this.toastr.error('Unable to load user id for selected supplier.');
+      },
+    });
   }
 
   async handleCgmsclLogin1() {

@@ -116,6 +116,9 @@
                       SUPPLIER
                     </button>
                   </li>
+                  <li class="nav-item ms-2 align-self-center">
+                    <a routerLink="/supplier-login" class="btn btn-sm btn-outline-light">Supplier Portal</a>
+                  </li>
 
 
 
@@ -548,167 +551,45 @@
                 </div>
                 <!-- Supplier -->
                 <div class="tab-pane fade" id="SUPPLIER" role="tabpanel" aria-labelledby="cgmscl-tab">
-                  <form #cgmsclForm="ngForm" (ngSubmit)="cgmsclForm.valid && handleCgmsclLogin1()">
+                  <form #supplierForm="ngForm">
                     <div class="mb-3">
-                      <label for="emailid" class="form-label">Select User</label>
-                      <div class="filter-field d-flex gap-4 align-items-center">
-
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
-                            value="0" [(ngModel)]="selectedStatussup" (change)="getallusers('6')">
-                          <label class="form-check-label" for="exampleRadios1">
-                            Login in EMS
-                          </label>
-                        </div>
-
-                        <div class="form-check1">
-                          <!-- <button class="btn btn-light btn-outline-success" (click)="onStatusChangesup()" value="1">Register User in EMS</button> -->
-                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                            value="1" [(ngModel)]="selectedStatussup" (change)="getallusers('8')">
-                          <label class="form-check-label" for="exampleRadios2">
-                            New User-ID in EMS
-                          </label>
-                        </div>
-
-                        <div class="form-check1">
-                          <!-- <button class="btn btn-light btn-outline-secondary" (click)="onStatusChangesup()" value="2">Forgot/Reset Password</button> -->
-                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3"
-                            value="2" [(ngModel)]="selectedStatussup" (change)="getallusers('7')">
-                          <label class="form-check-label" for="exampleRadios3">
-                            Forgot/Reset Password
-                          </label>
-                        </div>
-
+                      <label for="supplierSelect" class="form-label">Select Supplier</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user"></i>
+                        </span>
+                        <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id"
+                          [(ngModel)]="supplierUserId" (change)="onSupplierTabSelect()" name="supplierSelect"
+                          #supplierField="ngModel" [placeholder]="!supplierUserId ? 'Select Supplier' : ''"
+                          [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
+                        </ng-select>
+                      </div>
+                      <div *ngIf="supplierField.invalid && (supplierField.dirty || supplierField.touched)"
+                        class="text-danger">
+                        Please select a supplier.
                       </div>
                     </div>
-                    <ng-container *ngIf="selectedStatussup == '0'">
-                      <div class="mb-3">
-                        <label for="emailid" class="form-label">User ID</label>
-                        <div class="input-group">
-                          <span class="input-group-text bg-light">
-                            <i class="fas fa-user"></i>
-                          </span>
-                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
-                            [placeholder]="!emailid ? 'Choose CGMSCL User' : ''" [searchable]="true" [clearable]="true"
-                            [appendTo]="'body'" required class="form-control">
-                          </ng-select>
-                        </div>
-                        <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
-                          class="text-danger">
-                          Please select a User.
-                        </div>
+                    <div class="mb-3 position-relative">
+                      <label for="supplierPwd" class="form-label">Password</label>
+
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="supplierPwd"
+                        name="supplierPwd" [(ngModel)]="pwd" placeholder="Enter Password" required
+                        #supplierPwdField="ngModel">
+
+                      <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                        (click)="togglePassword()">
+                      </i>
+
+                      <div *ngIf="supplierPwdField.invalid && (supplierPwdField.dirty || supplierPwdField.touched)"
+                        class="text-danger">
+                        Password is required.
                       </div>
-                      <div class="mb-3">
+                    </div>
 
-                        <label for="pwd" class="form-label">User Id</label>
-                        <div class="input-group">
-                          <!-- <span class="input-group-text bg-light">
-                          <i class="fas fa-user"></i>
-                        </span> -->
-                          <input type="text" class="form-control" id="id" name="id" [(ngModel)]="pwd"
-                            #pwdField="ngModel" required>
-
-                        </div>
-
-                        <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
-                          Password is required.
-                        </div>
-                      </div>
-                      <div class="mb-3 position-relative">
-                        <label for="pwd" class="form-label">Password</label>
-
-                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                          [(ngModel)]="pwd" placeholder="Enter Password" required>
-
-                        <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                          (click)="togglePassword()">
-                        </i>
-
-                        <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
-                          Password is required.
-                        </div>
-                      </div>
-
-                      <button type="submit" class="btn btn-successs btn-primary tex-white w-100"
-                        [disabled]="cgmsclForm.invalid"> Login in EMS</button>
-                    </ng-container>
-                    <ng-container *ngIf="selectedStatussup == '1'">
-
-                      <div class="mb-3">
-                        <label for="emailid" class="form-label">User ID</label>
-                        <div class="input-group">
-                          <span class="input-group-text bg-light">
-                            <i class="fas fa-user"></i>
-                          </span>
-                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
-                            [placeholder]="!emailid ? 'Select Directorate' : ''" [searchable]="true" [clearable]="true"
-                            [appendTo]="'body'" required class="form-control">
-                          </ng-select>
-                        </div>
-                        <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
-                          class="text-danger">
-                          Please select a User.
-                        </div>
-                      </div>
-
-                      <div class="mb-3 position-relative">
-                        <label for="pwd" class="form-label">Password</label>
-
-                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                          [(ngModel)]="pwd" placeholder="Enter Password" required>
-
-                        <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                          (click)="togglePassword()">
-                        </i>
-
-                        <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
-                          Password is required.
-                        </div>
-                      </div>
-
-                      <button type="submit" class="btn btn-successs btn-primary tex-white w-100"
-                        [disabled]="cgmsclForm.invalid">Login</button>
-                    </ng-container>
-                    <ng-container *ngIf="selectedStatussup == '2'">
-                      <div class="mb-3">
-                        <label for="emailid" class="form-label">User ID</label>
-                        <div class="input-group">
-                          <span class="input-group-text bg-light">
-                            <i class="fas fa-user"></i>
-                          </span>
-                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
-                            [placeholder]="!emailid ? 'Choose User' : ''" [searchable]="true" [clearable]="true"
-                            [appendTo]="'body'" required class="form-control">
-                          </ng-select>
-                        </div>
-                        <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
-                          class="text-danger">
-                          Please select a User.
-                        </div>
-                      </div>
-
-                      <div class="mb-3 position-relative">
-                        <label for="pwd" class="form-label">Password</label>
-
-                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                          [(ngModel)]="pwd" placeholder="Enter Password" required>
-
-                        <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                          (click)="togglePassword()">
-                        </i>
-
-                        <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
-                          Password is required.
-                        </div>
-                      </div>
-
-                      <button type="submit" class="btn btn-successs btn-primary tex-white w-100"
-                        [disabled]="cgmsclForm.invalid">Login</button>
-                    </ng-container>
-
+                    <button type="button" class="btn btn-successs btn-primary tex-white w-100"
+                      [disabled]="!supplierUserId || !pwd.trim()" (click)="handleSupplierLogin()">
+                      Login in EMS
+                    </button>
                   </form>
 
                 </div>

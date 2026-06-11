@@ -95,9 +95,10 @@ export class BasicAuthenticationService {
 
 getRole() {
   const data = JSON.parse(localStorage.getItem('loginData') || '{}');
+  const storedRole = localStorage.getItem('roleName');
 
   return {
-    roleName: this.approle ?? data.user_type
+    roleName: this.approle ?? storedRole ?? data.user_type,
   };
 }
 

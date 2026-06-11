@@ -1,0 +1,69 @@
+<div class="supplier-gst-page">
+  <h2 class="page-title">Supplier GST Entry</h2>
+
+  <div *ngIf="loading" class="loading-text">Loading GST entries...</div>
+
+  <ng-container *ngIf="!loading">
+    <div class="supplier-header">
+    
+      <span>Supplier Name: <strong>{{ supplierName }}</strong></span>
+    </div>
+
+    <div class="tab-label">Bank Accounts</div>
+
+    <div class="table-wrap">
+      <table class="gst-grid">
+        <thead>
+          <tr>
+            <th>Sl.No</th>
+            <th>GST No.</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+            <td>{{ i + 1 }}</td>
+            <td>
+              <ng-container *ngIf="!row.isEditing">{{ row.gstNo }}</ng-container>
+              <input
+                *ngIf="row.isEditing"
+                type="text"
+                class="gst-input"
+                [(ngModel)]="row.gstNo"
+                name="gstNo{{ row.gstId }}" />
+            </td>
+            <td class="actions-col">
+              <ng-container *ngIf="!row.isEditing">
+                <button type="button" class="action-btn edit" (click)="startEdit(row)" [disabled]="saving">Edit</button>
+                <button type="button" class="action-btn delete" (click)="deleteRow(row)" [disabled]="saving">Delete</button>
+              </ng-container>
+              <ng-container *ngIf="row.isEditing">
+                <button type="button" class="action-btn save" (click)="saveRow(row)" [disabled]="saving">Update</button>
+                <button type="button" class="action-btn cancel" (click)="cancelEdit(row)" [disabled]="saving">Cancel</button>
+              </ng-container>
+            </td>
+          </tr>
+          <tr class="add-row">
+            <td>{{ rows.length + 1 }}</td>
+            <td>
+              <input
+                type="text"
+                class="gst-input new"
+                [(ngModel)]="newGstNo"
+                name="newGstNo"
+                placeholder="Enter GST No." />
+            </td>
+            <td class="actions-col">
+              <button type="button" class="action-btn add" (click)="addNew()" [disabled]="saving">Add</button>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="3" class="empty-row">No Bank Accounts found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p *ngIf="statusMessage" class="status-message" [class.error]="statusIsError">{{ statusMessage }}</p>
+  </ng-container>
+</div>

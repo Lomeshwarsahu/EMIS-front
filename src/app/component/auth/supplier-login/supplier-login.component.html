@@ -1,0 +1,90 @@
+<section class="supplier-login-page">
+  <header class="supplier-header">
+    <div class="header-inner">
+      <div class="header-logo left">
+        <img src="assets/images/cg-govt.png" alt="Chhattisgarh Government" />
+      </div>
+      <div class="header-title">
+        <h1>Department of Health &amp; Family Welfare Chhattisgarh</h1>
+        <h2>Chhattisgarh Medical Services Corporation Ltd.</h2>
+        <p>Equipment Management Information System</p>
+      </div>
+      <div class="header-logo right">
+        <img src="assets/images/cgmsc-logo.png" alt="CGMSC" />
+      </div>
+    </div>
+  </header>
+
+  <div class="supplier-login-body">
+    <div class="login-legacy-wrap">
+      <table class="login-legacy-table">
+        <caption class="login-caption"><strong>LOGIN</strong></caption>
+
+        <tr>
+          <td colspan="2" class="heading-cell">
+            <span class="legacy-title-bar">Supplier Login</span>
+            <div class="manual-links">
+              <a href="assets/manuals/EMIS_Supplier_Mannual.pdf" target="_blank" rel="noopener">
+                Download Supplier Manual
+              </a>
+              <a href="assets/manuals/Notice_Supplier.pdf" target="_blank" rel="noopener">
+                Notice for Supplier to Receipt &amp; Installation Entry
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label-cell">Select Supplier</td>
+          <td class="field-cell">
+            <ng-select
+              class="supplier-select"
+              [items]="supplierOptions"
+              bindLabel="user_name"
+              bindValue="user_id"
+              [(ngModel)]="selectedSupplierId"
+              (change)="onSupplierChange()"
+              placeholder="Select Supplier"
+              [searchable]="true"
+              [clearable]="true"
+              [loading]="loading && !supplierOptions.length">
+            </ng-select>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label-cell">Enter Password</td>
+          <td class="field-cell">
+            <div class="password-wrap">
+              <input
+                [type]="isPasswordVisible ? 'text' : 'password'"
+                class="legacy-input"
+                [(ngModel)]="password"
+                name="password"
+                placeholder="Enter Password"
+                (keyup.enter)="login()" />
+              <button type="button" class="eye-btn" (click)="togglePassword()" aria-label="Toggle password">
+                <i class="fa" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2" class="actions-cell">
+            <button type="button" class="legacy-btn" [disabled]="loading" (click)="login()">
+              <span *ngIf="loading" class="btn-spinner"></span>
+              {{ loading ? 'Please wait...' : 'Login' }}
+            </button>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2" class="back-cell">
+            <a routerLink="/login" class="link-back">Back to Main Login</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>

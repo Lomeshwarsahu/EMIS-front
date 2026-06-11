@@ -1,0 +1,90 @@
+<div class="particular-supplier-page">
+  <div class="page-header-bar">{{ pageTitle }}</div>
+
+  <div class="form-shell">
+    <div *ngIf="loading" class="loading-panel">
+      <div class="loading-spinner"></div>
+      <p>Loading supplier details...</p>
+    </div>
+
+    <form *ngIf="!loading" (ngSubmit)="update()" class="supplier-form" autocomplete="off">
+   
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Supplier Name</label>
+          <input type="text" class="field-input readonly" [(ngModel)]="model.supplierName" name="supplierName" readonly />
+        </div>
+
+        <div class="form-field">
+          <label>Contact Person name</label>
+          <input type="text" class="field-input readonly" [(ngModel)]="model.contactPersonName" name="contactPersonName" readonly />
+        </div>
+
+        <div class="form-field">
+          <label>Mobile No <span class="req">*</span></label>
+          <input
+            type="text"
+            class="field-input"
+            maxlength="10"
+            [(ngModel)]="model.mobileNo"
+            name="mobileNo"
+            (keypress)="allowDigits($event)"
+            placeholder="10 digit mobile" />
+        </div>
+
+        <div class="form-field">
+          <label>Email Id <span class="req">*</span></label>
+          <input type="email" class="field-input" maxlength="50" [(ngModel)]="model.email" name="email" />
+        </div>
+
+        <div class="form-field">
+          <label>GST No (1) <span class="req">*</span></label>
+          <input type="text" class="field-input" maxlength="15" [(ngModel)]="model.gstNo" name="gstNo" />
+        </div>
+
+        <div class="form-field">
+          <label>GST No (2)</label>
+          <input type="text" class="field-input" [(ngModel)]="model.gstNo2" name="gstNo2" />
+        </div>
+
+        <div class="form-field">
+          <label>GST No (3)</label>
+          <input type="text" class="field-input" [(ngModel)]="model.gstNo3" name="gstNo3" />
+        </div>
+
+        <div class="form-field">
+          <label>Phone No <span class="req">*</span></label>
+          <input
+            type="text"
+            class="field-input"
+            maxlength="11"
+            [(ngModel)]="model.phoneNo"
+            name="phoneNo"
+            (keypress)="allowDigits($event)" />
+        </div>
+
+        <div class="form-field">
+          <label>Tin No</label>
+          <input type="text" class="field-input readonly" maxlength="15" [(ngModel)]="model.tinNo" name="tinNo" readonly />
+        </div>
+
+        <div class="form-field full-width">
+          <label>Address <span class="req">*</span></label>
+          <textarea class="field-textarea" rows="4" maxlength="500" [(ngModel)]="model.address" name="address"></textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="legacy-btn" [disabled]="saving">
+          <span *ngIf="saving" class="btn-spinner"></span>
+          {{ saving ? 'Updating...' : 'Update' }}
+        </button>
+      </div>
+
+      <p *ngIf="statusMessage" class="status-message" [class.error]="statusIsError">
+        {{ statusMessage }}
+      </p>
+    </form>
+  </div>
+</div>

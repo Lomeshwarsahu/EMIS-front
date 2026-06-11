@@ -1139,14 +1139,27 @@ export class MenuServiceService {
     Suppliers: {
       items: [
         { label: 'Home', route: '/welcome' },
-        { label: 'Generate Registration', route: '/generate-registration' },
-        { label: 'Company Details', route: '/personal-detail' },
-        { label: 'Manufacturing Unit', route: '/manufacturingUnit' },
-        { label: 'Financial Details', route: '/FinanceialDetails' },
-        { label: 'Technical Details', route: '/TechnicalDetails' },
-        { label: 'Compliance Details', route: '/ComplianceDetails' },
-        { label: 'Global Company Prefix', route: '/GlobalCompanyPrefix' },
-        { label: 'Complete Registration', route: '/confirmation' },
+        {
+          label: 'Masters',
+          route: '',
+          submenu: [
+            {
+              label: 'Particular Supplier Add',
+              route: '/masters/particular-supplier-add',
+            },
+            {
+              label: 'Supplier GST Entry',
+              route: '/masters/supplier-gst-entry',
+            },
+          ],
+        },
+        { label: 'Stock', route: '', submenu: [] },
+        { label: 'Orders', route: '', submenu: [] },
+        { label: 'Contracts', route: '', submenu: [] },
+        { label: 'Tender', route: '', submenu: [] },
+        { label: 'Indents', route: '', submenu: [] },
+        { label: 'Reports', route: '', submenu: [] },
+        { label: 'Complain', route: '', submenu: [] },
       ],
     },
 
