@@ -1,3 +1,4 @@
+
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ChangeDetectorRef, ViewChild } from '@angular/core';
@@ -31,7 +32,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import Swal from 'sweetalert2'
 
 @Component({
-  selector: 'app-budgent-entry',
+  selector: 'app-budget-details-provisional',
    standalone: true,
   imports: [
     NgSelectModule,
@@ -50,25 +51,52 @@ import Swal from 'sweetalert2'
     MatOptionModule,
     MatTableExporterModule,
   ],
-  templateUrl: './budgent-entry.component.html',
-  styleUrl: './budgent-entry.component.css',
+  templateUrl: './budget-details-provisional.component.html',
+  styleUrl: './budget-details-provisional.component.css',
 })
-export class BudgentEntryComponent {
+export class BudgetDetailsProvisionalComponent {
+// Properties mapping directly to HTML layout view bindings labels
+  lblBudgetName: string = '';
+  lblBudgRecevDT: string = '';
+  lblACno: string = '';
+  lblRecvType: string = '';
+  lblBalance: number = 0;
+  lblBudgID: number | null = null;
+
+  // Dropdown reference bindings storage cache
+  bankAccountsList: any[] = [];
+  isBankDropdownDisabled: boolean = false; // Toggles selection input access
+
+  // Complex UI Input Model mapping structure
+  // formModel: any = {
+  //   bankId: null
+  // };
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Selection dropdown matrices caches arrays
   directorateList: any[] = [];
   instituteList: any[] = [];
   mappedFundsList: any[] = [];
-  bankAccountsList: any[] = [];
+  // bankAccountsList: any[] = [];
 
   // Table grid mappings parameters
-  displayedColumns: string[] = ['sno', 'UserName', 'FacName', 
-    'BudgetName', 'RecDate', 'Amount', 'Remarks', 'RecType',
-     'ActualAmountReceived','download', 'actions'];
+  displayedColumns: string[] = ['sno','Budgetname','Receiveddate','Amount',
+    'Acname', 'Remarks','download'];
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
-
+fetchedDetails: any = null;
   // Dynamic variable labels properties (Emulating: lblamt.Text updates)
   labelAmountCaption: string = 'Received Fund (Rs)';
   labelDateCaption: string = 'Fund Received Date';
@@ -99,19 +127,162 @@ constructor(
   ) {
     // this.dataSource = new MatTableDataSource<any>([]);
   }
-
+//#region new code 
 
   ngOnInit(): void {
-    this.loadDirectoratesDropdown();
+
+    // this.loadProvisionalDetailsData(5);
+this.extractQueryParametersContext();
+    // this.loadDirectoratesDropdown();
+
     this.loadBankAccountsDropdown();
-    this.loadReceiptRecordsGrid(0); // Pass 0 to retrieve total master listings un-filtered
+    // this.loadReceiptRecordsGrid(0); // Pass 0 to retrieve total master listings un-filtered
   }
-  // loadDirectoratesDropdown() {
-  //   this.api.get('BME/GetFacilityList').subscribe({
-  //     next: (res:any) => this.directorateList = res || [],
-  //     error: (err) => console.error(err)
-  //   });
-  // }
+// Component State Properties mapping directly to your HTML labels
+
+
+
+
+
+
+//#endregion
+  loadBankAccountsDropdown() {
+    this.api.get('GMFI/GetCgmscBankAccounts').subscribe({
+      next: (res:any) => this.bankAccountsList = res || [],
+      error: (err) => console.error(err)
+    });
+  }
+extractQueryParametersContext() {
+    // 2. Reading dynamic context param passed over standard query strings arrays: ?BGID=8
+    this.route.queryParams.subscribe({
+      next: (params) => {
+        const urlBgidIndex = params['BGID'] ? Number(params['BGID']) : null;
+        
+        if (urlBgidIndex && urlBgidIndex > 0) {
+          // 3. Trigger endpoint initialization loop
+          this.loadProvisionalDetailsData(urlBgidIndex);
+           this.loadReceiptRecordsGrid(urlBgidIndex);
+        } else {
+          this.toastr.warning('Missing valid parameters. Routing back to overview ledger.');
+          this.router.navigate(['/EMIS/BudgetEntry']);
+        }
+      },
+      error: (err) => console.error('Router navigation state trace collapsed:', err)
+    });
+  }
+
+loadProvisionalDetailsData(bgid: number) {
+  this.spinner.show();
+  
+  this.api.get(`GMFI/GetFundDetailsByBgid/${bgid}`).subscribe({
+    next: (res: any) => {
+      if (res) {
+        // Backend DTO casing checks protection
+        this.lblBudgetName = res.budgetname || res.Budgetname;
+        this.lblBudgRecevDT = res.receiveddate || res.Receiveddate;
+        this.lblACno = res.acname || res.Acname;
+        this.lblRecvType = res.pentryShow || res.PentryShow;
+        this.lblBalance = res.balValue !== undefined ? res.balValue : res.BalValue;
+        this.lblBudgID = res.budgetid || res.Budgetid;
+        
+        // FIX: API response se bankid / Bankid dono check karke formModel mein sahi tarike se inject kiya
+        const backendBankId = res.bankid !== undefined ? res.bankid : res.Bankid;
+        this.formModel.bankId = backendBankId ? Number(backendBankId) : null;
+        
+        // Dropdown ko lock kiya
+        this.isBankDropdownDisabled = true;
+
+        console.log('Auto-fill executed successfully:', {
+          selectedBankId: this.formModel.bankId,
+          dropdownList: this.bankAccountsList
+        });
+      }
+      this.spinner.hide();
+    },
+    error: (err) => {
+      this.spinner.hide();
+      this.toastr.error('Error binding core layout metrics details records data streams.');
+      console.error(err);
+    }
+  });
+}
+
+
+// https://localhost:7036/api/GMFI/GetActualEntriesByBgid/7
+  loadReceiptRecordsGrid(dirId: number) {
+  this.api.get(`GMFI/GetActualEntriesByBgid/${dirId}`).subscribe({
+      next: (res:any) =>{
+      this.dataSource.data = res || [];
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      },
+           
+        
+        // this.instituteList = res || [],
+      error: (err) => console.error(err)
+    });
+  }
+
+
+
+
+// onSubmitActualReceiptForm(form: any) {
+//   if (form.invalid) return;
+
+//   // Preparing parameters package mirroring backend verification model classes keys
+//   const submittalPayload = {
+//     Bgid: Number(this.lblBGID), // Received from Page Load routing query context
+//     Budgetid: Number(this.lblBudgID),
+//     Amount: Number(this.formModel.amount),
+//     CurrentBalance: Number(this.lblBalance0), // Anticipatory ceiling balance value
+//     ReceivedDate: this.formModel.receivedDate, // Binded input 'YYYY-MM-DD'
+//     AnticipatoryDate: this.convertFormattedStringToIso(this.lblBudgRecevDT), // Ensure standard formatting compatibility
+//     BankId: Number(this.formModel.bankId),
+//     Remarks: this.formModel.remarks,
+//     FileBase64: this.formModel.fileBase64, // Extracted PDF byte contents string segment
+//     FileExtension: '.pdf'
+//   };
+
+//   this.spinner.show();
+//   this.api.post1('ActualFundEntry/SaveActualFundEntry', submittalPayload).subscribe({
+//     next: (res: any) => {
+//       this.spinner.hide();
+      
+//       // Beautiful SweetAlert confirmation popup replacement
+//       Swal.fire('Success!', res.message || 'Saved Successfully', 'success');
+      
+//       form.resetForm(); // Empty out inputs values states fields memory bounds
+//       this.refreshAllocationDetailsDataView(this.lblBGID); // Refresh grids caches to sync current remaining parameters balances
+//     },
+//     error: (err) => {
+//       this.spinner.hide();
+//       console.error(err);
+//       // Handles server generated custom errors seamlessly in alert popups
+//       Swal.fire('Validation Error', err.error?.message || 'Failed to register actual item transaction log.', 'error');
+//     }
+//   });
+// }
+
+convertFormattedStringToIso(dateStr: string): string {
+  // Auxiliary function to standard parse 'DD-MM-YYYY' into 'YYYY-MM-DD' if required
+  if (!dateStr || !dateStr.includes('-')) return dateStr;
+  const parts = dateStr.split('-');
+  if (parts[0].length === 4) return dateStr; // already standard parsed format standard
+  return `${parts[2]}-${parts[1]}-${parts[0]}`;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
   loadDirectoratesDropdown() {
     this.api.get('BME/GetFacilityList').subscribe({
       next: (res:any) => this.directorateList = res || [],
@@ -119,12 +290,7 @@ constructor(
     });
   }
 
-  loadBankAccountsDropdown() {
-    this.api.get('GMFI/GetCgmscBankAccounts').subscribe({
-      next: (res:any) => this.bankAccountsList = res || [],
-      error: (err) => console.error(err)
-    });
-  }
+
   // loadDirectoratesDropdown() {
   //   this.api.get('FundMap/GetDirectorates').subscribe(res => this.directorateList = res || []);
   // }
@@ -235,28 +401,7 @@ debugger
     }
   }
 
-  loadReceiptRecordsGrid(dirId: number) {
 
-  this.api.get(`GMFI/GetFundReceiptsGridSummary/${dirId}`).subscribe({
-      next: (res:any) =>{
-      this.dataSource.data = res || [];
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      },
-           
-        
-        // this.instituteList = res || [],
-      error: (err) => console.error(err)
-    });
-
-
-
-    // this.api.get<any>(`FundReceipt/GetFundReceiptsGridSummary/${dirId}`).subscribe(res => {
-    //   this.dataSource.data = res || [];
-    //   this.dataSource.paginator = this.paginator;
-    //   this.dataSource.sort = this.sort;
-    // });
-  }
 
   onSubmitFundReceipt(form: any) {
     if (form.invalid) return;
