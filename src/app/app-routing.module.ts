@@ -76,6 +76,7 @@ import { CgmscBankAccountsComponent } from './GM Finance/cgmsc-bank-accounts/cgm
 import { NewFundMasterComponent } from './GM Finance/new-fund-master/new-fund-master.component';
 import { FundMapComponent } from './GM Finance/fund-map/fund-map.component';
 import { BudgentEntryComponent } from './GM Finance/budgent-entry/budgent-entry.component';
+import { BudgetDetailsProvisionalComponent } from './GM Finance/budget-details-provisional/budget-details-provisional.component';
 
 
 
@@ -105,6 +106,7 @@ const routes: Routes = [
   { path: 'IndentEditDHSPO', component: IndentEditDHSPOComponent },
   { path: 'SupplierBankAccounts', component: SupplierBankAccountsComponent },
   { path: 'SupplierGSTentry', component: SupplierGSTentryComponent },
+  { path: 'BudgetDetailsProvisional', component: BudgetDetailsProvisionalComponent },
 
   {
     path: 'TenderStatusUpdate',

@@ -2,10 +2,143 @@
 
     <div class="card p-4 mb-4 shadow-sm text-center bg-gradient bg-light border-0 rounded-4">
         <h2 class="fw-bold text-primary mb-1 tracking-tight">
-            <i class="bi bi-wallet2 me-2"></i>Fund Receipt Entry
+            <i class="bi bi-wallet2 me-2"></i>Receiving of Anticipatory Funds Fund
         </h2>
         <p class="text-muted mb-0 fs-6">Manage ledger statements, allocate fund categories, and archive authorization document directories.</p>
     </div>
+    <!-- <div
+        class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn">
+         <div class="card-body p-4 bg-white">
+             <div class="card shadow">
+           
+                        <div class="row  mb-1">
+                       
+                            <div class="col-12 col-md-4 border p-2 d-flex">
+                                <strong>Fund:</strong>
+                                <span class="ml-2"></span>
+                            </div>
+                            <div class="col-12 col-md-3 border p-2 d-flex">
+                                <strong>Anticipatory Date:</strong>
+                                <span class="ml-2"></span>
+                            </div>
+                            <div class="col-12 col-md-5 border p-2 d-flex">
+                                <strong>AccountName/No.: </strong>
+                                <span class="ml-2">gsdf</span>
+                            </div>
+                            <div class="col-12 col-md-4 border p-2 d-flex">
+                                <strong>Received Type:</strong>
+                                <span class="ml-2">dfg</span>
+                            </div>
+                            <div class="col-12 col-md-3 border p-2 d-flex">
+                                <strong>Anticipatory Balance:</strong>
+                                <span class="ml-2"></span>
+                            </div>
+                            <div class="col-12 col-md-5 border p-2 d-flex">
+                                <strong>Select Ac. No:</strong>
+                                <span class="ml-2">
+                                    <ng-select [items]="bankAccountsList" bindLabel="acName" bindValue="bankId"
+                                           placeholder="-- Choose Credit Account No --" [(ngModel)]="formModel.bankId" appendTo="body" 
+                                           name="bankId" #bankId="ngModel" required
+                                            class="rounded shadow-sm bg-white form-control"></ng-select></span>
+                            </div>
+
+   </div>
+            </div> 
+        </div>
+    </div> -->
+
+
+
+<div class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn m-2">
+    <div class="card-body p-4 bg-white">
+        
+        <div class="d-flex align-items-center mb-3 border-bottom pb-2">
+            <h6 class="text-primary fw-bold mb-0 d-flex align-items-center">
+                <i class="bi bi-file-earmark-medical-fill me-2 fs-5"></i> Provisional Fund Master Breakdown Logs
+            </h6>
+        </div>
+
+        <div class="bg-light bg-opacity-50 p-3 rounded-3 border">
+            <div class="row g-3">
+                
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="bg-white p-3 rounded-3 border shadow-3xs d-flex flex-column h-100 grid-block-accent">
+                        <span class="text-muted small fw-bold text-uppercase tracking-wider mb-1"><i class="bi bi-bookmark-star me-1 text-primary"></i>Fund Name</span>
+                        <strong class="text-dark fs-6">{{ lblBudgetName || '-' | uppercase }}</strong>
+                        <span class="text-muted font-monospace small mt-1" *ngIf="lblBudgID">ID: #{{ lblBudgID }}</span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="bg-white p-3 rounded-3 border shadow-3xs d-flex flex-column h-100 grid-block-accent">
+                        <span class="text-muted small fw-bold text-uppercase tracking-wider mb-1"><i class="bi bi-calendar-event me-1 text-info"></i>Anticipatory Date</span>
+                        <strong class="text-dark-emphasis font-monospace fs-6">{{ lblBudgRecevDT || '-' }}</strong>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="bg-white p-3 rounded-3 border shadow-3xs d-flex flex-column h-100 grid-block-accent">
+                        <span class="text-muted small fw-bold text-uppercase tracking-wider mb-1"><i class="bi bi-credit-card-2-front me-1 text-secondary"></i>Account Name/No.</span>
+                        <strong class="text-secondary small text-wrap mt-0.5" style="line-height: 1.4;">{{ lblACno || '-' }}</strong>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="bg-white p-3 rounded-3 border shadow-3xs d-flex flex-column h-100 grid-block-accent">
+                        <span class="text-muted small fw-bold text-uppercase tracking-wider mb-1"><i class="bi bi-tags me-1 text-warning"></i>Received Type</span>
+                        <div>
+                            <span class="badge rounded-pill px-3 py-1.5 mt-1 small fw-bold" 
+                                  [ngClass]="lblRecvType === 'Anticipatory' ? 'bg-warning-subtle text-warning border border-warning' : 'bg-success-subtle text-success border border-success'">
+                                <i class="bi bi-check-circle-fill me-1"></i>{{ lblRecvType || 'Provisional' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="bg-white p-3 rounded-3 border shadow-3xs d-flex flex-column h-100 grid-block-accent border-start border-danger border-3">
+                        <span class="text-muted small fw-bold text-uppercase tracking-wider mb-1"><i class="bi bi-exclamation-circle me-1 text-danger"></i>Anticipatory Balance</span>
+                        <strong class="text-danger font-monospace display-7 fw-bold mt-0.5">
+                            {{ lblBalance | currency:'INR':'symbol':'1.0-0' }}
+                        </strong>
+                    </div>
+                </div>
+<div class="col-12 col-md-6 col-lg-4">
+    <div class="bg-white p-2.5 rounded-3 border shadow-3xs d-flex flex-column h-100 justify-content-center border-start border-primary border-3">
+        <label class="form-label fw-bold text-muted small mb-1.5 ms-1">Select Credit Account No <span class="text-danger">*</span></label>
+        
+        <ng-select [items]="bankAccountsList" bindLabel="acName" bindValue="bankId"
+                   placeholder="-- Auto Populated Credit Account --" 
+                   [(ngModel)]="formModel.bankId" appendTo="body" 
+                   [disabled]="isBankDropdownDisabled"
+                   name="bankId" #bankId="ngModel" required
+                   class="rounded shadow-sm bg-white form-control-sm border-0 font-monospace small fw-bold">
+        </ng-select>
+    </div>
+</div>
+                <!-- <div class="col-12 col-md-6 col-lg-4">
+                    <div class="bg-white p-2.5 rounded-3 border shadow-3xs d-flex flex-column h-100 justify-content-center border-start border-primary border-3">
+                        <label class="form-label fw-bold text-muted small mb-1.5 ms-1">Select Credit Account No <span class="text-danger">*</span></label>
+                        
+                        <ng-select [items]="bankAccountsList" bindLabel="acName" bindValue="bankId"
+                                   placeholder="-- Auto Populated Credit Account --" 
+                                   [(ngModel)]="formModel.Bankid" appendTo="body" 
+                                   [disabled]="isBankDropdownDisabled"
+                                   name="bankId" #bankId="ngModel" required
+                                   class="rounded shadow-sm bg-white form-control-sm border-0 font-monospace small fw-bold"></ng-select>
+                    </div>
+                </div> -->
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
 
     <div class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn">
         <div class="card-body p-4 bg-white">
@@ -14,101 +147,30 @@
                     
                     <div class="col-12 col-md-6">
                         <div class="row mb-3 align-items-start">
-                            <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2">Select Directorate <span class="text-danger">*</span>:</label>
+                            <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2">Actual Received Fund (RS) <span class="text-danger">*</span>:</label>
                             <div class="col-sm-8">
-                                 <ng-select [items]="directorateList" bindLabel="FacilityAutName" bindValue="FacilityAutId" 
-                           placeholder="-- Choose Target Directorate --"  [(ngModel)]="formModel.directorateId" appendTo="body"
-                         class="rounded shadow-sm bg-white form-control" [clearable]="false" (change)="onDirectorateSelectedChange()" name="directorateId" #directorateId="ngModel" required>
-                </ng-select>
-                                <!-- <ng-select [items]="directorateList" bindLabel="FacilityAutName" bindValue="FacilityAutId" appendTo="body" 
-                                           placeholder="-- Choose Directorate --" [(ngModel)]="formModel.directorateId"
-                                           (change)="onDirectorateSelectedChange()" name="directorateId" #directorateId="ngModel" required
-                                           [ngClass]="{'is-invalid': directorateId.invalid && (directorateId.dirty || directorateId.touched)}" class="rounded shadow-sm bg-white form-control"></ng-select> -->
-                                <!-- <div class="invalid-feedback small fw-bold" *ngIf="directorateId.invalid && (directorateId.dirty || directorateId.touched)">Directorate alignment required.</div> -->
-                            </div>
-                        </div>
-
-                        <div class="row mb-3 align-items-start animate__animated animate__fadeIn" *ngIf="formModel.directorateId === 12">
-                            <label class="col-sm-4 col-form-label text-success fw-bold small pt-2"><i class="bi bi-building me-1"></i>Medical College <span class="text-danger">*</span>:</label>
-                            <div class="col-sm-8">
-                            
-                                <ng-select [items]="instituteList" bindLabel="Username" bindValue="UserId" appendTo="body" 
-                                           placeholder="-- Choose Affiliated Institute --" [(ngModel)]="formModel.facilityId"
-                                           (change)="onInstituteSelectedChange()" name="facilityId" #facilityId="ngModel" required
-                                         class="rounded shadow-sm border-success bg-white form-control"></ng-select>
-                                            <!-- [ngClass]="{'is-invalid': facilityId.invalid && (facilityId.dirty || facilityId.touched)}" -->
-                                <div class="invalid-feedback small fw-bold" *ngIf="facilityId.invalid && (facilityId.dirty || facilityId.touched)">Institute choice required for DME allocation branch.</div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3 align-items-start">
-                            <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2">Select Fund Head <span class="text-danger">*</span>:</label>
-                            <div class="col-sm-8">
-                                <ng-select [items]="mappedFundsList" bindLabel="Budgetname" bindValue="Budgetid" appendTo="body" 
-                                           placeholder="-- Choose Mapped Allotment Scheme --" [(ngModel)]="formModel.budgetId"
-                                           (change)="onFundHeadSelectedChange()" name="budgetId" #budgetId="ngModel" required
-                                          class="rounded shadow-sm bg-white form-control"></ng-select>
-                                           <!-- [ngClass]="{'is-invalid': budgetId.invalid && (budgetId.dirty || budgetId.touched)}"  -->
-                                <div class="invalid-feedback small fw-bold" *ngIf="budgetId.invalid && (budgetId.dirty || budgetId.touched)">Fund scheme linkage layout missing.</div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3 align-items-start">
-                            <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2">Select Ac. No <span class="text-danger">*</span>:</label>
-                            <div class="col-sm-8">
-                                <ng-select [items]="bankAccountsList" bindLabel="acName" bindValue="bankId"
-                                           placeholder="-- Choose Credit Account No --" [(ngModel)]="formModel.bankId" appendTo="body" 
-                                           name="bankId" #bankId="ngModel" required
-                                            class="rounded shadow-sm bg-white form-control"></ng-select>
-                                            <!-- [ngClass]="{'is-invalid': bankId.invalid && (bankId.dirty || bankId.touched)}" -->
-                                <div class="invalid-feedback small fw-bold" *ngIf="bankId.invalid && (bankId.dirty || bankId.touched)">Credit ledger node path selection required.</div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3 align-items-center" *ngIf="formModel.isOp">
-                            <label class="col-sm-4 col-form-label text-primary fw-bold small">Opening Balance Status:</label>
-                            <div class="col-sm-8">
-                                <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-1.5 fw-bold"><i class="bi bi-info-circle-fill me-1.5"></i>First Time Opening Balance Mode Enabled Automatically</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6">
-                        <div class="row mb-3 align-items-center">
-                            <label class="col-sm-4 col-form-label text-muted fw-semibold small">Fund Type Variant <span class="text-danger">*</span>:</label>
-                            <div class="col-sm-8 d-flex gap-4">
-                                <div class="form-check">
-                                    <input class="form-check-input border-secondary cursor-pointer" type="radio" value="A" id="typeActual" [(ngModel)]="formModel.fundType" name="fundType" [disabled]="formModel.isOp">
-                                    <label class="form-check-label fw-bold small text-dark cursor-pointer" for="typeActual">Actual Fund</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input border-secondary cursor-pointer" type="radio" value="Y" id="typeProvisional" [(ngModel)]="formModel.fundType" name="fundType" [disabled]="formModel.isOp">
-                                    <label class="form-check-label fw-bold small text-dark cursor-pointer" for="typeProvisional">Anticipatory Fund</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3 align-items-start">
-                            <label class="col-sm-4 col-form-label text-muted fw-bold small pt-2 text-primary">{{ labelAmountCaption }} <span class="text-danger">*</span>:</label>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control shadow-sm border-primary fw-bold" placeholder="0"
+                                  <input type="number" class="form-control shadow-sm border-primary fw-bold" placeholder="0"
                                        [(ngModel)]="formModel.amount" name="amount" #amount="ngModel" required
                                        [ngClass]="{'is-invalid': amount.invalid && (amount.dirty || amount.touched)}">
                                 <div class="invalid-feedback small fw-bold" *ngIf="amount.invalid && (amount.dirty || amount.touched)">Please specify a non-empty numeric fund allocation digit.</div>
+                                
                             </div>
                         </div>
 
-                        <div class="row mb-3 align-items-start">
-                            <label class="col-sm-4 col-form-label text-muted fw-bold small pt-2 text-primary">{{ labelDateCaption }} <span class="text-danger">*</span>:</label>
+                        <div class="row mb-3 align-items-start animate__animated animate__fadeIn" >
+                            <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2"><i class="bi bi-building me-1"></i>Actual Fund Received Date <span class="text-danger">*</span>:</label>
                             <div class="col-sm-8">
-                                <input type="date" class="form-control shadow-sm border-primary" 
+                            
+                             <input type="date" class="form-control shadow-sm border-primary" 
                                        [(ngModel)]="formModel.receivedDate" name="receivedDate" #receivedDate="ngModel" 
                                        [readonly]="isDateInputLocked" [disabled]="isDateInputLocked" required
                                        [ngClass]="{'is-invalid': receivedDate.invalid && (receivedDate.dirty || receivedDate.touched)}">
                                 <div class="invalid-feedback small fw-bold" *ngIf="receivedDate.invalid && (receivedDate.dirty || receivedDate.touched)">Please select a valid execution boundary date timeline.</div>
                             </div>
                         </div>
+                    </div>
 
+                    <div class="col-12 col-md-6">
                         <div class="row mb-3 align-items-start">
                             <label class="col-sm-4 col-form-label text-muted fw-bold small pt-2 text-success">{{ labelFileUploadCaption }} <span class="text-danger">*</span>:</label>
                             <div class="col-sm-8">
@@ -157,38 +219,30 @@
                     <th mat-header-cell *matHeaderCellDef class="grid-header text-center" style="width: 70px;"> S.No </th>
                     <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold small"> {{ i + 1 }} </td>
                 </ng-container>
-
-                <ng-container matColumnDef="UserName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> Directorate </th>
-                    <td mat-cell *matCellDef="let element" class="px-3 small text-dark fw-semibold"> {{ element.UserName | uppercase }} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="FacName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> College / Institute </th>
-                    <td mat-cell *matCellDef="let element" class="px-3 small text-secondary"> {{ element.FacName | titlecase }} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="BudgetName">
+                <ng-container matColumnDef="Budgetname">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> Fund Head </th>
-                    <td mat-cell *matCellDef="let element" class="px-3 small text-dark fw-medium"> {{ element.BudgetName | uppercase }} </td>
+                    <td mat-cell *matCellDef="let element" class="px-3 small text-dark fw-medium"> {{ element.Budgetname | uppercase }} </td>
                 </ng-container>
-
-                <ng-container matColumnDef="RecDate">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Received Date </th>
-                    <td mat-cell *matCellDef="let element" class="text-center font-monospace small"> {{ element.RecDate }} </td>
+                <ng-container matColumnDef="Receiveddate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center">Actual Received Date </th>
+                    <td mat-cell *matCellDef="let element" class="text-center font-monospace small"> {{ element.Receiveddate }} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="Amount">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-end"> Allotted Fund </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-end">Actual Received Amount </th>
                     <td mat-cell *matCellDef="let element" class="text-end fw-bold text-primary px-3 small"> {{ element.Amount | currency:'INR':'symbol':'1.0-0' }} </td>
                 </ng-container>
 
+                <ng-container matColumnDef="Acname">
+                    <th mat-header-cell *matHeaderCellDef class="grid-header px-3"> Account Details</th>
+                    <td mat-cell *matCellDef="let element" class="text-muted small text-truncate px-3" style="max-width: 140px;" title="{{element.Acname}}"> {{ element.Acname || '-' }} </td>
+                </ng-container>
                 <ng-container matColumnDef="Remarks">
                     <th mat-header-cell *matHeaderCellDef class="grid-header px-3"> Remarks </th>
                     <td mat-cell *matCellDef="let element" class="text-muted small text-truncate px-3" style="max-width: 140px;" title="{{element.Remarks}}"> {{ element.Remarks || '-' }} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="RecType">
+                <!-- <ng-container matColumnDef="RecType">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Allotment Category </th>
                     <td mat-cell *matCellDef="let element" class="text-center">
                         <span class="badge rounded-pill px-2.5 py-1 small fw-medium" [ngClass]="element.RecType === 'Opening Balance' ? 'bg-indigo-subtle text-indigo border border-indigo' : 'bg-success-subtle text-success border border-success'">
@@ -201,7 +255,7 @@
                     <td mat-cell *matCellDef="let element" class="text-end fw-bold px-3 small" [ngClass]="element.ActualAmountReceived === element.amount ? 'text-success' : 'text-danger'"> 
                         {{ element.ActualAmountReceived | currency:'INR':'symbol':'1.0-0' }} 
                     </td>
-                </ng-container>
+                </ng-container> -->
                 <ng-container matColumnDef="download">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-end">download</th>
                     <td mat-cell *matCellDef="let element" class="text-end fw-bold px-3 small" >Download
@@ -209,7 +263,7 @@
                 </ng-container>
              
 
-                <ng-container matColumnDef="actions">
+                <!-- <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef class="grid-header text-center" style="width: 200px;"> Operations Workflow </th>
                     <td mat-cell *matCellDef="let element" class="text-center py-2 gap-1">
                         <button type="button" class="btn btn-xs btn-outline-success rounded-pill px-2.5 py-1 font-size-11 border shadow-none me-1" 
@@ -224,7 +278,7 @@
                             {{ (element.Pentry === 'Provisional' && element.ActualAmountReceived !== element.Amount) ? 'Add Fund' : 'Not Req' }}
                         </button>
                     </td>
-                </ng-container>
+                </ng-container> -->
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-light border-bottom"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="grid-row-effect"
