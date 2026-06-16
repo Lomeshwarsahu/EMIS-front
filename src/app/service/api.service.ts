@@ -115,6 +115,18 @@ export class ApiService {
       `${this.apiUrll}/supplier/gst-entries/${gstId}?userId=${userId}`,
     );
   }
+
+  getSupplierPoSupplyFilters(userId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/po-supply/filters/by-user/${userId}`,
+    );
+  }
+
+  getSupplierPoSupply(userId: number, financialYearId: number, tenderId: number) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/po-supply/by-user/${userId}?financialYearId=${financialYearId}&tenderId=${tenderId}`,
+    );
+  }
   // https://localhost:7036/api/GenerateNasti/Getyear
   // public get(url: string, data?: FormData, options?: any){
   //    return this.http.get(this.apiUrll + url, data, options);

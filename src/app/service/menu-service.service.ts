@@ -1156,7 +1156,11 @@ export class MenuServiceService {
           ],
         },
         { label: 'Stock', route: '', submenu: [] },
-        { label: 'Orders', route: '', submenu: [] },
+        {
+          label: 'Orders',
+          route: '',
+          submenu: [{ label: 'Purchase Orders Desk', route: '/orders/po-supply' }],
+        },
         { label: 'Contracts', route: '', submenu: [] },
         { label: 'Tender', route: '', submenu: [] },
         { label: 'Indents', route: '', submenu: [] },
