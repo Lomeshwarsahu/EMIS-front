@@ -23,6 +23,37 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+/* All routed pages + login: no outer margin/padding */
+.emis-page-content,
+.content-area,
+.content-area--login,
+.page-outlet-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.page-outlet-wrapper section,
+.page-outlet-wrapper > section,
+.emis-page-content section {
+  margin: 0 !important;
+}
+
+.page-outlet-wrapper .container-fluid,
+.emis-page-content .container-fluid,
+.page-outlet-wrapper section.container-fluid {
+  margin: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.page-outlet-wrapper .supplier-login-page,
+.page-outlet-wrapper .premium-login-bg,
+.page-outlet-wrapper section.bg-light,
+.page-outlet-wrapper .login-page-shell {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 img,
 svg,
 video,
@@ -196,8 +227,9 @@ canvas {
 
   section.container-fluid,
   section.bg-light {
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   h1,
