@@ -1,4 +1,4 @@
-<div class="po-supply-page">
+<div class="po-supply-page ems-legacy-page">
   <p class="gst-note">
     Please Update your GST info in Supplier Information Section Under Master Menu.
   </p>
@@ -29,37 +29,38 @@
 
   <div *ngIf="loading" class="loading-text">Loading purchase orders...</div>
 
-  <div class="table-wrap" *ngIf="!loading">
-    <table class="po-grid">
-      <thead>
-        <tr>
-          <th>S.No</th>
-          <th>CGMSC Dispatch</th>
-          <th>PO Date</th>
-          <th>Item Name</th>
-          <th>Basic Rate/GST</th>
-          <th>PO Qty</th>
-          <th>Gross Value</th>
-          <th>Tender No</th>
-          <th>No of Consignee</th>
-          <th>Status</th>
-          <th>Print</th>
-          <th>SD Status</th>
-          <th>Apply For<br />Extension</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
-          <td>{{ i + 1 }}</td>
-          <td>
-            <div>{{ row.outwardNo }}</div>
-            <div>{{ row.poNo }}</div>
-          </td>
-          <td>{{ row.poDate }}</td>
-          <td>
-            <div>{{ row.itemCode }}</div>
-            <div>{{ row.itemName }}</div>
-          </td>
+  <div class="datagrid" *ngIf="!loading">
+    <div class="table-wrap">
+      <table class="po-grid legacy-fixed-table">
+        <thead>
+          <tr>
+            <th class="col-sn">S.No</th>
+            <th class="col-dispatch">CGMSC Dispatch</th>
+            <th class="col-date">PO Date</th>
+            <th class="col-item">Item Name</th>
+            <th class="col-rate">Basic Rate/GST</th>
+            <th class="col-qty">PO Qty</th>
+            <th class="col-value">Gross Value</th>
+            <th class="col-tender">Tender No</th>
+            <th class="col-consignee">No of Consignee</th>
+            <th class="col-status">Status</th>
+            <th class="col-print">Print</th>
+            <th class="col-sd">SD Status</th>
+            <th class="col-extension">Apply For<br />Extension</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>
+              <div>{{ row.outwardNo }}</div>
+              <div>{{ row.poNo }}</div>
+            </td>
+            <td>{{ row.poDate }}</td>
+            <td class="col-item-cell wrap-cell">
+              <div>{{ row.itemCode }}</div>
+              <div>{{ row.itemName }}</div>
+            </td>
           <td>
             <div>{{ row.basicRate }}</div>
             <div>{{ row.percentage }}%</div>
@@ -90,5 +91,6 @@
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 </div>

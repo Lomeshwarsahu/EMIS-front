@@ -4,10 +4,13 @@
   background: #eef2f7;
   font-family: 'Times New Roman', Times, serif;
   color: #003399;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .page-header-bar {
   max-width: 980px;
+  width: 100%;
   margin: 0 auto 16px;
   background: #4d67a0;
   color: #fff;
@@ -21,6 +24,7 @@
 
 .form-shell {
   max-width: 980px;
+  width: 100%;
   margin: 0 auto;
   background: #fff;
   border: 1px solid #cbd5e1;
@@ -163,19 +167,5 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
-  }
-}
-
-@media (max-width: 768px) {
-  .particular-supplier-page {
-    padding: 10px;
-  }
-
-  .form-shell {
-    padding: 14px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
   }
 }

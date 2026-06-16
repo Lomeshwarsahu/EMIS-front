@@ -27,11 +27,12 @@
         </tr>
         <tr>
           <td class="actions-right" colspan="4">
-            <button type="button" class="btn-legacy btn-add">Add New</button>
+            <button type="button" class="btn-legacy btn-add" (click)="addNew()">Add New</button>
           </td>
         </tr>
         <tr>
           <td colspan="4">
+            <div class="table-wrap">
             <table class="legacy-grid">
               <thead>
                 <tr>
@@ -69,7 +70,7 @@
                   <td class="center">{{ row.SuppliedFrom }}</td>
                   <td>{{ row.Remarks }}</td>
                   <td class="center">
-                    <button type="button" class="icon-btn" title="Edit">✎</button>
+                    <button type="button" class="icon-btn" title="Edit" (click)="editRow(row)">✎</button>
                   </td>
                 </tr>
                 <tr *ngIf="loading">
@@ -80,6 +81,7 @@
                 </tr>
               </tbody>
             </table>
+            </div>
           </td>
         </tr>
       </tbody>

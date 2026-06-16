@@ -2,6 +2,8 @@
   padding: 16px;
   font-family: 'Times New Roman', Times, serif;
   color: #003399;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .page-title {
@@ -34,7 +36,7 @@
 }
 
 .gst-grid {
-  width: 100%;
+  min-width: 720px;
   border-collapse: collapse;
 }
 

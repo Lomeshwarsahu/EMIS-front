@@ -2,6 +2,8 @@
   padding: 16px;
   font-family: 'Times New Roman', Times, serif;
   color: #003399;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .gst-note {
@@ -16,32 +18,33 @@
   background: #4d67a0;
   color: #fff;
   padding: 10px 16px;
-  margin: 0 0 16px;
-  font-size: 16px;
+  margin: 0 auto 16px;
+  font-size: 15px;
   font-weight: 700;
-  width: fit-content;
-  margin-inline: auto;
+  width: 20%;
+  min-width: 220px;
 }
 
 .filters {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 16px 24px;
-  align-items: end;
+  align-items: center;
   justify-content: center;
   margin-bottom: 16px;
 }
 
 .filters label {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .filters select {
-  min-width: 205px;
-  padding: 6px 8px;
+  width: 205px;
+  padding: 4px 6px;
   border: 1px solid #94a3b8;
 }
 
@@ -49,9 +52,9 @@
   background: #4d67a0;
   color: #fff;
   border: none;
-  padding: 8px 24px;
+  padding: 10px 24px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .show-btn:disabled {
@@ -59,15 +62,26 @@
   cursor: not-allowed;
 }
 
+.datagrid {
+  width: 100%;
+  max-width: 100%;
+}
+
 .table-wrap {
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
-  border: 1px solid #cbd5e1;
+  overflow-y: visible;
+  border: 1px solid #000;
+  -webkit-overflow-scrolling: touch;
 }
 
 .po-grid {
-  width: 100%;
+  width: 1580px;
+  min-width: 1580px;
+  max-width: none;
+  table-layout: fixed;
   border-collapse: collapse;
-  min-width: 1100px;
 }
 
 .po-grid th {
@@ -77,18 +91,78 @@
   padding: 8px 10px;
   text-align: left;
   white-space: nowrap;
+  border: 1px solid #000;
 }
 
 .po-grid td {
   padding: 8px 10px;
   background: #ffcccc;
   color: #003399;
-  border-top: 1px solid #d4dfe1;
+  border: 1px solid #000;
   vertical-align: top;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .po-grid tr.alt-row td {
   background: #ffe4e6;
+}
+
+.po-grid .col-sn {
+  width: 45px;
+}
+
+.po-grid .col-dispatch {
+  width: 110px;
+}
+
+.po-grid .col-date {
+  width: 95px;
+}
+
+.po-grid .col-item {
+  width: 220px;
+}
+
+.po-grid .col-rate {
+  width: 95px;
+}
+
+.po-grid .col-qty {
+  width: 70px;
+}
+
+.po-grid .col-value {
+  width: 95px;
+}
+
+.po-grid .col-tender {
+  width: 110px;
+}
+
+.po-grid .col-consignee {
+  width: 95px;
+}
+
+.po-grid .col-status {
+  width: 120px;
+}
+
+.po-grid .col-print {
+  width: 55px;
+}
+
+.po-grid .col-sd {
+  width: 110px;
+}
+
+.po-grid .col-extension {
+  width: 95px;
+}
+
+.po-grid td.col-item-cell {
+  white-space: normal;
 }
 
 .text-center {
@@ -110,6 +184,7 @@
   cursor: pointer;
   padding: 0;
   font: inherit;
+  white-space: nowrap;
 }
 
 .link-btn.submitted {
@@ -122,20 +197,10 @@
   text-align: center;
   font-style: italic;
   background: #fff !important;
+  white-space: normal;
 }
 
 .loading-text {
   text-align: center;
   padding: 24px;
-}
-
-@media (max-width: 768px) {
-  .filters {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .filters select {
-    width: 100%;
-  }
 }

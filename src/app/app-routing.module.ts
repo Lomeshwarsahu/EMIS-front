@@ -49,6 +49,7 @@ import { ReportSpecificationComponent } from './component/DME/masters/report-spe
 import { CmeEelSuggestionComponent } from './component/DME/masters/cme-eel-suggestion/cme-eel-suggestion.component';
 import { StockReportComponent } from './component/DME/stock/stock-report/stock-report.component';
 import { OpeningStockEntryComponent } from './component/DME/stock/opening-stock-entry/opening-stock-entry.component';
+import { NewOpeningStockEntryComponent } from './component/DME/stock/new-opening-stock-entry/new-opening-stock-entry.component';
 import { PurchaseOrderDashboardComponent } from './component/DME/orders/purchase-order-dashboard/purchase-order-dashboard.component';
 import { PurchaseOrderReceiptsComponent } from './component/DME/orders/purchase-order-receipts/purchase-order-receipts.component';
 import { DmeFacHeadsComponent } from './component/DME/indent/dme-fac-heads/dme-fac-heads.component';
@@ -586,6 +587,12 @@ const routes: Routes = [
     data: { allowedRoles: ['DME'] },
   },
   {
+    path: 'stock/new-opening-stock-entry',
+    component: NewOpeningStockEntryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
     path: 'orders/purchase-order-dashboard',
     component: PurchaseOrderDashboardComponent,
     canActivate: [RouteGuardService],
@@ -755,6 +762,16 @@ const routes: Routes = [
   {
     path: 'opening-stock-entry',
     redirectTo: 'stock/opening-stock-entry',
+    pathMatch: 'full',
+  },
+  {
+    path: 'ExistingCovidItemsDME',
+    redirectTo: 'stock/opening-stock-entry',
+    pathMatch: 'full',
+  },
+  {
+    path: 'NewCovidItemDME',
+    redirectTo: 'stock/new-opening-stock-entry',
     pathMatch: 'full',
   },
   {

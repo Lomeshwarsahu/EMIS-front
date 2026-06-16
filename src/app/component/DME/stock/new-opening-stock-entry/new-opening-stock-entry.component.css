@@ -1,0 +1,53 @@
+.form-panel {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 12px;
+  border: 1px solid #000;
+}
+
+.entry-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 8px;
+}
+
+.entry-table td {
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.legacy-input {
+  width: 205px;
+  padding: 4px 6px;
+  border: 1px solid #94a3b8;
+  font-family: inherit;
+}
+
+.legacy-input.wide {
+  width: 250px;
+}
+
+.legacy-input.narrow,
+.legacy-select.narrow {
+  width: 80px;
+}
+
+.legacy-textarea {
+  width: 100%;
+  max-width: 520px;
+  border: 1px solid #94a3b8;
+  font-family: inherit;
+}
+
+.actions-center {
+  text-align: center;
+  padding-top: 8px;
+}
+
+.actions-center .btn-legacy + .btn-legacy {
+  margin-left: 12px;
+}
+
+.ms-3 {
+  margin-left: 12px;
+}
