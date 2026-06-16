@@ -82,7 +82,6 @@ import { BudgentEntryComponent } from './GM Finance/budgent-entry/budgent-entry.
 import { BudgetDetailsProvisionalComponent } from './GM Finance/budget-details-provisional/budget-details-provisional.component';
 
 
-
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
