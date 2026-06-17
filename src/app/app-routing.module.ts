@@ -90,6 +90,12 @@ import { NewFundMasterComponent } from './GM Finance/new-fund-master/new-fund-ma
 import { FundMapComponent } from './GM Finance/fund-map/fund-map.component';
 import { BudgentEntryComponent } from './GM Finance/budgent-entry/budgent-entry.component';
 import { BudgetDetailsProvisionalComponent } from './GM Finance/budget-details-provisional/budget-details-provisional.component';
+import { IndentRCPOTenderStatusComponent } from './Reports/indent-rc-po-tender-status/indent-rc-po-tender-status.component';
+import { UnpaidPOSComponent } from './Reports/unpaid-pos/unpaid-pos.component';
+import { POReportGMFComponent } from './Reports/poreport-gmf/poreport-gmf.component';
+import { InvoiceDetailComponent } from './Reports/invoice-detail/invoice-detail.component';
+import { TDSdataReportComponent } from './Reports/tdsdata-report/tdsdata-report.component';
+import { PaymentsCPReport20perComponent } from './Reports/payments-cpreport20per/payments-cpreport20per.component';
 
 
 const routes: Routes = [
@@ -358,7 +364,7 @@ const routes: Routes = [
     path: 'DistrictWisePODetail',
     component: DistrictWisePODetailComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['TPO'] },
+    data: { allowedRoles: ['TPO','AUGMF'] },
   },
   // BME
   {
@@ -764,19 +770,19 @@ const routes: Routes = [
     path: 'finance/year-wise-po-abstract',
     component: FacilityAuthPOValuePOCellComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME','AUPO'] },
+    data: { allowedRoles: ['AD', 'DME','AUPO','AUGMF'] },
   },
   {
     path: 'finance/po-wise-payment',
     component: POPaidReportComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME','AUPO'] },
+    data: { allowedRoles: ['AD', 'DME','AUPO','AUGMF'] },
   },
   {
     path: 'finance/cheque-wise-payment',
     component: ChequeWisePaymentRComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME'] },
+    data: { allowedRoles: ['AD', 'DME','AUGMF'] },
   },
   {
     path: 'complain/facility-store',
@@ -812,7 +818,7 @@ const routes: Routes = [
     path: 'reports/tenders-status',
     component: TendersStatusComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME'] },
+    data: { allowedRoles: ['AD', 'DME','AUGMF'] },
   },
   {
     path: 'reports/po-receipts-summary',
@@ -1029,6 +1035,42 @@ const routes: Routes = [
   {
     path: 'BudgentEntry',
     component: BudgentEntryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'IndentRCPOTenderStatus',
+    component: IndentRCPOTenderStatusComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'UnpaidPOS',
+    component: UnpaidPOSComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'POReportGMF',
+    component: POReportGMFComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'InvoiceDetail',
+    component: InvoiceDetailComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'TDSdataReport',
+    component: TDSdataReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'PaymentsCPReport20per',
+    component: PaymentsCPReport20perComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },

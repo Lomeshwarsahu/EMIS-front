@@ -786,4 +786,65 @@ onForceDownloadPdf(abgid: number) {
   anchorLink.click();
   document.body.removeChild(anchorLink);
 }
+
+
+
+// 1. VIEW PDF METHOD: Ispe click karte hi PDF bina download hue naye tab me khulegi
+onViewRowDocumentInline(rowElement: any) {
+  const targetAbgid = rowElement.Abgid;// || rowElement.Abgid || rowElement.ABGID;
+  
+  if (!targetAbgid || targetAbgid <= 0) {
+    this.toastr.error('Unable to fetch reference key (ABGID) for this row item.');
+    return;
+  }
+
+  this.spinner.show();
+  const targetViewUrl = `https://localhost:7036/api/GMFI/DownloadFundFile/${targetAbgid}?forceDownload=false`;
+
+  // Fetch API ke through raw binary bytes data nikalna
+  fetch(targetViewUrl)
+    .then(response => {
+      if (!response.ok) throw new Error('File streaming connection interrupted.');
+      return response.blob(); // Convert raw data to file blob object
+    })
+    .then(blobData => {
+      this.spinner.hide();
+      
+      // Blob URL generate karna jo browser memory link banata hai
+      const fileBlobUrl = URL.createObjectURL(new Blob([blobData], { type: 'application/pdf' }));
+      
+      // Strict command to open inside a new tab view window
+      const browserViewTab = window.open(fileBlobUrl, '_blank');
+      if (!browserViewTab) {
+        this.toastr.warning('Popup Blocker active! Please allow popups to open the PDF viewer.');
+      }
+    })
+    .catch(error => {
+      this.spinner.hide();
+      console.error(error);
+      this.toastr.error('Error opening inline preview tab window.');
+    });
+}
+
+// 2. HARD SAVE DOWNLOAD METHOD
+onDownloadRowDocumentFile(rowElement: any) {
+  const targetAbgid = rowElement.Abgid ;//|| rowElement.Abgid || rowElement.Abgid;
+  
+  if (!targetAbgid || targetAbgid <= 0) {
+    this.toastr.error('Invalid reference parameters allocation.');
+    return;
+  }
+
+  const targetDownloadUrl = `https://localhost:7036/api/GMFI/DownloadFundFile/${targetAbgid}?forceDownload=true`;
+  
+  const ghostAnchorNode = document.createElement('a');
+  ghostAnchorNode.href = targetDownloadUrl;
+  ghostAnchorNode.target = '_self';
+  document.body.appendChild(ghostAnchorNode);
+  ghostAnchorNode.click();
+  document.body.removeChild(ghostAnchorNode);
+}
+
+
+
 }
