@@ -184,15 +184,35 @@
                     <th mat-header-cell *matHeaderCellDef class="grid-header px-3"> Remarks </th>
                     <td mat-cell *matCellDef="let element" class="text-muted small text-truncate px-3" style="max-width: 180px;" title="{{element.Remarks}}"> {{ element.Remarks || '-' }} </td>
                 </ng-container>
-
                 <ng-container matColumnDef="download">
+    <th mat-header-cell *matHeaderCellDef class="grid-header text-center" style="width: 180px;"> Document Actions </th>
+    <td mat-cell *matCellDef="let element" class="text-center py-1">
+        
+        <div class="d-inline-flex gap-1.5 align-items-center justify-content-center">
+            
+            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-2.5 py-1 shadow-none fw-semibold font-size-11"
+                    (click)="onViewRowDocumentInline(element)" title="View Document Statement Inline">
+                <i class="bi bi-eye-fill me-1"></i> 
+                <!-- View -->
+            </button>
+            
+            <!-- <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-2.5 py-1 shadow-none fw-semibold font-size-11"
+                    (click)="onDownloadRowDocumentFile(element)" title="Download file to storage disk">
+                <i class="bi bi-download me-1"></i> Download
+            </button> -->
+
+        </div>
+        
+    </td>
+</ng-container>
+                <!-- <ng-container matColumnDef="download">
                     <th mat-header-cell *matHeaderCellDef class="grid-header text-center" style="width: 120px;">Download</th>
                     <td mat-cell *matCellDef="let element" class="text-center">
                         <button type="button" class="btn btn-xs btn-outline-danger rounded-pill px-3 py-1 shadow-none small font-size-11" (click)="onForceDownloadPdf(element.Abgid)">
                             <i class="bi bi-file-pdf me-1"></i> Download PDF
                         </button>
                     </td>
-                </ng-container>
+                </ng-container> -->
              
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-light border-bottom"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="grid-row-effect"></tr>
