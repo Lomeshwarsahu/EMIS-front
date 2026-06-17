@@ -88,7 +88,6 @@ import { TDSdataReportComponent } from './Reports/tdsdata-report/tdsdata-report.
 import { PaymentsCPReport20perComponent } from './Reports/payments-cpreport20per/payments-cpreport20per.component';
 
 
-
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },

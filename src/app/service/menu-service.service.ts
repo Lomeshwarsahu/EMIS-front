@@ -503,6 +503,8 @@ export class MenuServiceService {
             { label: 'Health Facility Users', route: '/EditReceivedAndInstallationDate' },
             { label: 'Suppliers Accounts/GST', route: '/Supplier' },
             { label: 'CGMSCL Bank Accounts', route: '/CgmscBankAccounts' },
+            // { label: 'Add New Items', route: '/ItemsBME' },
+            // { label: 'Program Master', route: 'ProgramMaster' },
             // { label: 'Mapping to Main items', route: '/masters/map-items' },
             // { label: 'Update Mapping to Main items', route: '/masters/map-items-update' },
             // { label: 'Main Equipment Mapped Report', route: '/masters/map-items-report' },
