@@ -186,6 +186,12 @@ export class ApiService {
       `${this.apiUrll}/supplier/accepted-report/by-user/${userId}?filterType=${encodeURIComponent(filterType)}&tenderId=${tenderId}&supplierId=${supplierId}`,
     );
   }
+
+  getSupplierReceiptComplain(userId: number, status: string) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/receipt-complain/by-user/${userId}?status=${encodeURIComponent(status)}`,
+    );
+  }
   // https://localhost:7036/api/GenerateNasti/Getyear
   // public get(url: string, data?: FormData, options?: any){
   //    return this.http.get(this.apiUrll + url, data, options);
