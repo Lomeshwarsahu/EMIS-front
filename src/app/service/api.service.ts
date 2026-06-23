@@ -151,6 +151,41 @@ export class ApiService {
       `${this.apiUrll}/supplier/po-supply-receipt/by-user/${userId}?poId=${poId}`,
     );
   }
+
+  getSupplierRcDetailTenders(userId: number) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/rc-detail-report/tenders/by-user/${userId}`,
+    );
+  }
+
+  getSupplierRcDetailReport(userId: number, tenderId: number) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/rc-detail-report/by-user/${userId}?tenderId=${tenderId}`,
+    );
+  }
+
+  getSupplierAcceptedTenders(userId: number) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/accepted-report/tenders/by-user/${userId}`,
+    );
+  }
+
+  getSupplierAcceptedSupplierOption(userId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/accepted-report/supplier/by-user/${userId}`,
+    );
+  }
+
+  getSupplierAcceptedReport(
+    userId: number,
+    filterType: string,
+    tenderId: number,
+    supplierId: number,
+  ) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/accepted-report/by-user/${userId}?filterType=${encodeURIComponent(filterType)}&tenderId=${tenderId}&supplierId=${supplierId}`,
+    );
+  }
   // https://localhost:7036/api/GenerateNasti/Getyear
   // public get(url: string, data?: FormData, options?: any){
   //    return this.http.get(this.apiUrll + url, data, options);

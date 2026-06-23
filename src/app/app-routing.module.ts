@@ -8,6 +8,8 @@ import { SupplierGstEntryComponent } from './component/Suppliers/supplier-gst-en
 import { PoSupplyComponent } from './component/Suppliers/po-supply/po-supply.component';
 import { PoSupplyDispatchComponent } from './component/Suppliers/po-supply-dispatch/po-supply-dispatch.component';
 import { PoSupplyReceiptComponent } from './component/Suppliers/po-supply-receipt/po-supply-receipt.component';
+import { SupplierRcDetailReportComponent } from './component/Suppliers/supplier-rc-detail-report/supplier-rc-detail-report.component';
+import { SupplierAcceptedReportComponent } from './component/Suppliers/supplier-accepted-report/supplier-accepted-report.component';
 import { LogoutComponent } from './component/auth/logout/logout.component';
 import { RouteGuardService } from './service/authentication/route-guard.service';
 import { OtpComponent } from './component/auth/otp/otp.component';
@@ -144,6 +146,28 @@ const routes: Routes = [
   {
     path: 'Facilitypo_supply_ReceiptSUP',
     redirectTo: 'transaction/po-supply-receipt',
+    pathMatch: 'full',
+  },
+  {
+    path: 'contracts/rc-detail-report-supplier',
+    component: SupplierRcDetailReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'RCDetailReportForSupplier',
+    redirectTo: 'contracts/rc-detail-report-supplier',
+    pathMatch: 'full',
+  },
+  {
+    path: 'contracts/accepted-report-supplier',
+    component: SupplierAcceptedReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'AcceptedReoprtSupplier',
+    redirectTo: 'contracts/accepted-report-supplier',
     pathMatch: 'full',
   },
   { path: 'Registration', component: Registration },

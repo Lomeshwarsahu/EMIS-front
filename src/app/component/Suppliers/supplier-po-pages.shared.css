@@ -159,6 +159,14 @@
   font-weight: 700;
 }
 
+.icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  font-size: 16px;
+}
+
 .empty-row {
   text-align: center;
   font-style: italic;
