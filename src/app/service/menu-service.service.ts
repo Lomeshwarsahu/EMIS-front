@@ -1186,7 +1186,12 @@ export class MenuServiceService {
             },
           ] },
         { label: 'Reports', route: '', submenu: [] },
-        { label: 'Complain', route: '', submenu: [] },
+        { label: 'Complain', route: '', submenu: [
+            {
+              label: 'Complain Received Against Equipment',
+              route: '/complain/receipt-complain-supplier',
+            },
+          ] },
         { label: 'EMD Refund', route: '', submenu: [] },
       ],
     },

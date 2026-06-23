@@ -1,0 +1,77 @@
+<div class="supplier-po-page">
+  <h2 class="page-title narrow">Complain Received Against Equipment</h2>
+
+  <div class="filters">
+    <button
+      *ngIf="showExport"
+      type="button"
+      class="export-btn"
+      title="Export to Excel"
+      (click)="exportExcel()">
+      <span class="excel-icon" aria-hidden="true">📊</span>
+    </button>
+
+    <label>
+      Status:
+      <select [(ngModel)]="status" name="complainStatus">
+        <option value="Booked">Booked</option>
+        <option value="Closed">Closed</option>
+      </select>
+    </label>
+
+    <button type="button" class="show-btn" (click)="showReport()" [disabled]="loading">Show</button>
+  </div>
+
+  <div *ngIf="loading" class="loading-text">Loading complaints...</div>
+
+  <div class="datagrid" *ngIf="!loading">
+    <div class="table-wrap">
+      <table class="po-grid complain-grid">
+        <thead>
+          <tr>
+            <th class="col-sn">S.No</th>
+            <th class="col-complain">Complain no</th>
+            <th class="col-po">PO NO</th>
+            <th class="col-code">Item Code</th>
+            <th class="col-name">Item Name</th>
+            <th class="col-make">Make No</th>
+            <th class="col-date">Complain Date</th>
+            <th class="col-date">Not Function Date</th>
+            <th class="col-facility">Facility Name</th>
+            <th class="col-contact">Facility Contact N0</th>
+            <th class="col-download">Download Complain Letter</th>
+            <th class="col-details">Complain Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>{{ row.complaintNo }}</td>
+            <td>{{ row.poNo }}</td>
+            <td>{{ row.itemCode }}</td>
+            <td class="wrap-cell">{{ row.itemName }}</td>
+            <td>{{ row.serialNo }}</td>
+            <td class="text-center">{{ row.complaintDate }}</td>
+            <td class="text-center">{{ row.notFunctionDate }}</td>
+            <td class="wrap-cell">{{ row.locationName }}</td>
+            <td class="text-center">{{ row.facilityContactNo }}</td>
+            <td class="text-center">
+              <button
+                *ngIf="row.hasFile; else noFile"
+                type="button"
+                class="link-btn"
+                (click)="downloadFile(row)">
+                Download File
+              </button>
+              <ng-template #noFile>—</ng-template>
+            </td>
+            <td class="wrap-cell">{{ row.complaintDetails }}</td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="12" class="empty-row">No Record found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

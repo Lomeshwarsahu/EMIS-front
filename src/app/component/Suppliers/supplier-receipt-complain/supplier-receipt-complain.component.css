@@ -1,0 +1,23 @@
+.complain-grid {
+  width: 1680px;
+  min-width: 1680px;
+}
+
+.col-sn { width: 45px; }
+.col-complain { width: 100px; }
+.col-po { width: 110px; }
+.col-code { width: 110px; }
+.col-name { width: 180px; }
+.col-make { width: 90px; }
+.col-date { width: 100px; }
+.col-facility { width: 160px; }
+.col-contact { width: 110px; }
+.col-download { width: 120px; }
+.col-details { width: 220px; }
+
+.export-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
