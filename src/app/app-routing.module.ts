@@ -6,6 +6,8 @@ import { SupplierLoginComponent } from './component/auth/supplier-login/supplier
 import { ParticularSupplierAddComponent } from './component/Suppliers/particular-supplier-add/particular-supplier-add.component';
 import { SupplierGstEntryComponent } from './component/Suppliers/supplier-gst-entry/supplier-gst-entry.component';
 import { PoSupplyComponent } from './component/Suppliers/po-supply/po-supply.component';
+import { PoSupplyDispatchComponent } from './component/Suppliers/po-supply-dispatch/po-supply-dispatch.component';
+import { PoSupplyReceiptComponent } from './component/Suppliers/po-supply-receipt/po-supply-receipt.component';
 import { LogoutComponent } from './component/auth/logout/logout.component';
 import { RouteGuardService } from './service/authentication/route-guard.service';
 import { OtpComponent } from './component/auth/otp/otp.component';
@@ -120,6 +122,28 @@ const routes: Routes = [
   {
     path: 'po_supply',
     redirectTo: 'orders/po-supply',
+    pathMatch: 'full',
+  },
+  {
+    path: 'transaction/po-supply-dispatch',
+    component: PoSupplyDispatchComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'po_supplyDispatch',
+    redirectTo: 'transaction/po-supply-dispatch',
+    pathMatch: 'full',
+  },
+  {
+    path: 'transaction/po-supply-receipt',
+    component: PoSupplyReceiptComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'Facilitypo_supply_ReceiptSUP',
+    redirectTo: 'transaction/po-supply-receipt',
     pathMatch: 'full',
   },
   { path: 'Registration', component: Registration },

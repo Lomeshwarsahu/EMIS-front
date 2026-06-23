@@ -127,6 +127,30 @@ export class ApiService {
       `${this.apiUrll}/supplier/po-supply/by-user/${userId}?financialYearId=${financialYearId}&tenderId=${tenderId}`,
     );
   }
+
+  getSupplierPoDispatch(userId: number, financialYearId: number, tenderId: number) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/po-supply-dispatch/by-user/${userId}?financialYearId=${financialYearId}&tenderId=${tenderId}`,
+    );
+  }
+
+  getSupplierPoReceiptFilters(userId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/po-supply-receipt/filters/by-user/${userId}`,
+    );
+  }
+
+  getSupplierPoReceiptOptions(userId: number, financialYearId: number, poType: string) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/po-supply-receipt/pos/by-user/${userId}?financialYearId=${financialYearId}&poType=${encodeURIComponent(poType)}`,
+    );
+  }
+
+  getSupplierPoReceipt(userId: number, poId: number) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/po-supply-receipt/by-user/${userId}?poId=${poId}`,
+    );
+  }
   // https://localhost:7036/api/GenerateNasti/Getyear
   // public get(url: string, data?: FormData, options?: any){
   //    return this.http.get(this.apiUrll + url, data, options);

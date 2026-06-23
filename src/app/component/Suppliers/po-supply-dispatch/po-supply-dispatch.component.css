@@ -1,0 +1,15 @@
+.dispatch-grid {
+  width: 1380px;
+  min-width: 1380px;
+}
+
+.col-sn { width: 45px; }
+.col-po { width: 110px; }
+.col-date { width: 90px; }
+.col-item { width: 260px; }
+.col-rate { width: 90px; }
+.col-consignee { width: 95px; }
+.col-qty { width: 80px; }
+.col-value { width: 95px; }
+.col-disp { width: 110px; }
+.col-status { width: 130px; }
