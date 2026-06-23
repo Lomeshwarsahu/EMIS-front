@@ -1155,13 +1155,39 @@ export class MenuServiceService {
             },
           ],
         },
-        { label: 'Stock', route: '', submenu: [] },
-        { label: 'Orders', route: '', submenu: [] },
-        { label: 'Contracts', route: '', submenu: [] },
-        { label: 'Tender', route: '', submenu: [] },
-        { label: 'Indents', route: '', submenu: [] },
+        {
+          label: 'Orders',
+          route: '',
+          submenu: [{ label: 'Purchase Orders Desk', route: '/orders/po-supply' }],
+        },
+        
+        {
+          label: 'Transaction',
+          route: '',
+          submenu: [
+            {
+              label: 'Purchase Orders Dispatch Desk',
+              route: '/transaction/po-supply-dispatch',
+            },
+            {
+              label: 'Consignee Wise PO Receipt',
+              route: '/transaction/po-supply-receipt',
+            },
+          ],
+        },
+        { label: 'Contracts', route: '', submenu: [
+            {
+              label: 'Rate Contract Detail Report',
+              route: '/contracts/rc-detail-report-supplier',
+            },
+            {
+              label: 'Accepted Report',
+              route: '/contracts/accepted-report-supplier',
+            },
+          ] },
         { label: 'Reports', route: '', submenu: [] },
         { label: 'Complain', route: '', submenu: [] },
+        { label: 'EMD Refund', route: '', submenu: [] },
       ],
     },
 

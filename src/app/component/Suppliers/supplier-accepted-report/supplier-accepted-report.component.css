@@ -1,0 +1,32 @@
+.accepted-grid {
+  width: 1500px;
+  min-width: 1500px;
+}
+
+.filter-panel {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 16px;
+  border-collapse: collapse;
+}
+
+.filter-panel td {
+  padding: 8px 10px;
+  vertical-align: middle;
+}
+
+.col-sn { width: 45px; }
+.col-code { width: 140px; }
+.col-name { width: 200px; }
+.col-supplier { width: 160px; }
+.col-tender { width: 100px; }
+.col-date { width: 100px; }
+.col-qty { width: 90px; }
+.col-rate { width: 100px; }
+
+.export-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}

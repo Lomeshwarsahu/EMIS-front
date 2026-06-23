@@ -1,0 +1,108 @@
+<div class="supplier-po-page">
+  <h2 class="page-title narrow">Rate Contract Detail Report</h2>
+
+  <table class="filter-panel" *ngIf="showFilters || filterMode === null">
+    <tbody>
+      <tr>
+        <td colspan="2">
+          <div class="radio-group">
+            <label>
+              <input
+                type="radio"
+                name="filterMode"
+                value="tender"
+                [(ngModel)]="filterMode"
+                (ngModelChange)="onFilterModeChange()" />
+              Tender Wise
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="filterMode"
+                value="supplier"
+                [(ngModel)]="filterMode"
+                (ngModelChange)="onFilterModeChange()" />
+              Supplier Wise
+            </label>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="showFilters">
+        <td>
+          <button
+            *ngIf="showExport"
+            type="button"
+            class="export-btn"
+            title="Export to Excel"
+            (click)="exportExcel()">
+            <span class="excel-icon" aria-hidden="true">📊</span>
+          </button>
+        </td>
+        <td>
+          <label *ngIf="filterMode === 'tender'">
+            Tender:
+            <select [(ngModel)]="selectedTenderId" name="tender">
+              <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
+                {{ tender.tenderNo }}
+              </option>
+            </select>
+          </label>
+
+          <label *ngIf="filterMode === 'supplier'">
+            Supplier:
+            <select [(ngModel)]="selectedSupplierId" name="supplier" disabled>
+              <option *ngIf="supplierOption" [ngValue]="supplierOption.supplierId">
+                {{ supplierOption.name }}
+              </option>
+            </select>
+          </label>
+        </td>
+      </tr>
+      <tr *ngIf="showFilters">
+        <td colspan="2" class="text-center">
+          <button type="button" class="show-btn" (click)="showReport()" [disabled]="loading">Show</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="loading" class="loading-text">Loading accepted report...</div>
+
+  <div class="datagrid" *ngIf="!loading && showFilters">
+    <div class="table-wrap">
+      <table class="po-grid accepted-grid">
+        <thead>
+          <tr>
+            <th class="col-sn">S.No</th>
+            <th class="col-code">Item code as per tender</th>
+            <th class="col-name">Equipment Name</th>
+            <th class="col-supplier">Supplier</th>
+            <th class="col-tender">Tender</th>
+            <th class="col-date">Tender Date</th>
+            <th class="col-qty">Tender Quantity</th>
+            <th class="col-rate">Basic Price</th>
+            <th class="col-rate">Tax</th>
+            <th class="col-rate">Accepted Basic Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>{{ row.itemCode }}</td>
+            <td class="wrap-cell">{{ row.itemName }}</td>
+            <td>{{ row.supplierName }}</td>
+            <td>{{ row.tenderNo }}</td>
+            <td class="text-center">{{ row.tenderDate }}</td>
+            <td class="text-center">{{ row.tenderQuantity }}</td>
+            <td class="text-center">{{ row.basicRate }}</td>
+            <td class="text-center">{{ row.gst }}</td>
+            <td class="text-center">{{ row.acceptedBasicRate }}</td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="10" class="empty-row">No Record found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

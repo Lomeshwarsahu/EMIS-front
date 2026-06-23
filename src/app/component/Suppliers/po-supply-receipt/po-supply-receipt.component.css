@@ -1,0 +1,28 @@
+.receipt-grid {
+  width: 1500px;
+  min-width: 1500px;
+}
+
+.filter-panel {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 16px;
+  border-collapse: collapse;
+}
+
+.filter-panel td {
+  padding: 8px 10px;
+  vertical-align: middle;
+}
+
+.filter-panel .label-col {
+  width: 140px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.col-sn { width: 45px; }
+.col-consignee { width: 180px; }
+.col-item { width: 220px; }
+.col-qty { width: 80px; }
+.col-batch { width: 360px; }

@@ -1,0 +1,122 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Consignee Wise PO-Receipt/Installation Details</h2>
+
+  <table class="filter-panel">
+    <tbody>
+      <tr>
+        <td class="label-col">Status</td>
+        <td>
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="poType" value="All" [(ngModel)]="poType" (ngModelChange)="onPoTypeChange()" />
+              All PO
+            </label>
+            <label>
+              <input type="radio" name="poType" value="PRI" [(ngModel)]="poType" (ngModelChange)="onPoTypeChange()" />
+              Pending To Receipt/Install
+            </label>
+            <label>
+              <input type="radio" name="poType" value="PD" [(ngModel)]="poType" (ngModelChange)="onPoTypeChange()" />
+              Pending to Dispatch
+            </label>
+            <label>
+              <input type="radio" name="poType" value="C" [(ngModel)]="poType" (ngModelChange)="onPoTypeChange()" />
+              Complete Receipt/Installation
+            </label>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="label-col">PO Fin Year</td>
+        <td>
+          <select [(ngModel)]="selectedFinancialYearId" name="poYear" (ngModelChange)="onYearChange()">
+            <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
+              {{ year.year }}
+            </option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td class="label-col">Select PO NO</td>
+        <td class="po-select">
+          <select [(ngModel)]="selectedPoId" name="poNo">
+            <option *ngFor="let po of poOptions" [ngValue]="po.poId">{{ po.displayText }}</option>
+          </select>
+        </td>
+        <td>
+          <button type="button" class="show-btn" (click)="showDetails()" [disabled]="loading">Show</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="loading" class="loading-text">Loading receipt details...</div>
+
+  <div class="datagrid" *ngIf="!loading">
+    <div class="table-wrap">
+      <table class="po-grid receipt-grid">
+        <thead>
+          <tr>
+            <th class="col-sn">S.No</th>
+            <th class="col-consignee">Consignees</th>
+            <th class="col-item">Item Name/Code</th>
+            <th class="col-qty">Order Qty</th>
+            <th class="col-qty">Supplied QTY</th>
+            <th class="col-qty">Received QTY</th>
+            <th class="col-qty">Installed QTY</th>
+            <th class="col-qty">Denied QTY</th>
+            <th class="col-qty">Denied Status</th>
+            <th class="col-batch">Dispatch/Receipt Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>{{ row.locationName }}</td>
+            <td class="text-center wrap-cell">
+              <div>{{ row.itemName }}</div>
+              <div>{{ row.itemCode }}</div>
+            </td>
+            <td class="text-center">{{ row.quantity }}</td>
+            <td class="text-center">{{ row.supplyQty }}</td>
+            <td class="text-center">{{ row.receiptQty }}</td>
+            <td class="text-center">{{ row.instQty }}</td>
+            <td class="text-center">{{ row.deniedQty }}</td>
+            <td class="text-center">{{ row.deniedStatus }}</td>
+            <td>
+              <table class="batch-grid" *ngIf="row.batches.length; else noBatches">
+                <thead>
+                  <tr>
+                    <th>Supplier Dispatched Date</th>
+                    <th>Consignee Received Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let batch of row.batches">
+                    <td>{{ batch.dispatchDate }}</td>
+                    <td>{{ batch.receivedDate }}</td>
+                    <td>
+                      <button
+                        *ngIf="isStatusLink(batch); else plainStatus"
+                        type="button"
+                        class="link-btn status-red"
+                        (click)="onBatchStatus(batch, row)">
+                        {{ batch.supplyStatus }}
+                      </button>
+                      <ng-template #plainStatus>{{ batch.supplyStatus }}</ng-template>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <ng-template #noBatches>—</ng-template>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="10" class="empty-row">No Record found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

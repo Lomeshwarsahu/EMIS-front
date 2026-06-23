@@ -1,0 +1,77 @@
+<div class="supplier-po-page">
+  <h2 class="page-title narrow">Rate Contract Detail Report</h2>
+
+  <div class="filters">
+    <button
+      *ngIf="showExport"
+      type="button"
+      class="export-btn"
+      title="Export to Excel"
+      (click)="exportExcel()">
+      <span class="excel-icon" aria-hidden="true">📊</span>
+    </button>
+
+    <label>
+      Tender:
+      <select [(ngModel)]="selectedTenderId" name="tender">
+        <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
+          {{ tender.tenderNo }}
+        </option>
+      </select>
+    </label>
+
+    <button type="button" class="show-btn" (click)="showReport()" [disabled]="loading">Show</button>
+  </div>
+
+  <div *ngIf="loading" class="loading-text">Loading RC detail report...</div>
+
+  <div class="datagrid" *ngIf="!loading">
+    <div class="table-wrap">
+      <table class="po-grid rc-grid">
+        <thead>
+          <tr>
+            <th class="col-sn">S.No</th>
+            <th class="col-code">Equipment Code</th>
+            <th class="col-name">Equipment Name</th>
+            <th class="col-supplier">Supplier</th>
+            <th class="col-tender">Tender</th>
+            <th class="col-date">Contract Start Date</th>
+            <th class="col-date">Contract End Date</th>
+            <th class="col-rate">Basic Price</th>
+            <th class="col-rate">Tax</th>
+            <th class="col-rate">Total Value</th>
+            <th class="col-spec">Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>{{ row.itemCode }}</td>
+            <td class="wrap-cell">{{ row.itemName }}</td>
+            <td>{{ row.supplierName }}</td>
+            <td>{{ row.tenderNo }}</td>
+            <td class="text-center">{{ row.contractDate }}</td>
+            <td class="text-center">{{ row.contractEndDate }}</td>
+            <td class="text-center">{{ row.basicRate }}</td>
+            <td class="text-center">{{ row.percentage }}</td>
+            <td class="text-center">{{ row.singleUnitPrice }}</td>
+            <td class="text-center">
+              <button
+                *ngIf="row.hasSpecification; else noSpec"
+                type="button"
+                class="icon-btn"
+                title="Download specification"
+                (click)="downloadSpecification(row)">
+                📄
+              </button>
+              <ng-template #noSpec>—</ng-template>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="11" class="empty-row">No Record found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
