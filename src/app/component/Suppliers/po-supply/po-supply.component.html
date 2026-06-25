@@ -1,0 +1,96 @@
+<div class="po-supply-page ems-legacy-page">
+  <p class="gst-note">
+    Please Update your GST info in Supplier Information Section Under Master Menu.
+  </p>
+
+  <h2 class="page-title">Purchase Orders Desk</h2>
+
+  <div class="filters">
+    <label>
+      Financial Year:
+      <select [(ngModel)]="selectedFinancialYearId" name="financialYear">
+        <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
+          {{ year.year }}
+        </option>
+      </select>
+    </label>
+
+    <label>
+      Tender No:
+      <select [(ngModel)]="selectedTenderId" name="tender">
+        <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
+          {{ tender.tenderNo }}
+        </option>
+      </select>
+    </label>
+
+    <button type="button" class="show-btn" (click)="showOrders()" [disabled]="loading">Show</button>
+  </div>
+
+  <div *ngIf="loading" class="loading-text">Loading purchase orders...</div>
+
+  <div class="datagrid" *ngIf="!loading">
+    <div class="table-wrap">
+      <table class="po-grid legacy-fixed-table">
+        <thead>
+          <tr>
+            <th class="col-sn">S.No</th>
+            <th class="col-dispatch">CGMSC Dispatch</th>
+            <th class="col-date">PO Date</th>
+            <th class="col-item">Item Name</th>
+            <th class="col-rate">Basic Rate/GST</th>
+            <th class="col-qty">PO Qty</th>
+            <th class="col-value">Gross Value</th>
+            <th class="col-tender">Tender No</th>
+            <th class="col-consignee">No of Consignee</th>
+            <th class="col-status">Status</th>
+            <th class="col-print">Print</th>
+            <th class="col-sd">SD Status</th>
+            <th class="col-extension">Apply For<br />Extension</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>
+              <div>{{ row.outwardNo }}</div>
+              <div>{{ row.poNo }}</div>
+            </td>
+            <td>{{ row.poDate }}</td>
+            <td class="col-item-cell wrap-cell">
+              <div>{{ row.itemCode }}</div>
+              <div>{{ row.itemName }}</div>
+            </td>
+          <td>
+            <div>{{ row.basicRate }}</div>
+            <div>{{ row.percentage }}%</div>
+          </td>
+          <td class="text-center">{{ row.quantity }}</td>
+          <td>{{ row.totalPoValue }}</td>
+          <td>{{ row.tenderNo }}</td>
+          <td class="text-center">{{ row.noOfConsignee }}</td>
+          <td>{{ row.status }}</td>
+          <td class="text-center">
+            <button type="button" class="icon-btn" title="Print PO" (click)="onPrint(row)">🖨</button>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="link-btn"
+              [class.submitted]="isSdSubmitted(row)"
+              (click)="onSdDetails(row)">
+              {{ sdStatusLabel(row) }}
+            </button>
+          </td>
+          <td>
+            <button type="button" class="link-btn" (click)="onApplyExtension(row)">Apply Status</button>
+          </td>
+        </tr>
+        <tr *ngIf="!rows.length">
+          <td colspan="13" class="empty-row">No purchase orders found.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>

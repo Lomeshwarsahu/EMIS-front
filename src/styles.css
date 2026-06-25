@@ -1,4 +1,4 @@
-/* Global EMIS layout — fit inside screen, no horizontal page overflow */
+/* Global EMIS layout — wide legacy tables scroll horizontally */
 *,
 *::before,
 *::after {
@@ -23,6 +23,37 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+/* All routed pages + login: no outer margin/padding */
+.emis-page-content,
+.content-area,
+.content-area--login,
+.page-outlet-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.page-outlet-wrapper section,
+.page-outlet-wrapper > section,
+.emis-page-content section {
+  margin: 0 !important;
+}
+
+.page-outlet-wrapper .container-fluid,
+.emis-page-content .container-fluid,
+.page-outlet-wrapper section.container-fluid {
+  margin: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.page-outlet-wrapper .supplier-login-page,
+.page-outlet-wrapper .premium-login-bg,
+.page-outlet-wrapper section.bg-light,
+.page-outlet-wrapper .login-page-shell {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 img,
 svg,
 video,
@@ -31,13 +62,19 @@ canvas {
   height: auto;
 }
 
-/* All routed pages stay inside viewport width */
+/* Page stays inside viewport; only table wrappers scroll horizontally */
 .page-outlet-wrapper,
-.page-outlet-wrapper > *,
-.emis-page-content section,
-.emis-page-content .container-fluid,
+.page-outlet-wrapper > * {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
 .page-outlet-wrapper section,
-.page-outlet-wrapper .container-fluid {
+.page-outlet-wrapper .container-fluid,
+.emis-page-content section,
+.emis-page-content .container-fluid {
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -52,43 +89,70 @@ canvas {
 
 .page-outlet-wrapper .row > [class*='col-'] {
   min-width: 0;
-  max-width: 100%;
 }
 
-/* Tables shrink to screen — wrap text instead of overflowing */
-.page-outlet-wrapper table,
-.emis-page-content table,
-.table-responsive table,
-.table-container table,
-.grid-scroll table {
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  table-layout: fixed;
-  border-collapse: collapse;
-}
-
-.page-outlet-wrapper th,
-.page-outlet-wrapper td,
-.emis-page-content th,
-.emis-page-content td,
-.table-responsive th,
-.table-responsive td {
-  word-wrap: break-word;
-  overflow-wrap: anywhere;
-  white-space: normal;
-  vertical-align: top;
-  hyphens: auto;
-}
-
+/* Only these containers scroll — not the full page */
+.page-outlet-wrapper .datagrid,
+.page-outlet-wrapper .table-wrap,
 .page-outlet-wrapper .grid-scroll,
 .page-outlet-wrapper .table-responsive,
 .page-outlet-wrapper .table-container,
-.page-outlet-wrapper .datagrid {
+.emis-page-content .datagrid,
+.emis-page-content .table-wrap,
+.emis-page-content .grid-scroll,
+.emis-page-content .table-responsive,
+.emis-page-content .table-container {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+}
+
+.page-outlet-wrapper .datagrid table,
+.page-outlet-wrapper .table-wrap table,
+.page-outlet-wrapper .grid-scroll table,
+.page-outlet-wrapper .table-responsive table,
+.page-outlet-wrapper .table-container table,
+.emis-page-content .datagrid table,
+.emis-page-content .table-wrap table {
+  width: auto !important;
+  max-width: none !important;
+  min-width: max-content !important;
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
+.page-outlet-wrapper .legacy-fixed-table,
+.emis-page-content .legacy-fixed-table {
+  width: auto !important;
+  min-width: 1580px !important;
+  max-width: none !important;
+  table-layout: fixed;
+}
+
+.page-outlet-wrapper .datagrid th,
+.page-outlet-wrapper .datagrid td,
+.page-outlet-wrapper .table-wrap th,
+.page-outlet-wrapper .table-wrap td,
+.page-outlet-wrapper .grid-scroll th,
+.page-outlet-wrapper .grid-scroll td,
+.page-outlet-wrapper .table-responsive th,
+.page-outlet-wrapper .table-responsive td,
+.emis-page-content .datagrid th,
+.emis-page-content .datagrid td,
+.emis-page-content .table-wrap th,
+.emis-page-content .table-wrap td {
+  white-space: nowrap;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  vertical-align: top;
+}
+
+.page-outlet-wrapper .datagrid .wrap-cell,
+.page-outlet-wrapper .table-wrap .wrap-cell,
+.emis-page-content .wrap-cell {
+  white-space: normal;
 }
 
 .page-outlet-wrapper .ems-legacy-page {
@@ -115,12 +179,19 @@ canvas {
 }
 
 .page-outlet-wrapper .table-responsive {
-  overflow-x: hidden !important;
+  overflow-x: auto !important;
 }
 
-.table {
+.table.table-fit-screen {
   width: 100%;
   min-width: 0 !important;
+}
+
+.table.table-fit-screen th,
+.table.table-fit-screen td {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 991.98px) {
@@ -156,8 +227,9 @@ canvas {
 
   section.container-fluid,
   section.bg-light {
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   h1,

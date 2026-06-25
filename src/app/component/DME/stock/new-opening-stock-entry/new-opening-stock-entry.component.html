@@ -1,0 +1,119 @@
+<div class="ems-legacy-page">
+  <div class="header-wrap">
+    <span class="header-bar narrow">{{ pageTitle }}</span>
+  </div>
+
+  <div class="form-panel">
+    <p class="note-red">नोट 1 :- कृपया ओपनिंग स्टॉक में उन्ही उपकरण की एंट्री करें जिनकी आपूर्ति सी.एस.आर./दान ,डी.एम.एफ,स्थानीय क्रय ,जी.ओ.आई से की गई हो |</p>
+    <p class="note-red">नोट 2 :- कृपया सी.जी.एम.एस.सी द्वारा सप्लाई किये गए उपकरण (जिनकी एंट्री EMIS में ना हो ) उन्हें ओपनिंग स्टॉक में एंट्री करें |</p>
+
+    <table class="entry-table">
+      <tr>
+        <td>Select Main Equipment Type</td>
+        <td>
+          <select class="legacy-select" [(ngModel)]="selectedPid" (ngModelChange)="onMainEquipmentChange()" name="pid">
+            <option *ngFor="let t of equipmentTypes" [ngValue]="t.id">{{ t.label }}</option>
+          </select>
+        </td>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td>Select Equipment</td>
+        <td>
+          <select class="legacy-select" [(ngModel)]="selectedItemId" name="itemId">
+            <option *ngFor="let i of equipmentItems" [ngValue]="i.id">{{ i.label }}</option>
+          </select>
+        </td>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td>Select Source</td>
+        <td>
+          <select class="legacy-select" [(ngModel)]="selectedSupId" name="supId">
+            <option *ngFor="let s of supplySources" [ngValue]="s.id">{{ s.label }}</option>
+          </select>
+        </td>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td>Make</td>
+        <td><input class="legacy-input" [(ngModel)]="make" name="make" /></td>
+        <td>Model</td>
+        <td><input class="legacy-input" [(ngModel)]="model" name="model" /></td>
+        <td colspan="2"></td>
+      </tr>
+      <tr>
+        <td>Serial No</td>
+        <td><input class="legacy-input" [(ngModel)]="serialNo" name="serialNo" [readonly]="isBulkEntry" /></td>
+        <td *ngIf="isBulkEntry">Quantity</td>
+        <td *ngIf="isBulkEntry"><input class="legacy-input" type="number" [(ngModel)]="qty" name="qty" min="1" /></td>
+        <td [attr.colspan]="isBulkEntry ? 2 : 4"></td>
+      </tr>
+      <tr>
+        <td>Received Date</td>
+        <td><input class="legacy-input" type="date" [(ngModel)]="receiptDate" name="receiptDate" /></td>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td>Installation Date</td>
+        <td><input class="legacy-input" type="date" [(ngModel)]="installationDate" (ngModelChange)="onInstallationDateChange()" name="installationDate" /></td>
+        <td>Warranty</td>
+        <td>
+          <select class="legacy-select narrow" [(ngModel)]="warrantyYear" (ngModelChange)="onWarrantyYearChange()" name="warrantyYear">
+            <option [ngValue]="null">Select</option>
+            <option *ngFor="let y of warrantyYears" [ngValue]="y">{{ y }}</option>
+          </select>
+          Year
+        </td>
+        <td>Warranty Upto</td>
+        <td><input class="legacy-input" type="date" [(ngModel)]="warrantyUpto" name="warrantyUpto" readonly /></td>
+      </tr>
+      <tr>
+        <td>Installation Location</td>
+        <td>
+          <select class="legacy-select" [(ngModel)]="selectedWardId" (ngModelChange)="onWardChange()" name="wardId">
+            <option *ngFor="let w of wards" [ngValue]="w.id">{{ w.label }}</option>
+          </select>
+        </td>
+        <td colspan="4">
+          <span *ngIf="showOtherLocation">
+            If Others:
+            <input class="legacy-input wide" [(ngModel)]="installLocationOther" name="installLocationOther" />
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>AMC (Yes/No)</td>
+        <td>
+          <label><input type="radio" name="amc" value="Y" [(ngModel)]="amcFlag" (ngModelChange)="onAmcChange()" /> Yes</label>
+          <label class="ms-3"><input type="radio" name="amc" value="N" [(ngModel)]="amcFlag" (ngModelChange)="onAmcChange()" /> No</label>
+        </td>
+        <td colspan="4">
+          <span *ngIf="showAmcFields">
+            AMC Till Date <input class="legacy-input" type="date" [(ngModel)]="amcValidDate" name="amcValidDate" />
+            AMC Firm <input class="legacy-input wide" [(ngModel)]="amcFirm" name="amcFirm" />
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>Working Status</td>
+        <td colspan="5">
+          <label><input type="radio" name="workingStatus" value="W" [(ngModel)]="workingStatus" /> Working</label>
+          <label class="ms-3"><input type="radio" name="workingStatus" value="NW" [(ngModel)]="workingStatus" /> Not Working</label>
+        </td>
+      </tr>
+      <tr>
+        <td>Remarks</td>
+        <td colspan="5">
+          <textarea class="legacy-textarea" rows="4" [(ngModel)]="remarks" name="remarks"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="6" class="actions-center">
+          <button type="button" class="btn-legacy" (click)="save()" [disabled]="saving">{{ saving ? 'Saving...' : saveLabel }}</button>
+          <button type="button" class="btn-legacy" (click)="back()">Back</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

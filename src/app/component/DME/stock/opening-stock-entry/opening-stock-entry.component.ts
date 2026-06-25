@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 
@@ -28,7 +29,7 @@ interface OpeningStockRow {
 @Component({
   selector: 'app-opening-stock-entry',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './opening-stock-entry.component.html',
   styleUrls: ['../../shared/legacy-ems-page.css', './opening-stock-entry.component.css'],
 })
@@ -45,6 +46,7 @@ export class OpeningStockEntryComponent implements OnInit {
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +57,16 @@ export class OpeningStockEntryComponent implements OnInit {
 
   onEquipmentChange(): void {
     this.loadGrid();
+  }
+
+  addNew(): void {
+    void this.router.navigate(['/stock/new-opening-stock-entry']);
+  }
+
+  editRow(row: OpeningStockRow): void {
+    void this.router.navigate(['/stock/new-opening-stock-entry'], {
+      queryParams: { existingItemId: row.ExistingItemId, mode: 'Edit' },
+    });
   }
 
   loadGrid(): void {

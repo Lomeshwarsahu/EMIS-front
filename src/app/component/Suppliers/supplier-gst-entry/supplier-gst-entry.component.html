@@ -1,4 +1,4 @@
-<div class="supplier-gst-page">
+<div class="supplier-gst-page ems-legacy-page">
   <h2 class="page-title">Supplier GST Entry</h2>
 
   <div *ngIf="loading" class="loading-text">Loading GST entries...</div>
@@ -11,6 +11,7 @@
 
     <div class="tab-label">Bank Accounts</div>
 
+    <div class="datagrid">
     <div class="table-wrap">
       <table class="gst-grid">
         <thead>
@@ -62,6 +63,7 @@
           </tr>
         </tbody>
       </table>
+    </div>
     </div>
 
     <p *ngIf="statusMessage" class="status-message" [class.error]="statusIsError">{{ statusMessage }}</p>

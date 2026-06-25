@@ -1,0 +1,25 @@
+.rc-grid {
+  width: 1580px;
+  min-width: 1580px;
+}
+
+.col-sn { width: 45px; }
+.col-code { width: 120px; }
+.col-name { width: 200px; }
+.col-supplier { width: 160px; }
+.col-tender { width: 100px; }
+.col-date { width: 110px; }
+.col-rate { width: 90px; }
+.col-spec { width: 70px; }
+
+.export-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.export-btn img {
+  height: 28px;
+  width: auto;
+}

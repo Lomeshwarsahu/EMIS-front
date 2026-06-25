@@ -42,6 +42,8 @@
   height: 100%;
   width: 100%;
   max-width: 100%;
+  margin: 0;
+  padding: 0;
   background-color: #f4f7fa;
   overflow-x: hidden;
   overflow-y: auto;
@@ -51,11 +53,14 @@
 
 .content-area--login {
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #e2e8f0 !important;
 }
 
 .emis-page-content {
-  padding: clamp(0.5rem, 2vw, 1.25rem);
-  padding-bottom: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .page-outlet-wrapper {
@@ -63,14 +68,17 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
+  margin: 0;
+  padding: 0;
   overflow-x: hidden;
   overflow-y: visible;
 }
 
 .footer-wrap {
   flex-shrink: 0;
+  margin: 0;
   margin-top: auto;
-  padding-top: 1rem;
+  padding: 0;
 }
 
 /* ================= FULL MIDNIGHT HEADER ================= */
@@ -270,12 +278,18 @@ mat-drawer.premium-drawer.mat-drawer-over {
   background: #f4f7fa;
 }
 
+::ng-deep mat-drawer-container.main-container.main-container--login {
+  background: #e2e8f0 !important;
+}
+
 ::ng-deep mat-drawer-container.main-container .mat-drawer-content {
   overflow-x: hidden;
   overflow-y: hidden;
   display: flex;
   flex-direction: column;
   max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .sidebar-header {

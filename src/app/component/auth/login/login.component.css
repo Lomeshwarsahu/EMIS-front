@@ -3,16 +3,66 @@ html {
   background-color: #e2e8f0 !important;
   font-family: 'Segoe UI', Roboto, sans-serif;
   height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+:host {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.login-page-shell {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #e2e8f0;
+  overflow-x: hidden;
+}
+
+.login-page-shell .container-fluid,
+.login-page-shell .row {
+  margin: 0 !important;
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+}
+
+.login-page-shell .login-content {
+  padding: 0 !important;
+}
+
+.login-page-shell .custom-header {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 0 !important;
+  border: none !important;
+  border-bottom: 4px solid #f59e0b !important;
+  box-shadow: none;
+}
+
+section.bg-light,
+section.bg-light .container-fluid,
+.login-page-shell,
+.login-page-shell .container-fluid {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .premium-login-bg {
   min-height: 100vh;
   background-color: #e2e8f0 !important;
+  margin: 0;
+  padding: 0;
 }
 
 .custom-header {
   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important;
   border-bottom: 4px solid #f59e0b !important;
+  border-radius: 0 !important;
   padding: 30px 0 !important;
 }
 
@@ -240,7 +290,8 @@ main {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-right: 2rem;
+  margin: 0;
+  padding: 0;
 }
 
 .shadow-lg {

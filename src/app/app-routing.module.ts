@@ -5,6 +5,12 @@ import { LoginComponent } from './component/auth/login/login.component';
 import { SupplierLoginComponent } from './component/auth/supplier-login/supplier-login.component';
 import { ParticularSupplierAddComponent } from './component/Suppliers/particular-supplier-add/particular-supplier-add.component';
 import { SupplierGstEntryComponent } from './component/Suppliers/supplier-gst-entry/supplier-gst-entry.component';
+import { PoSupplyComponent } from './component/Suppliers/po-supply/po-supply.component';
+import { PoSupplyDispatchComponent } from './component/Suppliers/po-supply-dispatch/po-supply-dispatch.component';
+import { PoSupplyReceiptComponent } from './component/Suppliers/po-supply-receipt/po-supply-receipt.component';
+import { SupplierRcDetailReportComponent } from './component/Suppliers/supplier-rc-detail-report/supplier-rc-detail-report.component';
+import { SupplierAcceptedReportComponent } from './component/Suppliers/supplier-accepted-report/supplier-accepted-report.component';
+import { SupplierReceiptComplainComponent } from './component/Suppliers/supplier-receipt-complain/supplier-receipt-complain.component';
 import { LogoutComponent } from './component/auth/logout/logout.component';
 import { RouteGuardService } from './service/authentication/route-guard.service';
 import { OtpComponent } from './component/auth/otp/otp.component';
@@ -48,6 +54,7 @@ import { ReportSpecificationComponent } from './component/DME/masters/report-spe
 import { CmeEelSuggestionComponent } from './component/DME/masters/cme-eel-suggestion/cme-eel-suggestion.component';
 import { StockReportComponent } from './component/DME/stock/stock-report/stock-report.component';
 import { OpeningStockEntryComponent } from './component/DME/stock/opening-stock-entry/opening-stock-entry.component';
+import { NewOpeningStockEntryComponent } from './component/DME/stock/new-opening-stock-entry/new-opening-stock-entry.component';
 import { PurchaseOrderDashboardComponent } from './component/DME/orders/purchase-order-dashboard/purchase-order-dashboard.component';
 import { PurchaseOrderReceiptsComponent } from './component/DME/orders/purchase-order-receipts/purchase-order-receipts.component';
 import { DmeFacHeadsComponent } from './component/DME/indent/dme-fac-heads/dme-fac-heads.component';
@@ -113,6 +120,72 @@ const routes: Routes = [
   {
     path: 'SupplierGSTentry1',
     redirectTo: 'masters/supplier-gst-entry',
+    pathMatch: 'full',
+  },
+  {
+    path: 'orders/po-supply',
+    component: PoSupplyComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'po_supply',
+    redirectTo: 'orders/po-supply',
+    pathMatch: 'full',
+  },
+  {
+    path: 'transaction/po-supply-dispatch',
+    component: PoSupplyDispatchComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'po_supplyDispatch',
+    redirectTo: 'transaction/po-supply-dispatch',
+    pathMatch: 'full',
+  },
+  {
+    path: 'transaction/po-supply-receipt',
+    component: PoSupplyReceiptComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'Facilitypo_supply_ReceiptSUP',
+    redirectTo: 'transaction/po-supply-receipt',
+    pathMatch: 'full',
+  },
+  {
+    path: 'contracts/rc-detail-report-supplier',
+    component: SupplierRcDetailReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'RCDetailReportForSupplier',
+    redirectTo: 'contracts/rc-detail-report-supplier',
+    pathMatch: 'full',
+  },
+  {
+    path: 'contracts/accepted-report-supplier',
+    component: SupplierAcceptedReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'AcceptedReoprtSupplier',
+    redirectTo: 'contracts/accepted-report-supplier',
+    pathMatch: 'full',
+  },
+  {
+    path: 'complain/receipt-complain-supplier',
+    component: SupplierReceiptComplainComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'ReceiptComplainSupplier',
+    redirectTo: 'complain/receipt-complain-supplier',
     pathMatch: 'full',
   },
   { path: 'Registration', component: Registration },
@@ -580,6 +653,12 @@ const routes: Routes = [
     data: { allowedRoles: ['DME'] },
   },
   {
+    path: 'stock/new-opening-stock-entry',
+    component: NewOpeningStockEntryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
     path: 'orders/purchase-order-dashboard',
     component: PurchaseOrderDashboardComponent,
     canActivate: [RouteGuardService],
@@ -749,6 +828,16 @@ const routes: Routes = [
   {
     path: 'opening-stock-entry',
     redirectTo: 'stock/opening-stock-entry',
+    pathMatch: 'full',
+  },
+  {
+    path: 'ExistingCovidItemsDME',
+    redirectTo: 'stock/opening-stock-entry',
+    pathMatch: 'full',
+  },
+  {
+    path: 'NewCovidItemDME',
+    redirectTo: 'stock/new-opening-stock-entry',
     pathMatch: 'full',
   },
   {
