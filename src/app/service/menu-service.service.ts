@@ -519,6 +519,19 @@ export class MenuServiceService {
             { label: 'Budgent Entry', route: '/BudgentEntry' },
           ],
         },
+            {
+          label: 'Reports',
+          route: '',
+          submenu: [
+            { label: 'Tenders Status', route: 'reports/tenders-status' },
+            { label: 'Indent/RC/PO Tender Status', route: '/IndentRCPOTenderStatus' },
+            { label: 'Unpaid PO Details', route: '/UnpaidPOS' },
+        
+            { label: 'District wise PO Details', route: '/DistrictWisePODetail' },
+           
+            { label: 'PO Report Year Wise', route: 'POReportGMF' },
+          ],
+        },
         {
           label: 'Orders',
           route: '',
@@ -567,9 +580,12 @@ export class MenuServiceService {
           label: 'Finance Report',
           route: '',
           submenu: [
-            // { label: 'Year Wise PO Abstract', route: '/finance/year-wise-po-abstract' },
-            // { label: 'PO Wise Payment FReport', route: '/finance/po-wise-payment' },
-            // { label: 'Cheque Wise Payment Report', route: '/finance/cheque-wise-payment' }
+            { label: 'Year Wise PO Abstract', route: '/finance/year-wise-po-abstract' },
+            { label: 'Invoice Details/e-Way Bills', route: '/InvoiceDetail' },
+            { label: 'PO Wise Payment FReport', route: '/finance/po-wise-payment' },
+            { label: 'Cheque Wise Payment Report', route: '/finance/cheque-wise-payment' },
+            { label: 'TDS Report', route: '/TDSdataReport' },
+            { label: '20% Release Report', route: '/PaymentsCPReport20per' }
           ],
         },
         // {
@@ -577,27 +593,7 @@ export class MenuServiceService {
         //   route: '',
         //   submenu: [{ label: 'Complain Report', route: '/complain/report' }],
         // },
-        {
-          label: 'Reports',
-          route: '',
-          submenu: [
-            // { label: 'PO Summary', route: '/reports/po-summary' },
-            // {
-            //   label: 'PO Wise Payment Report',
-            //   route: '/reports/po-wise-payment',
-            // },
-            // { label: 'Tenders Status', route: '/reports/tenders-status' },
-            // {
-            //   label: 'PO Receipts summary',
-            //   route: '/reports/po-receipts-summary',
-            // },
-            // {
-            //   label: 'Item Status in Tenter',
-            //   route: '/reports/tender-item-status',
-            // },
-            // { label: 'Reagent PO Report', route: '/reports/reagent-po' },
-          ],
-        },
+    
       ],
     },
 
