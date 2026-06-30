@@ -11,6 +11,9 @@ import { PoSupplyReceiptComponent } from './component/Suppliers/po-supply-receip
 import { SupplierRcDetailReportComponent } from './component/Suppliers/supplier-rc-detail-report/supplier-rc-detail-report.component';
 import { SupplierAcceptedReportComponent } from './component/Suppliers/supplier-accepted-report/supplier-accepted-report.component';
 import { SupplierReceiptComplainComponent } from './component/Suppliers/supplier-receipt-complain/supplier-receipt-complain.component';
+import { SupplierEmdDepositComponent } from './component/Suppliers/supplier-emd-deposit/supplier-emd-deposit.component';
+import { SupplierPaymentReportComponent } from './component/Suppliers/supplier-payment-report/supplier-payment-report.component';
+import { SupplierPendingReceiptInstallationComponent } from './component/Suppliers/supplier-pending-receipt-installation/supplier-pending-receipt-installation.component';
 import { LogoutComponent } from './component/auth/logout/logout.component';
 import { RouteGuardService } from './service/authentication/route-guard.service';
 import { OtpComponent } from './component/auth/otp/otp.component';
@@ -186,6 +189,39 @@ const routes: Routes = [
   {
     path: 'ReceiptComplainSupplier',
     redirectTo: 'complain/receipt-complain-supplier',
+    pathMatch: 'full',
+  },
+  {
+    path: 'emd-refund/emd-deposit',
+    component: SupplierEmdDepositComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'EMDdeposite',
+    redirectTo: 'emd-refund/emd-deposit',
+    pathMatch: 'full',
+  },
+  {
+    path: 'reports/payment-report',
+    component: SupplierPaymentReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'PaymentReport',
+    redirectTo: 'reports/payment-report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'reports/pending-receipt-installation',
+    component: SupplierPendingReceiptInstallationComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'BalanceStatussupplier',
+    redirectTo: 'reports/pending-receipt-installation',
     pathMatch: 'full',
   },
   { path: 'Registration', component: Registration },

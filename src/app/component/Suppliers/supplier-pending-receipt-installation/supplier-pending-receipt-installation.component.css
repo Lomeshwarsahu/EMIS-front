@@ -1,0 +1,25 @@
+.balance-grid {
+  width: 1680px;
+  min-width: 1680px;
+}
+
+.col-sn { width: 45px; }
+.col-tender { width: 90px; }
+.col-year { width: 70px; }
+.col-po { width: 90px; }
+.col-date { width: 90px; }
+.col-auth { width: 120px; }
+.col-code { width: 100px; }
+.col-item { width: 160px; }
+.col-supplier { width: 140px; }
+.col-qty { width: 80px; }
+.col-type { width: 90px; }
+
+.filter-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}

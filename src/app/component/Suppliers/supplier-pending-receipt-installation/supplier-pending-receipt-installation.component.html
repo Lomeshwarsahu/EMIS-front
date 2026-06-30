@@ -1,0 +1,80 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Pending Receipt / Installation</h2>
+
+  <div class="filter-panel">
+    <button
+      *ngIf="showExport"
+      type="button"
+      class="export-btn"
+      (click)="exportExcel()">
+      Export
+    </button>
+
+    <div class="radio-group">
+      <label>
+        <input type="radio" name="balanceType" value="R" [(ngModel)]="balanceType" />
+        Balance to Receipt
+      </label>
+      <label>
+        <input type="radio" name="balanceType" value="I" [(ngModel)]="balanceType" />
+        Balance To Install
+      </label>
+    </div>
+
+    <button type="button" class="show-btn" (click)="showReport()" [disabled]="loading">Show</button>
+  </div>
+
+  <div *ngIf="loading" class="loading-text">Loading pending receipt/installation report...</div>
+
+  <div class="datagrid" *ngIf="!loading">
+    <div class="table-wrap">
+      <table class="po-grid balance-grid">
+        <thead>
+          <tr>
+            <th class="col-sn">S.No</th>
+            <th class="col-tender">Tender No</th>
+            <th class="col-year">Year</th>
+            <th class="col-po">PO No.</th>
+            <th class="col-date">PO Date</th>
+            <th class="col-auth">Authority</th>
+            <th class="col-code">Item Code</th>
+            <th class="col-item">Item</th>
+            <th class="col-supplier">Supplier</th>
+            <th class="col-qty">PO Qty</th>
+            <th class="col-qty">Supply Qty</th>
+            <th class="col-qty">Receipt QTY</th>
+            <th class="col-qty">Installed Qty</th>
+            <th class="col-type">PO Type</th>
+            <th class="col-qty">Balance Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>{{ row.tenderNo }}</td>
+            <td class="text-center">{{ row.year }}</td>
+            <td>{{ row.poNo }}</td>
+            <td class="text-center">{{ row.poDate }}</td>
+            <td class="wrap-cell">{{ row.facilityAutName }}</td>
+            <td>{{ row.itemCode }}</td>
+            <td class="wrap-cell">{{ row.itemName }}</td>
+            <td>{{ row.supplier }}</td>
+            <td class="text-center">{{ row.poQty }}</td>
+            <td class="text-center">{{ row.supplyQty }}</td>
+            <td class="text-center">{{ row.receiptQty }}</td>
+            <td class="text-center">{{ row.instQty }}</td>
+            <td>{{ row.poType }}</td>
+            <td class="text-center">
+              <button type="button" class="link-btn" (click)="onBalanceQtyClick(row)">
+                {{ row.balanceQty }}
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="15" class="empty-row">No Record found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

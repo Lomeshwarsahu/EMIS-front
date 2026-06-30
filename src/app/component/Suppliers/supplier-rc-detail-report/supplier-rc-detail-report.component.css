@@ -11,15 +11,3 @@
 .col-date { width: 110px; }
 .col-rate { width: 90px; }
 .col-spec { width: 70px; }
-
-.export-btn {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-}
-
-.export-btn img {
-  height: 28px;
-  width: auto;
-}

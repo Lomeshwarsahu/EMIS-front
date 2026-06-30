@@ -192,6 +192,43 @@ export class ApiService {
       `${this.apiUrll}/supplier/receipt-complain/by-user/${userId}?status=${encodeURIComponent(status)}`,
     );
   }
+
+  getSupplierEmdDepositTenders(userId: number) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/emd-deposit/tenders/by-user/${userId}`,
+    );
+  }
+
+  getSupplierEmdDocumentTypes() {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/emd-deposit/emd-types`,
+    );
+  }
+
+  getSupplierEmdDeposits(userId: number) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/emd-deposit/by-user/${userId}`,
+    );
+  }
+
+  saveSupplierEmdDeposit(userId: number, formData: FormData) {
+    return this.http.post<{ message: string; depositId?: number }>(
+      `${this.apiUrll}/supplier/emd-deposit/by-user/${userId}`,
+      formData,
+    );
+  }
+
+  getSupplierPaymentReport(userId: number, poType: string) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/payment-report/by-user/${userId}?poType=${encodeURIComponent(poType)}`,
+    );
+  }
+
+  getSupplierBalanceStatus(userId: number, balanceType: string) {
+    return this.http.get<Record<string, unknown>[]>(
+      `${this.apiUrll}/supplier/balance-status/by-user/${userId}?balanceType=${encodeURIComponent(balanceType)}`,
+    );
+  }
   // https://localhost:7036/api/GenerateNasti/Getyear
   // public get(url: string, data?: FormData, options?: any){
   //    return this.http.get(this.apiUrll + url, data, options);

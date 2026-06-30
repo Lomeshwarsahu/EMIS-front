@@ -55,6 +55,11 @@
   padding: 10px 24px;
   cursor: pointer;
   font-size: 12px;
+  border-radius: 0.375rem;
+}
+
+.show-btn:hover:not(:disabled) {
+  background: #3d5588;
 }
 
 .show-btn:disabled {
