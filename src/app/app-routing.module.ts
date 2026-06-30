@@ -93,6 +93,7 @@ import { POReportGMFComponent } from './Reports/poreport-gmf/poreport-gmf.compon
 import { InvoiceDetailComponent } from './Reports/invoice-detail/invoice-detail.component';
 import { TDSdataReportComponent } from './Reports/tdsdata-report/tdsdata-report.component';
 import { PaymentsCPReport20perComponent } from './Reports/payments-cpreport20per/payments-cpreport20per.component';
+import { FileMRCDashboardFINFileComponent } from './GM Finance/file-mrcdashboard-finfile/file-mrcdashboard-finfile.component';
 
 
 const routes: Routes = [
@@ -1035,6 +1036,12 @@ const routes: Routes = [
   {
     path: 'PaymentsCPReport20per',
     component: PaymentsCPReport20perComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'FileMRCDashboardFINFile',
+    component: FileMRCDashboardFINFileComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },

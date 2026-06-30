@@ -532,50 +532,50 @@ export class MenuServiceService {
             { label: 'PO Report Year Wise', route: 'POReportGMF' },
           ],
         },
-        {
-          label: 'Orders',
-          route: '',
-          submenu: [
-            // { label: 'Extension HO Detail', route: '/ExtensionHODetail' },
-            // { label: 'Purchase Order', route: '/EMSPODashboard' },
-            // { label: 'Extension HO Detail', route: '/ExtensionHODetail' },
-          ],
-        },
-        {
-          label: 'Contracts',
-          route: '',
-          submenu: [
-            // { label: 'Contract Dashboard', route: 'contracts/dashboard' },
-            // { label: 'New Contract', route: '/contracts/new-rc' },
-            // { label: 'RC Extension', route: '/RCExtend' },
-            // { label: 'PO Extension', route: '/AppliedPoExtension' },
-            // {
-            //   label: 'RC Details Report',
-            //   route: '/contracts/rc-detail-report',
-            // },
-            // { label: 'Price Accepted Report', route: '/AcceptedReort' },
-          ],
-        },
-        {
-          label: 'Tender',
-          route: '',
-          submenu: [
-            // { label: 'Plan a Tender', route: '/PlanaTenderD' },
-            // { label: 'Terms & Conditions', route: '/Termsconditions' },
-            // { label: 'RDLC Tender Summary', route: '/RDLCTenderSummary' },
-            // { label: 'Gem-Price Entry Acceptance', route: '/TenderItemsPriceGEM' },
-            // { label: 'Gem-Price Entry', route: '/TenderDetailsPriceEntryGEM' }
-          ],
-        },
-        {
-          label: 'Indents',
-          route: '',
-          submenu: [
-            // { label: 'Add Indent DME', route: 'ConsolidatedIndentPOCell' },
-            // { label: 'Add Indent', route: '/ConsolidatedIndentDHSPO' },
-            // { label: 'Indent Item Wise Remarks', route: '/IndentWiseItemRemarks' }
-          ],
-        },
+        // {
+        //   label: 'Orders',
+        //   route: '',
+        //   submenu: [
+        //     { label: 'Extension HO Detail', route: '/ExtensionHODetail' },
+        //     { label: 'Purchase Order', route: '/EMSPODashboard' },
+        //     { label: 'Extension HO Detail', route: '/ExtensionHODetail' },
+        //   ],
+        // },
+        // {
+        //   label: 'Contracts',
+        //   route: '',
+        //   submenu: [
+        //     { label: 'Contract Dashboard', route: 'contracts/dashboard' },
+        //     { label: 'New Contract', route: '/contracts/new-rc' },
+        //     { label: 'RC Extension', route: '/RCExtend' },
+        //     { label: 'PO Extension', route: '/AppliedPoExtension' },
+        //     {
+        //       label: 'RC Details Report',
+        //       route: '/contracts/rc-detail-report',
+        //     },
+        //     { label: 'Price Accepted Report', route: '/AcceptedReort' },
+        //   ],
+        // },
+        // {
+        //   label: 'Tender',
+        //   route: '',
+        //   submenu: [
+        //     { label: 'Plan a Tender', route: '/PlanaTenderD' },
+        //     { label: 'Terms & Conditions', route: '/Termsconditions' },
+        //     { label: 'RDLC Tender Summary', route: '/RDLCTenderSummary' },
+        //     { label: 'Gem-Price Entry Acceptance', route: '/TenderItemsPriceGEM' },
+        //     { label: 'Gem-Price Entry', route: '/TenderDetailsPriceEntryGEM' }
+        //   ],
+        // },
+        // {
+        //   label: 'Indents',
+        //   route: '',
+        //   submenu: [
+        //     { label: 'Add Indent DME', route: 'ConsolidatedIndentPOCell' },
+        //     { label: 'Add Indent', route: '/ConsolidatedIndentDHSPO' },
+        //     { label: 'Indent Item Wise Remarks', route: '/IndentWiseItemRemarks' }
+        //   ],
+        // },
         {
           label: 'Finance Report',
           route: '',
@@ -588,11 +588,42 @@ export class MenuServiceService {
             { label: '20% Release Report', route: '/PaymentsCPReport20per' }
           ],
         },
-        // {
-        //   label: 'Complain',
-        //   route: '',
-        //   submenu: [{ label: 'Complain Report', route: '/complain/report' }],
-        // },
+        {
+          label: 'File Movements',
+          route: '',
+          submenu: [{ label: 'File Movements', route: '/FileMRCDashboardFINFile' }],
+        },
+    
+        {
+          label: 'Payments',
+          route: '',
+          submenu: [
+              { label: 'Section Generation', route: '/TDSdataReport' },
+            { label: 'Bank Letter Generation', route: '/PaymentsCPReport20per' },
+            { label: 'Payments Entry', route: '/PaymentsCPReport20per' },
+            { label: 'Section Generation Rest 50% Payment', route: '/PaymentsCPReport20per' }
+          ],
+
+        },
+    
+        {
+          label: 'Performance',
+          route: '',
+          submenu: [{ label: 'Performance Release Files', route: '/complain/report' },
+            { label: 'Cheque Preparation', route: '/complain/report' },
+
+          ],
+        },
+        {
+          label: 'EMD Refund',
+          route: '',
+          submenu: [{ label: 'EMD Refund Section', route: '/complain/report' },
+            { label: 'Cheque Preparation for EMD Refund', route: '/complain/report' },
+            { label: 'SD Release', route: '/complain/report' },
+
+          ],
+        },
+      
     
       ],
     },
