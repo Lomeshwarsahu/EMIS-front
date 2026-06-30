@@ -23,10 +23,3 @@
 .col-date { width: 100px; }
 .col-qty { width: 90px; }
 .col-rate { width: 100px; }
-
-.export-btn {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-}

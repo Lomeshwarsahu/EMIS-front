@@ -1185,14 +1185,28 @@ export class MenuServiceService {
               route: '/contracts/accepted-report-supplier',
             },
           ] },
-        { label: 'Reports', route: '', submenu: [] },
+        { label: 'Reports', route: '', submenu: [
+            {
+              label: 'Payment Report',
+              route: '/reports/payment-report',
+            },
+            {
+              label: 'Pending Receipt / Installation',
+              route: '/reports/pending-receipt-installation',
+            },
+          ] },
         { label: 'Complain', route: '', submenu: [
             {
               label: 'Complain Received Against Equipment',
               route: '/complain/receipt-complain-supplier',
             },
           ] },
-        { label: 'EMD Refund', route: '', submenu: [] },
+        { label: 'EMD Refund', route: '', submenu: [
+            {
+              label: 'EMD Refund Request Form',
+              route: '/emd-refund/emd-deposit',
+            },
+          ] },
       ],
     },
 

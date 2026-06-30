@@ -1,0 +1,78 @@
+<div class="supplier-po-page">
+  <h2 class="page-title narrow">Paid Report of Purchase Orders</h2>
+
+  <div class="filter-panel">
+    <button
+      *ngIf="showExport"
+      type="button"
+      class="export-btn"
+      (click)="exportExcel()">
+      Export
+    </button>
+
+    <div class="radio-group">
+      <label>
+        <input type="radio" name="poType" value="All" [(ngModel)]="poType" />
+        All Po
+      </label>
+      <label>
+        <input type="radio" name="poType" value="NP" [(ngModel)]="poType" />
+        Normal Po
+      </label>
+      <label>
+        <input type="radio" name="poType" value="CP" [(ngModel)]="poType" />
+        Covid Po
+      </label>
+    </div>
+
+    <button type="button" class="show-btn" (click)="showDetails()" [disabled]="loading">
+      Show Details
+    </button>
+  </div>
+
+  <p class="report-note">Data is Based On Entered by CGMSC Finance Department</p>
+
+  <div *ngIf="loading" class="loading-text">Loading payment report...</div>
+
+  <div class="datagrid" *ngIf="!loading">
+    <div class="table-wrap">
+      <table class="po-grid payment-grid">
+        <thead>
+          <tr>
+            <th class="col-sn">SL. No</th>
+            <th class="col-sanction">Sanction</th>
+            <th class="col-po">PO No.</th>
+            <th class="col-date">PO Date</th>
+            <th class="col-supplier">Supplier</th>
+            <th class="col-amt">Gross Amount</th>
+            <th class="col-amt">Total Deduction</th>
+            <th class="col-amt">Total Addition</th>
+            <th class="col-amt">Cheque Amount</th>
+            <th class="col-date">Cheque Date</th>
+            <th class="col-po">Cheque No</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td class="text-center">
+              <button type="button" class="link-btn" (click)="downloadSanction(row)">Download</button>
+            </td>
+            <td>{{ row.poNo }}</td>
+            <td class="text-center">{{ row.poDate }}</td>
+            <td>{{ row.supplierName }}</td>
+            <td class="text-center">{{ row.grossAmt }}</td>
+            <td class="text-center">{{ row.totalDed }}</td>
+            <td class="text-center">{{ row.totalAddition }}</td>
+            <td class="text-center">{{ row.chequeAmt }}</td>
+            <td class="text-center">{{ row.chequeDate }}</td>
+            <td>{{ row.aidNo }}</td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="11" class="empty-row">No Record found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
