@@ -140,6 +140,12 @@ export class ApiService {
     );
   }
 
+  getSupplierDispatchReport(userId: number, poId: number, locId: number, issueId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/dispatch-report/by-user/${userId}?poId=${poId}&locId=${locId}&issueId=${issueId}`,
+    );
+  }
+
   getSupplierPoReceiptFilters(userId: number) {
     return this.http.get<Record<string, unknown>>(
       `${this.apiUrll}/supplier/po-supply-receipt/filters/by-user/${userId}`,

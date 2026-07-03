@@ -49,3 +49,8 @@
   font-size: 18px;
   line-height: 1;
 }
+
+.batch-grid .link-btn {
+  color: #003399;
+  font-weight: 600;
+}

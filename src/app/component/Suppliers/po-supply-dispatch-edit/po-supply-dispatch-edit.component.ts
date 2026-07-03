@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
+import { resolveSupplierUserId } from '../supplier-user.util';
 
 interface DispatchEditBatch {
   issueId: number;
@@ -36,7 +37,7 @@ interface DispatchEditRow {
 @Component({
   selector: 'app-po-supply-dispatch-edit',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule],
   templateUrl: './po-supply-dispatch-edit.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-dispatch-edit.component.css'],
 })
@@ -56,7 +57,7 @@ export class PoSupplyDispatchEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userId = Number(sessionStorage.getItem('userid') || localStorage.getItem('userid') || 0);
+    this.userId = resolveSupplierUserId();
     if (!this.userId) {
       this.toastr.error('Please login as supplier.');
       return;
@@ -102,13 +103,28 @@ export class PoSupplyDispatchEditComponent implements OnInit {
   }
 
   onBatchStatus(batch: DispatchEditBatch, row: DispatchEditRow): void {
-    if (batch.supplyStatus === 'Complete') {
-      this.toastr.info(
-        `Dispatch report for issue ${batch.issueId} — report page migration pending.`,
-      );
+    if (this.isCompleteStatus(batch.supplyStatus)) {
+      this.openDispatchReportInNewTab(batch);
       return;
     }
     this.navigateToDispatchEntry(row, batch.issueId, batch.categoryId);
+  }
+
+  openDispatchReportInNewTab(batch: DispatchEditBatch): void {
+    const urlTree = this.router.createUrlTree(['/transaction/po-supply-dispatch-report'], {
+      queryParams: {
+        poId: batch.poId,
+        locId: batch.locationId,
+        issueId: batch.issueId,
+      },
+    });
+    const path = this.router.serializeUrl(urlTree);
+    const fullUrl = `${window.location.origin}${path}`;
+    window.open(fullUrl, '_blank', 'noopener,noreferrer');
+  }
+
+  isCompleteStatus(status: string): boolean {
+    return status.trim().toLowerCase() === 'complete';
   }
 
   private navigateToDispatchEntry(

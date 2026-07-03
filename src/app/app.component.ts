@@ -143,7 +143,8 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
           event.urlAfterRedirects === '/GrowthInProcurmentTabPublic' ||
           event.urlAfterRedirects === '/distributionPublic' ||
           event.urlAfterRedirects === '/IndentPendingWHdashPublic' ||
-          event.urlAfterRedirects === '/Registration';
+          event.urlAfterRedirects === '/Registration' ||
+          event.urlAfterRedirects.includes('po-supply-dispatch-report');
 
         this.role = this.basicAuthentication.getRole().roleName;
         this.updateMenu();

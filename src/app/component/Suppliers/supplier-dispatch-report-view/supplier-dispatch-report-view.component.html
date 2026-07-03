@@ -1,0 +1,118 @@
+<div class="report-page" [class.report-page--inline]="inline">
+  <table class="report-layout">
+    <tr>
+      <td class="print-cell no-print">
+        <button
+          type="button"
+          class="show-btn print-text-btn"
+          (click)="printReport()"
+          [disabled]="!report || loading">
+          Print
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div *ngIf="loading" class="loading-text">Loading dispatch report...</div>
+        <div *ngIf="!loading && loadError" class="error-text">{{ loadError }}</div>
+
+        <div [id]="printContainerId" class="report-card" *ngIf="!loading && report && !loadError">
+          <table class="report-inner">
+            <tr>
+              <td colspan="4" class="report-title-cell">
+                <strong>Dispatch Details</strong>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" class="meta-left">
+                <strong *ngIf="report.dispatchNo">Dispatch No :- {{ report.dispatchNo }}</strong>
+              </td>
+              <td colspan="2" class="meta-right">
+                <strong *ngIf="report.dispatchDate">Dispatch Date :- {{ report.dispatchDate }}</strong>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4" class="details-wrap">
+                <table class="info-table" border="1">
+                  <tbody>
+                    <tr>
+                      <td class="label-cell">Itemcode</td>
+                      <td class="value-cell">{{ report.itemCode }}</td>
+                      <td class="label-cell">Item Name</td>
+                      <td class="value-cell" colspan="3">{{ report.itemName }}</td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Purchase Order No.:</td>
+                      <td class="value-cell">{{ report.poNo }}</td>
+                      <td class="label-cell">Purchase Order Date:</td>
+                      <td class="value-cell">{{ report.poDate }}</td>
+                      <td class="label-cell">Tender No</td>
+                      <td class="value-cell">{{ report.tenderNo }}</td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Consignee Name</td>
+                      <td class="value-cell">{{ report.consigneeName }}</td>
+                      <td class="label-cell">Model No</td>
+                      <td class="value-cell">{{ report.modelNo }}</td>
+                      <td class="label-cell">Make</td>
+                      <td class="value-cell">{{ report.make }}</td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Basic Rate</td>
+                      <td class="value-cell">{{ report.basicRate }}</td>
+                      <td class="label-cell">Total Net PO Value</td>
+                      <td class="value-cell">{{ report.totalNetPoValue }}</td>
+                      <td class="label-cell">Total Gross PO Value</td>
+                      <td class="value-cell">{{ report.totalGrossPoValue }}</td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">PO Quanity for Consignee</td>
+                      <td class="value-cell">{{ report.poQtyForConsignee }}</td>
+                      <td class="label-cell">Time Duration For Supply</td>
+                      <td class="value-cell">{{ report.supplyDays }}</td>
+                      <td class="label-cell">Tax</td>
+                      <td class="value-cell">{{ report.taxPercent }} %</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4" class="section-title-cell">
+                <strong>Challon/Invoice Details</strong>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4" class="invoice-wrap">
+                <table class="invoice-table" border="1">
+                  <tbody>
+                    <tr>
+                      <td class="label-cell">Challan No.:</td>
+                      <td class="value-cell">{{ report.challanNo }}</td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Challan Date:</td>
+                      <td class="value-cell">{{ report.challanDate }}</td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Invoice No.:</td>
+                      <td class="value-cell">{{ report.invoiceNo }}</td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Invoice Date:</td>
+                      <td class="value-cell">{{ report.invoiceDate }}</td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Remarks:</td>
+                      <td class="value-cell">{{ report.remarks }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
