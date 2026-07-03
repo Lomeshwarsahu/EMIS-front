@@ -838,3 +838,40 @@ export interface SupplierGridDto {
   Fax: string
   Email: string
 }
+export interface GetDashboardGrid {
+  sno: number;
+  PoId: number;
+  TenderNo: string;
+  PoNo: string;
+  Supplier: string;
+  PoDate: string;
+  FacilityAutName: string;
+  ItemCodeAsPerTender: string;
+  ItemName: string;
+  POQty: number;
+  POValue: number;
+  SupplyQty: number;
+  InsQty: number;
+  ReceiptQty: number;
+  LastRDate: string;
+  PoType: string;
+  FileNo: string;
+  FileDt: string;
+  PresentFile: string;
+  PresentUserId: number;
+  ToUserId: number;
+  PenaltyPercent: number;
+  ReasonId: number;
+  ReasonName: string;
+  IsSolved: string;
+  SiteStatus: string;
+  RowNo: number;
+  ToBePaid: number;
+  ToDate: string;
+  EntDT: string;
+  Conditond: string; // Isko 'FitUnfit' column me show karenge
+  FinalRate: number;
+  ToPaidValue: number;
+  FinRemarks: string; // Isko 'Remarks' column me show karenge
+  FacilityAutId: number;
+}
