@@ -97,6 +97,7 @@ import { InvoiceDetailComponent } from './Reports/invoice-detail/invoice-detail.
 import { TDSdataReportComponent } from './Reports/tdsdata-report/tdsdata-report.component';
 import { PaymentsCPReport20perComponent } from './Reports/payments-cpreport20per/payments-cpreport20per.component';
 import { FileMRCDashboardFINFileComponent } from './GM Finance/file-mrcdashboard-finfile/file-mrcdashboard-finfile.component';
+import { SanctionComponent } from './GM Finance/sanction/sanction.component';
 
 
 const routes: Routes = [
@@ -249,6 +250,7 @@ const routes: Routes = [
   { path: 'SupplierBankAccounts', component: SupplierBankAccountsComponent },
   { path: 'SupplierGSTentry', component: SupplierGSTentryComponent },
   { path: 'BudgetDetailsProvisional', component: BudgetDetailsProvisionalComponent },
+  { path: 'Sanction', component: SanctionComponent },
 
   {
     path: 'TenderStatusUpdate',

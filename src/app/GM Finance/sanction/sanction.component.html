@@ -1,0 +1,308 @@
+<section class="container-fluid py-4">
+    <div class="row justify-content-center mb-4">
+        <div class="col-12 text-center">
+            <h2 class="fw-bold text-primary mb-1">Sanction Calculation</h2>
+            <p class="text-secondary">Review the basic project details below</p>
+        </div>
+    </div>
+    <div class="container-fluid p-2">
+            <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted">Fetching PO Details...</p>
+    </div>
+            <div *ngIf="!isLoading && poDetails" class="card shadow">
+                <div class="card-body">
+                 
+                    <div class="row border border-darki rounded-3 mb-0 mt-0">
+                       
+                        <div class="col-12 col-md-12 border p-2 d-flex">
+                            <strong>Tender :</strong>
+                            <span class="ml-2"> {{ poDetails.SchemeName }} (ID: {{ poDetails.TenderId }})</span>
+                        </div>
+                        <div class="col-12 col-md-12 border p-2 d-flex">
+                            <strong>Item :</strong>
+                            <span class="ml-2"> {{ poDetails.ItemName }} <small class="text-muted">({{ poDetails.ItemCode }})</small></span>
+                        </div>
+                        <div class="col-12 col-md-3 border p-2 d-flex">
+                            <strong>Fin Year:</strong>
+                            <span class="ml-2">{{ poDetails.AccYear }}</span>
+                        </div>
+                        <div class="col-12 col-md-3 border p-2 d-flex">
+                            <strong>PO Date:</strong>
+                            <span class="ml-2">{{ poDetails.PoDate }}</span>
+                        </div>
+                        <div class="col-12 col-md-3 border p-2 d-flex">
+                            <strong>Log Charges:</strong>
+                            <span class="ml-2">{{penaltyData?.LogoCharges}}</span>
+                        </div>
+                        <div class="col-12 col-md-3 border p-2 d-flex">
+                            <strong>Penalty(Days/Week):</strong>
+                            <span class="ml-2">{{penaltyData?.PenaltyType}}</span>
+                        </div>
+
+
+                        <div class="col-12 col-md-3 border p-2 d-flex">
+                            <strong >Supply Order Number:</strong>
+                            <span class="ml-2" >  {{ poDetails.PoNo }}</span>
+                        </div>
+                        <div class="col-12 col-md-3 border p-2 d-flex">
+                            <strong >PO QTY:</strong>
+                            <span class="ml-2" >{{ poDetails.PoQty }}</span>
+                        </div>
+                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
+                            <strong>Logo Charges Upper Limit:</strong>
+                            <span class="ml-2">{{penaltyData?.LogoChargesUpper}}</span>
+                        </div>
+                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
+                            <strong>Normal Days Allowed:</strong>
+                            <span class="ml-2">{{penaltyData?.TrancheDays}}Days</span>
+                        </div>
+                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
+                            <strong>Supplier:</strong>
+                            <span class="ml-2">{{ poDetails.SupplierName }}</span>
+                        </div>
+                     
+                 
+                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
+                            <strong>Basic Rate:</strong><span class="ml-2">  {{ poDetails.BasicRate | number:'1.2-2' }}</span>
+                        </div>
+                        <div class="col-12 col-md-3 border p-2 d-flex">
+                            <strong>GST:</strong>
+                            <span class="ml-2">{{ poDetails.PercentValue }}%</span>
+                        </div>
+                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
+                            <strong>LD Penalty:</strong><span class="ml-2">{{penaltyData?.PenaltyPercent}}</span>
+                        </div>
+
+                        <div class="col-12 col-md-3 border p-2 d-flex flex-row">
+                            <strong>PO Value (Rs):</strong>
+                            <span class="ml-2"> {{ poDetails.PoValue | number:'1.2-2' }}</span>
+                        </div>
+
+                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
+                            <strong>Final Rate:</strong>
+                            <span class="ml-2" > {{ poDetails.FinalRate | number:'1.2-2' }}</span>
+                        </div>
+
+                        <div class="col-12 col-md-3 border p-2 d-flex flex-row">
+                            <strong >Penalty Approval:</strong>
+                            <span class="ml-2" >detail.tsamt</span>
+                        </div>
+                        <div class="col-12 col-md-3 border p-2 d-flex">
+                        <strong>Max Days Allowed:</strong>
+                        <span class="ml-2">{{penaltyData?.CancellationDays}}</span>
+                    </div>
+                        <div class="col-12 col-md-3 border p-2 d-flex flex-row">
+                            <strong>Dispatched GST:</strong>
+                            <span class="ml-2">{{poDetails.InvoiceGst}}</span>
+                        </div>
+
+                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
+                            <strong >Extension Granted upto:</strong>
+                            <span class="ml-2" >{{penaltyData?.ExtendedDate}}</span>
+                        </div>
+
+                        <div class="col-12 col-md-3 border p-2 d-flex flex-row">
+                            <strong >Penalty After Max Days/Unexecuted:</strong>
+                            <span class="ml-2" >detail.tsamt</span>
+                        </div>
+                        <div class="col-12 col-md-3 border p-2 d-flex">
+                        <strong>DivisionId:</strong>
+                        <span class="ml-2">detail.divisionid</span>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+             <div *ngIf="!isLoading && !poDetails" class="alert alert-danger mt-3" role="alert">
+        Failed to load PO details or data not found.
+    </div>
+        </div>
+        <!-- <div class="container-fluid py-3">
+    <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted">Fetching PO Details...</p>
+    </div>
+
+    <div *ngIf="!isLoading && poDetails" class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-dark text-white py-2">
+            <h5 class="mb-0">PO Item Details</h5>
+        </div>
+        
+        <div class="card-body bg-light p-4">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Tender / Scheme Name</label>
+                    <div class="p-2 bg-white border rounded shadow-sm text-break">
+                        {{ poDetails.SchemeName }} (ID: {{ poDetails.TenderId }})
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-8">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Item</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">
+                        {{ poDetails.ItemName }} <small class="text-muted">({{ poDetails.ItemCode }})</small>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Supplier</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">
+                        {{ poDetails.SupplierName }}
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Fin Year</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">{{ poDetails.AccYear }}</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">PO Date</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">{{ poDetails.PoDate }}</div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Supply Order Number</label>
+                    <div class="p-2 bg-white border rounded shadow-sm fw-bold text-primary">
+                        {{ poDetails.PoNo }}
+                    </div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">PO QTY</label>
+                    <div class="p-2 bg-white border rounded shadow-sm fw-bold">
+                        {{ poDetails.PoQty }}
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Basic Rate (₹)</label>
+                    <div class="p-2 bg-white border rounded shadow-sm text-end">
+                        {{ poDetails.BasicRate | number:'1.2-2' }}
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">GST (%)</label>
+                    <div class="p-2 bg-white border rounded shadow-sm text-end">
+                        {{ poDetails.PercentValue }}%
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Final Rate (₹)</label>
+                    <div class="p-2 bg-white border rounded shadow-sm text-end fw-bold">
+                        {{ poDetails.FinalRate | number:'1.2-2' }}
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Total PO Value (₹)</label>
+                    <div class="p-2 bg-white border rounded shadow-sm text-end fw-bold text-success">
+                        {{ poDetails.PoValue | number:'1.2-2' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div *ngIf="!isLoading && !poDetails" class="alert alert-danger mt-3" role="alert">
+        Failed to load PO details or data not found.
+    </div>
+</div> -->
+
+</section>
+
+
+<!-- <section class="container-fluid py-4">
+    <div class="row justify-content-center mb-4">
+        <div class="col-12 text-center">
+            <h2 class="fw-bold text-primary mb-1">Sanction Calculation</h2>
+            <p class="text-secondary">Review the basic project details below</p>
+        </div>
+    </div>
+
+    <div class="card shadow border-0 rounded-3">
+        <div class="card-header bg-dark text-white py-3">
+            <h5 class="mb-0 text-center fw-bold">Basic Details</h5>
+        </div>
+        
+        <div class="card-body p-4 bg-light">
+            <div class="row g-3">
+                
+                <div class="col-12 col-lg-8">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Work Name</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">detail.work</div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Work Code</label>
+                    <div class="p-2 bg-white border rounded shadow-sm text-break">detail.work_id</div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Type of Work</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">detail.type_name</div>
+                </div>
+                <div class="col-6 col-md-3 col-lg-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Grant</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">detail.grantname</div>
+                </div>
+                <div class="col-6 col-md-3 col-lg-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Head No</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">detail.grantNo</div>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">District</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">detail.dbStart_Name_En</div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Block</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">detail.blockname</div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Division</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">detail.divName_En</div>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Fund Head</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">detail.head</div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Approver</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">detail.approver</div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">AS Letter Number</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">
+                        <a href="#" class="btn btn-outline-primary btn-sm py-0 w-100 text-start" style="text-decoration: none;">
+                            <i class="bi bi-link-45deg"></i> detail.letterNo (fgh)
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">AS Amount <small>(Lacs)</small></label>
+                    <div class="p-2 bg-white border rounded shadow-sm text-success fw-bold">detail.aaamt</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">AS Date</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">detail.aaDate</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">TS Amount <small>(Lacs)</small></label>
+                    <div class="p-2 bg-white border rounded shadow-sm text-success fw-bold">detail.tsamt</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">TS Date</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">detail.tsDate</div>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <label class="text-muted small fw-bold text-uppercase mb-1">Division ID</label>
+                    <div class="p-2 bg-white border rounded shadow-sm">detail.divisionid</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section> -->
