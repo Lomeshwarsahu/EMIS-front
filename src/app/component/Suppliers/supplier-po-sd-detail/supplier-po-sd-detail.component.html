@@ -39,7 +39,11 @@
             <td class="value-col">
               <input type="text" [value]="sdAmount" disabled />
             </td>
-            <td class="label-col">Maturity Date</td>
+            <td class="label-col">
+              Maturity Date
+              <span *ngIf="!isMaturityOptional" class="req-mark">*</span>
+              <span *ngIf="isMaturityOptional" class="optional-mark">(optional)</span>
+            </td>
             <td class="value-col">
               <input type="date" [(ngModel)]="maturityDate" name="maturityDate" />
             </td>

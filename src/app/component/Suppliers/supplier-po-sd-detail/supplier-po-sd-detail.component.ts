@@ -10,6 +10,7 @@ import { resolveSupplierUserId } from '../supplier-user.util';
 interface SdPaymentMode {
   sdMode: string;
   sdName: string;
+  maturityOptional: boolean;
 }
 
 @Component({
@@ -83,6 +84,14 @@ export class SupplierPoSdDetailComponent implements OnInit {
     return !this.hasExisting || this.fileMode === 'UPLOAD';
   }
 
+  get isMaturityOptional(): boolean {
+    const mode = this.paymentModes.find((item) => item.sdMode === this.selectedPaymentMode);
+    if (mode) {
+      return mode.maturityOptional;
+    }
+    return false;
+  }
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.selectedFile = input.files?.[0] ?? null;
@@ -136,6 +145,10 @@ export class SupplierPoSdDetailComponent implements OnInit {
       this.toastr.warning('Please fill Issue Date');
       return;
     }
+    if (!this.isMaturityOptional && !this.maturityDate) {
+      this.toastr.warning('Please fill Maturity Date');
+      return;
+    }
     if (!this.documentNo.trim()) {
       this.toastr.warning('Please SD Document Ref. No');
       return;
@@ -179,6 +192,10 @@ export class SupplierPoSdDetailComponent implements OnInit {
     }
     if (!this.issueDate) {
       this.toastr.warning('Please fill Issue Date');
+      return;
+    }
+    if (!this.isMaturityOptional && !this.maturityDate) {
+      this.toastr.warning('Please fill Maturity Date');
       return;
     }
     if (this.fileMode === 'UPLOAD' && !this.selectedFile) {
@@ -239,9 +256,14 @@ export class SupplierPoSdDetailComponent implements OnInit {
   private mapPaymentModes(list: unknown[]): SdPaymentMode[] {
     return list.map((item) => {
       const row = item as Record<string, unknown>;
+      const sdName = String(row['sdName'] ?? row['SdName'] ?? '');
+      const upper = sdName.toUpperCase();
       return {
         sdMode: String(row['sdMode'] ?? row['SdMode'] ?? ''),
-        sdName: String(row['sdName'] ?? row['SdName'] ?? ''),
+        sdName,
+        maturityOptional: Boolean(row['maturityOptional'] ?? row['MaturityOptional'])
+          || upper.includes('NEFT')
+          || upper.includes('RTGS'),
       };
     });
   }

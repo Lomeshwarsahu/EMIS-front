@@ -78,9 +78,6 @@ export class ApiService {
     supplierId: number;
     mobileNo: string;
     email: string;
-    gstNo: string;
-    gstNo2: string;
-    gstNo3: string;
     phoneNo: string;
     address: string;
   }) {
@@ -88,9 +85,6 @@ export class ApiService {
       supplierId: payload.supplierId,
       mobileNo: payload.mobileNo,
       email: payload.email,
-      gstNo: payload.gstNo,
-      gstNo2: payload.gstNo2,
-      gstNo3: payload.gstNo3,
       phoneNo: payload.phoneNo,
       address: payload.address,
     });

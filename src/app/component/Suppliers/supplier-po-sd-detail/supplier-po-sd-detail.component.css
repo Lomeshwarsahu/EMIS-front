@@ -159,3 +159,15 @@
     margin-top: 8px;
   }
 }
+
+.req-mark {
+  color: #c00;
+  margin-left: 2px;
+}
+
+.optional-mark {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 400;
+  margin-left: 4px;
+}

@@ -91,9 +91,6 @@ export class ParticularSupplierAddComponent implements OnInit {
         supplierId: this.model.supplierId,
         mobileNo: this.model.mobileNo.trim(),
         email: this.model.email.trim(),
-        gstNo: this.model.gstNo.trim(),
-        gstNo2: this.model.gstNo2.trim(),
-        gstNo3: this.model.gstNo3.trim(),
         phoneNo: this.model.phoneNo.trim(),
         address: this.model.address.trim(),
       })
@@ -122,12 +119,10 @@ export class ParticularSupplierAddComponent implements OnInit {
   private validate(): string | null {
     if (!this.model.mobileNo?.trim()) return 'Please insert Mobile Number.';
     if (!this.model.email?.trim()) return 'Please insert Email Id.';
-    if (!this.model.gstNo?.trim()) return 'Please insert GST No.';
     if (!this.model.phoneNo?.trim()) return 'Please insert Phone No.';
     if (!this.model.address?.trim()) return 'Please insert Address.';
     if (this.model.mobileNo.trim().length !== 10) return 'The limit of Mobile Number is 10 digits.';
     if (this.model.email.trim().length > 50) return 'The limit of Email Id is 50 characters.';
-    if (this.model.gstNo.trim().length > 15) return 'The limit of GST No is 15 characters.';
     const phoneLen = this.model.phoneNo.trim().length;
     if (phoneLen < 10 || phoneLen > 11) return 'The limit of phn No is 11 digits.';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.model.email.trim())) return 'Invalid Email Format.';
