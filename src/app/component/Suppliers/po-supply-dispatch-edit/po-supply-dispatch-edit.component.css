@@ -1,0 +1,51 @@
+.desk-toolbar {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+}
+
+.back-btn {
+  background: #4d67a0;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 0.375rem;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.po-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 48px;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.dispatch-edit-grid {
+  width: 1400px;
+  min-width: 1400px;
+}
+
+.col-sn { width: 45px; }
+.col-item { width: 180px; }
+.col-code { width: 100px; }
+.col-consignee { width: 180px; }
+.col-price { width: 90px; }
+.col-qty { width: 80px; }
+.col-action { width: 60px; }
+.col-batch { width: 420px; }
+
+.add-btn {
+  background: #4d67a0;
+  color: #fff;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}

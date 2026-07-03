@@ -7,6 +7,7 @@ import { ParticularSupplierAddComponent } from './component/Suppliers/particular
 import { SupplierGstEntryComponent } from './component/Suppliers/supplier-gst-entry/supplier-gst-entry.component';
 import { PoSupplyComponent } from './component/Suppliers/po-supply/po-supply.component';
 import { PoSupplyDispatchComponent } from './component/Suppliers/po-supply-dispatch/po-supply-dispatch.component';
+import { PoSupplyDispatchEditComponent } from './component/Suppliers/po-supply-dispatch-edit/po-supply-dispatch-edit.component';
 import { PoSupplyReceiptComponent } from './component/Suppliers/po-supply-receipt/po-supply-receipt.component';
 import { SupplierRcDetailReportComponent } from './component/Suppliers/supplier-rc-detail-report/supplier-rc-detail-report.component';
 import { SupplierAcceptedReportComponent } from './component/Suppliers/supplier-accepted-report/supplier-accepted-report.component';
@@ -144,8 +145,19 @@ const routes: Routes = [
     data: { allowedRoles: ['SUP'] },
   },
   {
+    path: 'transaction/po-supply-dispatch-edit',
+    component: PoSupplyDispatchEditComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
     path: 'po_supplyDispatch',
     redirectTo: 'transaction/po-supply-dispatch',
+    pathMatch: 'full',
+  },
+  {
+    path: 'po_supply_edit',
+    redirectTo: 'transaction/po-supply-dispatch-edit',
     pathMatch: 'full',
   },
   {

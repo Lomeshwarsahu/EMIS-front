@@ -1,0 +1,89 @@
+<div class="supplier-po-page">
+  <h2 class="page-title narrow">Dispatch Equipment Desk</h2>
+
+  <div class="desk-toolbar">
+    <button type="button" class="back-btn" (click)="backToDispatchDesk()">Back to Dispatch Desk</button>
+  </div>
+
+  <div class="po-header" *ngIf="poNo || poDate">
+    <span>Po Number: <strong>{{ poNo }}</strong></span>
+    <span>Po Date: <strong>{{ poDate }}</strong></span>
+  </div>
+
+  <div *ngIf="loading" class="loading-text">Loading dispatch equipment desk...</div>
+
+  <div class="datagrid" *ngIf="!loading">
+    <div class="table-wrap">
+      <table class="po-grid dispatch-edit-grid">
+        <thead>
+          <tr>
+            <th class="col-sn">S.No</th>
+            <th class="col-item">Item Name</th>
+            <th class="col-code">Item Code</th>
+            <th class="col-consignee">Consignees</th>
+            <th class="col-price">Unit Price</th>
+            <th class="col-qty">Order Qty</th>
+            <th class="col-price">Total Price</th>
+            <th class="col-action">Actions</th>
+            <th class="col-batch">Dispatch Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>{{ row.itemName }}</td>
+            <td>{{ row.itemCode }}</td>
+            <td>{{ row.locationName }}</td>
+            <td class="text-center">{{ row.unitPrice }}</td>
+            <td class="text-center">{{ row.quantity }}</td>
+            <td class="text-center">{{ row.totalPrice }}</td>
+            <td class="text-center">
+              <button
+                *ngIf="row.canAddDispatch"
+                type="button"
+                class="add-btn"
+                title="Add dispatch"
+                (click)="onAddDispatch(row)">
+                +
+              </button>
+            </td>
+            <td>
+              <table class="batch-grid" *ngIf="row.batches.length; else noBatches">
+                <thead>
+                  <tr>
+                    <th>DispatchNo/Date</th>
+                    <th>Tentative Supply/Consignee Receipt</th>
+                    <th>Dispatch QTY</th>
+                    <th>Consignee Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let batch of row.batches">
+                    <td class="text-center">
+                      <div>{{ batch.dispatchNo }}</div>
+                      <div>{{ batch.dispatchDate }}</div>
+                    </td>
+                    <td class="text-center">
+                      <div>{{ batch.tentativeSupplyDate }}</div>
+                      <div>/Receipt DT: {{ batch.receivedDate }}</div>
+                    </td>
+                    <td class="text-center">{{ batch.quantity }}</td>
+                    <td class="text-center">
+                      <button type="button" class="link-btn" (click)="onBatchStatus(batch, row)">
+                        {{ batch.supplyStatus }}
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <ng-template #noBatches>—</ng-template>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="9" class="empty-row">No records found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

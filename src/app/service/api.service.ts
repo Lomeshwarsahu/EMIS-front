@@ -134,6 +134,12 @@ export class ApiService {
     );
   }
 
+  getSupplierPoDispatchEdit(userId: number, poId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/po-supply-edit/by-user/${userId}?poId=${poId}`,
+    );
+  }
+
   getSupplierPoReceiptFilters(userId: number) {
     return this.http.get<Record<string, unknown>>(
       `${this.apiUrll}/supplier/po-supply-receipt/filters/by-user/${userId}`,

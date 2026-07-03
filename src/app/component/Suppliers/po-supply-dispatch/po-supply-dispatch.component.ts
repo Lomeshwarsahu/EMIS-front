@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 
@@ -49,6 +50,7 @@ export class PoSupplyDispatchComponent implements OnInit {
 
   constructor(
     private readonly api: ApiService,
+    private readonly router: Router,
     private readonly toastr: ToastrService,
   ) {}
 
@@ -112,7 +114,9 @@ export class PoSupplyDispatchComponent implements OnInit {
   }
 
   onSupplyStatus(row: PoDispatchRow): void {
-    this.toastr.info(`PO supply edit for PO ID ${row.poId} — page migration pending.`);
+    this.router.navigate(['/transaction/po-supply-dispatch-edit'], {
+      queryParams: { poId: row.poId },
+    });
   }
 
   private mapFinancialYears(list: unknown[]): FinancialYearOption[] {

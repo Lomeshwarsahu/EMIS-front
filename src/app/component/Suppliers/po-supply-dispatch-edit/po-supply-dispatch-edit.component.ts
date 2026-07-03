@@ -1,0 +1,164 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { ApiService } from 'src/app/service/api.service';
+
+interface DispatchEditBatch {
+  issueId: number;
+  poId: number;
+  locationId: number;
+  categoryId: number;
+  dispatchNo: string;
+  dispatchDate: string;
+  tentativeSupplyDate: string;
+  receivedDate: string;
+  quantity: number;
+  supplyStatus: string;
+}
+
+interface DispatchEditRow {
+  poItemId: number;
+  poId: number;
+  itemId: number;
+  consigneeId: number;
+  categoryId: number;
+  itemName: string;
+  itemCode: string;
+  locationName: string;
+  unitPrice: number;
+  quantity: number;
+  totalPrice: number;
+  canAddDispatch: boolean;
+  batches: DispatchEditBatch[];
+}
+
+@Component({
+  selector: 'app-po-supply-dispatch-edit',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './po-supply-dispatch-edit.component.html',
+  styleUrls: ['../supplier-po-pages.shared.css', './po-supply-dispatch-edit.component.css'],
+})
+export class PoSupplyDispatchEditComponent implements OnInit {
+  loading = false;
+  userId = 0;
+  poId = 0;
+  poNo = '';
+  poDate = '';
+  rows: DispatchEditRow[] = [];
+
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly api: ApiService,
+    private readonly toastr: ToastrService,
+  ) {}
+
+  ngOnInit(): void {
+    this.userId = Number(sessionStorage.getItem('userid') || localStorage.getItem('userid') || 0);
+    if (!this.userId) {
+      this.toastr.error('Please login as supplier.');
+      return;
+    }
+
+    this.route.queryParamMap.subscribe((params) => {
+      this.poId = Number(params.get('poId') || params.get('POID') || 0);
+      if (!this.poId) {
+        this.toastr.error('PO id is required.');
+        return;
+      }
+      this.loadDesk();
+    });
+  }
+
+  loadDesk(): void {
+    this.loading = true;
+    this.api.getSupplierPoDispatchEdit(this.userId, this.poId).subscribe({
+      next: (raw) => {
+        this.loading = false;
+        const data = raw as Record<string, unknown>;
+        this.poNo = String(data['poNo'] ?? data['PoNo'] ?? '');
+        this.poDate = String(data['poDate'] ?? data['PoDate'] ?? '');
+        const rowsRaw = data['rows'] ?? data['Rows'] ?? [];
+        this.rows = Array.isArray(rowsRaw)
+          ? rowsRaw.map((row) => this.mapRow(row as Record<string, unknown>))
+          : [];
+      },
+      error: (err) => {
+        this.loading = false;
+        this.rows = [];
+        this.toastr.error(err?.error?.message ?? 'Unable to load dispatch equipment desk.');
+      },
+    });
+  }
+
+  backToDispatchDesk(): void {
+    this.router.navigate(['/transaction/po-supply-dispatch']);
+  }
+
+  onAddDispatch(row: DispatchEditRow): void {
+    this.navigateToDispatchEntry(row, 0);
+  }
+
+  onBatchStatus(batch: DispatchEditBatch, row: DispatchEditRow): void {
+    if (batch.supplyStatus === 'Complete') {
+      this.toastr.info(
+        `Dispatch report for issue ${batch.issueId} — report page migration pending.`,
+      );
+      return;
+    }
+    this.navigateToDispatchEntry(row, batch.issueId, batch.categoryId);
+  }
+
+  private navigateToDispatchEntry(
+    row: DispatchEditRow,
+    issueId: number,
+    categoryId = row.categoryId,
+  ): void {
+    const isReagent = categoryId === 2;
+    this.toastr.info(
+      `Dispatch entry (${isReagent ? 'reagent' : 'equipment'}) for consignee ${row.locationName}` +
+        (issueId ? `, issue ${issueId}` : '') +
+        ' — entry form migration pending.',
+    );
+  }
+
+  private mapRow(row: Record<string, unknown>): DispatchEditRow {
+    const batchesRaw = row['batches'] ?? row['Batches'] ?? [];
+    const batches = Array.isArray(batchesRaw)
+      ? batchesRaw.map((b) => this.mapBatch(b as Record<string, unknown>))
+      : [];
+
+    return {
+      poItemId: Number(row['poItemId'] ?? row['PoItemId'] ?? 0),
+      poId: Number(row['poId'] ?? row['PoId'] ?? 0),
+      itemId: Number(row['itemId'] ?? row['ItemId'] ?? 0),
+      consigneeId: Number(row['consigneeId'] ?? row['ConsigneeId'] ?? 0),
+      categoryId: Number(row['categoryId'] ?? row['CategoryId'] ?? 0),
+      itemName: String(row['itemName'] ?? row['ItemName'] ?? ''),
+      itemCode: String(row['itemCode'] ?? row['ItemCode'] ?? ''),
+      locationName: String(row['locationName'] ?? row['LocationName'] ?? ''),
+      unitPrice: Number(row['unitPrice'] ?? row['UnitPrice'] ?? 0),
+      quantity: Number(row['quantity'] ?? row['Quantity'] ?? 0),
+      totalPrice: Number(row['totalPrice'] ?? row['TotalPrice'] ?? 0),
+      canAddDispatch: Boolean(row['canAddDispatch'] ?? row['CanAddDispatch'] ?? false),
+      batches,
+    };
+  }
+
+  private mapBatch(row: Record<string, unknown>): DispatchEditBatch {
+    return {
+      issueId: Number(row['issueId'] ?? row['IssueId'] ?? 0),
+      poId: Number(row['poId'] ?? row['PoId'] ?? 0),
+      locationId: Number(row['locationId'] ?? row['LocationId'] ?? 0),
+      categoryId: Number(row['categoryId'] ?? row['CategoryId'] ?? 0),
+      dispatchNo: String(row['dispatchNo'] ?? row['DispatchNo'] ?? ''),
+      dispatchDate: String(row['dispatchDate'] ?? row['DispatchDate'] ?? ''),
+      tentativeSupplyDate: String(row['tentativeSupplyDate'] ?? row['TentativeSupplyDate'] ?? ''),
+      receivedDate: String(row['receivedDate'] ?? row['ReceivedDate'] ?? ''),
+      quantity: Number(row['quantity'] ?? row['Quantity'] ?? 0),
+      supplyStatus: String(row['supplyStatus'] ?? row['SupplyStatus'] ?? ''),
+    };
+  }
+}
