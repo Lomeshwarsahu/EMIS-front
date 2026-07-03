@@ -128,6 +128,39 @@ export class ApiService {
     );
   }
 
+  getSupplierPoSdDetail(userId: number, poId: number, itemId: number, grossValue: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/po-sd-detail/by-user/${userId}?poId=${poId}&itemId=${itemId}&grossValue=${grossValue}`,
+    );
+  }
+
+  saveSupplierPoSdDetail(userId: number, formData: FormData) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/po-sd-detail/by-user/${userId}`,
+      formData,
+    );
+  }
+
+  updateSupplierPoSdDetail(userId: number, formData: FormData) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/po-sd-detail/update/by-user/${userId}`,
+      formData,
+    );
+  }
+
+  getSupplierPoExtensionPage(userId: number, poId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/po-extension/by-user/${userId}?poId=${poId}`,
+    );
+  }
+
+  saveSupplierPoExtension(userId: number, formData: FormData) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/po-extension/by-user/${userId}`,
+      formData,
+    );
+  }
+
   getSupplierPoDispatch(userId: number, financialYearId: number, tenderId: number) {
     return this.http.get<Record<string, unknown>[]>(
       `${this.apiUrll}/supplier/po-supply-dispatch/by-user/${userId}?financialYearId=${financialYearId}&tenderId=${tenderId}`,

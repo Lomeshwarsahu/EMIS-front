@@ -9,6 +9,8 @@ import { PoSupplyComponent } from './component/Suppliers/po-supply/po-supply.com
 import { PoSupplyDispatchComponent } from './component/Suppliers/po-supply-dispatch/po-supply-dispatch.component';
 import { PoSupplyDispatchEditComponent } from './component/Suppliers/po-supply-dispatch-edit/po-supply-dispatch-edit.component';
 import { PoSupplyDispatchReportComponent } from './component/Suppliers/po-supply-dispatch-report/po-supply-dispatch-report.component';
+import { SupplierPoSdDetailComponent } from './component/Suppliers/supplier-po-sd-detail/supplier-po-sd-detail.component';
+import { SupplierPoApplyExtensionComponent } from './component/Suppliers/supplier-po-apply-extension/supplier-po-apply-extension.component';
 import { PoSupplyReceiptComponent } from './component/Suppliers/po-supply-receipt/po-supply-receipt.component';
 import { SupplierRcDetailReportComponent } from './component/Suppliers/supplier-rc-detail-report/supplier-rc-detail-report.component';
 import { SupplierAcceptedReportComponent } from './component/Suppliers/supplier-accepted-report/supplier-accepted-report.component';
@@ -137,6 +139,28 @@ const routes: Routes = [
   {
     path: 'po_supply',
     redirectTo: 'orders/po-supply',
+    pathMatch: 'full',
+  },
+  {
+    path: 'orders/po-supply-sd-detail',
+    component: SupplierPoSdDetailComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'SDdetailSupplier',
+    redirectTo: 'orders/po-supply-sd-detail',
+    pathMatch: 'full',
+  },
+  {
+    path: 'orders/po-supply-apply-extension',
+    component: SupplierPoApplyExtensionComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'ApplyForExtension',
+    redirectTo: 'orders/po-supply-apply-extension',
     pathMatch: 'full',
   },
   {

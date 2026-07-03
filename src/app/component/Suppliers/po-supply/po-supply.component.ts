@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 
@@ -55,6 +56,7 @@ export class PoSupplyComponent implements OnInit {
   constructor(
     private readonly api: ApiService,
     private readonly toastr: ToastrService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -124,11 +126,20 @@ export class PoSupplyComponent implements OnInit {
   }
 
   onSdDetails(row: PoSupplyRow): void {
-    this.toastr.info(`SD details for PO ID ${row.poId} — page migration pending.`);
+    this.router.navigate(['/orders/po-supply-sd-detail'], {
+      queryParams: {
+        poId: row.poId,
+        supplierId: this.supplierId,
+        gValue: row.totalPoValue,
+        itemId: row.itemId,
+      },
+    });
   }
 
   onApplyExtension(row: PoSupplyRow): void {
-    this.toastr.info(`Apply extension for PO ID ${row.poId} — page migration pending.`);
+    this.router.navigate(['/orders/po-supply-apply-extension'], {
+      queryParams: { poId: row.poId },
+    });
   }
 
   private mapFinancialYears(list: unknown[]): FinancialYearOption[] {

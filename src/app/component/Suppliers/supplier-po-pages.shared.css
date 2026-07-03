@@ -1,5 +1,5 @@
 .supplier-po-page {
-  padding: 16px;
+  padding: 20px 24px 32px;
   font-family: 'Times New Roman', Times, serif;
   color: #003399;
   max-width: 100%;
@@ -202,6 +202,221 @@
 .loading-text {
   text-align: center;
   padding: 24px;
+}
+
+/* SD Detail / Apply Extension form pages */
+.page-toolbar {
+  margin-bottom: 20px;
+}
+
+.back-link {
+  display: inline-block;
+  color: #2563eb;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.back-link:hover {
+  color: #1d4ed8;
+}
+
+.page-title.narrow {
+  margin-bottom: 24px;
+}
+
+.detail-section {
+  max-width: 920px;
+  margin: 0 auto 28px;
+}
+
+.detail-section.wide {
+  max-width: 1120px;
+}
+
+.detail-header-card,
+.detail-form-card {
+  border: 1px solid #94a3b8;
+  background: #fff;
+}
+
+.detail-header-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 32px;
+  padding: 18px 24px;
+}
+
+.detail-header-grid.cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.detail-header-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.detail-header-item .label {
+  font-weight: 700;
+  color: #003399;
+}
+
+.detail-header-item .value {
+  color: #003399;
+}
+
+.detail-form-card {
+  padding: 8px 0 4px;
+}
+
+.detail-form-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.detail-form-table td {
+  padding: 14px 18px;
+  vertical-align: middle;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 14px;
+  color: #003399;
+}
+
+.detail-form-table tr:last-child td {
+  border-bottom: none;
+}
+
+.detail-form-table .label-col {
+  width: 24%;
+  font-weight: 700;
+  background: #f1f5f9;
+  text-align: right;
+  padding-right: 22px;
+  white-space: nowrap;
+}
+
+.detail-form-table .value-col {
+  width: 26%;
+  text-align: left;
+}
+
+.detail-form-table select,
+.detail-form-table input[type='text'],
+.detail-form-table input[type='number'],
+.detail-form-table input[type='date'] {
+  width: 220px;
+  max-width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #94a3b8;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.detail-form-table input[type='file'] {
+  display: block;
+  max-width: 360px;
+}
+
+.form-actions-row td {
+  padding: 22px 18px !important;
+  text-align: center;
+  background: #f8fafc;
+}
+
+.form-actions-row .show-btn + .show-btn,
+.form-actions-row .show-btn + .secondary-btn {
+  margin-left: 14px;
+}
+
+.file-mode-row td {
+  padding: 16px 18px !important;
+  text-align: center !important;
+  background: #fafafa;
+}
+
+.file-mode-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 24px;
+  cursor: pointer;
+}
+
+.upload-row td {
+  padding: 18px 24px !important;
+  text-align: left !important;
+}
+
+.upload-row small {
+  display: block;
+  margin-top: 10px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.section-title {
+  text-align: center;
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: #003399;
+  font-size: 15px;
+}
+
+.pending-banner {
+  margin: 0 16px 18px;
+  padding: 12px 18px;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  color: #b45309;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 4px;
+  line-height: 1.5;
+}
+
+.disabled-panel {
+  opacity: 0.88;
+}
+
+.secondary-btn {
+  background: #64748b;
+}
+
+.secondary-btn:hover:not(:disabled) {
+  background: #475569;
+}
+
+.small-btn {
+  padding: 8px 16px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 900px) {
+  .detail-header-grid,
+  .detail-header-grid.cols-3 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .detail-form-table .label-col {
+    text-align: left;
+    width: 34%;
+  }
+
+  .detail-form-table .value-col {
+    width: 66%;
+  }
+
+  .form-actions-row .show-btn + .show-btn,
+  .form-actions-row .show-btn + .secondary-btn {
+    margin-left: 0;
+    margin-top: 10px;
+  }
 }
 
 .batch-grid {

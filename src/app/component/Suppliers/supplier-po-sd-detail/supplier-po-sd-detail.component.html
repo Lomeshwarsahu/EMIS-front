@@ -1,0 +1,119 @@
+<div class="supplier-po-page sd-detail-page">
+  <div class="page-toolbar">
+    <a class="back-link" (click)="goBack()">Back</a>
+  </div>
+
+  <h2 class="page-title narrow">SD Detail</h2>
+
+  <div *ngIf="loading" class="loading-text">Loading SD detail...</div>
+
+  <div *ngIf="!loading" class="sd-detail-wrap">
+    <div class="sd-detail-card">
+      <table class="sd-form-table">
+        <tbody>
+          <tr class="sd-info-row">
+            <td class="label-col">Equipment</td>
+            <td class="value-col" colspan="3">{{ equipmentName }}</td>
+          </tr>
+          <tr class="sd-info-row">
+            <td class="label-col">Gross Value</td>
+            <td class="value-col" colspan="3">{{ grossValue | number: '1.2-2' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Payment Mode</td>
+            <td class="value-col">
+              <select [(ngModel)]="selectedPaymentMode" name="paymentMode">
+                <option value="0">select</option>
+                <option *ngFor="let mode of paymentModes" [value]="mode.sdMode">
+                  {{ mode.sdName }}
+                </option>
+              </select>
+            </td>
+            <td class="label-col">Issue Date</td>
+            <td class="value-col">
+              <input type="date" [(ngModel)]="issueDate" name="issueDate" />
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">SD Amount</td>
+            <td class="value-col">
+              <input type="text" [value]="sdAmount" disabled />
+            </td>
+            <td class="label-col">Maturity Date</td>
+            <td class="value-col">
+              <input type="date" [(ngModel)]="maturityDate" name="maturityDate" />
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">Document No</td>
+            <td class="value-col" colspan="3">
+              <input
+                type="text"
+                [(ngModel)]="documentNo"
+                name="documentNo"
+                maxlength="100"
+                [disabled]="hasExisting"
+              />
+            </td>
+          </tr>
+          <tr *ngIf="showUpdate" class="file-mode-row">
+            <td colspan="4">
+              <label>
+                <input
+                  type="radio"
+                  name="fileMode"
+                  value="UPLOAD"
+                  [(ngModel)]="fileMode"
+                  (change)="onFileModeChange()"
+                />
+                Upload File
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="fileMode"
+                  value="VIEW"
+                  [(ngModel)]="fileMode"
+                  (change)="onFileModeChange()"
+                />
+                View File
+              </label>
+            </td>
+          </tr>
+          <tr class="upload-row">
+            <td colspan="4">
+              <input
+                *ngIf="showFileUpload"
+                type="file"
+                accept=".pdf,application/pdf"
+                (change)="onFileSelected($event)"
+              />
+              <button
+                *ngIf="showUpdate && fileMode === 'VIEW' && hasFile"
+                type="button"
+                class="show-btn small-btn"
+                (click)="downloadFile()"
+              >
+                Download PDF
+              </button>
+              <small *ngIf="showFileUpload">Max 3 MB, PDF only</small>
+            </td>
+          </tr>
+          <tr class="form-actions-row">
+            <td colspan="4">
+              <button *ngIf="showSubmit" type="button" class="show-btn" (click)="save()" [disabled]="saving">
+                {{ saving ? 'Saving...' : 'Submit' }}
+              </button>
+              <button *ngIf="showUpdate" type="button" class="show-btn" (click)="update()" [disabled]="saving">
+                {{ saving ? 'Saving...' : 'Update' }}
+              </button>
+              <button type="button" class="show-btn secondary-btn" (click)="resetForm()" [disabled]="saving">
+                Reset
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
