@@ -79,7 +79,8 @@
 }
 
 .extension-form-table input[type='text'],
-.extension-form-table input[type='number'] {
+.extension-form-table input[type='number'],
+.extension-form-table input[type='date'] {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;

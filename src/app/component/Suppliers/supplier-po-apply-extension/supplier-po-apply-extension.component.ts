@@ -144,7 +144,7 @@ export class SupplierPoApplyExtensionComponent implements OnInit {
     const formData = new FormData();
     formData.append('poId', String(this.poId));
     formData.append('extensionDays', String(days));
-    formData.append('letterDate', this.letterDate.trim());
+    formData.append('letterDate', this.fromIsoDate(this.letterDate));
     formData.append('remark', this.remark.trim());
     formData.append('file', this.selectedFile);
 
@@ -225,5 +225,34 @@ export class SupplierPoApplyExtensionComponent implements OnInit {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
+  }
+
+  private toIsoDate(displayDate: string): string {
+    const trimmed = displayDate.trim();
+    if (!trimmed) {
+      return '';
+    }
+    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+      return trimmed;
+    }
+    const dashParts = trimmed.split('-');
+    if (dashParts.length === 3) {
+      const [day, month, year] = dashParts;
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+    const slashParts = trimmed.split('/');
+    if (slashParts.length === 3) {
+      const [day, month, year] = slashParts;
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+    return '';
+  }
+
+  private fromIsoDate(isoDate: string): string {
+    if (!isoDate) {
+      return '';
+    }
+    const [year, month, day] = isoDate.split('-');
+    return `${day}-${month}-${year}`;
   }
 }
