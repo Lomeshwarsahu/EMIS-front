@@ -133,12 +133,19 @@ export class PoSupplyDispatchEditComponent implements OnInit {
     issueId: number,
     categoryId = row.categoryId,
   ): void {
-    const isReagent = categoryId === 2;
-    this.toastr.info(
-      `Dispatch entry (${isReagent ? 'reagent' : 'equipment'}) for consignee ${row.locationName}` +
-        (issueId ? `, issue ${issueId}` : '') +
-        ' — entry form migration pending.',
-    );
+    if (categoryId === 2) {
+      this.toastr.info('Reagent dispatch entry is not migrated yet.');
+      return;
+    }
+
+    this.router.navigate(['/transaction/po-supply-dispatch-entry'], {
+      queryParams: {
+        poId: row.poId,
+        locId: row.consigneeId,
+        itemId: row.itemId,
+        issueId,
+      },
+    });
   }
 
   private mapRow(row: Record<string, unknown>): DispatchEditRow {

@@ -173,6 +173,68 @@ export class ApiService {
     );
   }
 
+  getSupplierDispatchEntry(
+    userId: number,
+    poId: number,
+    locId: number,
+    issueId: number,
+    itemId: number,
+  ) {
+    const issueQ = issueId > 0 ? `&issueId=${issueId}` : '';
+    const itemQ = itemId > 0 ? `&itemId=${itemId}` : '';
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/dispatch-entry/by-user/${userId}?poId=${poId}&locId=${locId}${issueQ}${itemQ}`,
+    );
+  }
+
+  saveSupplierDispatchInvoice(userId: number, formData: FormData) {
+    return this.http.post<{ message: string; issueId?: number }>(
+      `${this.apiUrll}/supplier/dispatch-entry/invoice/by-user/${userId}`,
+      formData,
+    );
+  }
+
+  saveSupplierDispatchEquipmentLine(
+    userId: number,
+    body: {
+      issueId: number;
+      issueDetailId: number;
+      serialNo: string;
+      warrantyCardNo: string;
+      supplyQty: number;
+    },
+  ) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/dispatch-entry/equipment-line/by-user/${userId}`,
+      body,
+    );
+  }
+
+  completeSupplierDispatch(
+    userId: number,
+    body: {
+      poId: number;
+      locationId: number;
+      issueId: number;
+      dispatchNo: string;
+      dispatchDate: string;
+      tentativeSupplyDate: string;
+      cgmscLogoPrinted: string;
+      warrantyValidity: string;
+      serviceManual: string;
+      operatingManual: string;
+      calibrationCertificate: string;
+      warrantyCard: string;
+      otherStatutory: string;
+      poDocuments: string;
+    },
+  ) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/dispatch-entry/complete/by-user/${userId}`,
+      body,
+    );
+  }
+
   getSupplierPoReceiptFilters(userId: number) {
     return this.http.get<Record<string, unknown>>(
       `${this.apiUrll}/supplier/po-supply-receipt/filters/by-user/${userId}`,
