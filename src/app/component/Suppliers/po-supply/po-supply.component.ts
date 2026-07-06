@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  poSupplyListQuery,
+  readPoSupplyListFilters,
+} from '../supplier-po-supply-state.util';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 
@@ -53,10 +57,13 @@ export class PoSupplyComponent implements OnInit {
 
   rows: PoSupplyRow[] = [];
 
+  private restoreFilters = { financialYearId: 0, tenderId: 0 };
+
   constructor(
     private readonly api: ApiService,
     private readonly toastr: ToastrService,
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +72,7 @@ export class PoSupplyComponent implements OnInit {
       this.toastr.error('Please login as supplier.');
       return;
     }
+    this.restoreFilters = readPoSupplyListFilters(this.route.snapshot.queryParams);
     this.loadFilters();
   }
 
@@ -80,8 +88,13 @@ export class PoSupplyComponent implements OnInit {
         this.tenders = this.mapTenders((raw['tenders'] ?? raw['Tenders'] ?? []) as unknown[]);
 
         const currentYear = Number(raw['currentFinancialYearId'] ?? raw['CurrentFinancialYearId'] ?? 0);
-        this.selectedFinancialYearId = currentYear > 0 ? currentYear : 0;
-        this.selectedTenderId = 0;
+        this.selectedFinancialYearId =
+          this.restoreFilters.financialYearId > 0
+            ? this.restoreFilters.financialYearId
+            : currentYear > 0
+              ? currentYear
+              : 0;
+        this.selectedTenderId = this.restoreFilters.tenderId;
         this.loadGrid();
       },
       error: (err) => {
@@ -91,7 +104,30 @@ export class PoSupplyComponent implements OnInit {
     });
   }
 
-  showOrders(): void {
+  onFilterChange(): void {
+    this.restoreFilters = {
+      financialYearId: this.selectedFinancialYearId,
+      tenderId: this.selectedTenderId,
+    };
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: poSupplyListQuery(this.restoreFilters),
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+    this.loadGrid();
+  }
+
+  clearFilters(): void {
+    this.selectedFinancialYearId = 0;
+    this.selectedTenderId = 0;
+    this.restoreFilters = { financialYearId: 0, tenderId: 0 };
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { financialYearId: null, tenderId: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
     this.loadGrid();
   }
 
@@ -114,7 +150,7 @@ export class PoSupplyComponent implements OnInit {
   }
 
   sdStatusLabel(row: PoSupplyRow): string {
-    return row.submissionStatus?.toUpperCase() === 'Y' ? 'View' : 'Not Submitted';
+    return row.submissionStatus?.toUpperCase() === 'Y' ? 'Submitted' : 'Not Submitted';
   }
 
   isSdSubmitted(row: PoSupplyRow): boolean {
@@ -132,13 +168,24 @@ export class PoSupplyComponent implements OnInit {
         supplierId: this.supplierId,
         gValue: row.totalPoValue,
         itemId: row.itemId,
+        ...this.currentListQuery(),
       },
     });
   }
 
   onApplyExtension(row: PoSupplyRow): void {
     this.router.navigate(['/orders/po-supply-apply-extension'], {
-      queryParams: { poId: row.poId },
+      queryParams: {
+        poId: row.poId,
+        ...this.currentListQuery(),
+      },
+    });
+  }
+
+  private currentListQuery(): Record<string, number> {
+    return poSupplyListQuery({
+      financialYearId: this.selectedFinancialYearId,
+      tenderId: this.selectedTenderId,
     });
   }
 

@@ -6,6 +6,11 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { resolveSupplierUserId } from '../supplier-user.util';
+import {
+  navigateToPoSupply,
+  readPoSupplyListFilters,
+  type PoSupplyListFilters,
+} from '../supplier-po-supply-state.util';
 
 interface ExtensionRow {
   extensionId: number;
@@ -48,6 +53,7 @@ export class SupplierPoApplyExtensionComponent implements OnInit {
   remark = '';
   selectedFile: File | null = null;
   rows: ExtensionRow[] = [];
+  returnFilters: PoSupplyListFilters = { financialYearId: 0, tenderId: 0 };
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -65,6 +71,7 @@ export class SupplierPoApplyExtensionComponent implements OnInit {
 
     this.route.queryParams.subscribe((params) => {
       this.poId = Number(params['poId'] ?? params['POID'] ?? 0);
+      this.returnFilters = readPoSupplyListFilters(params);
       if (!this.poId) {
         this.toastr.error('Missing PO id.');
         return;
@@ -177,7 +184,7 @@ export class SupplierPoApplyExtensionComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/orders/po-supply']);
+    navigateToPoSupply(this.router, this.returnFilters);
   }
 
   private mapRows(list: unknown[]): ExtensionRow[] {

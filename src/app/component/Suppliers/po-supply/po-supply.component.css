@@ -80,6 +80,18 @@
   cursor: not-allowed;
 }
 
+.filters .show-btn + .clear-btn {
+  margin-left: 0;
+}
+
+.clear-btn {
+  background: #64748b;
+}
+
+.clear-btn:hover:not(:disabled) {
+  background: #475569;
+}
+
 .datagrid {
   width: 100%;
   max-width: 100%;

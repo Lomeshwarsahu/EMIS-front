@@ -6,6 +6,11 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { resolveSupplierUserId } from '../supplier-user.util';
+import {
+  navigateToPoSupply,
+  readPoSupplyListFilters,
+  type PoSupplyListFilters,
+} from '../supplier-po-supply-state.util';
 
 interface SdPaymentMode {
   sdMode: string;
@@ -43,6 +48,7 @@ export class SupplierPoSdDetailComponent implements OnInit {
   documentNo = '';
   fileMode: 'UPLOAD' | 'VIEW' = 'VIEW';
   selectedFile: File | null = null;
+  returnFilters: PoSupplyListFilters = { financialYearId: 0, tenderId: 0 };
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -63,6 +69,7 @@ export class SupplierPoSdDetailComponent implements OnInit {
       this.itemId = Number(params['itemId'] ?? params['ITEMID'] ?? 0);
       this.supplierId = Number(params['supplierId'] ?? params['SUPID'] ?? 0);
       this.grossValue = Number(params['gValue'] ?? params['GValue'] ?? 0);
+      this.returnFilters = readPoSupplyListFilters(params);
 
       if (!this.poId || !this.itemId || !this.supplierId) {
         this.toastr.error('Missing PO parameters.');
@@ -188,7 +195,7 @@ export class SupplierPoSdDetailComponent implements OnInit {
       next: (res) => {
         this.saving = false;
         this.toastr.success(res?.message ?? 'Successfully Saved.');
-        this.router.navigate(['/orders/po-supply']);
+        navigateToPoSupply(this.router, this.returnFilters);
       },
       error: (err) => {
         this.saving = false;
@@ -262,7 +269,7 @@ export class SupplierPoSdDetailComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/orders/po-supply']);
+    navigateToPoSupply(this.router, this.returnFilters);
   }
 
   private mapPaymentModes(list: unknown[]): SdPaymentMode[] {
