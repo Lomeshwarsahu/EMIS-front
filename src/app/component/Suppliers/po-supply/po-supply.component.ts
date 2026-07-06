@@ -114,7 +114,7 @@ export class PoSupplyComponent implements OnInit {
   }
 
   sdStatusLabel(row: PoSupplyRow): string {
-    return row.submissionStatus?.toUpperCase() === 'Y' ? 'Submitted' : 'Not Submitted';
+    return row.submissionStatus?.toUpperCase() === 'Y' ? 'View' : 'Not Submitted';
   }
 
   isSdSubmitted(row: PoSupplyRow): boolean {

@@ -34,6 +34,7 @@ export class SupplierPoSdDetailComponent implements OnInit {
   sdAmount = 0;
   hasExisting = false;
   hasFile = false;
+  isSubmitted = false;
 
   paymentModes: SdPaymentMode[] = [];
   selectedPaymentMode = '0';
@@ -77,11 +78,21 @@ export class SupplierPoSdDetailComponent implements OnInit {
   }
 
   get showUpdate(): boolean {
-    return this.hasExisting;
+    return this.hasExisting && !this.isSubmitted;
+  }
+
+  get isViewOnly(): boolean {
+    return this.hasExisting && this.isSubmitted;
   }
 
   get showFileUpload(): boolean {
-    return !this.hasExisting || this.fileMode === 'UPLOAD';
+    if (this.isViewOnly) {
+      return false;
+    }
+    if (!this.hasExisting) {
+      return true;
+    }
+    return this.fileMode === 'UPLOAD';
   }
 
   get isMaturityOptional(): boolean {
@@ -113,6 +124,7 @@ export class SupplierPoSdDetailComponent implements OnInit {
         this.sdAmount = Number(data['sdAmount'] ?? data['SdAmount'] ?? 0);
         this.hasExisting = Boolean(data['hasExisting'] ?? data['HasExisting']);
         this.hasFile = Boolean(data['hasFile'] ?? data['HasFile']);
+        this.isSubmitted = Boolean(data['isSubmitted'] ?? data['IsSubmitted']);
         this.supplierId = Number(data['supplierId'] ?? data['SupplierId'] ?? this.supplierId);
         this.grossValue = Number(data['grossValue'] ?? data['GrossValue'] ?? this.grossValue);
         this.selectedPaymentMode = String(data['paymentMode'] ?? data['PaymentMode'] ?? '0') || '0';
@@ -122,7 +134,7 @@ export class SupplierPoSdDetailComponent implements OnInit {
         this.paymentModes = this.mapPaymentModes(
           (data['paymentModes'] ?? data['PaymentModes'] ?? []) as unknown[],
         );
-        this.fileMode = this.hasFile ? 'VIEW' : 'UPLOAD';
+        this.fileMode = this.isSubmitted || this.hasFile ? 'VIEW' : 'UPLOAD';
       },
       error: (err) => {
         this.loading = false;
