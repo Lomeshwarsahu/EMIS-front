@@ -48,10 +48,21 @@ export class SupplierPaymentReportComponent implements OnInit {
     this.userId = Number(sessionStorage.getItem('userid') || localStorage.getItem('userid') || 0);
     if (!this.userId) {
       this.toastr.error('Please login as supplier.');
+      return;
     }
+    this.loadDetails();
   }
 
-  showDetails(): void {
+  onFilterChange(): void {
+    this.loadDetails();
+  }
+
+  clearFilters(): void {
+    this.poType = 'NP';
+    this.loadDetails();
+  }
+
+  loadDetails(): void {
     this.loading = true;
     this.api.getSupplierPaymentReport(this.userId, this.poType).subscribe({
       next: (raw) => {
