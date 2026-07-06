@@ -142,6 +142,10 @@ export class PoSupplyComponent implements OnInit {
     });
   }
 
+  goToGstDetails(): void {
+    this.router.navigate(['/masters/supplier-gst-entry']);
+  }
+
   private mapFinancialYears(list: unknown[]): FinancialYearOption[] {
     return list.map((item) => {
       const row = item as Record<string, unknown>;
