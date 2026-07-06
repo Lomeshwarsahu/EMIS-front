@@ -106,6 +106,7 @@ export class SupplierAcceptedReportComponent implements OnInit {
           name: String(row['name'] ?? row['Name'] ?? ''),
         };
         this.selectedSupplierId = this.supplierOption.supplierId;
+        this.loadReport();
       },
       error: (err) => {
         this.loading = false;
@@ -114,14 +115,27 @@ export class SupplierAcceptedReportComponent implements OnInit {
     });
   }
 
-  showReport(): void {
+  onFilterChange(): void {
     if (this.filterMode === 'tender' && !this.selectedTenderId) {
-      this.toastr.warning('Please select Tender From Drop Down List.');
+      this.rows = [];
+      this.showExport = false;
+      return;
+    }
+    this.loadReport();
+  }
+
+  clearFilters(): void {
+    this.selectedTenderId = 0;
+    this.rows = [];
+    this.showExport = false;
+  }
+
+  loadReport(): void {
+    if (this.filterMode === 'tender' && !this.selectedTenderId) {
       return;
     }
 
     if (this.filterMode === 'supplier' && !this.selectedSupplierId) {
-      this.toastr.warning('Please select Supplier From Drop Down List.');
       return;
     }
 

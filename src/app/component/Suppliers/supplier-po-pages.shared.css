@@ -89,6 +89,14 @@
   cursor: not-allowed;
 }
 
+.clear-btn {
+  background: #64748b;
+}
+
+.clear-btn:hover:not(:disabled) {
+  background: #475569;
+}
+
 .export-btn {
   background: #006400;
   color: #fff;

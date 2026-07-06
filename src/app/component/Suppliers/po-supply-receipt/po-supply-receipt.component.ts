@@ -106,6 +106,22 @@ export class PoSupplyReceiptComponent implements OnInit {
     this.loadPoOptions();
   }
 
+  onPoChange(): void {
+    if (!this.selectedPoId) {
+      this.rows = [];
+      return;
+    }
+    this.loadDetails();
+  }
+
+  clearFilters(): void {
+    this.poType = 'All';
+    this.selectedFinancialYearId = 0;
+    this.selectedPoId = 0;
+    this.rows = [];
+    this.loadPoOptions();
+  }
+
   loadPoOptions(): void {
     this.api.getSupplierPoReceiptOptions(this.userId, this.selectedFinancialYearId, this.poType).subscribe({
       next: (raw) => {
@@ -128,9 +144,9 @@ export class PoSupplyReceiptComponent implements OnInit {
     });
   }
 
-  showDetails(): void {
+  loadDetails(): void {
     if (!this.selectedPoId) {
-      this.toastr.warning('Please select PO.');
+      this.rows = [];
       return;
     }
     this.loading = true;

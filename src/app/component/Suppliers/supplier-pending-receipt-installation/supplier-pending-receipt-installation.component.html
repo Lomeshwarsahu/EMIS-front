@@ -12,16 +12,18 @@
 
     <div class="radio-group">
       <label>
-        <input type="radio" name="balanceType" value="R" [(ngModel)]="balanceType" />
+        <input type="radio" name="balanceType" value="R" [(ngModel)]="balanceType" (change)="onFilterChange()" />
         Balance to Receipt
       </label>
       <label>
-        <input type="radio" name="balanceType" value="I" [(ngModel)]="balanceType" />
+        <input type="radio" name="balanceType" value="I" [(ngModel)]="balanceType" (change)="onFilterChange()" />
         Balance To Install
       </label>
     </div>
 
-    <button type="button" class="show-btn" (click)="showReport()" [disabled]="loading">Show</button>
+    <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
+      Clear Filter
+    </button>
   </div>
 
   <div *ngIf="loading" class="loading-text">Loading pending receipt/installation report...</div>

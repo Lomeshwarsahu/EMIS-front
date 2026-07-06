@@ -84,7 +84,13 @@ export class PoSupplyDispatchComponent implements OnInit {
     });
   }
 
-  showOrders(): void {
+  onFilterChange(): void {
+    this.loadGrid();
+  }
+
+  clearFilters(): void {
+    this.selectedFinancialYearId = 0;
+    this.selectedTenderId = 0;
     this.loadGrid();
   }
 

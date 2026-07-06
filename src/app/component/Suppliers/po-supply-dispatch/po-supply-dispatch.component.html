@@ -4,7 +4,11 @@
   <div class="filters">
     <label>
       Financial Year:
-      <select [(ngModel)]="selectedFinancialYearId" name="financialYear">
+      <select
+        [(ngModel)]="selectedFinancialYearId"
+        name="financialYear"
+        (change)="onFilterChange()"
+      >
         <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
           {{ year.year }}
         </option>
@@ -13,14 +17,20 @@
 
     <label>
       Tender No:
-      <select [(ngModel)]="selectedTenderId" name="tender">
+      <select
+        [(ngModel)]="selectedTenderId"
+        name="tender"
+        (change)="onFilterChange()"
+      >
         <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
           {{ tender.tenderNo }}
         </option>
       </select>
     </label>
 
-    <button type="button" class="show-btn" (click)="showOrders()" [disabled]="loading">Show</button>
+    <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
+      Clear Filter
+    </button>
   </div>
 
   <div *ngIf="loading" class="loading-text">Loading dispatch orders...</div>

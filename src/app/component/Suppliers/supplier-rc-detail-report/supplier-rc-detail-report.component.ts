@@ -66,6 +66,7 @@ export class SupplierRcDetailReportComponent implements OnInit {
           { tenderId: 0, tenderNo: '--All--' },
           ...list.map((item) => this.mapTender(item as Record<string, unknown>)),
         ];
+        this.loadReport();
       },
       error: (err) => {
         this.loading = false;
@@ -74,7 +75,16 @@ export class SupplierRcDetailReportComponent implements OnInit {
     });
   }
 
-  showReport(): void {
+  onFilterChange(): void {
+    this.loadReport();
+  }
+
+  clearFilters(): void {
+    this.selectedTenderId = 0;
+    this.loadReport();
+  }
+
+  loadReport(): void {
     this.loading = true;
     this.api.getSupplierRcDetailReport(this.userId, this.selectedTenderId).subscribe({
       next: (raw) => {

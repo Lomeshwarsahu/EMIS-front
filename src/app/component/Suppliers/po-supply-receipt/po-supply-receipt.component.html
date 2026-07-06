@@ -8,11 +8,11 @@
         <td>
           <div class="radio-group">
             <label>
-              <input type="radio" name="poType" value="All" [(ngModel)]="poType" (ngModelChange)="onPoTypeChange()" />
+              <input type="radio" name="poType" value="All" [(ngModel)]="poType" (change)="onPoTypeChange()" />
               All PO
             </label>
             <label>
-              <input type="radio" name="poType" value="PRI" [(ngModel)]="poType" (ngModelChange)="onPoTypeChange()" />
+              <input type="radio" name="poType" value="PRI" [(ngModel)]="poType" (change)="onPoTypeChange()" />
               Pending To Receipt/Install
             </label>
             <!-- <label>
@@ -20,7 +20,7 @@
               Pending to Dispatch
             </label> -->
             <label>
-              <input type="radio" name="poType" value="C" [(ngModel)]="poType" (ngModelChange)="onPoTypeChange()" />
+              <input type="radio" name="poType" value="C" [(ngModel)]="poType" (change)="onPoTypeChange()" />
               Complete Receipt/Installation
             </label>
           </div>
@@ -29,7 +29,11 @@
       <tr>
         <td class="label-col">PO Fin Year</td>
         <td>
-          <select [(ngModel)]="selectedFinancialYearId" name="poYear" (ngModelChange)="onYearChange()">
+          <select
+            [(ngModel)]="selectedFinancialYearId"
+            name="poYear"
+            (change)="onYearChange()"
+          >
             <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
               {{ year.year }}
             </option>
@@ -39,12 +43,14 @@
       <tr>
         <td class="label-col">Select PO NO</td>
         <td class="po-select">
-          <select [(ngModel)]="selectedPoId" name="poNo">
+          <select [(ngModel)]="selectedPoId" name="poNo" (change)="onPoChange()">
             <option *ngFor="let po of poOptions" [ngValue]="po.poId">{{ po.displayText }}</option>
           </select>
         </td>
         <td>
-          <button type="button" class="show-btn" (click)="showDetails()" [disabled]="loading">Show</button>
+          <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
+            Clear Filter
+          </button>
         </td>
       </tr>
     </tbody>

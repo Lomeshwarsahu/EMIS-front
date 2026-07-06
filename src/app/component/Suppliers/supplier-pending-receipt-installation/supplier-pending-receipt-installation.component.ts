@@ -49,10 +49,21 @@ export class SupplierPendingReceiptInstallationComponent implements OnInit {
     this.userId = Number(sessionStorage.getItem('userid') || localStorage.getItem('userid') || 0);
     if (!this.userId) {
       this.toastr.error('Please login as supplier.');
+      return;
     }
+    this.loadReport();
   }
 
-  showReport(): void {
+  onFilterChange(): void {
+    this.loadReport();
+  }
+
+  clearFilters(): void {
+    this.balanceType = 'R';
+    this.loadReport();
+  }
+
+  loadReport(): void {
     this.loading = true;
     this.api.getSupplierBalanceStatus(this.userId, this.balanceType).subscribe({
       next: (raw) => {

@@ -12,21 +12,21 @@
 
     <div class="radio-group">
       <label>
-        <input type="radio" name="poType" value="All" [(ngModel)]="poType" />
+        <input type="radio" name="poType" value="All" [(ngModel)]="poType" (change)="onFilterChange()" />
         All Po
       </label>
       <label>
-        <input type="radio" name="poType" value="NP" [(ngModel)]="poType" />
+        <input type="radio" name="poType" value="NP" [(ngModel)]="poType" (change)="onFilterChange()" />
         Normal Po
       </label>
       <label>
-        <input type="radio" name="poType" value="CP" [(ngModel)]="poType" />
+        <input type="radio" name="poType" value="CP" [(ngModel)]="poType" (change)="onFilterChange()" />
         Covid Po
       </label>
     </div>
 
-    <button type="button" class="show-btn" (click)="showDetails()" [disabled]="loading">
-      Show Details
+    <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
+      Clear Filter
     </button>
   </div>
 

@@ -12,14 +12,16 @@
 
     <label>
       Tender:
-      <select [(ngModel)]="selectedTenderId" name="tender">
+      <select [(ngModel)]="selectedTenderId" name="tender" (change)="onFilterChange()">
         <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
           {{ tender.tenderNo }}
         </option>
       </select>
     </label>
 
-    <button type="button" class="show-btn" (click)="showReport()" [disabled]="loading">Show</button>
+    <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
+      Clear Filter
+    </button>
   </div>
 
   <div *ngIf="loading" class="loading-text">Loading RC detail report...</div>

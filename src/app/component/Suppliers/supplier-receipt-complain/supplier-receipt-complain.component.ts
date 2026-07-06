@@ -47,10 +47,21 @@ export class SupplierReceiptComplainComponent implements OnInit {
     this.userId = Number(sessionStorage.getItem('userid') || localStorage.getItem('userid') || 0);
     if (!this.userId) {
       this.toastr.error('Please login as supplier.');
+      return;
     }
+    this.loadReport();
   }
 
-  showReport(): void {
+  onFilterChange(): void {
+    this.loadReport();
+  }
+
+  clearFilters(): void {
+    this.status = 'Booked';
+    this.loadReport();
+  }
+
+  loadReport(): void {
     this.loading = true;
     this.api.getSupplierReceiptComplain(this.userId, this.status).subscribe({
       next: (raw) => {

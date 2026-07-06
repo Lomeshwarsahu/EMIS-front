@@ -12,13 +12,15 @@
 
     <label>
       Status:
-      <select [(ngModel)]="status" name="complainStatus">
+      <select [(ngModel)]="status" name="complainStatus" (change)="onFilterChange()">
         <option value="Booked">Booked</option>
         <option value="Closed">Closed</option>
       </select>
     </label>
 
-    <button type="button" class="show-btn" (click)="showReport()" [disabled]="loading">Show</button>
+    <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
+      Clear Filter
+    </button>
   </div>
 
   <div *ngIf="loading" class="loading-text">Loading complaints...</div>
