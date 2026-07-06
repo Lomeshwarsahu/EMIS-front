@@ -1,0 +1,183 @@
+<div class="report-page">
+  <table class="report-layout">
+    <tr>
+      <td class="print-cell no-print">
+        <button
+          type="button"
+          class="show-btn print-text-btn"
+          (click)="printReport()"
+          [disabled]="!report || loading">
+          Print
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div *ngIf="loading" class="loading-text">Loading installation report...</div>
+        <div *ngIf="!loading && loadError" class="error-text">{{ loadError }}</div>
+
+        <div [id]="printContainerId" *ngIf="!loading && report && !loadError">
+          <table class="outer-table">
+            <tr>
+              <td colspan="4" class="title-cell">
+                <strong>CONSIGNEE RECEIPT CERTIFICATE/INSTALLATION REPORT</strong>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4" class="title-cell">
+                <strong>(To be given by consignee and the user of the item)</strong>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4" class="title-cell">
+                The following new un-used equipments has/have been received in good condition as per purchase order
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" class="meta-left">{{ report.dispatchNo }}</td>
+              <td colspan="2" class="meta-right">{{ report.dispatchDate }}</td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                <table class="inner-table">
+                  <tr>
+                    <td class="label-cell">Name of item supplied</td>
+                    <td colspan="2">{{ report.itemName }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Name of the Supplier/Manufacturer</td>
+                    <td colspan="2">{{ report.supplierName }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Quantity supplied</td>
+                    <td colspan="2">{{ report.supplyQty }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Purchase Order reference no</td>
+                    <td colspan="2">{{ report.poNo }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Serial Nos. of equipment supplied</td>
+                    <td colspan="2">{{ report.serialNo }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Name and Address of the Consignee along with tel.no. and fax no</td>
+                    <td colspan="2">{{ report.consigneeAddress }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Date of receipt by the Consignee</td>
+                    <td colspan="2">{{ report.receiptDate }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Date of Installation</td>
+                    <td colspan="2">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Warranty Validity</td>
+                    <td colspan="2">{{ report.warrantyValidity }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Date of expiry of Warranty</td>
+                    <td colspan="2">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Installation Location at Hospital</td>
+                    <td>&nbsp;</td>
+                    <td>{{ report.installationLocation }}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Accessories supplied and the serial numbers of Accessories</strong></td>
+                    <td><strong>Provided by Supplier</strong></td>
+                    <td><strong>Marked by Consignee</strong></td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">CGMSC Logo Printed Yes/No</td>
+                    <td>{{ report.cgmscLogoPrinted }}</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Service manual provided by the supplier</td>
+                    <td>{{ report.serviceManualProvided }}</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Operating manual provided by the supplier</td>
+                    <td>{{ report.operatingManualProvided }}</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Calibration Certificate provided by the supplier</td>
+                    <td>{{ report.calibrationCertificateProvided }}</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Original warranty card received by Consignee</td>
+                    <td>{{ report.originalWarrantyCardReceived }}</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Other statutory documents received</td>
+                    <td>{{ report.otherStatutoryDocuments }}</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">All Accessories Indicated in P.O. are Received</td>
+                    <td>{{ report.allAccessoriesReceived }}</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Training satisfactorily completed Yes/No</td>
+                    <td>{{ report.trainingItemName }}</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell"><strong>Name and Designation of Personnel trained</strong></td>
+                    <td colspan="2">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Stock Book page no. where the items have Been entered</td>
+                    <td colspan="2">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Signature of Authorized Representative of Consignee with date</td>
+                    <td colspan="2">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Name and designation of the authorized Representative</td>
+                    <td colspan="2">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td class="label-cell">Seal of the consignee</td>
+                    <td colspan="2">&nbsp;</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4" class="note-cell">
+                <strong>Note:</strong>
+                Photo with installed machine &amp; training programme duly signed by Authority of facility.
+                In case of Hospital the Incharge of the hospital concerned would be treated as consignee.
+                In case of office (other than hospital), the office incharge of the office would be treated as consignee.
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4" class="title-cell">(Hospital/ Office Incharge) (User Department)</td>
+            </tr>
+            <tr>
+              <td colspan="4" class="title-cell">
+                Name:.................................. Contact No:..............................
+                Email id:.....................................
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4" class="title-cell">
+                <strong>Note: Signature of consignee must be in all pages of consignee receipt certificate.</strong>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>

@@ -12,6 +12,8 @@ import { PoSupplyDispatchReportComponent } from './component/Suppliers/po-supply
 import { SupplierPoSdDetailComponent } from './component/Suppliers/supplier-po-sd-detail/supplier-po-sd-detail.component';
 import { SupplierPoApplyExtensionComponent } from './component/Suppliers/supplier-po-apply-extension/supplier-po-apply-extension.component';
 import { PoSupplyReceiptComponent } from './component/Suppliers/po-supply-receipt/po-supply-receipt.component';
+import { PoSupplyInstallationReportComponent } from './component/Suppliers/po-supply-installation-report/po-supply-installation-report.component';
+import { PoSupplyInstallationPrintComponent } from './component/Suppliers/po-supply-installation-print/po-supply-installation-print.component';
 import { SupplierRcDetailReportComponent } from './component/Suppliers/supplier-rc-detail-report/supplier-rc-detail-report.component';
 import { SupplierAcceptedReportComponent } from './component/Suppliers/supplier-accepted-report/supplier-accepted-report.component';
 import { SupplierReceiptComplainComponent } from './component/Suppliers/supplier-receipt-complain/supplier-receipt-complain.component';
@@ -205,6 +207,28 @@ const routes: Routes = [
   {
     path: 'Facilitypo_supply_ReceiptSUP',
     redirectTo: 'transaction/po-supply-receipt',
+    pathMatch: 'full',
+  },
+  {
+    path: 'transaction/po-supply-installation-report',
+    component: PoSupplyInstallationReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'Facility_InstallationReportSUP',
+    redirectTo: 'transaction/po-supply-installation-report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'transaction/po-supply-installation-print',
+    component: PoSupplyInstallationPrintComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'InstalationReport',
+    redirectTo: 'transaction/po-supply-installation-print',
     pathMatch: 'full',
   },
   {

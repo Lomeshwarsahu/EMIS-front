@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { resolveSupplierUserId } from '../supplier-user.util';
@@ -64,6 +65,7 @@ export class PoSupplyReceiptComponent implements OnInit {
   constructor(
     private readonly api: ApiService,
     private readonly toastr: ToastrService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -148,7 +150,9 @@ export class PoSupplyReceiptComponent implements OnInit {
 
   onBatchStatus(batch: ReceiptBatch, row: ReceiptRow): void {
     if (batch.supplyStatus === 'Installation Completed' && batch.receiptId) {
-      this.toastr.info(`Installation report for receipt ${batch.receiptId} — migration pending.`);
+      this.router.navigate(['/transaction/po-supply-installation-report'], {
+        queryParams: { receiptId: batch.receiptId },
+      });
       return;
     }
     this.toastr.info(

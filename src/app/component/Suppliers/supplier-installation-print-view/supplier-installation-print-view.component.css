@@ -1,0 +1,78 @@
+.report-page {
+  padding: 20px 24px 32px;
+  font-family: 'Times New Roman', Times, serif;
+  color: #000;
+}
+
+.report-layout {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.print-cell {
+  text-align: right;
+  padding-bottom: 12px;
+}
+
+.outer-table {
+  width: 100%;
+  border: 1px solid #000;
+  border-collapse: collapse;
+}
+
+.inner-table {
+  width: 100%;
+  border: 1px solid #000;
+  border-collapse: collapse;
+}
+
+.outer-table td,
+.inner-table td {
+  border: 1px solid #000;
+  padding: 6px 8px;
+  font-size: 13px;
+  vertical-align: top;
+}
+
+.title-cell {
+  text-align: center;
+  font-weight: 700;
+}
+
+.meta-left {
+  text-align: left;
+}
+
+.meta-right {
+  text-align: right;
+}
+
+.label-cell {
+  width: 42%;
+}
+
+.note-cell {
+  font-size: 12px;
+}
+
+.loading-text,
+.error-text {
+  text-align: center;
+  padding: 16px;
+}
+
+.error-text {
+  color: #b91c1c;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .report-page {
+    padding: 0;
+  }
+}

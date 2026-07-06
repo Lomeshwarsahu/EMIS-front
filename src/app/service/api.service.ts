@@ -191,6 +191,18 @@ export class ApiService {
     );
   }
 
+  getSupplierInstallationReport(userId: number, receiptId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/installation-report/by-user/${userId}?receiptId=${receiptId}`,
+    );
+  }
+
+  getSupplierInstallationPrintReport(userId: number, receiptItemId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/installation-report/print/by-user/${userId}?receiptItemId=${receiptItemId}`,
+    );
+  }
+
   getSupplierRcDetailTenders(userId: number) {
     return this.http.get<Record<string, unknown>[]>(
       `${this.apiUrll}/supplier/rc-detail-report/tenders/by-user/${userId}`,

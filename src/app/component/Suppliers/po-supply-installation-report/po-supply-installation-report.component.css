@@ -1,0 +1,84 @@
+.installation-report-page .receipt-meta {
+  text-align: center;
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+
+.bulk-docs-card {
+  max-width: 960px;
+  margin: 0 auto 20px;
+  border: 1px solid #94a3b8;
+  padding: 12px 16px;
+  background: #f8fafc;
+}
+
+.bulk-docs-card h2 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.bulk-docs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.bulk-docs-table td {
+  padding: 6px 8px;
+  vertical-align: middle;
+}
+
+.bulk-docs-table td:last-child {
+  width: 120px;
+  text-align: center;
+}
+
+.installation-grid th,
+.installation-grid td {
+  font-size: 12px;
+}
+
+.doc-cell {
+  min-width: 150px;
+  text-align: center;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #003399;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+  font-family: inherit;
+}
+
+.small-btn {
+  margin-top: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.center {
+  text-align: center;
+}
+
+.loading-text,
+.error-text {
+  text-align: center;
+  padding: 16px;
+}
+
+.error-text {
+  color: #b91c1c;
+}
