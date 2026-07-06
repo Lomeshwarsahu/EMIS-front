@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
+import { resolveSupplierUserId } from '../supplier-user.util';
 
 interface FinancialYearOption {
   financialYearId: number;
@@ -66,7 +67,7 @@ export class PoSupplyReceiptComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userId = Number(sessionStorage.getItem('userid') || localStorage.getItem('userid') || 0);
+    this.userId = resolveSupplierUserId();
     if (!this.userId) {
       this.toastr.error('Please login as supplier.');
       return;
