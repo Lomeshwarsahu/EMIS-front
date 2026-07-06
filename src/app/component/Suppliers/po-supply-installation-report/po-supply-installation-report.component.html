@@ -6,7 +6,7 @@
     <span *ngIf="page?.receivedDate"> | Received Date: {{ page?.receivedDate }}</span>
   </p>
 
-  <div *ngIf="loading" class="loading-text">Loading installation report...</div>
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="8" />
   <div *ngIf="!loading && loadError" class="error-text">{{ loadError }}</div>
 
   <div *ngIf="!loading && page?.bulkInst" class="bulk-docs-card">

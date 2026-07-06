@@ -72,7 +72,7 @@
     </tbody>
   </table>
 
-  <div *ngIf="loading" class="loading-text">Loading accepted report...</div>
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
 
   <div class="datagrid" *ngIf="!loading && showFilters">
     <div class="table-wrap">

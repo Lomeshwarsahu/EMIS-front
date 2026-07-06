@@ -32,7 +32,7 @@
 
   <p class="report-note">Data is Based On Entered by CGMSC Finance Department</p>
 
-  <div *ngIf="loading" class="loading-text">Loading payment report...</div>
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="11" />
 
   <div class="datagrid" *ngIf="!loading">
     <div class="table-wrap">

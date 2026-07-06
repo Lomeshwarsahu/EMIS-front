@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface BalanceStatusRow {
   poId: number;
@@ -28,7 +29,7 @@ type BalanceTypeFilter = 'R' | 'I';
 @Component({
   selector: 'app-supplier-pending-receipt-installation',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-pending-receipt-installation.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-pending-receipt-installation.component.css'],
 })

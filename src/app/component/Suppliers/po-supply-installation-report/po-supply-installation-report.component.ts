@@ -10,13 +10,14 @@ import {
   InstallationReportRow,
   mapInstallationReportPage,
 } from '../installation-report.model';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 type InstallationFileType = 'insReport' | 'insPhoto' | 'waranty' | 'chalan';
 
 @Component({
   selector: 'app-po-supply-installation-report',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SupplierPageSkeletonComponent],
   templateUrl: './po-supply-installation-report.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-installation-report.component.css'],
 })

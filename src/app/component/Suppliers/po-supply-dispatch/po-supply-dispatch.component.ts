@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface FinancialYearOption {
   financialYearId: number;
@@ -34,7 +35,7 @@ interface PoDispatchRow {
 @Component({
   selector: 'app-po-supply-dispatch',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './po-supply-dispatch.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-dispatch.component.css'],
 })

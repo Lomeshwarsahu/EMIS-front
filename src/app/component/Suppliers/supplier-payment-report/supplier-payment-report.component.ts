@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface PaymentReportRow {
   poId: number;
@@ -27,7 +28,7 @@ type PoTypeFilter = 'All' | 'NP' | 'CP';
 @Component({
   selector: 'app-supplier-payment-report',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-payment-report.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-payment-report.component.css'],
 })

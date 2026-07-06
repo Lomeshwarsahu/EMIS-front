@@ -56,7 +56,7 @@
     </tbody>
   </table>
 
-  <div *ngIf="loading" class="loading-text">Loading receipt details...</div>
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
 
   <div class="datagrid" *ngIf="!loading">
     <div class="table-wrap">

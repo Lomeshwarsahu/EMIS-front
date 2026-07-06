@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface GstRow {
   gstId: number;
@@ -14,7 +15,7 @@ interface GstRow {
 @Component({
   selector: 'app-supplier-gst-entry',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-gst-entry.component.html',
   styleUrls: ['./supplier-gst-entry.component.css'],
 })

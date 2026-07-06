@@ -1,7 +1,7 @@
 <div class="supplier-gst-page ems-legacy-page">
   <h2 class="page-title">Supplier GST Entry</h2>
 
-  <div *ngIf="loading" class="loading-text">Loading GST entries...</div>
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="5" [cols]="3" />
 
   <ng-container *ngIf="!loading">
     <div class="supplier-header">

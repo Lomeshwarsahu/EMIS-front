@@ -8,6 +8,7 @@ import {
 } from '../supplier-po-supply-state.util';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface FinancialYearOption {
   financialYearId: number;
@@ -41,7 +42,7 @@ interface PoSupplyRow {
 @Component({
   selector: 'app-po-supply',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './po-supply.component.html',
   styleUrls: ['./po-supply.component.css'],
 })

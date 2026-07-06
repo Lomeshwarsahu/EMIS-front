@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface TenderOption {
   tenderId: number;
@@ -32,7 +33,7 @@ type FilterMode = 'tender' | 'supplier';
 @Component({
   selector: 'app-supplier-accepted-report',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-accepted-report.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-accepted-report.component.css'],
 })

@@ -70,7 +70,7 @@
     </table>
   </div>
 
-  <div *ngIf="loading" class="loading-text">Loading EMD deposits...</div>
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="7" />
 
   <div class="datagrid" *ngIf="!loading">
     <div class="table-wrap">

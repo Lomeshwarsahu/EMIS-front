@@ -2,10 +2,7 @@
   <div class="page-header-bar">{{ pageTitle }}</div>
 
   <div class="form-shell">
-    <div *ngIf="loading" class="loading-panel">
-      <div class="loading-spinner"></div>
-      <p>Loading supplier details...</p>
-    </div>
+    <app-supplier-page-skeleton *ngIf="loading" type="form" [formFields]="10" />
 
     <form *ngIf="!loading" (ngSubmit)="update()" class="supplier-form" autocomplete="off">
    

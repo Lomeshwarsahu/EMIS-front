@@ -8,7 +8,7 @@
     <span *ngIf="isViewOnly" class="submitted-badge">Submitted</span>
   </h2>
 
-  <div *ngIf="loading" class="loading-text">Loading SD detail...</div>
+  <app-supplier-page-skeleton *ngIf="loading" type="form" [formFields]="8" />
 
   <div *ngIf="!loading" class="sd-detail-wrap">
     <div class="sd-detail-card">

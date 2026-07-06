@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { InstallationPrintReport } from '../installation-report.model';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 @Component({
   selector: 'app-supplier-installation-print-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-installation-print-view.component.html',
   styleUrls: ['./supplier-installation-print-view.component.css', '../supplier-po-pages.shared.css'],
 })

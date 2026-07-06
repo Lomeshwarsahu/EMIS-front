@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { resolveSupplierUserId } from '../supplier-user.util';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface DispatchEditBatch {
   issueId: number;
@@ -37,7 +38,7 @@ interface DispatchEditRow {
 @Component({
   selector: 'app-po-supply-dispatch-edit',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SupplierPageSkeletonComponent],
   templateUrl: './po-supply-dispatch-edit.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-dispatch-edit.component.css'],
 })

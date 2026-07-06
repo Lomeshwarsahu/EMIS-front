@@ -5,7 +5,7 @@
 
   <h2 class="page-title narrow">Apply For Extension</h2>
 
-  <div *ngIf="loading" class="loading-text">Loading extension details...</div>
+  <app-supplier-page-skeleton *ngIf="loading" type="form" [formFields]="7" />
 
   <div *ngIf="!loading" class="extension-wrap">
     <div class="extension-card" [class.disabled-panel]="!canApply">

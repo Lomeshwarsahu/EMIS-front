@@ -11,6 +11,7 @@ import {
   readPoSupplyListFilters,
   type PoSupplyListFilters,
 } from '../supplier-po-supply-state.util';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface SdPaymentMode {
   sdMode: string;
@@ -21,7 +22,7 @@ interface SdPaymentMode {
 @Component({
   selector: 'app-supplier-po-sd-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-po-sd-detail.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-po-sd-detail.component.css'],
 })

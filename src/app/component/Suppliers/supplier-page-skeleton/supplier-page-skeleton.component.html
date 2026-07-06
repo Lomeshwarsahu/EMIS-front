@@ -1,0 +1,41 @@
+<div class="supplier-skeleton" [ngClass]="'supplier-skeleton--' + type">
+  <ng-container *ngIf="type === 'table'">
+    <div class="skeleton-table-wrap">
+      <div class="skeleton-table-header" [style.gridTemplateColumns]="gridColumns">
+        <span *ngFor="let _ of colIndexes" class="skeleton-block skeleton-th"></span>
+      </div>
+      <div
+        *ngFor="let _ of rowIndexes"
+        class="skeleton-table-row"
+        [style.gridTemplateColumns]="gridColumns"
+      >
+        <span *ngFor="let __ of colIndexes" class="skeleton-block skeleton-td"></span>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="type === 'form'">
+    <div class="skeleton-form-card">
+      <div *ngFor="let _ of formFieldIndexes" class="skeleton-form-row">
+        <span class="skeleton-block skeleton-label"></span>
+        <span class="skeleton-block skeleton-input"></span>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="type === 'filter-panel'">
+    <div class="skeleton-form-card skeleton-filter-panel">
+      <div *ngFor="let _ of filterRowIndexes" class="skeleton-form-row">
+        <span class="skeleton-block skeleton-label"></span>
+        <span class="skeleton-block skeleton-input wide"></span>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="type === 'lines'">
+    <div class="skeleton-lines">
+      <span class="skeleton-block skeleton-line short"></span>
+      <span *ngFor="let _ of rowIndexes" class="skeleton-block skeleton-line"></span>
+    </div>
+  </ng-container>
+</div>

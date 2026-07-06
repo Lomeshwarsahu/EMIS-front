@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { DispatchReport } from '../dispatch-report.model';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 @Component({
   selector: 'app-supplier-dispatch-report-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-dispatch-report-view.component.html',
   styleUrls: ['./supplier-dispatch-report-view.component.css', '../supplier-po-pages.shared.css'],
 })

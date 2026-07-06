@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { resolveSupplierUserId } from '../supplier-user.util';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface FinancialYearOption {
   financialYearId: number;
@@ -47,7 +48,7 @@ type PoTypeFilter = 'All' | 'PRI' | 'PD' | 'C';
 @Component({
   selector: 'app-po-supply-receipt',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './po-supply-receipt.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-receipt.component.css'],
 })

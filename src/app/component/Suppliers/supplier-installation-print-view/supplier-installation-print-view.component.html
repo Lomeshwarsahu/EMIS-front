@@ -13,7 +13,7 @@
     </tr>
     <tr>
       <td>
-        <div *ngIf="loading" class="loading-text">Loading installation report...</div>
+        <app-supplier-page-skeleton *ngIf="loading" type="lines" [rows]="12" />
         <div *ngIf="!loading && loadError" class="error-text">{{ loadError }}</div>
 
         <div [id]="printContainerId" *ngIf="!loading && report && !loadError">

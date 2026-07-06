@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface ReceiptComplainRow {
   complaintId: number;
@@ -26,7 +27,7 @@ type ComplainStatus = 'Booked' | 'Closed';
 @Component({
   selector: 'app-supplier-receipt-complain',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-receipt-complain.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-receipt-complain.component.css'],
 })

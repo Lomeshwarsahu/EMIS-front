@@ -11,6 +11,7 @@ import {
   readPoSupplyListFilters,
   type PoSupplyListFilters,
 } from '../supplier-po-supply-state.util';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface ExtensionRow {
   extensionId: number;
@@ -28,7 +29,7 @@ interface ExtensionRow {
 @Component({
   selector: 'app-supplier-po-apply-extension',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-po-apply-extension.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-po-apply-extension.component.css'],
 })

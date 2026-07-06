@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface TenderOption {
   tenderId: number;
@@ -29,7 +30,7 @@ interface RcDetailRow {
 @Component({
   selector: 'app-supplier-rc-detail-report',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-rc-detail-report.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-rc-detail-report.component.css'],
 })

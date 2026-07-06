@@ -10,7 +10,7 @@
     <span>Po Date: <strong>{{ poDate }}</strong></span>
   </div>
 
-  <div *ngIf="loading" class="loading-text">Loading dispatch equipment desk...</div>
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="9" />
 
   <div class="datagrid" *ngIf="!loading">
     <div class="table-wrap">
