@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 import { resolveSupplierUserId } from '../supplier-user.util';
@@ -13,6 +14,7 @@ import {
 } from '../supplier-transaction-state.util';
 
 type ReceiptTab = 'receipt' | 'installation' | 'complete';
+type InstallationFileType = 'insreport' | 'insphoto' | 'waranty' | 'chalan';
 
 interface IssueDetailOption {
   issueDetailId: number;
@@ -22,6 +24,7 @@ interface IssueDetailOption {
 }
 
 interface InstallationLine {
+  itemDetailId: number;
   issueDetailId: number;
   serialNo: string;
   warrantyCertificateNo: string;
@@ -32,6 +35,16 @@ interface InstallationLine {
   warrantyToDate: string;
   installationBy: string;
   installationLocation: string;
+  hasInstallationReport: boolean;
+  hasInstallationPhoto: boolean;
+  hasWarrantyCard: boolean;
+  hasChallan: boolean;
+}
+
+interface BulkUploadRow {
+  fileType: InstallationFileType;
+  label: string;
+  hasFile: boolean;
 }
 
 @Component({
@@ -44,6 +57,7 @@ interface InstallationLine {
 export class PoSupplyReceiptEntryComponent implements OnInit {
   loading = false;
   saving = false;
+  uploading = false;
   activeTab: ReceiptTab = 'receipt';
   userId = 0;
 
@@ -69,6 +83,8 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
   dispatchedQty = 0;
   balanceQty = 0;
   supplyDays = '';
+  warrantyYears = 1;
+  cancellationDays = '';
   lastReceiptDate = '';
 
   challanNo = '';
@@ -87,11 +103,22 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
   installationLines: InstallationLine[] = [];
 
   selectedIssueDetailId = 0;
+  selectedSerialNo = '';
+  selectedWarrantyCertificateNo = '';
+  selectedDispatchQty = 0;
   warrantyCardNo = '';
   installQty = 1;
   installationDate = '';
+  warrantyFromDate = '';
+  warrantyToDate = '';
   installationBy = '';
   installationLocation = '';
+  bulkInst = false;
+  hasBulkInstallationReport = false;
+  hasBulkInstallationPhoto = false;
+  hasBulkWarrantyCard = false;
+  hasBulkChallan = false;
+
   cgmscLogoPrinted = 'N';
   warrantyValidity = 'N';
   serviceManual = 'N';
@@ -100,6 +127,7 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
   warrantyCard = 'N';
   otherStatutory = 'N';
   poDocuments = 'N';
+
   private returnFilters: PoSupplyReceiptFilters = {
     financialYearId: 0,
     poType: 'All',
@@ -141,17 +169,132 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
     this.activeTab = tab;
   }
 
+  get maxAllowedDaysDisplay(): string {
+    const value = this.cancellationDays.trim();
+    return value || '-';
+  }
+
+  get lastReceiptDateDisplay(): string {
+    const value = this.lastReceiptDate.trim();
+    return value || '-';
+  }
+
+  get minReceivedDate(): string {
+    return this.toIsoDate(this.dispatchDate);
+  }
+
+  get maxReceivedDate(): string {
+    const today = new Date();
+    const todayIso = this.toIsoFromDate(today);
+    const lastIso = this.toIsoDate(this.lastReceiptDate);
+    if (!lastIso) {
+      return todayIso;
+    }
+    return lastIso < todayIso ? lastIso : todayIso;
+  }
+
+  get minInstallationDate(): string {
+    return this.receivedDate || this.minReceivedDate;
+  }
+
+  get bulkUploadRows(): BulkUploadRow[] {
+    return [
+      {
+        fileType: 'insreport',
+        label: 'Upload signed copy of combined receipt and installation report (PDF)',
+        hasFile: this.hasBulkInstallationReport,
+      },
+      {
+        fileType: 'insphoto',
+        label: 'Upload installation photos (PDF)',
+        hasFile: this.hasBulkInstallationPhoto,
+      },
+      {
+        fileType: 'waranty',
+        label: 'Upload warranty cards (PDF)',
+        hasFile: this.hasBulkWarrantyCard,
+      },
+      {
+        fileType: 'chalan',
+        label: 'Upload challan and invoice copies (PDF)',
+        hasFile: this.hasBulkChallan,
+      },
+    ];
+  }
+
+  onSerialSelected(): void {
+    const selected = this.issueDetailOptions.find(
+      (item) => item.issueDetailId === this.selectedIssueDetailId,
+    );
+    this.selectedSerialNo = selected?.serialNo ?? '';
+    this.selectedWarrantyCertificateNo = selected?.warrantyCertificateNo ?? '';
+    this.selectedDispatchQty = selected?.dispatchedQty ?? 0;
+    if (this.selectedDispatchQty > 0 && this.installQty > this.selectedDispatchQty) {
+      this.installQty = this.selectedDispatchQty;
+    }
+  }
+
+  onInstallationDateChanged(): void {
+    if (!this.installationDate) {
+      this.warrantyFromDate = '';
+      this.warrantyToDate = '';
+      return;
+    }
+    const [year, month, day] = this.installationDate.split('-').map(Number);
+    const fromDate = new Date(year, month - 1, day);
+    const toDate = new Date(fromDate);
+    toDate.setFullYear(toDate.getFullYear() + (this.warrantyYears > 0 ? this.warrantyYears : 1));
+    this.warrantyFromDate = this.formatDisplayDate(fromDate);
+    this.warrantyToDate = this.formatDisplayDate(toDate);
+  }
+
   saveReceipt(): void {
+    const receivedDate = this.fromIsoDate(this.receivedDate);
+    const receiptNo = this.receiptNo.trim();
+    const receiptQty = this.asTrimmedString(this.receiptQty);
+    const receiptRemarks = this.receiptRemarks.trim();
+
+    if (!receivedDate) {
+      this.toastr.warning('Please enter received date.');
+      return;
+    }
+    if (this.minReceivedDate && this.receivedDate < this.minReceivedDate) {
+      this.toastr.warning('Received date cannot be before supplier dispatch date.');
+      return;
+    }
+    if (this.maxReceivedDate && this.receivedDate > this.maxReceivedDate) {
+      if (this.lastReceiptDate && this.lastReceiptDate !== '-') {
+        this.toastr.warning(
+          `Received date cannot be greater than last date to be received of PO (${this.lastReceiptDate}).`,
+        );
+      } else {
+        this.toastr.warning('Received date cannot be greater than today.');
+      }
+      return;
+    }
+    if (!receiptNo) {
+      this.toastr.warning('Please enter receipt no / stock book no.');
+      return;
+    }
+    if (!receiptQty || Number(receiptQty) <= 0) {
+      this.toastr.warning('Please enter receipt qty greater than zero.');
+      return;
+    }
+    if (!receiptRemarks) {
+      this.toastr.warning('Please enter receipt remarks.');
+      return;
+    }
+
     this.saving = true;
     this.api
       .saveSupplierReceiptEntry(this.userId, {
         poId: this.poId,
         locationId: this.locId,
         issueId: this.issueId,
-        receivedDate: this.fromIsoDate(this.receivedDate),
-        receiptNo: this.receiptNo.trim(),
-        receiptQty: this.receiptQty.trim(),
-        receiptRemarks: this.receiptRemarks.trim(),
+        receivedDate,
+        receiptNo,
+        receiptQty,
+        receiptRemarks,
       })
       .subscribe({
         next: (res) => {
@@ -173,6 +316,35 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
       this.toastr.warning('Please save receipt details first.');
       return;
     }
+    if (!this.selectedIssueDetailId) {
+      this.toastr.warning('Please select serial no.');
+      return;
+    }
+    if (!this.warrantyCardNo.trim()) {
+      this.toastr.warning('Please enter warranty card no.');
+      return;
+    }
+    if (!this.installationDate) {
+      this.toastr.warning('Please enter installation date.');
+      return;
+    }
+    if (!this.installationBy.trim()) {
+      this.toastr.warning('Please enter installation by / engineer name.');
+      return;
+    }
+    if (!this.installationLocation.trim()) {
+      this.toastr.warning('Please enter installation location.');
+      return;
+    }
+    if (Number(this.installQty) <= 0) {
+      this.toastr.warning('Installed qty should be greater than zero.');
+      return;
+    }
+    if (this.selectedDispatchQty > 0 && Number(this.installQty) > this.selectedDispatchQty) {
+      this.toastr.warning('Installed qty cannot be more than dispatched qty.');
+      return;
+    }
+
     this.saving = true;
     this.api
       .saveSupplierReceiptInstallation(this.userId, {
@@ -191,6 +363,7 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
         warrantyCard: this.warrantyCard,
         otherStatutory: this.otherStatutory,
         poDocuments: this.poDocuments,
+        bulkInst: this.bulkInst,
       })
       .subscribe({
         next: (res) => {
@@ -204,6 +377,74 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
           this.toastr.error(err?.error?.message ?? 'Unable to save installation details.');
         },
       });
+  }
+
+  uploadFile(
+    fileInput: HTMLInputElement,
+    fileType: InstallationFileType,
+    itemDetailId = 0,
+    bulk = false,
+  ): void {
+    if (!this.receiptId) {
+      this.toastr.warning('Please save receipt details first.');
+      return;
+    }
+    const file = fileInput.files?.[0];
+    if (!file) {
+      this.toastr.warning('Please select a PDF file to upload.');
+      return;
+    }
+    if (!file.name.toLowerCase().endsWith('.pdf')) {
+      this.toastr.warning('Please upload PDF file only.');
+      fileInput.value = '';
+      return;
+    }
+    if (file.size > 5_000_000) {
+      this.toastr.warning('File size cannot exceed 3 MB.');
+      fileInput.value = '';
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('receiptId', String(this.receiptId));
+    formData.append('fileType', fileType);
+    formData.append('bulk', String(bulk));
+    if (!bulk) {
+      formData.append('itemDetailId', String(itemDetailId));
+    }
+    formData.append('file', file);
+
+    this.uploading = true;
+    this.api.uploadSupplierReceiptEntryFile(this.userId, formData).subscribe({
+      next: (res) => {
+        this.uploading = false;
+        fileInput.value = '';
+        this.toastr.success(res?.message ?? 'File uploaded successfully.');
+        this.loadPage();
+      },
+      error: (err) => {
+        this.uploading = false;
+        fileInput.value = '';
+        this.toastr.error(err?.error?.message ?? 'Unable to upload file.');
+      },
+    });
+  }
+
+  downloadFile(fileType: InstallationFileType, itemDetailId = 0, bulk = false): void {
+    if (!this.receiptId) {
+      return;
+    }
+    const params = new URLSearchParams({
+      receiptId: String(this.receiptId),
+      fileType,
+    });
+    if (!bulk) {
+      params.set('itemDetailId', String(itemDetailId));
+    } else {
+      params.set('bulk', 'true');
+    }
+    const url = `${environment.apiUrl}/Auth/supplier/installation-report/file/by-user/${this.userId}?${params.toString()}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
   completeInstallation(): void {
@@ -269,7 +510,22 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
     this.dispatchedQty = Number(data['dispatchedQty'] ?? data['DispatchedQty'] ?? 0);
     this.balanceQty = Number(data['balanceQty'] ?? data['BalanceQty'] ?? 0);
     this.supplyDays = String(data['supplyDays'] ?? data['SupplyDays'] ?? '');
+    this.warrantyYears = Number(data['warrantyYears'] ?? data['WarrantyYears'] ?? 1) || 1;
+    this.cancellationDays = String(
+      data['cancellationDays'] ?? data['CancellationDays'] ?? '',
+    ).trim();
     this.lastReceiptDate = String(data['lastReceiptDate'] ?? data['LastReceiptDate'] ?? '');
+    this.bulkInst = Boolean(data['bulkInst'] ?? data['BulkInst'] ?? false);
+    this.hasBulkInstallationReport = Boolean(
+      data['hasBulkInstallationReport'] ?? data['HasBulkInstallationReport'] ?? false,
+    );
+    this.hasBulkInstallationPhoto = Boolean(
+      data['hasBulkInstallationPhoto'] ?? data['HasBulkInstallationPhoto'] ?? false,
+    );
+    this.hasBulkWarrantyCard = Boolean(
+      data['hasBulkWarrantyCard'] ?? data['HasBulkWarrantyCard'] ?? false,
+    );
+    this.hasBulkChallan = Boolean(data['hasBulkChallan'] ?? data['HasBulkChallan'] ?? false);
 
     this.challanNo = String(data['challanNo'] ?? data['ChallanNo'] ?? '');
     this.challanDate = String(data['challanDate'] ?? data['ChallanDate'] ?? '');
@@ -282,6 +538,9 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
     this.receiptNo = String(data['receiptNo'] ?? data['ReceiptNo'] ?? '');
     this.receiptQty = String(data['receiptQty'] ?? data['ReceiptQty'] ?? '');
     this.receiptRemarks = String(data['receiptRemarks'] ?? data['ReceiptRemarks'] ?? '');
+    if (!this.receiptQty && this.dispatchedQty > 0) {
+      this.receiptQty = String(this.dispatchedQty);
+    }
 
     const issueRaw = (data['issueDetailOptions'] ?? data['IssueDetailOptions'] ?? []) as unknown[];
     this.issueDetailOptions = issueRaw.map((item) => {
@@ -298,11 +557,13 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
     if (!this.selectedIssueDetailId && this.issueDetailOptions.length) {
       this.selectedIssueDetailId = this.issueDetailOptions[0].issueDetailId;
     }
+    this.onSerialSelected();
 
     const linesRaw = (data['installationLines'] ?? data['InstallationLines'] ?? []) as unknown[];
     this.installationLines = linesRaw.map((item) => {
       const row = item as Record<string, unknown>;
       return {
+        itemDetailId: Number(row['itemDetailId'] ?? row['ItemDetailId'] ?? 0),
         issueDetailId: Number(row['issueDetailId'] ?? row['IssueDetailId'] ?? 0),
         serialNo: String(row['serialNo'] ?? row['SerialNo'] ?? ''),
         warrantyCertificateNo: String(
@@ -315,6 +576,12 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
         warrantyToDate: String(row['warrantyToDate'] ?? row['WarrantyToDate'] ?? ''),
         installationBy: String(row['installationBy'] ?? row['InstallationBy'] ?? ''),
         installationLocation: String(row['installationLocation'] ?? row['InstallationLocation'] ?? ''),
+        hasInstallationReport: Boolean(
+          row['hasInstallationReport'] ?? row['HasInstallationReport'] ?? false,
+        ),
+        hasInstallationPhoto: Boolean(row['hasInstallationPhoto'] ?? row['HasInstallationPhoto'] ?? false),
+        hasWarrantyCard: Boolean(row['hasWarrantyCard'] ?? row['HasWarrantyCard'] ?? false),
+        hasChallan: Boolean(row['hasChallan'] ?? row['HasChallan'] ?? false),
       };
     });
   }
@@ -323,13 +590,22 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
     this.warrantyCardNo = '';
     this.installQty = 1;
     this.installationDate = '';
+    this.warrantyFromDate = '';
+    this.warrantyToDate = '';
     this.installationBy = '';
     this.installationLocation = '';
   }
 
+  private formatDisplayDate(date: Date): string {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+
   private toIsoDate(displayDate: string): string {
     const trimmed = displayDate.trim();
-    if (!trimmed) {
+    if (!trimmed || trimmed === '-') {
       return '';
     }
     const parts = trimmed.split('/');
@@ -340,11 +616,28 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
     return '';
   }
 
+  private toIsoFromDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   private fromIsoDate(isoDate: string): string {
     if (!isoDate) {
       return '';
     }
     const [year, month, day] = isoDate.split('-');
+    if (!year || !month || !day) {
+      return '';
+    }
     return `${day}/${month}/${year}`;
+  }
+
+  private asTrimmedString(value: string | number | null | undefined): string {
+    if (value === null || value === undefined) {
+      return '';
+    }
+    return String(value).trim();
   }
 }

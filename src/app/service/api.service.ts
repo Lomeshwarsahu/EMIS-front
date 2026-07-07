@@ -295,6 +295,7 @@ export class ApiService {
       warrantyCard: string;
       otherStatutory: string;
       poDocuments: string;
+      bulkInst: boolean;
     },
   ) {
     return this.http.post<{ message: string }>(
@@ -310,6 +311,16 @@ export class ApiService {
     return this.http.post<{ message: string }>(
       `${this.apiUrll}/supplier/receipt-entry/complete/by-user/${userId}`,
       body,
+    );
+  }
+
+  uploadSupplierReceiptEntryFile(
+    userId: number,
+    formData: FormData,
+  ) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/receipt-entry/file/by-user/${userId}`,
+      formData,
     );
   }
 
