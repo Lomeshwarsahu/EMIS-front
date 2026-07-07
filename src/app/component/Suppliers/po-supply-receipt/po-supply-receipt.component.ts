@@ -1,11 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { resolveSupplierUserId } from '../supplier-user.util';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import {
+  PoSupplyReceiptFilters,
+  poSupplyReceiptQuery,
+  readPoSupplyReceiptFilters,
+} from '../supplier-transaction-state.util';
 
 interface FinancialYearOption {
   financialYearId: number;
@@ -62,11 +67,17 @@ export class PoSupplyReceiptComponent implements OnInit {
   selectedPoId = 0;
   poType: PoTypeFilter = 'All';
   rows: ReceiptRow[] = [];
+  private returnFilters: PoSupplyReceiptFilters = {
+    financialYearId: 0,
+    poType: 'All',
+    poId: 0,
+  };
 
   constructor(
     private readonly api: ApiService,
     private readonly toastr: ToastrService,
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -75,6 +86,10 @@ export class PoSupplyReceiptComponent implements OnInit {
       this.toastr.error('Please login as supplier.');
       return;
     }
+    const initial = readPoSupplyReceiptFilters(this.route.snapshot.queryParams);
+    this.selectedFinancialYearId = initial.financialYearId;
+    this.poType = (initial.poType as PoTypeFilter) || 'All';
+    this.selectedPoId = initial.poId;
     this.loadFilters();
   }
 
@@ -86,6 +101,12 @@ export class PoSupplyReceiptComponent implements OnInit {
         this.financialYears = this.mapFinancialYears(
           (raw['financialYears'] ?? raw['FinancialYears'] ?? []) as unknown[],
         );
+        const hasSelectedYear = this.financialYears.some(
+          (row) => row.financialYearId === this.selectedFinancialYearId,
+        );
+        if (!hasSelectedYear) {
+          this.selectedFinancialYearId = 0;
+        }
         this.loadPoOptions();
       },
       error: (err) => {
@@ -137,6 +158,13 @@ export class PoSupplyReceiptComponent implements OnInit {
         if (!this.poOptions.length) {
           this.poOptions = [{ poId: 0, displayText: 'Select PO' }];
         }
+        const hasSelectedPo = this.poOptions.some((row) => row.poId === this.selectedPoId);
+        if (!hasSelectedPo) {
+          this.selectedPoId = 0;
+          this.rows = [];
+        } else if (this.selectedPoId > 0) {
+          this.loadDetails();
+        }
       },
       error: (err) => {
         this.poOptions = [{ poId: 0, displayText: 'Select PO' }];
@@ -166,15 +194,25 @@ export class PoSupplyReceiptComponent implements OnInit {
   }
 
   onBatchStatus(batch: ReceiptBatch, row: ReceiptRow): void {
+    this.returnFilters = {
+      financialYearId: this.selectedFinancialYearId,
+      poType: this.poType,
+      poId: this.selectedPoId,
+    };
     if (batch.supplyStatus === 'Installation Completed' && batch.receiptId) {
       this.router.navigate(['/transaction/po-supply-installation-report'], {
-        queryParams: { receiptId: batch.receiptId },
+        queryParams: { receiptId: batch.receiptId, ...poSupplyReceiptQuery(this.returnFilters) },
       });
       return;
     }
-    this.toastr.info(
-      `Receipt entry for PO ${row.poId}, consignee ${row.consigneeId}, issue ${batch.issueId} — migration pending.`,
-    );
+    this.router.navigate(['/transaction/po-supply-receipt-entry'], {
+      queryParams: {
+        poId: row.poId,
+        locId: row.consigneeId,
+        issueId: batch.issueId,
+        ...poSupplyReceiptQuery(this.returnFilters),
+      },
+    });
   }
 
   isStatusLink(batch: ReceiptBatch): boolean {

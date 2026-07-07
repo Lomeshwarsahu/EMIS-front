@@ -1,3 +1,21 @@
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.back-btn {
+  border: 1px solid #1f4e79;
+  background: #fff;
+  color: #1f4e79;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
 .installation-report-page .receipt-meta {
   text-align: center;
   margin: 0 0 16px;
@@ -37,11 +55,25 @@
 .installation-grid th,
 .installation-grid td {
   font-size: 12px;
+  vertical-align: top;
+}
+
+.installation-grid th {
+  white-space: nowrap;
+}
+
+.installation-grid tbody tr:nth-child(even) {
+  background: #f8fafc;
 }
 
 .doc-cell {
-  min-width: 150px;
-  text-align: center;
+  min-width: 170px;
+  text-align: left;
+  line-height: 1.45;
+}
+
+.installation-table-wrap {
+  overflow-x: auto;
 }
 
 .link-btn {

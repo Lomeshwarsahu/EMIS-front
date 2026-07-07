@@ -13,6 +13,7 @@ import { PoSupplyDispatchReportComponent } from './component/Suppliers/po-supply
 import { SupplierPoSdDetailComponent } from './component/Suppliers/supplier-po-sd-detail/supplier-po-sd-detail.component';
 import { SupplierPoApplyExtensionComponent } from './component/Suppliers/supplier-po-apply-extension/supplier-po-apply-extension.component';
 import { PoSupplyReceiptComponent } from './component/Suppliers/po-supply-receipt/po-supply-receipt.component';
+import { PoSupplyReceiptEntryComponent } from './component/Suppliers/po-supply-receipt-entry/po-supply-receipt-entry.component';
 import { PoSupplyInstallationReportComponent } from './component/Suppliers/po-supply-installation-report/po-supply-installation-report.component';
 import { PoSupplyInstallationPrintComponent } from './component/Suppliers/po-supply-installation-print/po-supply-installation-print.component';
 import { SupplierRcDetailReportComponent } from './component/Suppliers/supplier-rc-detail-report/supplier-rc-detail-report.component';
@@ -213,6 +214,12 @@ const routes: Routes = [
   {
     path: 'transaction/po-supply-receipt',
     component: PoSupplyReceiptComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'transaction/po-supply-receipt-entry',
+    component: PoSupplyReceiptEntryComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },

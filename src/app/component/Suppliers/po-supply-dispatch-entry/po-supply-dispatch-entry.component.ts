@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { resolveSupplierUserId } from '../supplier-user.util';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import { PoSupplyDispatchFilters, poSupplyDispatchQuery, readPoSupplyDispatchFilters } from '../supplier-transaction-state.util';
 
 type DispatchTab = 'invoice' | 'equipment' | 'complete';
 
@@ -91,6 +92,10 @@ export class PoSupplyDispatchEntryComponent implements OnInit {
   gstOptions: GstOption[] = [];
   equipmentLines: EquipmentLine[] = [];
   draftLine: EquipmentLine = this.emptyDraftLine();
+  private returnFilters: PoSupplyDispatchFilters = {
+    financialYearId: 0,
+    tenderId: 0,
+  };
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -107,6 +112,10 @@ export class PoSupplyDispatchEntryComponent implements OnInit {
     }
 
     this.route.queryParamMap.subscribe((params) => {
+      this.returnFilters = readPoSupplyDispatchFilters({
+        financialYearId: params.get('financialYearId') ?? 0,
+        tenderId: params.get('tenderId') ?? 0,
+      });
       this.poId = Number(params.get('poId') || params.get('POID') || 0);
       this.locId = Number(params.get('locId') || params.get('LOCID') || 0);
       this.itemId = Number(params.get('itemId') || params.get('ITEMID') || 0);
@@ -267,7 +276,7 @@ export class PoSupplyDispatchEntryComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/transaction/po-supply-dispatch-edit'], {
-      queryParams: { poId: this.poId },
+      queryParams: { poId: this.poId, ...poSupplyDispatchQuery(this.returnFilters) },
     });
   }
 

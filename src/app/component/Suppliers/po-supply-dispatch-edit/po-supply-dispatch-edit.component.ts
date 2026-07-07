@@ -5,6 +5,12 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { resolveSupplierUserId } from '../supplier-user.util';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import {
+  PoSupplyDispatchFilters,
+  navigateToPoSupplyDispatch,
+  poSupplyDispatchQuery,
+  readPoSupplyDispatchFilters,
+} from '../supplier-transaction-state.util';
 
 interface DispatchEditBatch {
   issueId: number;
@@ -49,6 +55,10 @@ export class PoSupplyDispatchEditComponent implements OnInit {
   poNo = '';
   poDate = '';
   rows: DispatchEditRow[] = [];
+  private returnFilters: PoSupplyDispatchFilters = {
+    financialYearId: 0,
+    tenderId: 0,
+  };
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -65,6 +75,10 @@ export class PoSupplyDispatchEditComponent implements OnInit {
     }
 
     this.route.queryParamMap.subscribe((params) => {
+      this.returnFilters = readPoSupplyDispatchFilters({
+        financialYearId: params.get('financialYearId') ?? 0,
+        tenderId: params.get('tenderId') ?? 0,
+      });
       this.poId = Number(params.get('poId') || params.get('POID') || 0);
       if (!this.poId) {
         this.toastr.error('PO id is required.');
@@ -96,7 +110,7 @@ export class PoSupplyDispatchEditComponent implements OnInit {
   }
 
   backToDispatchDesk(): void {
-    this.router.navigate(['/transaction/po-supply-dispatch']);
+    navigateToPoSupplyDispatch(this.router, this.returnFilters);
   }
 
   onAddDispatch(row: DispatchEditRow): void {
@@ -144,6 +158,7 @@ export class PoSupplyDispatchEditComponent implements OnInit {
         locId: row.consigneeId,
         itemId: row.itemId,
         issueId,
+        ...poSupplyDispatchQuery(this.returnFilters),
       },
     });
   }

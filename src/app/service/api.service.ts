@@ -253,6 +253,66 @@ export class ApiService {
     );
   }
 
+  getSupplierReceiptEntry(userId: number, poId: number, locId: number, issueId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/receipt-entry/by-user/${userId}?poId=${poId}&locId=${locId}&issueId=${issueId}`,
+    );
+  }
+
+  saveSupplierReceiptEntry(
+    userId: number,
+    body: {
+      poId: number;
+      locationId: number;
+      issueId: number;
+      receivedDate: string;
+      receiptNo: string;
+      receiptQty: string;
+      receiptRemarks: string;
+    },
+  ) {
+    return this.http.post<{ message: string; receiptId: number }>(
+      `${this.apiUrll}/supplier/receipt-entry/by-user/${userId}`,
+      body,
+    );
+  }
+
+  saveSupplierReceiptInstallation(
+    userId: number,
+    body: {
+      receiptId: number;
+      issueDetailId: number;
+      warrantyCardNo: string;
+      receivedQty: number;
+      installationDate: string;
+      installationBy: string;
+      installationLocation: string;
+      cgmscLogoPrinted: string;
+      warrantyValidity: string;
+      serviceManual: string;
+      operatingManual: string;
+      calibrationCertificate: string;
+      warrantyCard: string;
+      otherStatutory: string;
+      poDocuments: string;
+    },
+  ) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/receipt-entry/installation/by-user/${userId}`,
+      body,
+    );
+  }
+
+  completeSupplierReceiptEntry(
+    userId: number,
+    body: { poId: number; locationId: number; issueId: number; receiptId: number },
+  ) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/receipt-entry/complete/by-user/${userId}`,
+      body,
+    );
+  }
+
   getSupplierInstallationReport(userId: number, receiptId: number) {
     return this.http.get<Record<string, unknown>>(
       `${this.apiUrll}/supplier/installation-report/by-user/${userId}?receiptId=${receiptId}`,

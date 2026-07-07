@@ -11,6 +11,11 @@ import {
   mapInstallationReportPage,
 } from '../installation-report.model';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import {
+  PoSupplyReceiptFilters,
+  navigateToPoSupplyReceipt,
+  readPoSupplyReceiptFilters,
+} from '../supplier-transaction-state.util';
 
 type InstallationFileType = 'insReport' | 'insPhoto' | 'waranty' | 'chalan';
 
@@ -27,6 +32,11 @@ export class PoSupplyInstallationReportComponent implements OnInit {
   receiptId = 0;
   page: InstallationReportPage | null = null;
   loadError = '';
+  private returnFilters: PoSupplyReceiptFilters = {
+    financialYearId: 0,
+    poType: 'All',
+    poId: 0,
+  };
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -44,6 +54,11 @@ export class PoSupplyInstallationReportComponent implements OnInit {
     }
 
     this.route.queryParamMap.subscribe((params) => {
+      this.returnFilters = readPoSupplyReceiptFilters({
+        financialYearId: params.get('financialYearId') ?? 0,
+        poType: params.get('poType') ?? 'All',
+        poId: params.get('poId') ?? 0,
+      });
       this.receiptId = Number(
         params.get('receiptId') || params.get('Receipt_id') || params.get('ReceiptId') || 0,
       );
@@ -78,6 +93,10 @@ export class PoSupplyInstallationReportComponent implements OnInit {
 
   viewRowFile(row: InstallationReportRow, fileType: InstallationFileType): void {
     this.openFileUrl(this.receiptId, fileType, row.itemDetailId, false);
+  }
+
+  goBack(): void {
+    navigateToPoSupplyReceipt(this.router, this.returnFilters);
   }
 
   private loadReport(): void {

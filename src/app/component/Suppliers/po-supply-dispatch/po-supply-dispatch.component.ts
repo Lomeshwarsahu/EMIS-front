@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import { poSupplyDispatchQuery, readPoSupplyDispatchFilters } from '../supplier-transaction-state.util';
 
 interface FinancialYearOption {
   financialYearId: number;
@@ -53,6 +54,7 @@ export class PoSupplyDispatchComponent implements OnInit {
     private readonly api: ApiService,
     private readonly router: Router,
     private readonly toastr: ToastrService,
+    private readonly route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -61,6 +63,9 @@ export class PoSupplyDispatchComponent implements OnInit {
       this.toastr.error('Please login as supplier.');
       return;
     }
+    const initial = readPoSupplyDispatchFilters(this.route.snapshot.queryParams);
+    this.selectedFinancialYearId = initial.financialYearId;
+    this.selectedTenderId = initial.tenderId;
     this.loadFilters();
   }
 
@@ -74,8 +79,12 @@ export class PoSupplyDispatchComponent implements OnInit {
         );
         this.tenders = this.mapTenders((raw['tenders'] ?? raw['Tenders'] ?? []) as unknown[]);
         const currentYear = Number(raw['currentFinancialYearId'] ?? raw['CurrentFinancialYearId'] ?? 0);
-        this.selectedFinancialYearId = currentYear > 0 ? currentYear : 0;
-        this.selectedTenderId = 0;
+        if (!this.selectedFinancialYearId) {
+          this.selectedFinancialYearId = currentYear > 0 ? currentYear : 0;
+        }
+        if (!this.tenders.some((row) => row.tenderId === this.selectedTenderId)) {
+          this.selectedTenderId = 0;
+        }
         this.loadGrid();
       },
       error: (err) => {
@@ -122,7 +131,13 @@ export class PoSupplyDispatchComponent implements OnInit {
 
   onSupplyStatus(row: PoDispatchRow): void {
     this.router.navigate(['/transaction/po-supply-dispatch-edit'], {
-      queryParams: { poId: row.poId },
+      queryParams: {
+        poId: row.poId,
+        ...poSupplyDispatchQuery({
+          financialYearId: this.selectedFinancialYearId,
+          tenderId: this.selectedTenderId,
+        }),
+      },
     });
   }
 

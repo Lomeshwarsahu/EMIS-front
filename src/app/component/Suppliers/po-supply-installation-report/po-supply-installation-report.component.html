@@ -1,5 +1,8 @@
 <div class="supplier-po-page installation-report-page">
-  <h1 class="page-title narrow">Installation Report</h1>
+  <div class="page-header">
+    <h1 class="page-title narrow">Installation Report</h1>
+    <button type="button" class="back-btn" (click)="goBack()">Back to Receipt Desk</button>
+  </div>
 
   <p *ngIf="page?.receivedDate" class="receipt-meta">
     Receipt No: {{ receiptId }}
@@ -63,7 +66,7 @@
     </table>
   </div>
 
-  <div class="table-wrap" *ngIf="!loading && page && !loadError">
+  <div class="table-wrap installation-table-wrap" *ngIf="!loading && page && !loadError">
     <table class="data-grid installation-grid">
       <thead>
         <tr>
