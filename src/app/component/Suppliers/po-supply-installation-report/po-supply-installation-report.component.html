@@ -1,15 +1,16 @@
 <div class="supplier-po-page installation-report-page">
-  <div class="page-header">
-    <h1 class="page-title narrow">Installation Report</h1>
+  <h2 class="page-title narrow">Installation Report</h2>
+
+  <div class="desk-toolbar">
     <button type="button" class="back-btn" (click)="goBack()">Back to Receipt Desk</button>
   </div>
 
-  <p *ngIf="page?.receivedDate" class="receipt-meta">
-    Receipt No: {{ receiptId }}
-    <span *ngIf="page?.receivedDate"> | Received Date: {{ page?.receivedDate }}</span>
-  </p>
+  <div class="po-header" *ngIf="page?.receivedDate || receiptId">
+    <span *ngIf="receiptId">Receipt No: <strong>{{ receiptId }}</strong></span>
+    <span *ngIf="page?.receivedDate">Received Date: <strong>{{ page?.receivedDate }}</strong></span>
+  </div>
 
-  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="8" />
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
   <div *ngIf="!loading && loadError" class="error-text">{{ loadError }}</div>
 
   <div *ngIf="!loading && page?.bulkInst" class="bulk-docs-card">
@@ -66,105 +67,110 @@
     </table>
   </div>
 
-  <div class="table-wrap installation-table-wrap" *ngIf="!loading && page && !loadError">
-    <table class="data-grid installation-grid">
-      <thead>
-        <tr>
-          <th>Sl. No.</th>
-          <th>Serial No</th>
-          <th>Installation Date</th>
-          <th>Warranty From/TO Date</th>
-          <th>Receipt QTY</th>
-          <th>Warranty Card No</th>
-          <th>Installation location</th>
-          <th>Print Installation Report</th>
-          <th *ngIf="showRowDocuments()">Uploaded Installation Documents</th>
-          <th *ngIf="showRowDocuments()">Photos</th>
-          <th *ngIf="showRowDocuments()">Warranty Card No</th>
-          <th *ngIf="showRowDocuments()">Uploaded Challan &amp; Other Documents</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of page.rows">
-          <td class="center">{{ row.slNo }}</td>
-          <td>{{ row.serialNo }}</td>
-          <td>{{ row.installationDate }}</td>
-          <td class="center">
-            {{ row.warrantyFrom }}<br />
-            {{ row.warrantyTo }}
-          </td>
-          <td class="center">{{ row.receivedQty }}</td>
-          <td>{{ row.warrantyCardNo }}</td>
-          <td>{{ row.installationLocation }}</td>
-          <td class="center">
-            <button type="button" class="icon-btn" title="Print" (click)="openPrint(row)">🖨</button>
-          </td>
-          <td *ngIf="showRowDocuments()" class="doc-cell">
-            <button
-              type="button"
-              class="link-btn"
-              *ngIf="row.hasInstallationReport"
-              (click)="downloadRowFile(row, 'insReport')">
-              Download Installation Report
-            </button>
-            <button
-              type="button"
-              class="show-btn small-btn"
-              *ngIf="row.hasInstallationReport && !row.isMongo"
-              (click)="viewRowFile(row, 'insReport')">
-              View File
-            </button>
-          </td>
-          <td *ngIf="showRowDocuments()" class="doc-cell">
-            <button
-              type="button"
-              class="link-btn"
-              *ngIf="row.hasInstallationPhoto"
-              (click)="downloadRowFile(row, 'insPhoto')">
-              Download Installation Photo
-            </button>
-            <button
-              type="button"
-              class="show-btn small-btn"
-              *ngIf="row.hasInstallationPhoto && !row.isMongo"
-              (click)="viewRowFile(row, 'insPhoto')">
-              View File
-            </button>
-          </td>
-          <td *ngIf="showRowDocuments()" class="doc-cell">
-            <button
-              type="button"
-              class="link-btn"
-              *ngIf="row.hasWarrantyCard"
-              (click)="downloadRowFile(row, 'waranty')">
-              Download Warranty Card
-            </button>
-            <button
-              type="button"
-              class="show-btn small-btn"
-              *ngIf="row.hasWarrantyCard && !row.isMongo"
-              (click)="viewRowFile(row, 'waranty')">
-              View File
-            </button>
-          </td>
-          <td *ngIf="showRowDocuments()" class="doc-cell">
-            <button
-              type="button"
-              class="link-btn"
-              *ngIf="row.hasChallan"
-              (click)="downloadRowFile(row, 'chalan')">
-              Download Challan
-            </button>
-            <button
-              type="button"
-              class="show-btn small-btn"
-              *ngIf="row.hasChallan && !row.isMongo"
-              (click)="viewRowFile(row, 'chalan')">
-              View File
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="datagrid" *ngIf="!loading && page && !loadError">
+    <div class="table-wrap">
+      <table class="po-grid installation-grid">
+        <thead>
+          <tr>
+            <th class="col-sn">S.No</th>
+            <th class="col-serial">Serial No</th>
+            <th class="col-date">Installation Date</th>
+            <th class="col-warranty">Warranty From/TO Date</th>
+            <th class="col-qty">Receipt QTY</th>
+            <th class="col-card">Warranty Card No</th>
+            <th class="col-location">Installation Location</th>
+            <th class="col-print">Print</th>
+            <th *ngIf="showRowDocuments()" class="col-doc">Installation Documents</th>
+            <th *ngIf="showRowDocuments()" class="col-doc">Photos</th>
+            <th *ngIf="showRowDocuments()" class="col-doc">Warranty Card</th>
+            <th *ngIf="showRowDocuments()" class="col-doc">Challan &amp; Other Docs</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of page.rows; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ row.slNo }}</td>
+            <td>{{ row.serialNo }}</td>
+            <td class="text-center">{{ row.installationDate }}</td>
+            <td class="text-center wrap-cell">
+              <div>{{ row.warrantyFrom }}</div>
+              <div>{{ row.warrantyTo }}</div>
+            </td>
+            <td class="text-center">{{ row.receivedQty }}</td>
+            <td class="wrap-cell">{{ row.warrantyCardNo }}</td>
+            <td class="wrap-cell">{{ row.installationLocation }}</td>
+            <td class="text-center">
+              <button type="button" class="icon-btn" title="Print Installation Report" (click)="openPrint(row)">🖨</button>
+            </td>
+            <td *ngIf="showRowDocuments()" class="doc-cell">
+              <button
+                type="button"
+                class="link-btn"
+                *ngIf="row.hasInstallationReport"
+                (click)="downloadRowFile(row, 'insReport')">
+                Download
+              </button>
+              <button
+                type="button"
+                class="show-btn doc-btn"
+                *ngIf="row.hasInstallationReport && !row.isMongo"
+                (click)="viewRowFile(row, 'insReport')">
+                View File
+              </button>
+            </td>
+            <td *ngIf="showRowDocuments()" class="doc-cell">
+              <button
+                type="button"
+                class="link-btn"
+                *ngIf="row.hasInstallationPhoto"
+                (click)="downloadRowFile(row, 'insPhoto')">
+                Download
+              </button>
+              <button
+                type="button"
+                class="show-btn doc-btn"
+                *ngIf="row.hasInstallationPhoto && !row.isMongo"
+                (click)="viewRowFile(row, 'insPhoto')">
+                View File
+              </button>
+            </td>
+            <td *ngIf="showRowDocuments()" class="doc-cell">
+              <button
+                type="button"
+                class="link-btn"
+                *ngIf="row.hasWarrantyCard"
+                (click)="downloadRowFile(row, 'waranty')">
+                Download
+              </button>
+              <button
+                type="button"
+                class="show-btn doc-btn"
+                *ngIf="row.hasWarrantyCard && !row.isMongo"
+                (click)="viewRowFile(row, 'waranty')">
+                View File
+              </button>
+            </td>
+            <td *ngIf="showRowDocuments()" class="doc-cell">
+              <button
+                type="button"
+                class="link-btn"
+                *ngIf="row.hasChallan"
+                (click)="downloadRowFile(row, 'chalan')">
+                Download
+              </button>
+              <button
+                type="button"
+                class="show-btn doc-btn"
+                *ngIf="row.hasChallan && !row.isMongo"
+                (click)="viewRowFile(row, 'chalan')">
+                View File
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="!page.rows.length">
+            <td [attr.colspan]="showRowDocuments() ? 12 : 8" class="empty-row">No Record found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
