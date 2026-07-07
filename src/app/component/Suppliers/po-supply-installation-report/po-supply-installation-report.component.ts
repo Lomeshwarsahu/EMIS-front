@@ -78,9 +78,12 @@ export class PoSupplyInstallationReportComponent implements OnInit {
   }
 
   openPrint(row: InstallationReportRow): void {
-    this.router.navigate(['/transaction/po-supply-installation-print'], {
+    const urlTree = this.router.createUrlTree(['/transaction/po-supply-installation-print'], {
       queryParams: { receiptItemId: row.itemDetailId },
     });
+    const path = this.router.serializeUrl(urlTree);
+    const fullUrl = `${window.location.origin}${path}`;
+    window.open(fullUrl, '_blank', 'noopener,noreferrer');
   }
 
   downloadBulk(fileType: InstallationFileType): void {
