@@ -20,6 +20,7 @@ interface FinancialYearOption {
 interface PoOption {
   poId: number;
   displayText: string;
+  status?: string;
 }
 
 interface ReceiptBatch {
@@ -35,6 +36,9 @@ interface ReceiptBatch {
 interface ReceiptRow {
   poItemId: number;
   poId: number;
+  poNo: string;
+  poDate: string;
+  rowStatus: string;
   consigneeId: number;
   locationName: string;
   itemName: string;
@@ -129,10 +133,6 @@ export class PoSupplyReceiptComponent implements OnInit {
   }
 
   onPoChange(): void {
-    if (!this.selectedPoId) {
-      this.rows = [];
-      return;
-    }
     this.loadDetails();
   }
 
@@ -150,36 +150,36 @@ export class PoSupplyReceiptComponent implements OnInit {
         const list = Array.isArray(raw) ? raw : [];
         this.poOptions = list.map((item) => {
           const row = item as Record<string, unknown>;
+          const poId = Number(row['poId'] ?? row['PoId'] ?? 0);
+          const displayText = String(row['displayText'] ?? row['DisplayText'] ?? '');
+          const status = String(row['status'] ?? row['Status'] ?? '');
           return {
-            poId: Number(row['poId'] ?? row['PoId'] ?? 0),
-            displayText: String(row['displayText'] ?? row['DisplayText'] ?? ''),
+            poId,
+            displayText: poId > 0 && status ? `${displayText} - ${status}` : displayText,
+            status,
           };
         });
         if (!this.poOptions.length) {
-          this.poOptions = [{ poId: 0, displayText: 'Select PO' }];
+          this.poOptions = [{ poId: 0, displayText: 'All PO' }];
         }
         const hasSelectedPo = this.poOptions.some((row) => row.poId === this.selectedPoId);
         if (!hasSelectedPo) {
           this.selectedPoId = 0;
-          this.rows = [];
-        } else if (this.selectedPoId > 0) {
-          this.loadDetails();
         }
+        this.loadDetails();
       },
       error: (err) => {
-        this.poOptions = [{ poId: 0, displayText: 'Select PO' }];
+        this.poOptions = [{ poId: 0, displayText: 'All PO' }];
         this.toastr.error(err?.error?.message ?? 'Unable to load PO list.');
       },
     });
   }
 
   loadDetails(): void {
-    if (!this.selectedPoId) {
-      this.rows = [];
-      return;
-    }
     this.loading = true;
-    this.api.getSupplierPoReceipt(this.userId, this.selectedPoId).subscribe({
+    this.api
+      .getSupplierPoReceipt(this.userId, this.selectedPoId, this.selectedFinancialYearId, this.poType)
+      .subscribe({
       next: (raw) => {
         this.loading = false;
         const list = Array.isArray(raw) ? raw : [];
@@ -219,6 +219,10 @@ export class PoSupplyReceiptComponent implements OnInit {
     return batch.supplyStatus !== 'Dispatch Pending';
   }
 
+  isRowComplete(row: ReceiptRow): boolean {
+    return row.rowStatus === 'Installation Completed';
+  }
+
   private mapFinancialYears(list: unknown[]): FinancialYearOption[] {
     return list.map((item) => {
       const row = item as Record<string, unknown>;
@@ -238,6 +242,9 @@ export class PoSupplyReceiptComponent implements OnInit {
     return {
       poItemId: Number(row['poItemId'] ?? row['PoItemId'] ?? 0),
       poId: Number(row['poId'] ?? row['PoId'] ?? 0),
+      poNo: String(row['poNo'] ?? row['PoNo'] ?? ''),
+      poDate: String(row['poDate'] ?? row['PoDate'] ?? ''),
+      rowStatus: String(row['rowStatus'] ?? row['RowStatus'] ?? ''),
       consigneeId: Number(row['consigneeId'] ?? row['ConsigneeId'] ?? 0),
       locationName: String(row['locationName'] ?? row['LocationName'] ?? ''),
       itemName: String(row['itemName'] ?? row['ItemName'] ?? ''),

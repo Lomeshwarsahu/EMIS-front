@@ -56,7 +56,7 @@
     </tbody>
   </table>
 
-  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
 
   <div class="datagrid" *ngIf="!loading">
     <div class="table-wrap">
@@ -64,6 +64,8 @@
         <thead>
           <tr>
             <th class="col-sn">S.No</th>
+            <th class="col-po">PO No</th>
+            <th class="col-status">Status</th>
             <th class="col-consignee">Consignees</th>
             <th class="col-item">Item Name/Code</th>
             <th class="col-qty">Order Qty</th>
@@ -78,6 +80,13 @@
         <tbody>
           <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
             <td class="text-center">{{ i + 1 }}</td>
+            <td class="wrap-cell">
+              <div>{{ row.poNo }}</div>
+              <div *ngIf="row.poDate">{{ row.poDate }}</div>
+            </td>
+            <td class="text-center" [class.status-complete]="isRowComplete(row)" [class.status-pending]="!isRowComplete(row)">
+              {{ row.rowStatus }}
+            </td>
             <td>{{ row.locationName }}</td>
             <td class="text-center wrap-cell">
               <div>{{ row.itemName }}</div>
@@ -119,7 +128,7 @@
             </td>
           </tr>
           <tr *ngIf="!rows.length">
-            <td colspan="10" class="empty-row">No Record found.</td>
+            <td colspan="12" class="empty-row">No Record found.</td>
           </tr>
         </tbody>
       </table>

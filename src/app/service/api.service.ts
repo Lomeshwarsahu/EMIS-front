@@ -247,9 +247,9 @@ export class ApiService {
     );
   }
 
-  getSupplierPoReceipt(userId: number, poId: number) {
+  getSupplierPoReceipt(userId: number, poId: number, financialYearId = 0, poType = 'All') {
     return this.http.get<Record<string, unknown>[]>(
-      `${this.apiUrll}/supplier/po-supply-receipt/by-user/${userId}?poId=${poId}`,
+      `${this.apiUrll}/supplier/po-supply-receipt/by-user/${userId}?poId=${poId}&financialYearId=${financialYearId}&poType=${encodeURIComponent(poType)}`,
     );
   }
 

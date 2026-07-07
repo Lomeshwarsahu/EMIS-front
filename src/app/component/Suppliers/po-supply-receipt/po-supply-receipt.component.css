@@ -1,6 +1,6 @@
 .receipt-grid {
-  width: 1500px;
-  min-width: 1500px;
+  width: 1700px;
+  min-width: 1700px;
 }
 
 .filter-panel {
@@ -22,7 +22,19 @@
 }
 
 .col-sn { width: 45px; }
+.col-po { width: 140px; }
+.col-status { width: 160px; }
 .col-consignee { width: 180px; }
 .col-item { width: 220px; }
 .col-qty { width: 80px; }
 .col-batch { width: 360px; }
+
+.status-complete {
+  color: #1b7a2e;
+  font-weight: 600;
+}
+
+.status-pending {
+  color: #b45309;
+  font-weight: 600;
+}
