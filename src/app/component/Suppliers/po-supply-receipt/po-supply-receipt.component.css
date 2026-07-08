@@ -1,24 +1,5 @@
 .receipt-grid {
-  width: 1700px;
   min-width: 1700px;
-}
-
-.filter-panel {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto 16px;
-  border-collapse: collapse;
-}
-
-.filter-panel td {
-  padding: 8px 10px;
-  vertical-align: middle;
-}
-
-.filter-panel .label-col {
-  width: 140px;
-  text-align: left;
-  font-weight: 600;
 }
 
 .col-sn { width: 45px; }
@@ -30,7 +11,7 @@
 .col-batch { width: 360px; }
 
 .status-complete {
-  color: #1b7a2e;
+  color: #16a34a;
   font-weight: 600;
 }
 

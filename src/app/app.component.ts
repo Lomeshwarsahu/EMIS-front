@@ -13,6 +13,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 // import { TokenService } from './services/token.service';
 import { ApiService } from './service/api.service';
 import { ThemeService } from './service/theme.service';
+import { resolvePageTitle } from './service/page-title.util';
 
 @Component({
     selector: 'app-root',
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   sidebarCollapsed = false;
   menuSearchQuery = '';
   menuSearchFocused = false;
+  pageHeading = '';
   private menuSearchBlurTimer: ReturnType<typeof setTimeout> | null = null;
   deferredPrompt: any;
   showButton = false;
@@ -252,6 +254,7 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
 
         this.role = this.basicAuthentication.getRole().roleName;
         this.updateMenu();
+        this.updatePageHeading(event.urlAfterRedirects);
         this.closeDrawerOnNavigate();
       }
     });
@@ -341,6 +344,12 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
       this.menuItems = this.menuService.getMenuItems(this.role);
     }
     this.expandActiveParentMenu();
+    this.updatePageHeading(this.router.url);
+  }
+
+  private updatePageHeading(url: string): void {
+    const path = url.split('?')[0].split('#')[0];
+    this.pageHeading = resolvePageTitle(path, this.menuItems);
   }
 
   private expandActiveParentMenu(): void {

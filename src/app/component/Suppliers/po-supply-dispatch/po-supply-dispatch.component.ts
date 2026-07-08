@@ -122,11 +122,8 @@ export class PoSupplyDispatchComponent implements OnInit {
       });
   }
 
-  rowStatusClass(status: string): string {
-    if (status === 'Not Supplied') return 'status-not-supplied';
-    if (status === 'Partial Spplied') return 'status-partial';
-    if (status === 'Complete Supplied') return 'status-complete';
-    return '';
+  isNotSupplied(row: PoDispatchRow): boolean {
+    return row.supplyStatus.trim().toLowerCase() === 'not supplied';
   }
 
   onSupplyStatus(row: PoDispatchRow): void {

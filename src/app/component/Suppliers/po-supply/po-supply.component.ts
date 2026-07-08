@@ -44,7 +44,7 @@ interface PoSupplyRow {
   standalone: true,
   imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './po-supply.component.html',
-  styleUrls: ['./po-supply.component.css'],
+  styleUrls: ['../supplier-po-pages.shared.css', './po-supply.component.css'],
 })
 export class PoSupplyComponent implements OnInit {
   loading = false;
@@ -55,6 +55,7 @@ export class PoSupplyComponent implements OnInit {
   tenders: TenderOption[] = [];
   selectedFinancialYearId = 0;
   selectedTenderId = 0;
+  selectedSdFilter: 'all' | 'submitted' | 'not-submitted' = 'all';
 
   rows: PoSupplyRow[] = [];
 
@@ -122,6 +123,7 @@ export class PoSupplyComponent implements OnInit {
   clearFilters(): void {
     this.selectedFinancialYearId = 0;
     this.selectedTenderId = 0;
+    this.selectedSdFilter = 'all';
     this.restoreFilters = { financialYearId: 0, tenderId: 0 };
     this.router.navigate([], {
       relativeTo: this.route,
@@ -151,7 +153,21 @@ export class PoSupplyComponent implements OnInit {
   }
 
   sdStatusLabel(row: PoSupplyRow): string {
-    return row.submissionStatus?.toUpperCase() === 'Y' ? 'Submitted' : 'Not Submitted';
+    return this.isSdSubmitted(row) ? 'Submitted' : 'Not Submitted';
+  }
+
+  isSdSubmitted(row: PoSupplyRow): boolean {
+    return row.submissionStatus?.toUpperCase() === 'Y';
+  }
+
+  get displayedRows(): PoSupplyRow[] {
+    if (this.selectedSdFilter === 'submitted') {
+      return this.rows.filter((row) => this.isSdSubmitted(row));
+    }
+    if (this.selectedSdFilter === 'not-submitted') {
+      return this.rows.filter((row) => !this.isSdSubmitted(row));
+    }
+    return this.rows;
   }
 
   onPrint(row: PoSupplyRow): void {

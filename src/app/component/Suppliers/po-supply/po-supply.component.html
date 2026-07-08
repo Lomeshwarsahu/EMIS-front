@@ -1,14 +1,12 @@
-<div class="po-supply-page">
+<div class="supplier-po-page">
   <a class="gst-note" (click)="goToGstDetails()">
     <span style="font-size: 16px; margin-right: 6px;">&#9432;</span>
     Please Update your GST info in Supplier Information Section Under Master Menu
   </a>
 
-  <h2 class="page-title">Purchase Orders Desk</h2>
-
   <div class="filters">
     <label>
-      <span>Financial Year</span>
+      Financial Year:
       <select
         [(ngModel)]="selectedFinancialYearId"
         name="financialYear"
@@ -21,7 +19,7 @@
     </label>
 
     <label>
-      <span>Tender No</span>
+      Tender No:
       <select
         [(ngModel)]="selectedTenderId"
         name="tender"
@@ -33,12 +31,21 @@
       </select>
     </label>
 
+    <label>
+      SD Status:
+      <select [(ngModel)]="selectedSdFilter" name="sdStatus">
+        <option value="all">All</option>
+        <option value="submitted">Submitted</option>
+        <option value="not-submitted">Not Submitted</option>
+      </select>
+    </label>
+
     <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
-      Clear Filters
+      Clear Filter
     </button>
   </div>
 
-  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="13" />
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
 
   <div class="datagrid" *ngIf="!loading">
     <div class="table-wrap">
@@ -54,14 +61,15 @@
             <th class="col-value">Value</th>
             <th class="col-tender">Tender No</th>
             <th class="col-consignee text-center">Consignees</th>
-            <th class="col-status">Status</th>
-            <th class="col-print text-center">Action</th>
             <th class="col-sd text-center">SD Status</th>
             <th class="col-extension text-center">Extension</th>
+            <th class="col-print text-center">Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of rows; let i = index">
+          <tr
+            *ngFor="let row of displayedRows; let i = index"
+            [class.sd-not-submitted]="!isSdSubmitted(row)">
             <td class="text-center text-slate-500">{{ i + 1 }}</td>
             <td>
               <div class="text-xs text-slate-500 mb-1">{{ row.outwardNo }}</div>
@@ -80,12 +88,6 @@
             <td class="font-bold text-slate-700">₹{{ row.totalPoValue }}</td>
             <td>{{ row.tenderNo }}</td>
             <td class="text-center">{{ row.noOfConsignee }}</td>
-            <td>{{ row.status }}</td>
-            <td class="text-center">
-              <button type="button" class="plain-btn" title="Print PO" (click)="onPrint(row)">
-                Print
-              </button>
-            </td>
             <td class="text-center">
               <button type="button" class="plain-link" (click)="onSdDetails(row)">
                 {{ sdStatusLabel(row) }}
@@ -94,9 +96,14 @@
             <td class="text-center">
               <button type="button" class="plain-link" (click)="onApplyExtension(row)">Apply</button>
             </td>
+            <td class="text-center">
+              <button type="button" class="plain-btn" title="Print PO" (click)="onPrint(row)">
+                Print
+              </button>
+            </td>
           </tr>
-          <tr *ngIf="!rows.length">
-            <td colspan="13" class="empty-row">
+          <tr *ngIf="!displayedRows.length">
+            <td colspan="12" class="empty-row">
               <div class="empty-state">
                 <div style="font-size: 32px; color: #cbd5e1; margin-bottom: 8px;">&#128451;</div>
                 <p>No purchase orders found matching the selected filters.</p>
