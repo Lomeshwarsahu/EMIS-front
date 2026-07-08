@@ -28,22 +28,23 @@
 
 /* ================= SHELL HEADER (matches sidebar) ================= */
 .app-shell-header {
-  --header-bg: #ffffff;
+  --header-bg: #f4f7fa;
   --header-border: #e8edf3;
   --header-text: #111827;
   --header-muted: #6b7280;
-  --header-hover: #f3f4f8;
-  --header-search-bg: #f8fafc;
+  --header-hover: #e8edf3;
+  --header-search-bg: #ffffff;
   --header-accent: #f97316;
   --header-focus-ring: rgba(249, 115, 22, 0.12);
 
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
   flex-shrink: 0;
   min-height: 64px;
   padding: 10px 18px;
-  background: var(--header-bg);
+  background: transparent;
   color: var(--header-text);
   border-bottom: 1px solid var(--header-border);
 }
@@ -59,11 +60,15 @@
   --header-focus-ring: rgba(110, 0, 179, 0.28);
 }
 
+.app-shell-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .header-page-title {
-  flex: 1;
-  min-width: 0;
   margin: 0;
-  padding: 0 4px;
+  padding: 4px 4px 0;
   font-size: clamp(16px, 2vw, 20px);
   font-weight: 700;
   line-height: 1.25;
@@ -71,6 +76,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.app-shell-header.theme-dark .header-page-title {
+  background: rgba(110, 0, 179, 0.14);
+  border: 1px solid rgba(110, 0, 179, 0.22);
+  border-radius: 12px;
+  padding: 6px 10px 6px;
 }
 
 .header-search-wrap {
@@ -81,9 +93,10 @@
 }
 
 .header-search-wrap--actions {
-  flex: 0 1 280px;
+  flex: 1;
   min-width: 160px;
-  max-width: 300px;
+  max-width: 520px;
+  margin: 0 auto;
 }
 
 .header-search {
@@ -216,6 +229,14 @@
   margin-left: auto;
   flex-shrink: 0;
   min-width: 0;
+}
+
+.header-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .header-icon-btn {
@@ -385,6 +406,14 @@ mat-drawer.premium-drawer.mat-drawer-over {
   background: var(--shell-content-bg, #f4f7fa);
 }
 
+html[data-theme='light'] ::ng-deep mat-drawer.premium-drawer {
+  background: #f4f7fa !important;
+}
+
+html[data-theme='light'] ::ng-deep mat-drawer.premium-drawer .mat-drawer-inner-container {
+  background: #f4f7fa;
+}
+
 ::ng-deep mat-drawer-container.main-container.main-container--login {
   background: #e2e8f0 !important;
 }
@@ -421,7 +450,7 @@ mat-drawer.premium-drawer.mat-drawer-over {
 
   .header-page-title {
     font-size: 15px;
-    padding: 0 2px;
+    padding: 4px 2px 0;
   }
 
   .header-search-wrap--actions {

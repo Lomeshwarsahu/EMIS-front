@@ -6,16 +6,16 @@
 
 .emis-sidebar {
   --sidebar-width: 272px;
-  --sidebar-bg: #ffffff;
+  --sidebar-bg: #f4f7fa;
   --sidebar-border: #e8edf3;
   --sidebar-text: #111827;
   --sidebar-muted: #6b7280;
-  --sidebar-hover: #f3f4f8;
+  --sidebar-hover: #e8edf3;
   --sidebar-active-bg: #ffedd5;
   --sidebar-active-text: #c2410c;
   --sidebar-accent: #f97316;
-  --sidebar-search-bg: #f8fafc;
-  --sidebar-footer-bg: #ffffff;
+  --sidebar-search-bg: #ffffff;
+  --sidebar-footer-bg: #f4f7fa;
   --sidebar-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04);
 
   display: flex;
@@ -56,10 +56,10 @@
   height: calc(100% - 28px);
   border-right: none;
   border-radius: 40px;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 48%, #f1f5f9 100%);
+  background: #ffffff;
   box-shadow:
-    0 12px 36px rgba(2, 6, 23, 0.16),
-    inset 0 1px 0 rgba(15, 23, 42, 0.06);
+    0 12px 36px rgba(2, 6, 23, 0.12),
+    inset 0 1px 0 rgba(15, 23, 42, 0.04);
 }
 
 .emis-sidebar.collapsed:not(.theme-dark) .sidebar-top {

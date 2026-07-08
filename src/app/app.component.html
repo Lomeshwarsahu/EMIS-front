@@ -33,18 +33,16 @@
         class="app-shell-header"
         [class.theme-dark]="themeService.isDark"
         *ngIf="!isLoginPage">
-        <button
-          type="button"
-          class="header-icon-btn mobile-menu-btn"
-          *ngIf="isMobile"
-          (click)="toggleDrawer()"
-          [attr.aria-label]="isDrawerOpen ? 'Close menu' : 'Open menu'">
-          <mat-icon>{{ isDrawerOpen ? 'close' : 'menu' }}</mat-icon>
-        </button>
+        <div class="app-shell-header-row">
+          <button
+            type="button"
+            class="header-icon-btn mobile-menu-btn"
+            *ngIf="isMobile"
+            (click)="toggleDrawer()"
+            [attr.aria-label]="isDrawerOpen ? 'Close menu' : 'Open menu'">
+            <mat-icon>{{ isDrawerOpen ? 'close' : 'menu' }}</mat-icon>
+          </button>
 
-        <h1 class="header-page-title" *ngIf="pageHeading">{{ pageHeading }}</h1>
-
-        <div class="header-actions">
           <div class="header-search-wrap header-search-wrap--actions">
             <div class="header-search" [class.is-focused]="menuSearchFocused">
               <mat-icon class="header-search-icon">search</mat-icon>
@@ -89,19 +87,23 @@
             </p>
           </div>
 
-          <button type="button" class="header-icon-btn" aria-label="Notifications" title="Notifications">
-            <mat-icon>notifications_none</mat-icon>
-            <span class="notify-dot" aria-hidden="true"></span>
-          </button>
+          <div class="header-actions-right">
+            <button type="button" class="header-icon-btn" aria-label="Notifications" title="Notifications">
+              <mat-icon>notifications_none</mat-icon>
+              <span class="notify-dot" aria-hidden="true"></span>
+            </button>
 
-          <div class="header-user">
-            <span class="header-user-name">{{ firstname || 'User' }}</span>
-            <img
-              class="header-avatar"
-              [src]="'https://ui-avatars.com/api/?name=' + (firstname || 'User') + '&background=' + (themeService.isDark ? '6E00B3' : 'f97316') + '&color=fff&rounded=true'"
-              alt="User avatar" />
+            <div class="header-user">
+              <span class="header-user-name">{{ firstname || 'User' }}</span>
+              <img
+                class="header-avatar"
+                [src]="'https://ui-avatars.com/api/?name=' + (firstname || 'User') + '&background=' + (themeService.isDark ? '6E00B3' : 'f97316') + '&color=fff&rounded=true'"
+                alt="User avatar" />
+            </div>
           </div>
         </div>
+
+        <h1 class="header-page-title" *ngIf="pageHeading">{{ pageHeading }}</h1>
       </header>
 
       <div class="content-area emis-page-content" [class.content-area--login]="isLoginPage">
