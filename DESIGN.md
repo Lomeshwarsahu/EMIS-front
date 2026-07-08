@@ -489,6 +489,53 @@ styleUrls: ['../supplier-po-pages.shared.css', './my-new-page.component.css'],
 
 ---
 
+## Agent prompt (copy-paste)
+
+Use this when asking Cursor / an agent to build or change supplier EMS UI. Replace bracketed placeholders.
+
+```text
+Read @EMIS-front/DESIGN.md and @EMIS-front/src/app/component/Suppliers/supplier-po-pages.shared.css
+to learn tokens and existing patterns.
+
+Reference one sibling page for layout conventions, e.g.:
+@EMIS-front/src/app/component/Suppliers/po-supply-dispatch-entry/po-supply-dispatch-entry.component.html
+@EMIS-front/src/app/component/Suppliers/po-supply-dispatch-entry/po-supply-dispatch-entry.component.ts
+
+Build [describe feature — e.g. billing settings panel] using ONLY documented classes,
+components, and colours from DESIGN.md and the shared CSS.
+
+Rules:
+- Reuse app-supplier-page-skeleton for loading states
+- Use .supplier-po-page, .page-title, .po-grid, .show-btn, etc. — no new colour hex unless proposed
+- If a component or pattern does not exist, propose it first — do not improvise a new style
+- Match navigation rules (same tab vs new tab) from DESIGN.md
+- Update DESIGN.md in the same change if UI patterns change
+- Update documentation/supplier-ems-migration/ when supplier EMS behaviour changes
+
+Output the diff.
+```
+
+### Reference pages by flow
+
+| Flow | Layout reference |
+|------|------------------|
+| Desk / grid + filters | `po-supply-receipt/po-supply-receipt.component.*` |
+| Multi-tab entry form | `po-supply-dispatch-entry/po-supply-dispatch-entry.component.*` |
+| Receipt + installation tabs | `po-supply-receipt-entry/po-supply-receipt-entry.component.*` |
+| Report + downloads | `po-supply-installation-report/po-supply-installation-report.component.*` |
+| SD / extension detail form | `supplier-po-sd-detail/`, `supplier-po-apply-extension/` |
+
+### Source files for tokens
+
+| What | File |
+|------|------|
+| Design rules + checklist | `EMIS-front/DESIGN.md` |
+| Shared supplier classes | `EMIS-front/src/app/component/Suppliers/supplier-po-pages.shared.css` |
+| Global scroll / legacy row colours | `EMIS-front/src/styles.css` |
+| Loading skeleton | `EMIS-front/src/app/component/Suppliers/supplier-page-skeleton/` |
+
+---
+
 ## Related docs
 
 | Doc | Location |
