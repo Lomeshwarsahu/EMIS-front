@@ -30,9 +30,9 @@ html[data-theme='light'] {
 }
 
 html[data-theme='dark'] {
-  --shell-content-bg: #0b1220;
+  --shell-content-bg: #070707;
   --shell-content-text: #e5e7eb;
-  --shell-header-bg: #020617;
+  --shell-header-bg: #070707;
 }
 
 html[data-theme='dark'] .content-area {

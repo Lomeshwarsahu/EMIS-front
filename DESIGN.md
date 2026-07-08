@@ -550,7 +550,7 @@ Global navigation uses `app-app-sidebar` inside `mat-drawer` (`app.component.htm
 
 - **Full viewport height** — sidebar starts at top of screen; header sits in main content column only
 - **Light / dark mode** — footer toggle with icon + **Dark mode** / **Light mode** label when expanded; switch only when collapsed (hover tooltip shows label)
-- **Collapsed mode** — icon-only rail (`76px`); collapse toggle below menu pages (outside right edge; black in light theme, white in dark theme); hover shows label tooltip (leaf items) or child flyout (parent menus)
+- **Collapsed mode** — icon-only rail (`76px` expanded light / `84px` drawer in dark pill mode); collapse toggle on right edge; hover shows label tooltip (leaf items) or child flyout (parent menus). **Dark collapsed** — floating pill rail with rounded ends, dark gradient background, centered icons (active purple `#6E00B3`, footer icons cream), no icon boxes
 - **Brand logo** — `assets/icons/icon.png` (Chhattisgarh Government emblem)
 - **Logout only** in sidebar footer (user profile in header)
 - **Menu search** — in shell header; filters sidebar items and shows dropdown suggestions below the search box
@@ -561,10 +561,10 @@ Global navigation uses `app-app-sidebar` inside `mat-drawer` (`app.component.htm
 
 | Token | Light | Dark |
 |-------|-------|------|
-| `--shell-content-bg` | `#f4f7fa` | `#0b1220` |
+| `--shell-content-bg` | `#f4f7fa` | `#070707` |
 | `--shell-content-text` | `#0f172a` | `#e5e7eb` |
 
-Sidebar colours are scoped in `app-sidebar.component.css` (light mode accent `#f97316` orange with active state `#ffedd5`/`#c2410c`, dark mode accent `#6E00B3` with active state `rgba(110, 0, 179, 0.24)`/`#f3e8ff`, dark shell surfaces use `#111827`). Supplier PO pages keep their own legacy palette — shell theme does not override `.supplier-po-page`.
+Sidebar colours are scoped in `app-sidebar.component.css` (light mode accent `#f97316` orange, dark mode accent `#6E00B3` purple, dark shell/sidebar surfaces `#070707`). Active menu items use a left accent bar + icon/text colour change only — no icon background or border box. Supplier PO pages keep their own legacy palette — shell theme does not override `.supplier-po-page`.
 
 ---
 

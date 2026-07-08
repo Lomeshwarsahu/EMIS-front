@@ -12,6 +12,7 @@
       #drawer
       class="premium-drawer"
       [class.premium-drawer--collapsed]="sidebarCollapsed"
+      [class.premium-drawer--dark-collapsed]="sidebarCollapsed && themeService.isDark"
       [mode]="drawerMode"
       [opened]="isDrawerOpen && !isLoginPage"
       (openedChange)="onDrawerOpenedChange($event)">

@@ -49,12 +49,12 @@
 }
 
 .app-shell-header.theme-dark {
-  --header-bg: #111827;
-  --header-border: #4b5563;
+  --header-bg: #070707;
+  --header-border: #1f1f1f;
   --header-text: #f3f4f6;
   --header-muted: #9ca3af;
-  --header-hover: #374151;
-  --header-search-bg: #1f2937;
+  --header-hover: #141414;
+  --header-search-bg: #141414;
   --header-accent: #6E00B3;
   --header-focus-ring: rgba(110, 0, 179, 0.28);
 }
@@ -347,6 +347,10 @@ mat-drawer.premium-drawer.premium-drawer--collapsed {
   width: 76px;
   overflow: visible;
   z-index: 1002;
+}
+
+mat-drawer.premium-drawer.premium-drawer--dark-collapsed {
+  width: 76px;
 }
 
 ::ng-deep mat-drawer.premium-drawer .mat-drawer-inner-container {
