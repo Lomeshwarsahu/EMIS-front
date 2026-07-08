@@ -48,6 +48,7 @@
 .bulk-docs-table td {
   padding: 8px 10px;
   vertical-align: middle;
+  border: none;
   border-bottom: 1px solid #e2e8f0;
   color: #003399;
 }

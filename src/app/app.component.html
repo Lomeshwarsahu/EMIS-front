@@ -3,33 +3,6 @@
     <p style="color: white"> Please wait... </p>
   </ngx-spinner>
 
-  <mat-toolbar class="header-toolbar app-header" *ngIf="!isLoginPage">
-    <button
-      type="button"
-      mat-stroked-button
-      class="sidebar-toggle-btn"
-      (click)="toggleDrawer()"
-      [attr.aria-expanded]="isDrawerOpen"
-      [attr.aria-label]="isDrawerOpen ? 'Close sidebar menu' : 'Open sidebar menu'">
-      <mat-icon>{{ isDrawerOpen ? 'chevron_left' : 'menu' }}</mat-icon>
-      <span class="sidebar-toggle-label">{{ isDrawerOpen ? 'Close' : 'Menu' }}</span>
-    </button>
-
-    <span class="title">EMIS</span>
-    <span class="spacer"></span>
-
-    <div class="user-profile">
-      <span class="welcome-text">Hi, {{firstname}}</span>
-      <div class="avatar-container">
-        <img src="https://ui-avatars.com/api/?name={{firstname}}&background=38bdf8&color=fff&rounded=true"
-             alt="User" class="avatar-img shadow-sm">
-        <div class="pulse-ring"></div>
-      </div>
-    </div>
-
-    <button mat-button class="glass-back-btn" (click)="goBack()">Back</button>
-  </mat-toolbar>
-
   <mat-drawer-container
     class="main-container"
     [class.main-container--login]="isLoginPage"
@@ -38,72 +11,96 @@
     <mat-drawer
       #drawer
       class="premium-drawer"
+      [class.premium-drawer--collapsed]="sidebarCollapsed"
       [mode]="drawerMode"
       [opened]="isDrawerOpen && !isLoginPage"
       (openedChange)="onDrawerOpenedChange($event)">
-      <div class="sidebar-header">
-        <h2 class="brand-text">EMIS <span>Portal</span></h2>
-        <button
-          type="button"
-          mat-icon-button
-          class="sidebar-close-btn"
-          (click)="closeDrawer()"
-          aria-label="Close sidebar">
-          <mat-icon>close</mat-icon>
-        </button>
-      </div>
-
-      <mat-nav-list>
-        <ng-container *ngFor="let item of menuItems">
-          <mat-list-item class="nav-item">
-            <button mat-button class="menu-btn"
-                    (click)="item.submenu ? toggleSubmenu(item.label) : closeDrawerOnNavigate()"
-                    [routerLink]="!item.submenu ? item.route : null"
-                    routerLinkActive="active-menu"
-                    [ngClass]="{'active-menu1': isMenuActive(item)}">
-
-              <div class="menu-content">
-                <div class="active-dot" *ngIf="isMenuActive(item)"></div>
-
-                <mat-icon class="left-icon" [ngClass]="{'active-icon': isMenuActive(item)}">format_list_bulleted</mat-icon>
-                <span class="menu-text" [ngClass]="{'active-text': isMenuActive(item)}">{{ item.label }}</span>
-
-                <mat-icon *ngIf="item.submenu" class="right-icon" [class.rotate]="expandedMenus[item.label]">
-                  chevron_right
-                </mat-icon>
-              </div>
-            </button>
-          </mat-list-item>
-
-          <div class="submenu" [class.open]="expandedMenus[item.label]">
-            <mat-list-item *ngFor="let sub of item.submenu; let i = index" class="sub-nav-item" [style.transition-delay]="(i * 0.05) + 's'">
-              <button mat-button class="submenu-btn"
-                      [routerLink]="sub.route"
-                      routerLinkActive="active-submenu"
-                      (click)="closeDrawerOnNavigate()">
-                <div class="menu-content">
-                  <mat-icon class="sub-icon">remove</mat-icon>
-                  <span class="menu-text">{{ sub.label }}</span>
-                </div>
-              </button>
-            </mat-list-item>
-          </div>
-        </ng-container>
-
-        <div class="divider"></div>
-
-        <mat-list-item class="nav-item">
-          <button mat-button class="menu-btn logout-btn" (click)="logout(); closeDrawerOnNavigate()">
-            <div class="menu-content">
-              <mat-icon class="left-icon">power_settings_new</mat-icon>
-              <span class="menu-text">Secure Logout</span>
-            </div>
-          </button>
-        </mat-list-item>
-      </mat-nav-list>
+      <app-app-sidebar
+        [menuItems]="menuItems"
+        [expandedMenus]="expandedMenus"
+        [menuSearch]="menuSearchQuery"
+        [collapsed]="sidebarCollapsed"
+        [activeUrl]="router.url"
+        (submenuToggle)="toggleSubmenu($event)"
+        (navigate)="closeDrawerOnNavigate()"
+        (logoutClick)="logout(); closeDrawerOnNavigate()"
+        (collapsedChange)="onSidebarCollapsedChange($event)" />
     </mat-drawer>
 
     <mat-drawer-content class="main-drawer-content">
+      <header
+        class="app-shell-header"
+        [class.theme-dark]="themeService.isDark"
+        *ngIf="!isLoginPage">
+        <button
+          type="button"
+          class="header-icon-btn mobile-menu-btn"
+          *ngIf="isMobile"
+          (click)="toggleDrawer()"
+          [attr.aria-label]="isDrawerOpen ? 'Close menu' : 'Open menu'">
+          <mat-icon>{{ isDrawerOpen ? 'close' : 'menu' }}</mat-icon>
+        </button>
+
+        <div class="header-search-wrap">
+          <div class="header-search" [class.is-focused]="menuSearchFocused">
+            <mat-icon class="header-search-icon">search</mat-icon>
+            <input
+              type="search"
+              class="header-search-input"
+              [(ngModel)]="menuSearchQuery"
+              (input)="onMenuSearchInput()"
+              (focus)="onMenuSearchFocus()"
+              (blur)="onMenuSearchBlur()"
+              placeholder="Search menu"
+              aria-label="Search menu"
+              autocomplete="off"
+              role="combobox"
+              [attr.aria-expanded]="menuSearchFocused && menuSearchQuery.trim().length > 0"
+              aria-controls="menu-search-suggestions" />
+          </div>
+
+          <ul
+            id="menu-search-suggestions"
+            class="header-search-suggestions"
+            *ngIf="menuSearchFocused && menuSearchQuery.trim() && menuSearchSuggestions.length"
+            role="listbox">
+            <li *ngFor="let suggestion of menuSearchSuggestions" role="option">
+              <button
+                type="button"
+                class="header-search-suggestion"
+                (mousedown)="selectMenuSuggestion(suggestion); $event.preventDefault()">
+                <mat-icon aria-hidden="true">subdirectory_arrow_right</mat-icon>
+                <span class="suggestion-text">
+                  <span class="suggestion-label">{{ suggestion.label }}</span>
+                  <span class="suggestion-parent" *ngIf="suggestion.parentLabel">{{ suggestion.parentLabel }}</span>
+                </span>
+              </button>
+            </li>
+          </ul>
+
+          <p
+            class="header-search-empty"
+            *ngIf="menuSearchFocused && menuSearchQuery.trim() && !menuSearchSuggestions.length">
+            No menu items match your search.
+          </p>
+        </div>
+
+        <div class="header-actions">
+          <button type="button" class="header-icon-btn" aria-label="Notifications" title="Notifications">
+            <mat-icon>notifications_none</mat-icon>
+            <span class="notify-dot" aria-hidden="true"></span>
+          </button>
+
+          <div class="header-user">
+            <span class="header-user-name">{{ firstname || 'User' }}</span>
+            <img
+              class="header-avatar"
+              [src]="'https://ui-avatars.com/api/?name=' + (firstname || 'User') + '&background=7c3aed&color=fff&rounded=true'"
+              alt="User avatar" />
+          </div>
+        </div>
+      </header>
+
       <div class="content-area emis-page-content" [class.content-area--login]="isLoginPage">
         <main class="page-outlet-wrapper">
           <router-outlet></router-outlet>

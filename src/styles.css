@@ -23,6 +23,23 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+html[data-theme='light'] {
+  --shell-content-bg: #f4f7fa;
+  --shell-content-text: #0f172a;
+  --shell-header-bg: #0f172a;
+}
+
+html[data-theme='dark'] {
+  --shell-content-bg: #0b1220;
+  --shell-content-text: #e5e7eb;
+  --shell-header-bg: #020617;
+}
+
+html[data-theme='dark'] .content-area {
+  background-color: var(--shell-content-bg);
+  color: var(--shell-content-text);
+}
+
 /* All routed pages + login: no outer margin/padding */
 .emis-page-content,
 .content-area,
@@ -146,7 +163,7 @@ canvas {
   white-space: nowrap;
   word-wrap: normal;
   overflow-wrap: normal;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .page-outlet-wrapper .datagrid .wrap-cell,

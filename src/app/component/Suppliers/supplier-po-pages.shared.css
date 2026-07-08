@@ -131,6 +131,32 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.supplier-po-page .header-grid {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 14px;
+  background: #fff;
+  border: 1px solid #94a3b8;
+}
+
+.supplier-po-page .header-grid td {
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 7px 8px;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.supplier-po-page .header-grid tr:last-child td {
+  border-bottom: none;
+}
+
+.supplier-po-page .header-grid td:nth-child(odd) {
+  font-weight: 700;
+  background: #f8fafc;
+  width: 14%;
+}
+
 .po-grid {
   border-collapse: collapse;
   table-layout: fixed;
@@ -143,15 +169,22 @@
   padding: 8px 10px;
   text-align: left;
   white-space: nowrap;
-  border: 1px solid #000;
+  border: none;
+  border-bottom: 1px solid #000;
+  vertical-align: middle;
 }
 
 .po-grid td {
   padding: 8px 10px;
   background: #fff;
   color: #003399;
-  border: 1px solid #000;
-  vertical-align: top;
+  border: none;
+  border-bottom: 1px solid #000;
+  vertical-align: middle;
+}
+
+.po-grid tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .po-grid tr.alt-row td {
@@ -290,6 +323,7 @@
 .detail-form-table td {
   padding: 14px 18px;
   vertical-align: middle;
+  border: none;
   border-bottom: 1px solid #e2e8f0;
   font-size: 14px;
   color: #003399;
@@ -438,16 +472,24 @@
   background: #000084;
   color: #fff;
   padding: 4px 6px;
-  border: 1px solid #999;
+  border: none;
+  border-bottom: 1px solid #999;
   text-align: center;
+  vertical-align: middle;
 }
 
 .batch-grid td {
   background: #eee;
   color: #000;
   padding: 4px 6px;
-  border: 1px solid #999;
+  border: none;
+  border-bottom: 1px solid #999;
   text-align: center;
+  vertical-align: middle;
+}
+
+.batch-grid tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .batch-grid tr:nth-child(even) td {

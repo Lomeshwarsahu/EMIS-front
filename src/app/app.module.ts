@@ -28,6 +28,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { MatButtonModule } from '@angular/material/button';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { Registration } from './component/auth/registration/registration';
+import { AppSidebarComponent } from './component/layout/app-sidebar/app-sidebar.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -56,6 +57,7 @@ import { Registration } from './component/auth/registration/registration';
     MatTableModule,
     GoogleMapsModule,
     MatTableExporterModule, MatButtonModule,
+    AppSidebarComponent,
     ToastrModule.forRoot({
         positionClass: 'toast-top-right' // Set the position to top right
     })

@@ -33,27 +33,6 @@
   cursor: pointer;
 }
 
-.receipt-entry-page .header-grid {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 14px;
-  background: #fff;
-  border: 1px solid #94a3b8;
-}
-
-.receipt-entry-page .header-grid td {
-  border: 1px solid #e2e8f0;
-  padding: 7px 8px;
-  font-size: 13px;
-  vertical-align: middle;
-}
-
-.receipt-entry-page .header-grid td:nth-child(odd) {
-  font-weight: 700;
-  background: #f8fafc;
-  width: 14%;
-}
-
 .tabs {
   display: flex;
   gap: 8px;

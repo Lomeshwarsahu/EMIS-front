@@ -39,7 +39,7 @@ Supplier transaction pages intentionally use **Times New Roman** to match legacy
 | Button hover | `#3d5588` | `.show-btn:hover` |
 | Table header bg | `#003399` | `.po-grid th` |
 | Table header text | `#ccf` | `.po-grid th` |
-| Border (tables) | `#000` | `.po-grid`, `.table-wrap` |
+| Border (tables) | `#000` horizontal row lines only | `.po-grid`, `.table-wrap` outer frame |
 | Border (forms) | `#94a3b8` | Inputs, cards, header grids |
 
 ### Semantic
@@ -130,7 +130,7 @@ PO context blocks (dispatch entry, receipt entry) use a **6-column** table:
 | Style | Rule |
 |-------|------|
 | Label cells | `nth-child(odd)` — bold, `#f8fafc` background |
-| Borders | `1px solid #e2e8f0` (header-grid) or `#94a3b8` outer |
+| Borders | Horizontal row lines only (`border-bottom`); no vertical column lines | header-grid uses `#e2e8f0` |
 | Consignee row | `colspan="3"` on value cell |
 
 ### Deadline fields (receipt entry)
@@ -209,7 +209,7 @@ Filters should **auto-load** grid data on change where legacy did postback — a
 |-------|---------|
 | `.datagrid` | Outer table container |
 | `.table-wrap` | Horizontal scroll + black border |
-| `.po-grid` | Main grid styling |
+| `.po-grid` | Main grid styling — horizontal row borders only (no vertical column lines) |
 | `.alt-row` | Zebra striping (`#f8fafc`) |
 | `.text-center` | Centered numeric/date cells |
 | `.wrap-cell` | Allow line wrap in dense columns |
@@ -536,7 +536,37 @@ Output the diff.
 
 ---
 
-## Related docs
+## App shell sidebar
+
+Global navigation uses `app-app-sidebar` inside `mat-drawer` (`app.component.html`).
+
+| Item | Detail |
+|------|--------|
+| Component | `src/app/component/layout/app-sidebar/` |
+| Theme service | `src/app/service/theme.service.ts` — `light` / `dark`, persisted as `emis-theme` in `localStorage` |
+| HTML attribute | `document.documentElement[data-theme="light|dark"]` |
+
+### Sidebar features
+
+- **Full viewport height** — sidebar starts at top of screen; header sits in main content column only
+- **Light / dark mode** — footer toggle with icon + **Dark mode** / **Light mode** label when expanded; switch only when collapsed (hover tooltip shows label)
+- **Collapsed mode** — icon-only rail (`76px`); collapse toggle below menu pages (outside right edge; black in light theme, white in dark theme); hover shows label tooltip (leaf items) or child flyout (parent menus)
+- **Brand logo** — `assets/icons/icon.png` (Chhattisgarh Government emblem)
+- **Logout only** in sidebar footer (user profile in header)
+- **Menu search** — in shell header; filters sidebar items and shows dropdown suggestions below the search box
+- **Header** — search, notifications (borderless icon), user avatar; matches sidebar colours
+- **Parent menu icons** — `Masters`=`dataset`, `Orders`=`shopping_cart`, `Transaction`=`sync_alt`, `Contracts`=`handshake`
+
+### Shell theme tokens (`styles.css`)
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `--shell-content-bg` | `#f4f7fa` | `#0b1220` |
+| `--shell-content-text` | `#0f172a` | `#e5e7eb` |
+
+Sidebar colours are scoped in `app-sidebar.component.css` (purple accent `#7c3aed`). Supplier PO pages keep their own legacy palette — shell theme does not override `.supplier-po-page`.
+
+---
 
 | Doc | Location |
 |-----|----------|

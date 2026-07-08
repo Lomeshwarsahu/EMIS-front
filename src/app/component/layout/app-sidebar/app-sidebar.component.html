@@ -1,0 +1,180 @@
+<aside class="emis-sidebar" [class.collapsed]="collapsed" [class.theme-dark]="themeService.isDark">
+  <div class="sidebar-top">
+    <button
+      type="button"
+      class="brand-hit"
+      (click)="toggleCollapse()"
+      [attr.aria-label]="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+      [attr.title]="collapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+      <div class="brand-row">
+        <div class="brand-logo">
+          <img src="assets/icons/icon.png" alt="" class="brand-logo-img" />
+        </div>
+        <div class="brand-copy">
+          <span class="brand-title">EMIS</span>
+          <span class="brand-sub">CGMSC Portal</span>
+        </div>
+      </div>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav" aria-label="Main navigation">
+    <ul class="nav-list">
+      <li
+        *ngFor="let item of filteredItems"
+        class="nav-group"
+        (mouseenter)="onNavHover(item, $event)"
+        (mouseleave)="onNavLeave()">
+        <ng-container *ngIf="!item.submenu?.length; else hasSubmenu">
+          <a
+            class="nav-link"
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: false }"
+            (click)="onNavigate()"
+            [attr.aria-label]="item.label"
+            [attr.aria-current]="isRouteActive(item.route) ? 'page' : null">
+            <span class="nav-icon-wrap" aria-hidden="true">
+              <mat-icon class="nav-icon">{{ menuIcon(item.label) }}</mat-icon>
+            </span>
+            <span class="nav-text">{{ item.label }}</span>
+          </a>
+
+          <div
+            class="nav-tooltip nav-flyout-fixed"
+            *ngIf="collapsed && isItemHovered(item)"
+            [class.is-centered]="flyoutAlignCenter"
+            [style.left.px]="flyoutLeft"
+            [style.top.px]="flyoutTop"
+            role="tooltip">
+            {{ item.label }}
+          </div>
+        </ng-container>
+
+        <ng-template #hasSubmenu>
+          <button
+            type="button"
+            class="nav-link nav-button"
+            [class.active]="isItemActive(item)"
+            (click)="onSubmenuClick(item.label)"
+            [attr.aria-label]="item.label"
+            [attr.aria-expanded]="isSubmenuExpanded(item) ? 'true' : 'false'">
+            <span class="nav-icon-wrap" aria-hidden="true">
+              <mat-icon class="nav-icon">{{ menuIcon(item.label) }}</mat-icon>
+            </span>
+            <span class="nav-text">{{ item.label }}</span>
+            <mat-icon class="chevron" [class.open]="isSubmenuExpanded(item)" aria-hidden="true">
+              expand_more
+            </mat-icon>
+          </button>
+
+          <ul class="subnav-list" *ngIf="isSubmenuExpanded(item) && !collapsed" [attr.aria-label]="item.label + ' submenu'">
+            <li *ngFor="let sub of filteredSubmenu(item)">
+              <a
+                class="subnav-link"
+                [routerLink]="sub.route"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }"
+                (click)="onNavigate()"
+                [attr.aria-label]="sub.label + ' under ' + item.label"
+                [attr.aria-current]="isRouteActive(sub.route) ? 'page' : null">
+                <span class="subnav-icon-wrap" aria-hidden="true">
+                  <mat-icon class="subnav-icon">{{ subMenuIcon(sub.label, item.label) }}</mat-icon>
+                </span>
+                <span class="subnav-text">{{ sub.label }}</span>
+              </a>
+            </li>
+          </ul>
+
+          <div
+            class="nav-flyout nav-flyout-fixed"
+            *ngIf="collapsed && isItemHovered(item)"
+            [style.left.px]="flyoutLeft"
+            [style.top.px]="flyoutTop"
+            (mouseenter)="onFlyoutEnter(item)"
+            (mouseleave)="onNavLeave()"
+            role="menu"
+            [attr.aria-label]="item.label + ' submenu'">
+            <p class="flyout-heading">{{ item.label }}</p>
+            <a
+              *ngFor="let sub of filteredSubmenu(item)"
+              class="flyout-link"
+              [routerLink]="sub.route"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: false }"
+              (click)="onNavigate()"
+              role="menuitem"
+              [attr.aria-current]="isRouteActive(sub.route) ? 'page' : null">
+              <mat-icon class="flyout-link-icon" aria-hidden="true">{{ subMenuIcon(sub.label, item.label) }}</mat-icon>
+              <span>{{ sub.label }}</span>
+            </a>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+
+    <p class="empty-search" *ngIf="!filteredItems.length && menuSearch">No menu items match your search.</p>
+  </nav>
+
+  <div class="sidebar-collapse-wrap">
+    <button
+      type="button"
+      class="collapse-toggle-btn"
+      (click)="toggleCollapse()"
+      [attr.aria-label]="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+      [attr.title]="collapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+      <mat-icon aria-hidden="true">{{ collapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    </button>
+  </div>
+
+  <div class="sidebar-footer">
+    <div
+      class="theme-switch-row"
+      [class.collapsed-row]="collapsed"
+      (mouseenter)="onFooterHover('theme', $event)"
+      (mouseleave)="onFooterLeave()">
+      <div class="theme-switch-copy" *ngIf="!collapsed">
+        <mat-icon class="theme-switch-icon" aria-hidden="true">
+          {{ themeService.isDark ? 'light_mode' : 'dark_mode' }}
+        </mat-icon>
+        <span class="theme-switch-label">{{ themeService.isDark ? 'Light mode' : 'Dark mode' }}</span>
+      </div>
+      <button
+        type="button"
+        class="theme-switch"
+        [class.is-dark]="themeService.isDark"
+        (click)="toggleTheme()"
+        role="switch"
+        [attr.aria-checked]="themeService.isDark"
+        [attr.aria-label]="themeService.isDark ? 'Switch to light mode' : 'Switch to dark mode'">
+        <span class="theme-switch-track">
+          <span class="theme-switch-thumb"></span>
+        </span>
+      </button>
+      <div
+        class="nav-tooltip nav-flyout-fixed is-centered"
+        *ngIf="collapsed && hoveredFooter === 'theme'"
+        [style.left.px]="flyoutLeft"
+        [style.top.px]="flyoutTop"
+        role="tooltip">
+        {{ themeService.isDark ? 'Light mode' : 'Dark mode' }}
+      </div>
+    </div>
+
+    <div
+      class="footer-item-wrap"
+      (mouseenter)="onFooterHover('logout', $event)"
+      (mouseleave)="onFooterLeave()">
+      <button type="button" class="logout-btn" (click)="onLogout()" aria-label="Logout">
+        <mat-icon aria-hidden="true">logout</mat-icon>
+        <span class="logout-text">Logout</span>
+      </button>
+      <div
+        class="nav-tooltip nav-flyout-fixed is-centered"
+        *ngIf="collapsed && hoveredFooter === 'logout'"
+        [style.left.px]="flyoutLeft"
+        [style.top.px]="flyoutTop"
+        role="tooltip">Logout</div>
+    </div>
+  </div>
+</aside>

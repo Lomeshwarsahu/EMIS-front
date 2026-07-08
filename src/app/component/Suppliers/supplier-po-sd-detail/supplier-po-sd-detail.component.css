@@ -51,11 +51,16 @@
 .sd-form-table td {
   padding: 9px 10px;
   vertical-align: middle;
-  border: 1px solid #e2e8f0;
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
   font-size: 14px;
   color: #003399;
   word-wrap: break-word;
   overflow-wrap: anywhere;
+}
+
+.sd-form-table tr:last-child td {
+  border-bottom: none;
 }
 
 .sd-form-table .label-col {
