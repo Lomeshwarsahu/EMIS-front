@@ -37,8 +37,8 @@ Supplier transaction pages intentionally use **Times New Roman** to match legacy
 | Primary blue | `#003399` | Body text, links, table cell text |
 | Title / button blue | `#4d67a0` | Page title background, primary buttons |
 | Button hover | `#3d5588` | `.show-btn:hover` |
-| Table header bg | `#003399` | `.po-grid th` |
-| Table header text | `#ccf` | `.po-grid th` |
+| Table header bg | Light `#f97316`, Dark `#6E00B3` | Supplier grid headers (`.po-grid th`, `.batch-grid th`, `.gst-grid th`) |
+| Table header text | `#ffffff` | Supplier grid headers (`.po-grid th`, `.batch-grid th`, `.gst-grid th`) |
 | Border (tables) | `#000` horizontal row lines only | `.po-grid`, `.table-wrap` outer frame |
 | Border (forms) | `#94a3b8` | Inputs, cards, header grids |
 
@@ -564,7 +564,7 @@ Global navigation uses `app-app-sidebar` inside `mat-drawer` (`app.component.htm
 | `--shell-content-bg` | `#f4f7fa` | `#0b1220` |
 | `--shell-content-text` | `#0f172a` | `#e5e7eb` |
 
-Sidebar colours are scoped in `app-sidebar.component.css` (purple accent `#7c3aed`). Supplier PO pages keep their own legacy palette — shell theme does not override `.supplier-po-page`.
+Sidebar colours are scoped in `app-sidebar.component.css` (light mode accent `#f97316` orange with active state `#ffedd5`/`#c2410c`, dark mode accent `#6E00B3` with active state `rgba(110, 0, 179, 0.24)`/`#f3e8ff`, dark shell surfaces use `#111827`). Supplier PO pages keep their own legacy palette — shell theme does not override `.supplier-po-page`.
 
 ---
 

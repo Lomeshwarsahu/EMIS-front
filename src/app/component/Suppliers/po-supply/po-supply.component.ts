@@ -154,12 +154,13 @@ export class PoSupplyComponent implements OnInit {
     return row.submissionStatus?.toUpperCase() === 'Y' ? 'Submitted' : 'Not Submitted';
   }
 
-  isSdSubmitted(row: PoSupplyRow): boolean {
-    return row.submissionStatus?.toUpperCase() === 'Y';
-  }
-
   onPrint(row: PoSupplyRow): void {
-    this.toastr.info(`Print PO report for PO ID ${row.poId} — legacy report migration pending.`);
+    const urlTree = this.router.createUrlTree(['/transaction/po-supply-po-print'], {
+      queryParams: { poId: row.poId },
+    });
+    const path = this.router.serializeUrl(urlTree);
+    const fullUrl = `${window.location.origin}${path}`;
+    window.open(fullUrl, '_blank', 'noopener,noreferrer');
   }
 
   onSdDetails(row: PoSupplyRow): void {

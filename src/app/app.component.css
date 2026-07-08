@@ -30,11 +30,11 @@
 .app-shell-header {
   --header-bg: #ffffff;
   --header-border: #e8edf3;
-  --header-text: #1f2937;
+  --header-text: #111827;
   --header-muted: #6b7280;
   --header-hover: #f3f4f8;
   --header-search-bg: #f8fafc;
-  --header-accent: #7c3aed;
+  --header-accent: #f97316;
 
   display: flex;
   align-items: center;
@@ -49,12 +49,12 @@
 
 .app-shell-header.theme-dark {
   --header-bg: #111827;
-  --header-border: #1f2937;
+  --header-border: #111827;
   --header-text: #f3f4f6;
   --header-muted: #9ca3af;
   --header-hover: #1f2937;
   --header-search-bg: #0f172a;
-  --header-accent: #a78bfa;
+  --header-accent: #6E00B3;
 }
 
 .header-search-wrap {

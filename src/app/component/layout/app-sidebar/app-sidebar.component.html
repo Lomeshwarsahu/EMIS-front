@@ -134,10 +134,14 @@
       (mouseenter)="onFooterHover('theme', $event)"
       (mouseleave)="onFooterLeave()">
       <div class="theme-switch-copy" *ngIf="!collapsed">
-        <mat-icon class="theme-switch-icon" aria-hidden="true">
-          {{ themeService.isDark ? 'light_mode' : 'dark_mode' }}
+        <mat-icon
+          class="theme-switch-icon"
+          [class.theme-switch-icon--moon]="themeService.isDark"
+          [class.theme-switch-icon--sun]="!themeService.isDark"
+          aria-hidden="true">
+          {{ themeService.isDark ? 'dark_mode' : 'light_mode' }}
         </mat-icon>
-        <span class="theme-switch-label">{{ themeService.isDark ? 'Light mode' : 'Dark mode' }}</span>
+        <span class="theme-switch-label">{{ themeService.isDark ? 'Dark mode' : 'Light mode' }}</span>
       </div>
       <button
         type="button"
@@ -157,7 +161,7 @@
         [style.left.px]="flyoutLeft"
         [style.top.px]="flyoutTop"
         role="tooltip">
-        {{ themeService.isDark ? 'Light mode' : 'Dark mode' }}
+        {{ themeService.isDark ? 'Dark mode' : 'Light mode' }}
       </div>
     </div>
 

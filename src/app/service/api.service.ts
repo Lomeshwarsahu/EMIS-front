@@ -336,6 +336,12 @@ export class ApiService {
     );
   }
 
+  getSupplierPoPrintReport(userId: number, poId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/po-report/print/by-user/${userId}?poId=${poId}`,
+    );
+  }
+
   getSupplierRcDetailTenders(userId: number) {
     return this.http.get<Record<string, unknown>[]>(
       `${this.apiUrll}/supplier/rc-detail-report/tenders/by-user/${userId}`,

@@ -1,13 +1,14 @@
-<div class="po-supply-page ems-legacy-page">
-  <button type="button" class="gst-note" (click)="goToGstDetails()">
-    Please Update your GST info in Supplier Information Section Under Master Menu.
-  </button>
+<div class="po-supply-page">
+  <a class="gst-note" (click)="goToGstDetails()">
+    <span style="font-size: 16px; margin-right: 6px;">&#9432;</span>
+    Please Update your GST info in Supplier Information Section Under Master Menu
+  </a>
 
   <h2 class="page-title">Purchase Orders Desk</h2>
 
   <div class="filters">
     <label>
-      Financial Year:
+      <span>Financial Year</span>
       <select
         [(ngModel)]="selectedFinancialYearId"
         name="financialYear"
@@ -20,7 +21,7 @@
     </label>
 
     <label>
-      Tender No:
+      <span>Tender No</span>
       <select
         [(ngModel)]="selectedTenderId"
         name="tender"
@@ -33,74 +34,77 @@
     </label>
 
     <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
-      Clear Filter
+      Clear Filters
     </button>
   </div>
 
-  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="13" />
 
   <div class="datagrid" *ngIf="!loading">
     <div class="table-wrap">
-      <table class="po-grid legacy-fixed-table">
+      <table class="po-grid">
         <thead>
           <tr>
-            <th class="col-sn">S.No</th>
-            <th class="col-dispatch">CGMSC Dispatch</th>
+            <th class="col-sn text-center">#</th>
+            <th class="col-dispatch">Dispatch Details</th>
             <th class="col-date">PO Date</th>
-            <th class="col-item">Item Name</th>
-            <th class="col-rate">Basic Rate/GST</th>
-            <th class="col-qty">PO Qty</th>
-            <th class="col-value">Gross Value</th>
+            <th class="col-item">Item Details</th>
+            <th class="col-rate">Rate / GST</th>
+            <th class="col-qty text-center">Qty</th>
+            <th class="col-value">Value</th>
             <th class="col-tender">Tender No</th>
-            <th class="col-consignee">No of Consignee</th>
+            <th class="col-consignee text-center">Consignees</th>
             <th class="col-status">Status</th>
-            <th class="col-print">Print</th>
-            <th class="col-sd">SD Status</th>
-            <th class="col-extension">Apply For<br />Extension</th>
+            <th class="col-print text-center">Action</th>
+            <th class="col-sd text-center">SD Status</th>
+            <th class="col-extension text-center">Extension</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
-            <td class="text-center">{{ i + 1 }}</td>
+          <tr *ngFor="let row of rows; let i = index">
+            <td class="text-center text-slate-500">{{ i + 1 }}</td>
             <td>
-              <div>{{ row.outwardNo }}</div>
-              <div>{{ row.poNo }}</div>
+              <div class="text-xs text-slate-500 mb-1">{{ row.outwardNo }}</div>
+              <div class="font-medium text-slate-700">{{ row.poNo }}</div>
             </td>
             <td>{{ row.poDate }}</td>
-            <td class="col-item-cell wrap-cell">
+            <td class="col-item-cell">
               <div>{{ row.itemCode }}</div>
               <div>{{ row.itemName }}</div>
             </td>
-          <td>
-            <div>{{ row.basicRate }}</div>
-            <div>{{ row.percentage }}%</div>
-          </td>
-          <td class="text-center">{{ row.quantity }}</td>
-          <td>{{ row.totalPoValue }}</td>
-          <td>{{ row.tenderNo }}</td>
-          <td class="text-center">{{ row.noOfConsignee }}</td>
-          <td>{{ row.status }}</td>
-          <td class="text-center">
-            <button type="button" class="icon-btn" title="Print PO" (click)="onPrint(row)">🖨</button>
-          </td>
-          <td>
-            <button
-              type="button"
-              class="link-btn"
-              [class.submitted]="isSdSubmitted(row)"
-              (click)="onSdDetails(row)">
-              {{ sdStatusLabel(row) }}
-            </button>
-          </td>
-          <td>
-            <button type="button" class="link-btn" (click)="onApplyExtension(row)">Apply Status</button>
-          </td>
-        </tr>
-        <tr *ngIf="!rows.length">
-          <td colspan="13" class="empty-row">No purchase orders found.</td>
-        </tr>
-      </tbody>
-    </table>
+            <td>
+              <div class="font-medium text-slate-700">₹{{ row.basicRate }}</div>
+              <div class="text-xs text-slate-500">{{ row.percentage }}% GST</div>
+            </td>
+            <td class="text-center font-medium">{{ row.quantity }}</td>
+            <td class="font-bold text-slate-700">₹{{ row.totalPoValue }}</td>
+            <td>{{ row.tenderNo }}</td>
+            <td class="text-center">{{ row.noOfConsignee }}</td>
+            <td>{{ row.status }}</td>
+            <td class="text-center">
+              <button type="button" class="plain-btn" title="Print PO" (click)="onPrint(row)">
+                Print
+              </button>
+            </td>
+            <td class="text-center">
+              <button type="button" class="plain-link" (click)="onSdDetails(row)">
+                {{ sdStatusLabel(row) }}
+              </button>
+            </td>
+            <td class="text-center">
+              <button type="button" class="plain-link" (click)="onApplyExtension(row)">Apply</button>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="13" class="empty-row">
+              <div class="empty-state">
+                <div style="font-size: 32px; color: #cbd5e1; margin-bottom: 8px;">&#128451;</div>
+                <p>No purchase orders found matching the selected filters.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

@@ -1,9 +1,16 @@
 .supplier-gst-page {
+  --table-head-bg: #f97316;
+  --table-head-text: #ffffff;
   padding: 16px;
   font-family: 'Times New Roman', Times, serif;
   color: #003399;
   max-width: 100%;
   overflow-x: hidden;
+}
+
+:host-context(html[data-theme='dark']) .supplier-gst-page {
+  --table-head-bg: #6E00B3;
+  --table-head-text: #ffffff;
 }
 
 .page-title {
@@ -41,8 +48,8 @@
 }
 
 .gst-grid th {
-  background: #1c5e55;
-  color: #fff;
+  background: var(--table-head-bg);
+  color: var(--table-head-text);
   font-weight: 700;
   padding: 10px 12px;
   text-align: left;

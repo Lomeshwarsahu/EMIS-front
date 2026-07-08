@@ -95,7 +95,7 @@
             <span class="header-user-name">{{ firstname || 'User' }}</span>
             <img
               class="header-avatar"
-              [src]="'https://ui-avatars.com/api/?name=' + (firstname || 'User') + '&background=7c3aed&color=fff&rounded=true'"
+              [src]="'https://ui-avatars.com/api/?name=' + (firstname || 'User') + '&background=' + (themeService.isDark ? '6E00B3' : 'f97316') + '&color=fff&rounded=true'"
               alt="User avatar" />
           </div>
         </div>

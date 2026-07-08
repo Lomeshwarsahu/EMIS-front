@@ -1,9 +1,16 @@
 .supplier-po-page {
+  --table-head-bg: #f97316;
+  --table-head-text: #ffffff;
   padding: 20px 24px 32px;
   font-family: 'Times New Roman', Times, serif;
   color: #003399;
   max-width: 100%;
   overflow-x: hidden;
+}
+
+:host-context(html[data-theme='dark']) .supplier-po-page {
+  --table-head-bg: #6E00B3;
+  --table-head-text: #ffffff;
 }
 
 .page-title {
@@ -163,8 +170,8 @@
 }
 
 .po-grid th {
-  background: #003399;
-  color: #ccf;
+  background: var(--table-head-bg);
+  color: var(--table-head-text);
   font-weight: 700;
   padding: 8px 10px;
   text-align: left;
@@ -469,8 +476,8 @@
 }
 
 .batch-grid th {
-  background: #000084;
-  color: #fff;
+  background: var(--table-head-bg);
+  color: var(--table-head-text);
   padding: 4px 6px;
   border: none;
   border-bottom: 1px solid #999;

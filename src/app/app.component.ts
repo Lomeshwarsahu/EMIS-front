@@ -37,6 +37,7 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   roleName = localStorage.getItem('roleName')
   firstname = sessionStorage.getItem('firstname')
   vregid: any;
+  isDarkMode = false;
 
   @HostListener('window:beforeinstallprompt', ['$event'])
   onbeforeinstallprompt(e: Event) {
@@ -246,7 +247,8 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
           event.urlAfterRedirects === '/IndentPendingWHdashPublic' ||
           event.urlAfterRedirects === '/Registration' ||
           event.urlAfterRedirects.includes('po-supply-dispatch-report') ||
-          event.urlAfterRedirects.includes('po-supply-installation-print');
+          event.urlAfterRedirects.includes('po-supply-installation-print') ||
+          event.urlAfterRedirects.includes('po-supply-po-print');
 
         this.role = this.basicAuthentication.getRole().roleName;
         this.updateMenu();
@@ -261,8 +263,25 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
         this.applyDrawerLayout(result.matches, false);
         this.cdr.markForCheck();
       });
+    
+    // Theme initialization
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme === 'dark') {
+      this.isDarkMode = true;
+      document.body.setAttribute('data-theme', 'dark');
+    } else {
+      this.isDarkMode = false;
+      document.body.setAttribute('data-theme', 'light');
+    }
     // this.GetVendorDetailsID(sessionStorage.getItem('facilityid'));
 
+  }
+
+  toggleTheme(): void {
+    this.isDarkMode = !this.isDarkMode;
+    const theme = this.isDarkMode ? 'dark' : 'light';
+    localStorage.setItem('theme', theme);
+    document.body.setAttribute('data-theme', theme);
   }
 
   ngDoCheck(): void {
