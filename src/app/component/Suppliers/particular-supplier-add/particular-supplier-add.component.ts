@@ -24,15 +24,13 @@ interface ParticularSupplierForm {
   standalone: true,
   imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './particular-supplier-add.component.html',
-  styleUrls: ['./particular-supplier-add.component.css'],
+  styleUrls: ['../supplier-po-pages.shared.css', './particular-supplier-add.component.css'],
 })
 export class ParticularSupplierAddComponent implements OnInit {
   loading = false;
   saving = false;
   statusMessage = '';
   statusIsError = false;
-  pageTitle = 'Supplier Information';
-
   model: ParticularSupplierForm = this.emptyModel();
 
   constructor(
@@ -68,7 +66,6 @@ export class ParticularSupplierAddComponent implements OnInit {
           tinNo: String(raw['tinNo'] ?? raw['TinNo'] ?? ''),
           address: String(raw['address'] ?? raw['Address'] ?? ''),
         };
-        this.pageTitle = 'Supplier Information';
       },
       error: (err) => {
         this.loading = false;

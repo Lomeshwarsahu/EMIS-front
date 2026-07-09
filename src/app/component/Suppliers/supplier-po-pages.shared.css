@@ -777,6 +777,41 @@ table.filter-panel .label-col {
   padding: 8px 0 4px;
 }
 
+:host-context(html[data-theme='dark']) .supplier-po-page .detail-header-card,
+:host-context(html[data-theme='dark']) .supplier-po-page .detail-form-card {
+  background: #141820;
+  border-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) .supplier-po-page .detail-header-item .label,
+:host-context(html[data-theme='dark']) .supplier-po-page .detail-header-item .value,
+:host-context(html[data-theme='dark']) .supplier-po-page .section-title {
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .supplier-po-page .detail-form-table td {
+  border-bottom-color: #262b36;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .supplier-po-page .detail-form-table .label-col {
+  background: #0c0e12;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .supplier-po-page .detail-form-table select,
+:host-context(html[data-theme='dark']) .supplier-po-page .detail-form-table input[type='text'],
+:host-context(html[data-theme='dark']) .supplier-po-page .detail-form-table input[type='number'],
+:host-context(html[data-theme='dark']) .supplier-po-page .detail-form-table input[type='date'] {
+  background: #0c0e12;
+  border-color: #262b36;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .supplier-po-page .form-actions-row td {
+  background: #0c0e12;
+}
+
 .detail-form-table {
   width: 100%;
   border-collapse: separate;
