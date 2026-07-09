@@ -5,42 +5,53 @@
   </a>
 
   <div class="filters">
-    <label>
-      Financial Year:
-      <select
-        [(ngModel)]="selectedFinancialYearId"
-        name="financialYear"
-        (change)="onFilterChange()"
-      >
-        <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
-          {{ year.year }}
-        </option>
-      </select>
-    </label>
+    <select
+      aria-label="Financial Year"
+      data-testid="filter-financial-year"
+      [(ngModel)]="selectedFinancialYearId"
+      name="financialYear"
+      (change)="onFilterChange()"
+      [class.is-placeholder]="selectedFinancialYearId === 0"
+    >
+      <option [ngValue]="0" disabled hidden>Financial Year</option>
+      <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
+        {{ year.year }}
+      </option>
+    </select>
 
-    <label>
-      Tender No:
-      <select
-        [(ngModel)]="selectedTenderId"
-        name="tender"
-        (change)="onFilterChange()"
-      >
-        <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
-          {{ tender.tenderNo }}
-        </option>
-      </select>
-    </label>
+    <select
+      aria-label="Tender No"
+      data-testid="filter-tender"
+      [(ngModel)]="selectedTenderId"
+      name="tender"
+      (change)="onFilterChange()"
+      [class.is-placeholder]="selectedTenderId === 0"
+    >
+      <option [ngValue]="0" disabled hidden>Tender No</option>
+      <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
+        {{ tender.tenderNo }}
+      </option>
+    </select>
 
-    <label>
-      SD Status:
-      <select [(ngModel)]="selectedSdFilter" name="sdStatus">
-        <option value="all">All</option>
-        <option value="submitted">Submitted</option>
-        <option value="not-submitted">Not Submitted</option>
-      </select>
-    </label>
+    <select
+      aria-label="SD Status"
+      data-testid="filter-sd-status"
+      [(ngModel)]="selectedSdFilter"
+      name="sdStatus"
+      [class.is-placeholder]="selectedSdFilter === 'all'"
+    >
+      <option value="all" disabled hidden>SD Status</option>
+      <option value="submitted">Submitted</option>
+      <option value="not-submitted">Not Submitted</option>
+    </select>
 
-    <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
+    <button
+      type="button"
+      class="show-btn clear-btn"
+      data-testid="clear-filter-btn"
+      *ngIf="hasActiveFilters"
+      (click)="clearFilters()"
+      [disabled]="loading">
       Clear Filter
     </button>
   </div>

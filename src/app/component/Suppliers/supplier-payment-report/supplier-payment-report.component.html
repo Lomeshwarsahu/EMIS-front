@@ -10,22 +10,23 @@
       Export
     </button>
 
-    <div class="radio-group">
-      <label>
-        <input type="radio" name="poType" value="All" [(ngModel)]="poType" (change)="onFilterChange()" />
-        All Po
-      </label>
-      <label>
-        <input type="radio" name="poType" value="NP" [(ngModel)]="poType" (change)="onFilterChange()" />
-        Normal Po
-      </label>
-      <label>
-        <input type="radio" name="poType" value="CP" [(ngModel)]="poType" (change)="onFilterChange()" />
-        Covid Po
-      </label>
-    </div>
+    <select
+      aria-label="PO Type"
+      [(ngModel)]="poType"
+      name="poType"
+      (change)="onFilterChange()"
+      [class.is-placeholder]="poType === 'All'">
+      <option value="All" disabled hidden>PO Type</option>
+      <option value="NP">Normal Po</option>
+      <option value="CP">Covid Po</option>
+    </select>
 
-    <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
+    <button
+      type="button"
+      class="show-btn clear-btn"
+      *ngIf="hasActiveFilters"
+      (click)="clearFilters()"
+      [disabled]="loading">
       Clear Filter
     </button>
   </div>

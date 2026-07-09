@@ -56,6 +56,7 @@ export class PoSupplyComponent implements OnInit {
   selectedFinancialYearId = 0;
   selectedTenderId = 0;
   selectedSdFilter: 'all' | 'submitted' | 'not-submitted' = 'all';
+  defaultFinancialYearId = 0;
 
   rows: PoSupplyRow[] = [];
 
@@ -90,12 +91,11 @@ export class PoSupplyComponent implements OnInit {
         this.tenders = this.mapTenders((raw['tenders'] ?? raw['Tenders'] ?? []) as unknown[]);
 
         const currentYear = Number(raw['currentFinancialYearId'] ?? raw['CurrentFinancialYearId'] ?? 0);
+        this.defaultFinancialYearId = currentYear > 0 ? currentYear : 0;
         this.selectedFinancialYearId =
           this.restoreFilters.financialYearId > 0
             ? this.restoreFilters.financialYearId
-            : currentYear > 0
-              ? currentYear
-              : 0;
+            : this.defaultFinancialYearId;
         this.selectedTenderId = this.restoreFilters.tenderId;
         this.loadGrid();
       },
@@ -121,7 +121,7 @@ export class PoSupplyComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.selectedFinancialYearId = 0;
+    this.selectedFinancialYearId = this.defaultFinancialYearId;
     this.selectedTenderId = 0;
     this.selectedSdFilter = 'all';
     this.restoreFilters = { financialYearId: 0, tenderId: 0 };
@@ -132,6 +132,14 @@ export class PoSupplyComponent implements OnInit {
       replaceUrl: true,
     });
     this.loadGrid();
+  }
+
+  get hasActiveFilters(): boolean {
+    return (
+      this.selectedTenderId !== 0 ||
+      this.selectedSdFilter !== 'all' ||
+      this.selectedFinancialYearId !== this.defaultFinancialYearId
+    );
   }
 
   loadGrid(): void {

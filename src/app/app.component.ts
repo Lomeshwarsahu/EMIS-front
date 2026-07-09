@@ -9,7 +9,7 @@ import { MenuServiceService } from './service/menu-service.service';
 import { BasicAuthenticationService } from './service/authentication/basic-authentication.service';
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 // import { TokenService } from './services/token.service';
 import { ApiService } from './service/api.service';
 import { ThemeService } from './service/theme.service';
@@ -262,29 +262,13 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     this.breakpointObserver
       .observe(['(max-width: 991.98px)'])
       .pipe(takeUntil(this.destroy$))
-      .subscribe((result) => {
+      .subscribe((result: BreakpointState) => {
         this.applyDrawerLayout(result.matches, false);
         this.cdr.markForCheck();
       });
-    
-    // Theme initialization
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme === 'dark') {
-      this.isDarkMode = true;
-      document.body.setAttribute('data-theme', 'dark');
-    } else {
-      this.isDarkMode = false;
-      document.body.setAttribute('data-theme', 'light');
-    }
-    // this.GetVendorDetailsID(sessionStorage.getItem('facilityid'));
 
-  }
+    this.isDarkMode = this.themeService.isDark;
 
-  toggleTheme(): void {
-    this.isDarkMode = !this.isDarkMode;
-    const theme = this.isDarkMode ? 'dark' : 'light';
-    localStorage.setItem('theme', theme);
-    document.body.setAttribute('data-theme', theme);
   }
 
   ngDoCheck(): void {

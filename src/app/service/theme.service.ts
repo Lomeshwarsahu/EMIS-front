@@ -42,5 +42,6 @@ export class ThemeService {
 
   private applyTheme(theme: EmisTheme): void {
     document.documentElement.setAttribute('data-theme', theme);
+    document.body.setAttribute('data-theme', theme);
   }
 }

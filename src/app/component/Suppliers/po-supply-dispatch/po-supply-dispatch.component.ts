@@ -48,6 +48,7 @@ export class PoSupplyDispatchComponent implements OnInit {
   tenders: TenderOption[] = [];
   selectedFinancialYearId = 0;
   selectedTenderId = 0;
+  defaultFinancialYearId = 0;
   rows: PoDispatchRow[] = [];
 
   constructor(
@@ -79,8 +80,9 @@ export class PoSupplyDispatchComponent implements OnInit {
         );
         this.tenders = this.mapTenders((raw['tenders'] ?? raw['Tenders'] ?? []) as unknown[]);
         const currentYear = Number(raw['currentFinancialYearId'] ?? raw['CurrentFinancialYearId'] ?? 0);
+        this.defaultFinancialYearId = currentYear > 0 ? currentYear : 0;
         if (!this.selectedFinancialYearId) {
-          this.selectedFinancialYearId = currentYear > 0 ? currentYear : 0;
+          this.selectedFinancialYearId = this.defaultFinancialYearId;
         }
         if (!this.tenders.some((row) => row.tenderId === this.selectedTenderId)) {
           this.selectedTenderId = 0;
@@ -99,9 +101,16 @@ export class PoSupplyDispatchComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.selectedFinancialYearId = 0;
+    this.selectedFinancialYearId = this.defaultFinancialYearId;
     this.selectedTenderId = 0;
     this.loadGrid();
+  }
+
+  get hasActiveFilters(): boolean {
+    return (
+      this.selectedTenderId !== 0 ||
+      this.selectedFinancialYearId !== this.defaultFinancialYearId
+    );
   }
 
   loadGrid(): void {

@@ -6,7 +6,8 @@
   <mat-drawer-container
     class="main-container"
     [class.main-container--login]="isLoginPage"
-    [autosize]="true">
+    [class.main-container--sidebar-collapsed]="sidebarCollapsed && !isLoginPage"
+    [autosize]="false">
 
     <mat-drawer
       #drawer
@@ -29,94 +30,104 @@
     </mat-drawer>
 
     <mat-drawer-content class="main-drawer-content">
-      <header
-        class="app-shell-header"
-        [class.theme-dark]="themeService.isDark"
-        *ngIf="!isLoginPage">
-        <div class="app-shell-header-row">
-          <button
-            type="button"
-            class="header-icon-btn mobile-menu-btn"
-            *ngIf="isMobile"
-            (click)="toggleDrawer()"
-            [attr.aria-label]="isDrawerOpen ? 'Close menu' : 'Open menu'">
-            <mat-icon>{{ isDrawerOpen ? 'close' : 'menu' }}</mat-icon>
-          </button>
-
-          <div class="header-search-wrap header-search-wrap--actions">
-            <div class="header-search" [class.is-focused]="menuSearchFocused">
-              <mat-icon class="header-search-icon">search</mat-icon>
-              <input
-                type="search"
-                class="header-search-input"
-                [(ngModel)]="menuSearchQuery"
-                (input)="onMenuSearchInput()"
-                (focus)="onMenuSearchFocus()"
-                (blur)="onMenuSearchBlur()"
-                placeholder="Search menu"
-                aria-label="Search menu"
-                autocomplete="off"
-                role="combobox"
-                [attr.aria-expanded]="menuSearchFocused && menuSearchQuery.trim().length > 0"
-                aria-controls="menu-search-suggestions" />
-            </div>
-
-            <ul
-              id="menu-search-suggestions"
-              class="header-search-suggestions"
-              *ngIf="menuSearchFocused && menuSearchQuery.trim() && menuSearchSuggestions.length"
-              role="listbox">
-              <li *ngFor="let suggestion of menuSearchSuggestions" role="option">
-                <button
-                  type="button"
-                  class="header-search-suggestion"
-                  (mousedown)="selectMenuSuggestion(suggestion); $event.preventDefault()">
-                  <mat-icon aria-hidden="true">subdirectory_arrow_right</mat-icon>
-                  <span class="suggestion-text">
-                    <span class="suggestion-label">{{ suggestion.label }}</span>
-                    <span class="suggestion-parent" *ngIf="suggestion.parentLabel">{{ suggestion.parentLabel }}</span>
-                  </span>
-                </button>
-              </li>
-            </ul>
-
-            <p
-              class="header-search-empty"
-              *ngIf="menuSearchFocused && menuSearchQuery.trim() && !menuSearchSuggestions.length">
-              No menu items match your search.
-            </p>
-          </div>
-
-          <div class="header-actions-right">
-            <button type="button" class="header-icon-btn" aria-label="Notifications" title="Notifications">
-              <mat-icon>notifications_none</mat-icon>
-              <span class="notify-dot" aria-hidden="true"></span>
+      <div class="shell-main-column" *ngIf="!isLoginPage; else loginShell">
+        <header
+          class="app-shell-header shell-header-card"
+          [class.theme-dark]="themeService.isDark">
+          <div class="app-shell-header-row">
+            <button
+              type="button"
+              class="header-icon-btn mobile-menu-btn"
+              data-testid="mobile-menu-btn"
+              *ngIf="isMobile"
+              (click)="toggleDrawer()"
+              [attr.aria-label]="isDrawerOpen ? 'Close menu' : 'Open menu'">
+              <mat-icon>{{ isDrawerOpen ? 'close' : 'menu' }}</mat-icon>
             </button>
 
-            <div class="header-user">
-              <span class="header-user-name">{{ firstname || 'User' }}</span>
-              <img
-                class="header-avatar"
-                [src]="'https://ui-avatars.com/api/?name=' + (firstname || 'User') + '&background=' + (themeService.isDark ? '6E00B3' : 'f97316') + '&color=fff&rounded=true'"
-                alt="User avatar" />
+            <div class="header-search-wrap header-search-wrap--actions">
+              <div class="header-search" [class.is-focused]="menuSearchFocused">
+                <mat-icon class="header-search-icon">search</mat-icon>
+                <input
+                  type="search"
+                  class="header-search-input"
+                  data-testid="menu-search-input"
+                  [(ngModel)]="menuSearchQuery"
+                  (input)="onMenuSearchInput()"
+                  (focus)="onMenuSearchFocus()"
+                  (blur)="onMenuSearchBlur()"
+                  placeholder="Search menu"
+                  aria-label="Search menu"
+                  autocomplete="off"
+                  role="combobox"
+                  [attr.aria-expanded]="menuSearchFocused && menuSearchQuery.trim().length > 0"
+                  aria-controls="menu-search-suggestions" />
+              </div>
+
+              <ul
+                id="menu-search-suggestions"
+                class="header-search-suggestions"
+                *ngIf="menuSearchFocused && menuSearchQuery.trim() && menuSearchSuggestions.length"
+                role="listbox">
+                <li *ngFor="let suggestion of menuSearchSuggestions" role="option">
+                  <button
+                    type="button"
+                    class="header-search-suggestion"
+                    (mousedown)="selectMenuSuggestion(suggestion); $event.preventDefault()">
+                    <mat-icon aria-hidden="true">subdirectory_arrow_right</mat-icon>
+                    <span class="suggestion-text">
+                      <span class="suggestion-label">{{ suggestion.label }}</span>
+                      <span class="suggestion-parent" *ngIf="suggestion.parentLabel">{{ suggestion.parentLabel }}</span>
+                    </span>
+                  </button>
+                </li>
+              </ul>
+
+              <p
+                class="header-search-empty"
+                *ngIf="menuSearchFocused && menuSearchQuery.trim() && !menuSearchSuggestions.length">
+                No menu items match your search.
+              </p>
+            </div>
+
+            <div class="header-actions-right">
+              <button type="button" class="header-icon-btn" aria-label="Notifications" title="Notifications">
+                <mat-icon>notifications_none</mat-icon>
+                <span class="notify-dot" aria-hidden="true"></span>
+              </button>
+
+              <div class="header-user">
+                <span class="header-user-name">{{ firstname || 'User' }}</span>
+                <img
+                  class="header-avatar"
+                  [src]="'https://ui-avatars.com/api/?name=' + (firstname || 'User') + '&background=' + (themeService.isDark ? '6E00B3' : 'f97316') + '&color=fff&rounded=true'"
+                  alt="User avatar" />
+              </div>
             </div>
           </div>
-        </div>
+        </header>
 
-        <h1 class="header-page-title" *ngIf="pageHeading">{{ pageHeading }}</h1>
-      </header>
+        <div class="shell-page-card content-area emis-page-content">
+          <h1 class="page-shell-title" data-testid="header-page-title" *ngIf="pageHeading">{{ pageHeading }}</h1>
+          <main class="page-outlet-wrapper">
+            <router-outlet></router-outlet>
+          </main>
 
-      <div class="content-area emis-page-content" [class.content-area--login]="isLoginPage">
-        <main class="page-outlet-wrapper">
-          <router-outlet></router-outlet>
-        </main>
-
-        <div class="footer-wrap" *ngIf="!isLoginPage">
-          <footer class="modern-footer">
-            <p>&copy; 2025 Designed & Developed by <span class="highlight">IT-Cell CGMSCL</span></p>
-          </footer>
+          <div class="footer-wrap">
+            <footer class="modern-footer">
+              <p>&copy; 2025 Designed & Developed by <span class="highlight">IT-Cell CGMSCL</span></p>
+            </footer>
+          </div>
         </div>
       </div>
+
+      <ng-template #loginShell>
+        <div class="content-area emis-page-content content-area--login">
+          <main class="page-outlet-wrapper">
+            <router-outlet></router-outlet>
+          </main>
+        </div>
+      </ng-template>
     </mat-drawer-content>
   </mat-drawer-container>
 </div>

@@ -10,15 +10,22 @@
       Export
     </button>
 
-    <label>
-      Status:
-      <select [(ngModel)]="status" name="complainStatus" (change)="onFilterChange()">
-        <option value="Booked">Booked</option>
-        <option value="Closed">Closed</option>
-      </select>
-    </label>
+    <select
+      aria-label="Status"
+      [(ngModel)]="status"
+      name="complainStatus"
+      (change)="onFilterChange()"
+      [class.is-placeholder]="status === 'Booked'">
+      <option value="Booked" disabled hidden>Status</option>
+      <option value="Closed">Closed</option>
+    </select>
 
-    <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
+    <button
+      type="button"
+      class="show-btn clear-btn"
+      *ngIf="hasActiveFilters"
+      (click)="clearFilters()"
+      [disabled]="loading">
       Clear Filter
     </button>
   </div>

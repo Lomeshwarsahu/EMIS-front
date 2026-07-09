@@ -39,6 +39,7 @@ export class SupplierPaymentReportComponent implements OnInit {
 
   poType: PoTypeFilter = 'NP';
   rows: PaymentReportRow[] = [];
+  readonly defaultPoType: PoTypeFilter = 'NP';
 
   constructor(
     private readonly api: ApiService,
@@ -59,8 +60,12 @@ export class SupplierPaymentReportComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.poType = 'NP';
+    this.poType = this.defaultPoType;
     this.loadDetails();
+  }
+
+  get hasActiveFilters(): boolean {
+    return this.poType !== this.defaultPoType;
   }
 
   loadDetails(): void {

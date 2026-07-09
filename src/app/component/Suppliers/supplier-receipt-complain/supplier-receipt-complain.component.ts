@@ -62,6 +62,10 @@ export class SupplierReceiptComplainComponent implements OnInit {
     this.loadReport();
   }
 
+  get hasActiveFilters(): boolean {
+    return this.status !== 'Booked';
+  }
+
   loadReport(): void {
     this.loading = true;
     this.api.getSupplierReceiptComplain(this.userId, this.status).subscribe({

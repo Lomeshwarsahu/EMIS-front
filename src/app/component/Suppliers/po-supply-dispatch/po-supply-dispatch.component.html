@@ -1,32 +1,37 @@
 <div class="supplier-po-page">
   <div class="filters">
-    <label>
-      Financial Year:
-      <select
-        [(ngModel)]="selectedFinancialYearId"
-        name="financialYear"
-        (change)="onFilterChange()"
-      >
-        <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
-          {{ year.year }}
-        </option>
-      </select>
-    </label>
+    <select
+      aria-label="Financial Year"
+      [(ngModel)]="selectedFinancialYearId"
+      name="financialYear"
+      (change)="onFilterChange()"
+      [class.is-placeholder]="selectedFinancialYearId === 0"
+    >
+      <option [ngValue]="0" disabled hidden>Financial Year</option>
+      <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
+        {{ year.year }}
+      </option>
+    </select>
 
-    <label>
-      Tender No:
-      <select
-        [(ngModel)]="selectedTenderId"
-        name="tender"
-        (change)="onFilterChange()"
-      >
-        <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
-          {{ tender.tenderNo }}
-        </option>
-      </select>
-    </label>
+    <select
+      aria-label="Tender No"
+      [(ngModel)]="selectedTenderId"
+      name="tender"
+      (change)="onFilterChange()"
+      [class.is-placeholder]="selectedTenderId === 0"
+    >
+      <option [ngValue]="0" disabled hidden>Tender No</option>
+      <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
+        {{ tender.tenderNo }}
+      </option>
+    </select>
 
-    <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
+    <button
+      type="button"
+      class="show-btn clear-btn"
+      *ngIf="hasActiveFilters"
+      (click)="clearFilters()"
+      [disabled]="loading">
       Clear Filter
     </button>
   </div>

@@ -144,6 +144,14 @@ export class PoSupplyReceiptComponent implements OnInit {
     this.loadPoOptions();
   }
 
+  get selectablePoOptions(): PoOption[] {
+    return this.poOptions.filter((po) => po.poId > 0);
+  }
+
+  get hasActiveFilters(): boolean {
+    return this.poType !== 'All' || this.selectedFinancialYearId !== 0 || this.selectedPoId !== 0;
+  }
+
   loadPoOptions(): void {
     this.api.getSupplierPoReceiptOptions(this.userId, this.selectedFinancialYearId, this.poType).subscribe({
       next: (raw) => {
@@ -160,7 +168,7 @@ export class PoSupplyReceiptComponent implements OnInit {
           };
         });
         if (!this.poOptions.length) {
-          this.poOptions = [{ poId: 0, displayText: 'All PO' }];
+          this.poOptions = [];
         }
         const hasSelectedPo = this.poOptions.some((row) => row.poId === this.selectedPoId);
         if (!hasSelectedPo) {
@@ -169,7 +177,7 @@ export class PoSupplyReceiptComponent implements OnInit {
         this.loadDetails();
       },
       error: (err) => {
-        this.poOptions = [{ poId: 0, displayText: 'All PO' }];
+        this.poOptions = [];
         this.toastr.error(err?.error?.message ?? 'Unable to load PO list.');
       },
     });

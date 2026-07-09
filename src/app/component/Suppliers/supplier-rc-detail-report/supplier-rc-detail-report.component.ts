@@ -63,10 +63,7 @@ export class SupplierRcDetailReportComponent implements OnInit {
       next: (raw) => {
         this.loading = false;
         const list = Array.isArray(raw) ? raw : [];
-        this.tenders = [
-          { tenderId: 0, tenderNo: '--All--' },
-          ...list.map((item) => this.mapTender(item as Record<string, unknown>)),
-        ];
+        this.tenders = list.map((item) => this.mapTender(item as Record<string, unknown>));
         this.loadReport();
       },
       error: (err) => {
@@ -83,6 +80,10 @@ export class SupplierRcDetailReportComponent implements OnInit {
   clearFilters(): void {
     this.selectedTenderId = 0;
     this.loadReport();
+  }
+
+  get hasActiveFilters(): boolean {
+    return this.selectedTenderId !== 0;
   }
 
   loadReport(): void {
