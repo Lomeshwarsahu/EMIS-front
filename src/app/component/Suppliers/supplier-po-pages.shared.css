@@ -14,14 +14,13 @@
   --table-row-border: #e2e8f0;
   --table-head-border: #e2e8f0;
   --table-wrap-border: #e2e8f0;
-  --supplier-table-scroll-height: calc(100vh - 300px);
+  --supplier-table-scroll-height: calc(100vh - 268px);
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
   height: 100%;
-  padding: 24px;
-  padding-bottom: 16px;
+  padding: 8px 12px 12px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color: #334155;
   background-color: transparent;
@@ -340,9 +339,10 @@ table.filter-panel .label-col {
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   flex-shrink: 0;
-  padding: 0 4px 8px 0;
+  padding: 0;
+  margin: 0 0 2px;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -378,9 +378,9 @@ table.filter-panel .label-col {
 }
 
 .datagrid:has(> .table-toolbar) .table-wrap {
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid var(--table-wrap-border);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
 }
 
 .datagrid:has(> .table-toolbar) app-supplier-page-skeleton {
@@ -411,8 +411,8 @@ table.filter-panel .label-col {
   overflow-x: auto;
   overflow-y: auto;
   background: var(--table-cell-bg);
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
   border: 1px solid var(--table-wrap-border);
   -webkit-overflow-scrolling: touch;
 }
@@ -435,10 +435,10 @@ table.filter-panel .label-col {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 16px 20px;
+  padding: 8px 10px;
   text-align: left;
   border: none;
-  border-bottom: 2px solid var(--table-head-border);
+  border-bottom: 1px solid var(--table-head-border);
   white-space: nowrap;
   position: sticky;
   top: 0;
@@ -447,9 +447,9 @@ table.filter-panel .label-col {
 }
 
 .po-grid td {
-  padding: 8px 16px;
+  padding: 5px 8px;
   color: #334155;
-  font-size: 13px;
+  font-size: 12px;
   background: var(--table-cell-bg);
   border: none;
   border-bottom: 1px solid var(--table-row-border);
@@ -650,7 +650,7 @@ table.filter-panel .label-col {
 }
 
 .report-note {
-  margin: 0 0 16px;
+  margin: 0 0 6px;
   font-size: 13px;
   color: #64748b;
 }
@@ -922,9 +922,8 @@ table.filter-panel .label-col {
 
 @media (max-width: 991.98px) {
   .supplier-po-page {
-    --supplier-table-scroll-height: calc(100vh - 220px);
-    padding: 16px;
-    padding-bottom: 12px;
+    --supplier-table-scroll-height: calc(100vh - 210px);
+    padding: 6px 10px 10px;
   }
 }
 
