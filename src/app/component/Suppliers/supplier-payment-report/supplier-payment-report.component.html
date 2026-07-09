@@ -1,42 +1,42 @@
 <div class="supplier-po-page">
   <h2 class="page-title">Paid Report of Purchase Orders</h2>
 
-  <div class="filter-panel">
-    <button
-      *ngIf="showExport"
-      type="button"
-      class="export-btn"
-      (click)="exportExcel()">
-      Export
-    </button>
-
-    <select
-      aria-label="PO Type"
-      [(ngModel)]="poType"
-      name="poType"
-      (change)="onFilterChange()"
-      [class.is-placeholder]="poType === 'All'">
-      <option value="All" disabled hidden>PO Type</option>
-      <option value="NP">Normal Po</option>
-      <option value="CP">Covid Po</option>
-    </select>
-
-    <button
-      type="button"
-      class="show-btn clear-btn"
-      *ngIf="hasActiveFilters"
-      (click)="clearFilters()"
-      [disabled]="loading">
-      Clear Filter
-    </button>
-  </div>
-
   <p class="report-note">Data is Based On Entered by CGMSC Finance Department</p>
 
-  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="11" />
+  <div class="datagrid">
+    <div class="table-toolbar filter-panel filters--compact">
+      <button
+        *ngIf="showExport"
+        type="button"
+        class="export-btn"
+        (click)="exportExcel()">
+        Export
+      </button>
 
-  <div class="datagrid" *ngIf="!loading">
-    <div class="table-wrap">
+      <select
+        aria-label="PO Type"
+        [(ngModel)]="poType"
+        name="poType"
+        (change)="onFilterChange()"
+        [class.is-placeholder]="poType === 'All'">
+        <option value="All" disabled hidden>PO Type</option>
+        <option value="NP">Normal Po</option>
+        <option value="CP">Covid Po</option>
+      </select>
+
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="11" />
+
+    <div class="table-wrap" *ngIf="!loading">
       <table class="po-grid payment-grid">
         <thead>
           <tr>

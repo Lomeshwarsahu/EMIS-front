@@ -4,58 +4,58 @@
     Please Update your GST info in Supplier Information Section Under Master Menu
   </a>
 
-  <div class="filters">
-    <select
-      aria-label="Financial Year"
-      [(ngModel)]="selectedFinancialYearId"
-      name="financialYear"
-      (change)="onFilterChange()"
-      [class.is-placeholder]="selectedFinancialYearId === 0"
-    >
-      <option [ngValue]="0" disabled hidden>Financial Year</option>
-      <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
-        {{ year.year }}
-      </option>
-    </select>
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Financial Year"
+        [(ngModel)]="selectedFinancialYearId"
+        name="financialYear"
+        (change)="onFilterChange()"
+        [class.is-placeholder]="selectedFinancialYearId === 0"
+      >
+        <option [ngValue]="0" disabled hidden>Financial Year</option>
+        <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
+          {{ year.year }}
+        </option>
+      </select>
 
-    <select
-      aria-label="Tender No"
-      [(ngModel)]="selectedTenderId"
-      name="tender"
-      (change)="onFilterChange()"
-      [class.is-placeholder]="selectedTenderId === 0"
-    >
-      <option [ngValue]="0" disabled hidden>Tender No</option>
-      <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
-        {{ tender.tenderNo }}
-      </option>
-    </select>
+      <select
+        aria-label="Tender No"
+        [(ngModel)]="selectedTenderId"
+        name="tender"
+        (change)="onFilterChange()"
+        [class.is-placeholder]="selectedTenderId === 0"
+      >
+        <option [ngValue]="0" disabled hidden>Tender No</option>
+        <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
+          {{ tender.tenderNo }}
+        </option>
+      </select>
 
-    <select
-      aria-label="SD Status"
-      [(ngModel)]="selectedSdFilter"
-      name="sdStatus"
-      [class.is-placeholder]="selectedSdFilter === 'all'"
-    >
-      <option value="all" disabled hidden>SD Status</option>
-      <option value="submitted">Submitted</option>
-      <option value="not-submitted">Not Submitted</option>
-    </select>
+      <select
+        aria-label="SD Status"
+        [(ngModel)]="selectedSdFilter"
+        name="sdStatus"
+        [class.is-placeholder]="selectedSdFilter === 'all'"
+      >
+        <option value="all" disabled hidden>SD Status</option>
+        <option value="submitted">Submitted</option>
+        <option value="not-submitted">Not Submitted</option>
+      </select>
 
-    <button
-      type="button"
-      class="show-btn clear-btn"
-      *ngIf="hasActiveFilters"
-      (click)="clearFilters()"
-      [disabled]="loading">
-      Clear Filter
-    </button>
-  </div>
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+    </div>
 
-  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
 
-  <div class="datagrid" *ngIf="!loading">
-    <div class="table-wrap">
+    <div class="table-wrap" *ngIf="!loading">
       <table class="po-grid">
         <thead>
           <tr>

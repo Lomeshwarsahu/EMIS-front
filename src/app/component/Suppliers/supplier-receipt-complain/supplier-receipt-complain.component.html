@@ -1,39 +1,39 @@
 <div class="supplier-po-page">
   <h2 class="page-title narrow">Complain Received Against Equipment</h2>
 
-  <div class="filters">
-    <button
-      *ngIf="showExport"
-      type="button"
-      class="export-btn"
-      (click)="exportExcel()">
-      Export
-    </button>
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <button
+        *ngIf="showExport"
+        type="button"
+        class="export-btn"
+        (click)="exportExcel()">
+        Export
+      </button>
 
-    <select
-      aria-label="Status"
-      [(ngModel)]="status"
-      name="complainStatus"
-      (change)="onFilterChange()"
-      [class.is-placeholder]="status === 'Booked'">
-      <option value="Booked" disabled hidden>Status</option>
-      <option value="Closed">Closed</option>
-    </select>
+      <select
+        aria-label="Status"
+        [(ngModel)]="status"
+        name="complainStatus"
+        (change)="onFilterChange()"
+        [class.is-placeholder]="status === 'Booked'">
+        <option value="Booked" disabled hidden>Status</option>
+        <option value="Closed">Closed</option>
+      </select>
 
-    <button
-      type="button"
-      class="show-btn clear-btn"
-      *ngIf="hasActiveFilters"
-      (click)="clearFilters()"
-      [disabled]="loading">
-      Clear Filter
-    </button>
-  </div>
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+    </div>
 
-  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
 
-  <div class="datagrid" *ngIf="!loading">
-    <div class="table-wrap">
+    <div class="table-wrap" *ngIf="!loading">
       <table class="po-grid complain-grid">
         <thead>
           <tr>

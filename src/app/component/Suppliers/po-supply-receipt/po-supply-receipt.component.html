@@ -1,57 +1,57 @@
 <div class="supplier-po-page">
   <h2 class="page-title wide">Consignee Wise PO-Receipt/Installation Details</h2>
 
-  <div class="filters filters--compact">
-    <select
-      aria-label="Status"
-      [(ngModel)]="poType"
-      name="poType"
-      (change)="onPoTypeChange()"
-      [class.is-placeholder]="poType === 'All'">
-      <option value="All" disabled hidden>Status</option>
-      <option value="PRI">Pending To Receipt/Install</option>
-      <option value="C">Complete Receipt/Installation</option>
-    </select>
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Status"
+        [(ngModel)]="poType"
+        name="poType"
+        (change)="onPoTypeChange()"
+        [class.is-placeholder]="poType === 'All'">
+        <option value="All" disabled hidden>Status</option>
+        <option value="PRI">Pending To Receipt/Install</option>
+        <option value="C">Complete Receipt/Installation</option>
+      </select>
 
-    <select
-      aria-label="PO Fin Year"
-      [(ngModel)]="selectedFinancialYearId"
-      name="poYear"
-      (change)="onYearChange()"
-      [class.is-placeholder]="selectedFinancialYearId === 0">
-      <option [ngValue]="0" disabled hidden>PO Fin Year</option>
-      <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
-        {{ year.year }}
-      </option>
-    </select>
+      <select
+        aria-label="PO Fin Year"
+        [(ngModel)]="selectedFinancialYearId"
+        name="poYear"
+        (change)="onYearChange()"
+        [class.is-placeholder]="selectedFinancialYearId === 0">
+        <option [ngValue]="0" disabled hidden>PO Fin Year</option>
+        <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
+          {{ year.year }}
+        </option>
+      </select>
 
-    <select
-      class="po-select"
-      aria-label="Select PO NO"
-      [(ngModel)]="selectedPoId"
-      name="poNo"
-      (change)="onPoChange()"
-      [class.is-placeholder]="selectedPoId === 0">
-      <option [ngValue]="0" disabled hidden>Select PO NO</option>
-      <option *ngFor="let po of selectablePoOptions" [ngValue]="po.poId">
-        {{ po.displayText }}
-      </option>
-    </select>
+      <select
+        class="po-select"
+        aria-label="Select PO NO"
+        [(ngModel)]="selectedPoId"
+        name="poNo"
+        (change)="onPoChange()"
+        [class.is-placeholder]="selectedPoId === 0">
+        <option [ngValue]="0" disabled hidden>Select PO NO</option>
+        <option *ngFor="let po of selectablePoOptions" [ngValue]="po.poId">
+          {{ po.displayText }}
+        </option>
+      </select>
 
-    <button
-      type="button"
-      class="show-btn clear-btn"
-      *ngIf="hasActiveFilters"
-      (click)="clearFilters()"
-      [disabled]="loading">
-      Clear Filter
-    </button>
-  </div>
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+    </div>
 
-  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
 
-  <div class="datagrid" *ngIf="!loading">
-    <div class="table-wrap">
+    <div class="table-wrap" *ngIf="!loading">
       <table class="po-grid receipt-grid">
         <thead>
           <tr>

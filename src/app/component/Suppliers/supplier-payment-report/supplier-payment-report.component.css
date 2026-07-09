@@ -16,12 +16,3 @@
 .col-date { width: 100px; }
 .col-supplier { width: 160px; }
 .col-amt { width: 100px; }
-
-.filter-panel {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 8px;
-}

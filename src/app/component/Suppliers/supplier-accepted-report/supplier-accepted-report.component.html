@@ -1,81 +1,74 @@
 <div class="supplier-po-page">
   <h2 class="page-title narrow">Rate Contract Detail Report</h2>
 
-  <table class="filter-panel" *ngIf="showFilters || filterMode === null">
-    <tbody>
-      <tr>
-        <td colspan="2">
-          <div class="radio-group">
-            <label>
-              <input
-                type="radio"
-                name="filterMode"
-                value="tender"
-                [(ngModel)]="filterMode"
-                (ngModelChange)="onFilterModeChange()" />
-              Tender Wise
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="filterMode"
-                value="supplier"
-                [(ngModel)]="filterMode"
-                (ngModelChange)="onFilterModeChange()" />
-              Supplier Wise
-            </label>
-          </div>
-        </td>
-      </tr>
-      <tr *ngIf="showFilters">
-        <td>
-          <button
-            *ngIf="showExport"
-            type="button"
-            class="export-btn"
-            (click)="exportExcel()">
-            Export
-          </button>
-        </td>
-        <td>
-          <label *ngIf="filterMode === 'tender'">
-            Tender:
-            <select [(ngModel)]="selectedTenderId" name="tender" (change)="onFilterChange()">
-              <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
-                {{ tender.tenderNo }}
-              </option>
-            </select>
-          </label>
+  <div class="datagrid">
+    <div class="table-toolbar filter-panel filters--compact" *ngIf="showFilters || filterMode === null">
+      <div class="radio-group">
+        <label>
+          <input
+            type="radio"
+            name="filterMode"
+            value="tender"
+            [(ngModel)]="filterMode"
+            (ngModelChange)="onFilterModeChange()" />
+          Tender Wise
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="filterMode"
+            value="supplier"
+            [(ngModel)]="filterMode"
+            (ngModelChange)="onFilterModeChange()" />
+          Supplier Wise
+        </label>
+      </div>
 
-          <label *ngIf="filterMode === 'supplier'">
-            Supplier:
-            <select [(ngModel)]="selectedSupplierId" name="supplier" disabled>
-              <option *ngIf="supplierOption" [ngValue]="supplierOption.supplierId">
-                {{ supplierOption.name }}
-              </option>
-            </select>
-          </label>
-        </td>
-      </tr>
-      <tr *ngIf="showFilters">
-        <td colspan="2" class="text-center">
-          <button
-            *ngIf="filterMode === 'tender'"
-            type="button"
-            class="show-btn clear-btn"
-            (click)="clearFilters()"
-            [disabled]="loading">
-            Clear Filter
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <ng-container *ngIf="showFilters">
+        <button
+          *ngIf="showExport"
+          type="button"
+          class="export-btn"
+          (click)="exportExcel()">
+          Export
+        </button>
 
-  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
+        <select
+          *ngIf="filterMode === 'tender'"
+          aria-label="Tender"
+          [(ngModel)]="selectedTenderId"
+          name="tender"
+          (change)="onFilterChange()">
+          <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
+            {{ tender.tenderNo }}
+          </option>
+        </select>
 
-  <div class="datagrid" *ngIf="!loading && showFilters">
-    <div class="table-wrap">
+        <select
+          *ngIf="filterMode === 'supplier'"
+          aria-label="Supplier"
+          [(ngModel)]="selectedSupplierId"
+          name="supplier"
+          disabled>
+          <option *ngIf="supplierOption" [ngValue]="supplierOption.supplierId">
+            {{ supplierOption.name }}
+          </option>
+        </select>
+
+        <button
+          *ngIf="filterMode === 'tender'"
+          type="button"
+          class="show-btn clear-btn"
+          (click)="clearFilters()"
+          [disabled]="loading">
+          Clear Filter
+        </button>
+      </ng-container>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
+
+    <div class="table-wrap" *ngIf="!loading && showFilters">
       <table class="po-grid accepted-grid">
         <thead>
           <tr>

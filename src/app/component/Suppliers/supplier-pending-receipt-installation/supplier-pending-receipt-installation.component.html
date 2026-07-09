@@ -1,35 +1,35 @@
 <div class="supplier-po-page">
   <h2 class="page-title wide">Pending Receipt / Installation</h2>
 
-  <div class="filter-panel">
-    <button
-      *ngIf="showExport"
-      type="button"
-      class="export-btn"
-      (click)="exportExcel()">
-      Export
-    </button>
+  <div class="datagrid">
+    <div class="table-toolbar filter-panel filters--compact">
+      <button
+        *ngIf="showExport"
+        type="button"
+        class="export-btn"
+        (click)="exportExcel()">
+        Export
+      </button>
 
-    <div class="radio-group">
-      <label>
-        <input type="radio" name="balanceType" value="R" [(ngModel)]="balanceType" (change)="onFilterChange()" />
-        Balance to Receipt
-      </label>
-      <label>
-        <input type="radio" name="balanceType" value="I" [(ngModel)]="balanceType" (change)="onFilterChange()" />
-        Balance To Install
-      </label>
+      <div class="radio-group">
+        <label>
+          <input type="radio" name="balanceType" value="R" [(ngModel)]="balanceType" (change)="onFilterChange()" />
+          Balance to Receipt
+        </label>
+        <label>
+          <input type="radio" name="balanceType" value="I" [(ngModel)]="balanceType" (change)="onFilterChange()" />
+          Balance To Install
+        </label>
+      </div>
+
+      <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
+        Clear Filter
+      </button>
     </div>
 
-    <button type="button" class="show-btn clear-btn" (click)="clearFilters()" [disabled]="loading">
-      Clear Filter
-    </button>
-  </div>
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="15" />
 
-  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="15" />
-
-  <div class="datagrid" *ngIf="!loading">
-    <div class="table-wrap">
+    <div class="table-wrap" *ngIf="!loading">
       <table class="po-grid balance-grid">
         <thead>
           <tr>

@@ -1,41 +1,41 @@
 <div class="supplier-po-page">
   <h2 class="page-title narrow">Rate Contract Detail Report</h2>
 
-  <div class="filters">
-    <button
-      *ngIf="showExport"
-      type="button"
-      class="export-btn"
-      (click)="exportExcel()">
-      Export
-    </button>
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <button
+        *ngIf="showExport"
+        type="button"
+        class="export-btn"
+        (click)="exportExcel()">
+        Export
+      </button>
 
-    <select
-      aria-label="Tender"
-      [(ngModel)]="selectedTenderId"
-      name="tender"
-      (change)="onFilterChange()"
-      [class.is-placeholder]="selectedTenderId === 0">
-      <option [ngValue]="0" disabled hidden>Tender</option>
-      <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
-        {{ tender.tenderNo }}
-      </option>
-    </select>
+      <select
+        aria-label="Tender"
+        [(ngModel)]="selectedTenderId"
+        name="tender"
+        (change)="onFilterChange()"
+        [class.is-placeholder]="selectedTenderId === 0">
+        <option [ngValue]="0" disabled hidden>Tender</option>
+        <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
+          {{ tender.tenderNo }}
+        </option>
+      </select>
 
-    <button
-      type="button"
-      class="show-btn clear-btn"
-      *ngIf="hasActiveFilters"
-      (click)="clearFilters()"
-      [disabled]="loading">
-      Clear Filter
-    </button>
-  </div>
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+    </div>
 
-  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="11" />
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="11" />
 
-  <div class="datagrid" *ngIf="!loading">
-    <div class="table-wrap">
+    <div class="table-wrap" *ngIf="!loading">
       <table class="po-grid rc-grid">
         <thead>
           <tr>
