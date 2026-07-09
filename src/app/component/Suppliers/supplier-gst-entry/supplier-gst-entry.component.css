@@ -24,12 +24,14 @@
 
 .gst-datagrid {
   flex: 0 0 auto;
+  width: 100%;
   min-height: auto;
   overflow: visible;
 }
 
 .gst-datagrid .table-wrap {
   flex: 0 0 auto;
+  width: 100%;
   min-height: auto;
   max-height: none;
   overflow-y: visible;
@@ -38,12 +40,12 @@
 
 .gst-grid {
   width: 100%;
-  min-width: 560px;
+  min-width: 0;
   table-layout: fixed;
 }
 
 .col-sn {
-  width: 64px;
+  width: 58px;
 }
 
 .col-gst {
@@ -52,6 +54,7 @@
 
 .gst-grid td {
   vertical-align: middle;
+  word-break: break-word;
 }
 
 .gst-grid tr.add-row td {
@@ -76,7 +79,7 @@
 .actions-col {
   text-align: center;
   white-space: nowrap;
-  width: 220px;
+  width: 180px;
 }
 
 .action-btn {
@@ -169,7 +172,7 @@
 
 @media (max-width: 767.98px) {
   .actions-col {
-    width: 200px;
+    width: 170px;
   }
 
   .action-btn {
@@ -181,6 +184,6 @@
   }
 
   .gst-grid {
-    min-width: 620px;
+    min-width: 520px;
   }
 }
