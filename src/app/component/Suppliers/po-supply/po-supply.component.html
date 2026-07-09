@@ -1,8 +1,10 @@
 <div class="supplier-po-page">
-  <a class="gst-note" (click)="goToGstDetails()">
-    <span style="font-size: 16px; margin-right: 6px;">&#9432;</span>
-    Please Update your GST info in Supplier Information Section Under Master Menu
-  </a>
+  <div class="gst-note-wrap">
+    <span class="gst-note" role="link" tabindex="0" (click)="goToGstDetails()" (keydown.enter)="goToGstDetails()">
+      <span class="gst-note-icon" aria-hidden="true">ⓘ</span>
+      Please Update your GST info in Supplier Information Section Under Master Menu
+    </span>
+  </div>
 
   <div class="datagrid">
     <div class="table-toolbar filters filters--compact">

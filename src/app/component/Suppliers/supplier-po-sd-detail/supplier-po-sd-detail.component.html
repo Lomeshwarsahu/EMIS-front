@@ -1,18 +1,14 @@
 <div class="supplier-po-page sd-detail-page">
-  <div class="page-toolbar">
-    <a class="back-link" (click)="goBack()">Back</a>
-  </div>
-
-  <h2 class="page-title narrow">
-    SD Detail
+  <div class="page-toolbar sd-page-toolbar">
     <span *ngIf="isViewOnly" class="submitted-badge">Submitted</span>
-  </h2>
+    <button type="button" class="back-btn" (click)="goBack()">Back to PO Supply</button>
+  </div>
 
   <app-supplier-page-skeleton *ngIf="loading" type="form" [formFields]="8" />
 
   <div *ngIf="!loading" class="sd-detail-wrap">
-    <div class="sd-detail-card">
-      <table class="sd-form-table">
+    <div class="detail-form-card sd-detail-card">
+      <table class="detail-form-table sd-form-table">
         <tbody>
           <tr class="sd-info-row">
             <td class="label-col">Equipment</td>
@@ -59,8 +55,7 @@
                 [(ngModel)]="documentNo"
                 name="documentNo"
                 maxlength="100"
-                [disabled]="isViewOnly || hasExisting"
-              />
+                [disabled]="isViewOnly || hasExisting" />
             </td>
           </tr>
           <tr *ngIf="showUpdate" class="file-mode-row">
@@ -71,8 +66,7 @@
                   name="fileMode"
                   value="UPLOAD"
                   [(ngModel)]="fileMode"
-                  (change)="onFileModeChange()"
-                />
+                  (change)="onFileModeChange()" />
                 Upload File
               </label>
               <label>
@@ -81,8 +75,7 @@
                   name="fileMode"
                   value="VIEW"
                   [(ngModel)]="fileMode"
-                  (change)="onFileModeChange()"
-                />
+                  (change)="onFileModeChange()" />
                 View File
               </label>
             </td>
@@ -93,14 +86,12 @@
                 *ngIf="showFileUpload"
                 type="file"
                 accept=".pdf,application/pdf"
-                (change)="onFileSelected($event)"
-              />
+                (change)="onFileSelected($event)" />
               <button
                 *ngIf="(showUpdate && fileMode === 'VIEW' && hasFile) || (isViewOnly && hasFile)"
                 type="button"
                 class="show-btn small-btn"
-                (click)="downloadFile()"
-              >
+                (click)="downloadFile()">
                 View File
               </button>
               <small *ngIf="showFileUpload">Max 3 MB, PDF only</small>

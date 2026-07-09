@@ -394,11 +394,13 @@ table.filter-panel .label-col {
   overflow: hidden;
 }
 
+.supplier-po-page > .gst-note-wrap,
 .supplier-po-page > .gst-note,
 .supplier-po-page > .report-note,
 .supplier-po-page > .page-title,
 .supplier-po-page > .emd-form-wrap,
 .supplier-po-page > .page-header,
+.supplier-po-page > .page-toolbar,
 .supplier-po-page > .desk-toolbar,
 .supplier-po-page > .po-header {
   flex-shrink: 0;
@@ -710,21 +712,85 @@ table.filter-panel .label-col {
   color: #f3f4f6;
 }
 
-/* SD Detail / Apply Extension form pages */
-.page-toolbar {
-  margin-bottom: 20px;
+/* SD Detail / Apply Extension / common back navigation */
+.page-toolbar,
+.desk-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.page-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  border: 1px solid var(--page-accent);
+  background: transparent;
+  color: var(--page-accent);
+  padding: 6px 16px;
+  min-height: 32px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.back-btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--page-accent) 12%, transparent);
+}
+
+.back-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+:host-context(html[data-theme='dark']) .supplier-po-page .back-btn {
+  color: #e2e8f0;
+  border-color: #6e00b3;
+}
+
+:host-context(html[data-theme='dark']) .supplier-po-page .back-btn:hover:not(:disabled) {
+  background: rgba(110, 0, 179, 0.2);
 }
 
 .back-link {
-  display: inline-block;
-  color: #2563eb;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--page-accent);
+  background: transparent;
+  color: var(--page-accent);
+  padding: 6px 16px;
+  min-height: 32px;
+  border-radius: 999px;
   font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  text-decoration: underline;
+  text-decoration: none;
+  font-family: inherit;
 }
 
 .back-link:hover {
-  color: #1d4ed8;
+  background: color-mix(in srgb, var(--page-accent) 12%, transparent);
+  color: var(--page-accent);
+}
+
+:host-context(html[data-theme='dark']) .supplier-po-page .back-link {
+  color: #e2e8f0;
+  border-color: #6e00b3;
+}
+
+:host-context(html[data-theme='dark']) .supplier-po-page .back-link:hover {
+  background: rgba(110, 0, 179, 0.2);
+  color: #e2e8f0;
 }
 
 .detail-section {

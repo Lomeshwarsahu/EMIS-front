@@ -17,22 +17,6 @@
   font-weight: 700;
 }
 
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.back-btn {
-  border: 1px solid #1f4e79;
-  background: #fff;
-  color: #1f4e79;
-  padding: 6px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
 .tabs {
   display: flex;
   gap: 8px;

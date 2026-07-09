@@ -1,19 +1,17 @@
 <div class="supplier-po-page extension-page">
   <div class="page-toolbar">
-    <a class="back-link" (click)="goBack()">Back</a>
+    <button type="button" class="back-btn" (click)="goBack()">Back to PO Supply</button>
   </div>
-
-  <h2 class="page-title narrow">Apply For Extension</h2>
 
   <app-supplier-page-skeleton *ngIf="loading" type="form" [formFields]="7" />
 
   <div *ngIf="!loading" class="extension-wrap">
-    <div class="extension-card" [class.disabled-panel]="!canApply">
+    <div class="detail-form-card extension-card" [class.disabled-panel]="!canApply">
       <p *ngIf="hasPendingExtension" class="pending-banner">
         A previous extension request is pending approval. New requests are disabled until it is processed.
       </p>
 
-      <table class="extension-form-table">
+      <table class="detail-form-table extension-form-table">
         <tbody>
           <tr class="info-row">
             <td class="label-col">Equipment</td>
@@ -40,8 +38,7 @@
                 name="extensionDays"
                 min="1"
                 (ngModelChange)="onExtensionDaysChange()"
-                [disabled]="!canApply"
-              />
+                [disabled]="!canApply" />
             </td>
             <td class="label-col">Extension Date</td>
             <td class="value-col">{{ extensionDate || '—' }}</td>
@@ -53,8 +50,7 @@
                 type="date"
                 [(ngModel)]="letterDate"
                 name="letterDate"
-                [disabled]="!canApply"
-              />
+                [disabled]="!canApply" />
             </td>
             <td class="label-col">Remark</td>
             <td class="value-col">
@@ -67,8 +63,7 @@
                 type="file"
                 accept=".pdf,application/pdf"
                 (change)="onFileSelected($event)"
-                [disabled]="!canApply"
-              />
+                [disabled]="!canApply" />
               <small>1 MB, PDF only</small>
             </td>
           </tr>
@@ -88,46 +83,48 @@
 
     <div class="extension-history" *ngIf="rows.length">
       <h3 class="section-title">Extension History</h3>
-      <div class="history-table-wrap">
-        <table class="po-grid extension-grid">
-          <thead>
-            <tr>
-              <th class="col-sn">S.No</th>
-              <th>Days</th>
-              <th>Extended Date</th>
-              <th>PO End Date</th>
-              <th>Letter Date</th>
-              <th>Letter No</th>
-              <th>Apply Date</th>
-              <th>Status</th>
-              <th class="col-doc">Document</th>
-              <th>Remark</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let row of rows; let i = index">
-              <td>{{ i + 1 }}</td>
-              <td>{{ row.days }}</td>
-              <td>{{ row.extendedDate }}</td>
-              <td>{{ row.poEndDate }}</td>
-              <td>{{ row.letterDate }}</td>
-              <td>{{ row.letterNo }}</td>
-              <td>{{ row.applyDate }}</td>
-              <td>{{ row.status }}</td>
-              <td>
-                <button
-                  *ngIf="row.hasFile"
-                  type="button"
-                  class="link-btn"
-                  (click)="downloadFile(row)"
-                >
-                  Download
-                </button>
-              </td>
-              <td class="wrap-cell">{{ row.remark }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="datagrid extension-datagrid">
+        <div class="table-wrap">
+          <table class="po-grid extension-grid">
+            <thead>
+              <tr>
+                <th class="col-sn text-center">S.No</th>
+                <th>Days</th>
+                <th>Extended Date</th>
+                <th>PO End Date</th>
+                <th>Letter Date</th>
+                <th>Letter No</th>
+                <th>Apply Date</th>
+                <th>Status</th>
+                <th class="col-doc text-center">Document</th>
+                <th>Remark</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-center">{{ row.days }}</td>
+                <td class="text-center">{{ row.extendedDate }}</td>
+                <td class="text-center">{{ row.poEndDate }}</td>
+                <td class="text-center">{{ row.letterDate }}</td>
+                <td>{{ row.letterNo }}</td>
+                <td class="text-center">{{ row.applyDate }}</td>
+                <td>{{ row.status }}</td>
+                <td class="text-center">
+                  <button
+                    *ngIf="row.hasFile"
+                    type="button"
+                    class="link-btn"
+                    (click)="downloadFile(row)">
+                    Download
+                  </button>
+                  <span *ngIf="!row.hasFile">—</span>
+                </td>
+                <td class="wrap-cell">{{ row.remark }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

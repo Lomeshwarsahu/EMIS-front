@@ -148,6 +148,20 @@
   box-shadow: 0 0 0 3px rgba(110, 0, 179, 0.22);
 }
 
+:host-context(html[data-theme='dark']) .supplier-info-form-card .section-title,
+:host-context(html[data-theme='dark']) .detail-header-item .label,
+:host-context(html[data-theme='dark']) .detail-header-item .value {
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .status-message {
+  color: #4ade80;
+}
+
+:host-context(html[data-theme='dark']) .status-message.error {
+  color: #f87171;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
