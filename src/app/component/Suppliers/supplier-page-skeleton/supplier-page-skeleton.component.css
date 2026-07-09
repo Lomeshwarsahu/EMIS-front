@@ -12,11 +12,25 @@
   animation: supplier-skeleton-shimmer 1.2s ease-in-out infinite;
 }
 
-.skeleton-table-wrap {
-  border: 1px solid #cbd5e1;
-  overflow: hidden;
-  background: #fff;
+:host-context(html[data-theme='dark']) .skeleton-table-wrap {
+  border-color: #262b36;
+  background: #0c0e12;
 }
+
+:host-context(html[data-theme='dark']) .skeleton-table-header {
+  background: #141820;
+  border-bottom-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) .skeleton-table-row {
+  border-bottom-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) .skeleton-block {
+  background: linear-gradient(90deg, #1a2030 0%, #262b36 50%, #1a2030 100%);
+  background-size: 200% 100%;
+}
+
 
 .skeleton-table-header,
 .skeleton-table-row {

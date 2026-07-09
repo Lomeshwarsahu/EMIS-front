@@ -348,6 +348,16 @@ html[data-theme='dark'] .page-shell-title {
   margin: 0;
   padding: 0;
   background-color: #e2e8f0 !important;
+  overflow: auto;
+}
+
+.content-area--login .page-outlet-wrapper,
+.content-area--login .page-outlet-wrapper > :not(router-outlet) {
+  display: block;
+  flex: none;
+  min-height: auto;
+  height: auto;
+  overflow: visible;
 }
 
 .emis-page-content {

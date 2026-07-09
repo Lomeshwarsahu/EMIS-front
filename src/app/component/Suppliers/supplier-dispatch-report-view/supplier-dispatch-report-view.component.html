@@ -1,23 +1,19 @@
 <div class="report-page" [class.report-page--inline]="inline">
-  <table class="report-layout">
-    <tr>
-      <td class="print-cell no-print">
-        <button
-          type="button"
-          class="show-btn print-text-btn"
-          (click)="printReport()"
-          [disabled]="!report || loading">
-          Print
-        </button>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <app-supplier-page-skeleton *ngIf="loading" type="lines" [rows]="12" />
-        <div *ngIf="!loading && loadError" class="error-text">{{ loadError }}</div>
+  <div class="print-toolbar no-print">
+    <button
+      type="button"
+      class="print-action-btn"
+      (click)="printReport()"
+      [disabled]="!report || loading">
+      Print
+    </button>
+  </div>
 
-        <div [id]="printContainerId" class="report-card" *ngIf="!loading && report && !loadError">
-          <table class="report-inner">
+  <app-supplier-page-skeleton *ngIf="loading" type="lines" [rows]="12" />
+  <div *ngIf="!loading && loadError" class="error-text">{{ loadError }}</div>
+
+  <div [id]="printContainerId" class="report-card" *ngIf="!loading && report && !loadError">
+    <table class="report-inner">
             <tr>
               <td colspan="4" class="report-title-cell">
                 <strong>Dispatch Details</strong>
@@ -111,8 +107,5 @@
               </td>
             </tr>
           </table>
-        </div>
-      </td>
-    </tr>
-  </table>
+  </div>
 </div>

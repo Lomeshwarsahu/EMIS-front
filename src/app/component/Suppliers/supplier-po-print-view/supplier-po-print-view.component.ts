@@ -8,7 +8,7 @@ import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplie
   standalone: true,
   imports: [CommonModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-po-print-view.component.html',
-  styleUrls: ['./supplier-po-print-view.component.css', '../supplier-po-pages.shared.css'],
+  styleUrls: ['./supplier-po-print-view.component.css'],
 })
 export class SupplierPoPrintViewComponent {
   @Input() report: PoPrintReport | null = null;

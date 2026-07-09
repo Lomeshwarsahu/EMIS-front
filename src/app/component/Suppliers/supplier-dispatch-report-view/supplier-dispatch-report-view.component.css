@@ -13,6 +13,37 @@
   margin-top: 16px;
 }
 
+.print-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-end;
+  width: 1000px;
+  max-width: 100%;
+  margin: 0 auto 8px;
+  padding: 4px 0;
+  background: #fff;
+}
+
+.print-action-btn {
+  background: #f97316;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  min-height: 36px;
+  min-width: 90px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.print-action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .report-layout {
   width: 1000px;
   max-width: 100%;
@@ -118,4 +149,18 @@
 :host {
   display: block;
   overflow: visible;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-toolbar {
+    display: none !important;
+  }
+
+  .report-page {
+    padding: 0;
+  }
 }

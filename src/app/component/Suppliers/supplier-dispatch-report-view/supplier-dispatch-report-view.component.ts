@@ -8,7 +8,7 @@ import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplie
   standalone: true,
   imports: [CommonModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-dispatch-report-view.component.html',
-  styleUrls: ['./supplier-dispatch-report-view.component.css', '../supplier-po-pages.shared.css'],
+  styleUrls: ['./supplier-dispatch-report-view.component.css'],
 })
 export class SupplierDispatchReportViewComponent {
   @Input() report: DispatchReport | null = null;

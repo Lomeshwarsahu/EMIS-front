@@ -5,6 +5,10 @@
   color: #003399;
 }
 
+:host-context(html[data-theme='dark']) .report-note {
+  color: #a5b4fc;
+}
+
 .payment-grid {
   width: 1500px;
   min-width: 1500px;
