@@ -1,6 +1,34 @@
+.refund-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 12px;
+}
+
+.refund-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 16px 20px;
+  overflow-y: auto;
+}
+
 .emd-form-wrap {
   max-width: 900px;
   margin: 0 auto 24px;
+}
+
+.refund-modal-card {
+  width: min(960px, 100%);
+  margin: 0;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #dbe3ef;
+  box-shadow: 0 20px 44px rgba(15, 23, 42, 0.24);
+  padding: 10px 8px 14px;
 }
 
 .emd-form-table {
@@ -25,7 +53,8 @@
 .emd-form-table input[type='number'],
 .emd-form-table input[type='date'],
 .emd-form-table select {
-  width: 205px;
+  width: 100%;
+  max-width: 240px;
   max-width: 100%;
   padding: 4px 6px;
   border: 1px solid #94a3b8;
@@ -41,20 +70,205 @@
   padding-top: 8px;
 }
 
-.emd-grid {
-  width: 980px;
-  min-width: 980px;
+.cancel-btn {
+  border: 1px solid #f97316;
+  background: #fff7ed;
+  color: #c2410c;
+  border-radius: 999px;
+  min-height: 42px;
+  padding: 9px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 10px;
 }
 
-.col-sn { width: 45px; }
-.col-tender { width: 120px; }
-.col-amt { width: 110px; }
-.col-mode { width: 120px; }
-.col-doc { width: 120px; }
-.col-date { width: 110px; }
+.cancel-btn:hover:not(:disabled) {
+  background: #ffedd5;
+}
+
+.cancel-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.emd-grid {
+  width: 100%;
+  min-width: 0;
+  table-layout: auto;
+}
+
+.col-sn { width: 56px; }
+.col-tender { width: auto; }
+.col-amt { width: auto; }
+.col-mode { width: auto; }
+.col-doc { width: auto; }
+.col-date { width: auto; }
 .col-download { width: 90px; }
+
+.emd-grid td,
+.emd-grid th {
+  word-break: break-word;
+}
+
+.emd-grid td.col-tender,
+.emd-grid td.col-mode,
+.emd-grid td.col-doc {
+  text-align: left;
+}
+
+.emd-grid td.col-amt,
+.emd-grid td.col-date,
+.emd-grid td.col-download,
+.emd-grid td.col-sn {
+  text-align: center;
+}
+
+.emd-datagrid {
+  flex: 0 0 auto;
+  min-height: auto;
+  overflow: visible;
+}
+
+.emd-datagrid .table-wrap {
+  flex: 0 0 auto;
+  min-height: auto;
+  max-height: none;
+  overflow-y: visible;
+}
 
 .required-mark {
   color: #c00;
   margin-left: 2px;
 }
+
+:host-context(html[data-theme='dark']) .refund-modal-backdrop {
+  background: rgba(2, 6, 23, 0.62);
+}
+
+:host-context(html[data-theme='dark']) .refund-modal-card {
+  background: #141820;
+  border-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) .cancel-btn {
+  background: rgba(249, 115, 22, 0.14);
+  color: #fdba74;
+  border-color: rgba(249, 115, 22, 0.5);
+}
+
+@media (max-width: 991.98px) {
+  .refund-modal-backdrop {
+    padding: 24px 12px 14px;
+  }
+
+  .refund-modal-card {
+    width: 100%;
+    border-radius: 12px;
+    padding: 8px 6px 12px;
+  }
+
+  .emd-form-table td {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .emd-form-table td.label-col {
+    width: 150px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .refund-actions {
+    justify-content: stretch;
+  }
+
+  .refund-actions .show-btn {
+    width: 100%;
+  }
+
+  .refund-modal-backdrop {
+    align-items: flex-end;
+    padding: 10px;
+  }
+
+  .refund-modal-card {
+    max-height: 88vh;
+    overflow: auto;
+  }
+
+  .emd-form-table,
+  .emd-form-table tbody,
+  .emd-form-table tr,
+  .emd-form-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .emd-form-table tr {
+    padding: 6px 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .emd-form-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .emd-form-table td {
+    padding: 6px 10px;
+  }
+
+  .emd-form-table td.label-col {
+    font-weight: 700;
+    white-space: normal;
+    color: #1e3a8a;
+    padding-bottom: 2px;
+  }
+
+  .emd-form-table input[type='text'],
+  .emd-form-table input[type='number'],
+  .emd-form-table input[type='date'],
+  .emd-form-table select,
+  .emd-form-table input[type='file'] {
+    max-width: 100%;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    padding-top: 12px;
+  }
+
+  .form-actions .show-btn,
+  .form-actions .cancel-btn {
+    min-width: 120px;
+    margin: 0;
+  }
+
+  .emd-datagrid .table-wrap {
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .emd-grid {
+    min-width: 640px;
+  }
+}
+
+@media (max-width: 479.98px) {
+  .refund-modal-backdrop {
+    padding: 8px;
+  }
+
+  .refund-modal-card {
+    border-radius: 10px;
+    padding: 6px 4px 10px;
+  }
+
+  .form-actions .show-btn,
+  .form-actions .cancel-btn {
+    width: 100%;
+  }
+}
+

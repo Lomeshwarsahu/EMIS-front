@@ -1,69 +1,81 @@
-<div class="supplier-gst-page ems-legacy-page">
+<div class="supplier-po-page supplier-gst-page">
   <h2 class="page-title">Supplier GST Entry</h2>
 
   <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="5" [cols]="3" />
 
   <ng-container *ngIf="!loading">
+    <div class="detail-header-card supplier-header-card">
+      <div class="detail-header-grid">
+        <div class="detail-header-item">
+          <span class="label">Supplier Name</span>
+          <span class="value">{{ supplierName || '-' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Supplier Code</span>
+          <span class="value">{{ supplierCode || '-' }}</span>
+        </div>
+      </div>
+    </div>
+
     <div class="supplier-header">
-    
       <span>Supplier Name: <strong>{{ supplierName }}</strong></span>
     </div>
 
-    <div class="tab-label">Bank Accounts</div>
+    <div class="tab-label">GST List</div>
 
-    <div class="datagrid">
-    <div class="table-wrap">
-      <table class="gst-grid">
-        <thead>
-          <tr>
-            <th>Sl.No</th>
-            <th>GST No.</th>
-            <th class="actions-col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
-            <td>{{ i + 1 }}</td>
-            <td>
-              <ng-container *ngIf="!row.isEditing">{{ row.gstNo }}</ng-container>
-              <input
-                *ngIf="row.isEditing"
-                type="text"
-                class="gst-input"
-                [(ngModel)]="row.gstNo"
-                name="gstNo{{ row.gstId }}" />
-            </td>
-            <td class="actions-col">
-              <ng-container *ngIf="!row.isEditing">
-                <button type="button" class="action-btn edit" (click)="startEdit(row)" [disabled]="saving">Edit</button>
-                <button type="button" class="action-btn delete" (click)="deleteRow(row)" [disabled]="saving">Delete</button>
-              </ng-container>
-              <ng-container *ngIf="row.isEditing">
-                <button type="button" class="action-btn save" (click)="saveRow(row)" [disabled]="saving">Update</button>
-                <button type="button" class="action-btn cancel" (click)="cancelEdit(row)" [disabled]="saving">Cancel</button>
-              </ng-container>
-            </td>
-          </tr>
-          <tr class="add-row">
-            <td>{{ rows.length + 1 }}</td>
-            <td>
-              <input
-                type="text"
-                class="gst-input new"
-                [(ngModel)]="newGstNo"
-                name="newGstNo"
-                placeholder="Enter GST No." />
-            </td>
-            <td class="actions-col">
-              <button type="button" class="action-btn add" (click)="addNew()" [disabled]="saving">Add</button>
-            </td>
-          </tr>
-          <tr *ngIf="!rows.length">
-            <td colspan="3" class="empty-row">No Bank Accounts found</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="datagrid gst-datagrid">
+      <div class="table-wrap">
+        <table class="po-grid gst-grid">
+          <thead>
+            <tr>
+              <th class="col-sn text-center">S.No</th>
+              <th class="col-gst">GST No.</th>
+              <th class="actions-col text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>
+                <ng-container *ngIf="!row.isEditing">{{ row.gstNo }}</ng-container>
+                <input
+                  *ngIf="row.isEditing"
+                  type="text"
+                  class="gst-input"
+                  [(ngModel)]="row.gstNo"
+                  name="gstNo{{ row.gstId }}" />
+              </td>
+              <td class="actions-col">
+                <ng-container *ngIf="!row.isEditing">
+                  <button type="button" class="action-btn edit" (click)="startEdit(row)" [disabled]="saving">Edit</button>
+                  <button type="button" class="action-btn delete" (click)="deleteRow(row)" [disabled]="saving">Delete</button>
+                </ng-container>
+                <ng-container *ngIf="row.isEditing">
+                  <button type="button" class="action-btn save" (click)="saveRow(row)" [disabled]="saving">Update</button>
+                  <button type="button" class="action-btn cancel" (click)="cancelEdit(row)" [disabled]="saving">Cancel</button>
+                </ng-container>
+              </td>
+            </tr>
+            <tr class="add-row">
+              <td class="text-center">{{ rows.length + 1 }}</td>
+              <td>
+                <input
+                  type="text"
+                  class="gst-input new"
+                  [(ngModel)]="newGstNo"
+                  name="newGstNo"
+                  placeholder="Enter GST No." />
+              </td>
+              <td class="actions-col text-center">
+                <button type="button" class="action-btn add" (click)="addNew()" [disabled]="saving">Add</button>
+              </td>
+            </tr>
+            <tr *ngIf="!rows.length">
+              <td colspan="3" class="empty-row">No GST records found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <p *ngIf="statusMessage" class="status-message" [class.error]="statusIsError">{{ statusMessage }}</p>

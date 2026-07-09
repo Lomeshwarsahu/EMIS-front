@@ -16,6 +16,12 @@
   margin-bottom: 0;
 }
 
+.supplier-info-page .detail-section.wide {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+}
+
 .supplier-info-page .detail-header-card {
   margin-bottom: 12px;
 }

@@ -389,7 +389,9 @@ html[data-theme='dark'] .page-shell-title {
   flex-shrink: 0;
   margin: 0;
   margin-top: auto;
-  padding: 0;
+  padding: 0 16px 10px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 /* ================= RESPONSIVE SIDEBAR ================= */
@@ -498,17 +500,22 @@ mat-drawer.premium-drawer.mat-drawer-over {
 }
 
 .modern-footer {
-  background: #1f2b47;
-  border-top: 1px solid #bedaff;
-  color: #ffffff;
-  text-align: center;
-  padding: clamp(10px, 2vw, 16px);
-  font-size: clamp(11px, 2vw, 13px);
+  background: transparent;
+  border-top: none;
+  color: #94a3b8;
+  text-align: right;
+  padding: 0;
+  font-size: 12px;
   font-weight: 500;
+  line-height: 1.35;
+}
+
+.modern-footer p {
+  margin: 0;
 }
 
 .highlight {
-  color: #38bdf8;
+  color: #cbd5e1;
   font-weight: 700;
 }
 

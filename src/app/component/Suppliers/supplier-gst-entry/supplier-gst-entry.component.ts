@@ -17,7 +17,7 @@ interface GstRow {
   standalone: true,
   imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-gst-entry.component.html',
-  styleUrls: ['./supplier-gst-entry.component.css'],
+  styleUrls: ['../supplier-po-pages.shared.css', './supplier-gst-entry.component.css'],
 })
 export class SupplierGstEntryComponent implements OnInit {
   loading = false;

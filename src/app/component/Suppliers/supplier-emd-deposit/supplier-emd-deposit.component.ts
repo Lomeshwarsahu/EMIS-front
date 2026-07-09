@@ -38,6 +38,7 @@ interface EmdDepositRow {
 export class SupplierEmdDepositComponent implements OnInit {
   loading = false;
   saving = false;
+  showRefundForm = false;
   userId = 0;
 
   tenders: TenderOption[] = [];
@@ -84,6 +85,15 @@ export class SupplierEmdDepositComponent implements OnInit {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.selectedFile = input.files?.[0] ?? null;
+  }
+
+  openRefundForm(): void {
+    this.showRefundForm = true;
+  }
+
+  closeRefundForm(): void {
+    this.showRefundForm = false;
+    this.resetForm();
   }
 
   loadLookups(): void {
@@ -178,6 +188,7 @@ export class SupplierEmdDepositComponent implements OnInit {
         const message = String((res as Record<string, unknown>)['message'] ?? 'Record Successfully Inserted');
         this.toastr.success(message);
         this.resetForm();
+        this.showRefundForm = false;
         this.loadLookups();
         this.loadGrid();
       },

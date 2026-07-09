@@ -1,78 +1,93 @@
 <div class="supplier-po-page">
   <h2 class="page-title wide">EMD Refund Request Form</h2>
 
-  <div class="emd-form-wrap">
-    <table class="emd-form-table">
-      <tbody>
-        <tr>
-          <td class="label-col">Tender No:</td>
-          <td>
-            <select [(ngModel)]="selectedTenderId" name="tenderNo" (ngModelChange)="onTenderChange()">
-              <option [ngValue]="-1">-Select-</option>
-              <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
-                {{ tender.tenderNo }}
-              </option>
-              <option [ngValue]="0">OTHER</option>
-            </select>
-            <span class="required-mark">*</span>
-          </td>
-          <ng-container *ngIf="showOtherTender">
-            <td class="label-col">Other Tender No:</td>
+  <div class="refund-actions no-print">
+    <button
+      type="button"
+      class="show-btn"
+      *ngIf="!showRefundForm"
+      (click)="openRefundForm()">
+      Apply for Refund
+    </button>
+  </div>
+
+  <div class="refund-modal-backdrop" *ngIf="showRefundForm" (click)="closeRefundForm()">
+    <div class="emd-form-wrap refund-modal-card" (click)="$event.stopPropagation()">
+      <table class="emd-form-table">
+        <tbody>
+          <tr>
+            <td class="label-col">Tender No:</td>
             <td>
-              <input type="text" [(ngModel)]="otherTenderNo" name="otherTenderNo" maxlength="100" />
+              <select [(ngModel)]="selectedTenderId" name="tenderNo" (ngModelChange)="onTenderChange()">
+                <option [ngValue]="-1">-Select-</option>
+                <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
+                  {{ tender.tenderNo }}
+                </option>
+                <option [ngValue]="0">OTHER</option>
+              </select>
               <span class="required-mark">*</span>
             </td>
-          </ng-container>
-        </tr>
-        <tr>
-          <td class="label-col">EMD Amount:</td>
-          <td>
-            <input type="number" [(ngModel)]="emdAmount" name="emdAmount" min="0" step="0.01" />
-            <span class="required-mark">*</span>
-          </td>
-          <td class="label-col">EMD Type:</td>
-          <td>
-            <select [(ngModel)]="selectedEmdType" name="emdType">
-              <option [ngValue]="0">---Select---</option>
-              <option *ngFor="let type of emdTypes" [ngValue]="type.dtypeId">
-                {{ type.dtypeName }}
-              </option>
-            </select>
-            <span class="required-mark">*</span>
-          </td>
-        </tr>
-        <tr>
-          <td class="label-col">EMD Document No:</td>
-          <td>
-            <input type="text" [(ngModel)]="emdDocNo" name="emdDocNo" maxlength="50" />
-            <span class="required-mark">*</span>
-          </td>
-          <td class="label-col">EMD Document / Letter Upload:</td>
-          <td>
-            <input type="file" accept=".pdf,application/pdf" (change)="onFileSelected($event)" />
-          </td>
-        </tr>
-        <tr>
-          <td class="label-col">EMD Deposit Date:</td>
-          <td colspan="3">
-            <input type="date" [(ngModel)]="emdDepositDate" name="emdDepositDate" [max]="maxDepositDate" />
-            <span class="required-mark">*</span>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="4" class="form-actions">
-            <button type="button" class="show-btn" (click)="save()" [disabled]="saving">
-              {{ saving ? 'Saving...' : 'Save' }}
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <ng-container *ngIf="showOtherTender">
+              <td class="label-col">Other Tender No:</td>
+              <td>
+                <input type="text" [(ngModel)]="otherTenderNo" name="otherTenderNo" maxlength="100" />
+                <span class="required-mark">*</span>
+              </td>
+            </ng-container>
+          </tr>
+          <tr>
+            <td class="label-col">EMD Amount:</td>
+            <td>
+              <input type="number" [(ngModel)]="emdAmount" name="emdAmount" min="0" step="0.01" />
+              <span class="required-mark">*</span>
+            </td>
+            <td class="label-col">EMD Type:</td>
+            <td>
+              <select [(ngModel)]="selectedEmdType" name="emdType">
+                <option [ngValue]="0">---Select---</option>
+                <option *ngFor="let type of emdTypes" [ngValue]="type.dtypeId">
+                  {{ type.dtypeName }}
+                </option>
+              </select>
+              <span class="required-mark">*</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">EMD Document No:</td>
+            <td>
+              <input type="text" [(ngModel)]="emdDocNo" name="emdDocNo" maxlength="50" />
+              <span class="required-mark">*</span>
+            </td>
+            <td class="label-col">EMD Document / Letter Upload:</td>
+            <td>
+              <input type="file" accept=".pdf,application/pdf" (change)="onFileSelected($event)" />
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">EMD Deposit Date:</td>
+            <td colspan="3">
+              <input type="date" [(ngModel)]="emdDepositDate" name="emdDepositDate" [max]="maxDepositDate" />
+              <span class="required-mark">*</span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" class="form-actions">
+              <button type="button" class="show-btn" (click)="save()" [disabled]="saving">
+                {{ saving ? 'Saving...' : 'Save' }}
+              </button>
+              <button type="button" class="cancel-btn" (click)="closeRefundForm()" [disabled]="saving">
+                Cancel
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="7" />
 
-  <div class="datagrid" *ngIf="!loading">
+  <div class="datagrid emd-datagrid" *ngIf="!loading">
     <div class="table-wrap">
       <table class="po-grid emd-grid">
         <thead>
@@ -88,13 +103,13 @@
         </thead>
         <tbody>
           <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
-            <td class="text-center">{{ i + 1 }}</td>
-            <td>{{ row.tenderNo }}</td>
-            <td class="text-center">{{ row.emdAmt }}</td>
-            <td>{{ row.emdType }}</td>
-            <td>{{ row.emdDocumentNo }}</td>
-            <td class="text-center">{{ row.emdDepositeDt }}</td>
-            <td class="text-center">
+            <td class="col-sn">{{ i + 1 }}</td>
+            <td class="col-tender">{{ row.tenderNo }}</td>
+            <td class="col-amt">{{ row.emdAmt }}</td>
+            <td class="col-mode">{{ row.emdType }}</td>
+            <td class="col-doc">{{ row.emdDocumentNo }}</td>
+            <td class="col-date">{{ row.emdDepositeDt }}</td>
+            <td class="col-download">
               <button
                 *ngIf="row.hasFile; else noFile"
                 type="button"
