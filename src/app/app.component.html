@@ -38,7 +38,6 @@
             <button
               type="button"
               class="header-icon-btn mobile-menu-btn"
-              data-testid="mobile-menu-btn"
               *ngIf="isMobile"
               (click)="toggleDrawer()"
               [attr.aria-label]="isDrawerOpen ? 'Close menu' : 'Open menu'">
@@ -51,7 +50,6 @@
                 <input
                   type="search"
                   class="header-search-input"
-                  data-testid="menu-search-input"
                   [(ngModel)]="menuSearchQuery"
                   (input)="onMenuSearchInput()"
                   (focus)="onMenuSearchFocus()"
@@ -108,7 +106,7 @@
         </header>
 
         <div class="shell-page-card content-area emis-page-content">
-          <h1 class="page-shell-title" data-testid="header-page-title" *ngIf="pageHeading">{{ pageHeading }}</h1>
+          <h1 class="page-shell-title" *ngIf="pageHeading">{{ pageHeading }}</h1>
           <main class="page-outlet-wrapper">
             <router-outlet></router-outlet>
           </main>

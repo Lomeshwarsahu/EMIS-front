@@ -7,7 +7,6 @@
   <div class="filters">
     <select
       aria-label="Financial Year"
-      data-testid="filter-financial-year"
       [(ngModel)]="selectedFinancialYearId"
       name="financialYear"
       (change)="onFilterChange()"
@@ -21,7 +20,6 @@
 
     <select
       aria-label="Tender No"
-      data-testid="filter-tender"
       [(ngModel)]="selectedTenderId"
       name="tender"
       (change)="onFilterChange()"
@@ -35,7 +33,6 @@
 
     <select
       aria-label="SD Status"
-      data-testid="filter-sd-status"
       [(ngModel)]="selectedSdFilter"
       name="sdStatus"
       [class.is-placeholder]="selectedSdFilter === 'all'"
@@ -48,7 +45,6 @@
     <button
       type="button"
       class="show-btn clear-btn"
-      data-testid="clear-filter-btn"
       *ngIf="hasActiveFilters"
       (click)="clearFilters()"
       [disabled]="loading">
