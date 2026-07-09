@@ -2,6 +2,7 @@
   display: block;
   height: 100%;
   overflow: visible;
+  background: transparent;
 }
 
 .emis-sidebar {
@@ -900,8 +901,18 @@
   background: rgba(239, 68, 68, 0.2);
 }
 
+@media (max-width: 991.98px) {
+  .emis-sidebar:not(.collapsed) {
+    --sidebar-width: 100%;
+  }
+
+  .emis-sidebar.collapsed {
+    --sidebar-width: var(--shell-sidebar-collapsed-width, 76px);
+  }
+}
+
 @media (max-width: 576px) {
-  .emis-sidebar {
-    --sidebar-width: min(280px, 88vw);
+  .emis-sidebar:not(.collapsed) {
+    --sidebar-width: 100%;
   }
 }

@@ -371,25 +371,51 @@ html[data-theme='dark'] .page-shell-title {
 }
 
 /* ================= RESPONSIVE SIDEBAR ================= */
-mat-drawer.premium-drawer {
-  width: var(--shell-drawer-span, 304px);
-  max-width: var(--shell-drawer-span, 304px);
-  background: transparent;
-  border-right: none;
-  box-shadow: none;
-  overflow: visible;
+@media (min-width: 992px) {
+  mat-drawer.premium-drawer {
+    width: var(--shell-drawer-span, 304px);
+    max-width: var(--shell-drawer-span, 304px);
+    background: transparent;
+    border-right: none;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  mat-drawer.premium-drawer.premium-drawer--collapsed,
+  mat-drawer.premium-drawer.premium-drawer--dark-collapsed {
+    width: var(--shell-drawer-span-collapsed, 108px);
+    max-width: var(--shell-drawer-span-collapsed, 108px);
+    overflow: visible;
+    z-index: 1002;
+  }
 }
 
-mat-drawer.premium-drawer.premium-drawer--collapsed {
-  width: var(--shell-drawer-span-collapsed, 108px);
-  max-width: var(--shell-drawer-span-collapsed, 108px);
-  overflow: visible;
-  z-index: 1002;
+@media (max-width: 991.98px) {
+  mat-drawer.premium-drawer:not(.premium-drawer--collapsed):not(.premium-drawer--dark-collapsed) {
+    width: min(280px, 88vw);
+    max-width: min(280px, 88vw);
+  }
+
+  mat-drawer.premium-drawer.premium-drawer--collapsed,
+  mat-drawer.premium-drawer.premium-drawer--dark-collapsed {
+    width: calc(var(--shell-sidebar-collapsed-width, 76px) + var(--shell-gap, 16px));
+    max-width: calc(var(--shell-sidebar-collapsed-width, 76px) + var(--shell-gap, 16px));
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible;
+    z-index: 1002;
+  }
 }
 
-mat-drawer.premium-drawer.premium-drawer--dark-collapsed {
-  width: var(--shell-drawer-span-collapsed, 108px);
-  max-width: var(--shell-drawer-span-collapsed, 108px);
+::ng-deep mat-drawer.premium-drawer.premium-drawer--collapsed,
+::ng-deep mat-drawer.premium-drawer.premium-drawer--dark-collapsed {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+::ng-deep mat-drawer.premium-drawer.premium-drawer--collapsed .mat-drawer-inner-container,
+::ng-deep mat-drawer.premium-drawer.premium-drawer--dark-collapsed .mat-drawer-inner-container {
+  background: transparent !important;
 }
 
 ::ng-deep mat-drawer.premium-drawer .mat-drawer-inner-container {
@@ -439,6 +465,14 @@ mat-drawer.premium-drawer.mat-drawer-over {
   margin-bottom: 0;
   padding: 0;
   background: transparent;
+}
+
+@media (max-width: 991.98px) {
+  ::ng-deep mat-drawer-container.main-container .mat-drawer-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
 }
 
 .modern-footer {
