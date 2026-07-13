@@ -7,23 +7,29 @@
     </div>
     <div class="container-fluid p-2">
             <div *ngIf="isLoading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-        <p class="mt-2 text-muted">Fetching PO Details...</p>
-    </div>
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2 text-muted">Fetching PO Details...</p>
+            </div>
             <div *ngIf="!isLoading && poDetails" class="card shadow">
+                 <!-- <form #receiptEntryForm="ngForm"> -->
                 <div class="card-body">
-                 
+            
                     <div class="row border border-darki rounded-3 mb-0 mt-0">
-                       
-                        <div class="col-12 col-md-12 border p-2 d-flex">
+            
+                        <div class="col-12 col-md-6 border p-2 d-flex">
                             <strong>Tender :</strong>
                             <span class="ml-2"> {{ poDetails.SchemeName }} (ID: {{ poDetails.TenderId }})</span>
                         </div>
+                        <div class="col-12 col-md-6 border p-2 d-flex">
+                            <strong>Directorate for Which PO Given:</strong>
+                            <span class="ml-2"> {{ poDetails.FacilityAutName }}</span>
+                        </div>
                         <div class="col-12 col-md-12 border p-2 d-flex">
                             <strong>Item :</strong>
-                            <span class="ml-2"> {{ poDetails.ItemName }} <small class="text-muted">({{ poDetails.ItemCode }})</small></span>
+                            <span class="ml-2"> {{ poDetails.ItemName }} <small class="text-muted">({{ poDetails.ItemCode
+                                    }})</small></span>
                         </div>
                         <div class="col-12 col-md-3 border p-2 d-flex">
                             <strong>Fin Year:</strong>
@@ -41,15 +47,15 @@
                             <strong>Penalty(Days/Week):</strong>
                             <span class="ml-2">{{penaltyData?.PenaltyType}}</span>
                         </div>
-
-
+            
+            
                         <div class="col-12 col-md-3 border p-2 d-flex">
-                            <strong >Supply Order Number:</strong>
-                            <span class="ml-2" >  {{ poDetails.PoNo }}</span>
+                            <strong>Supply Order Number:</strong>
+                            <span class="ml-2"> {{ poDetails.PoNo }}</span>
                         </div>
                         <div class="col-12 col-md-3 border p-2 d-flex">
-                            <strong >PO QTY:</strong>
-                            <span class="ml-2" >{{ poDetails.PoQty }}</span>
+                            <strong>PO QTY:</strong>
+                            <span class="ml-2">{{ poDetails.PoQty }}</span>
                         </div>
                         <div class="col-6 col-md-3 border p-2 d-flex flex-row">
                             <strong>Logo Charges Upper Limit:</strong>
@@ -57,16 +63,16 @@
                         </div>
                         <div class="col-6 col-md-3 border p-2 d-flex flex-row">
                             <strong>Normal Days Allowed:</strong>
-                            <span class="ml-2">{{penaltyData?.TrancheDays}}Days</span>
+                            <span class="ml-2">{{penaltyData?.TrancheDays}} Days</span>
                         </div>
                         <div class="col-6 col-md-3 border p-2 d-flex flex-row">
                             <strong>Supplier:</strong>
                             <span class="ml-2">{{ poDetails.SupplierName }}</span>
                         </div>
-                     
-                 
+            
+            
                         <div class="col-6 col-md-3 border p-2 d-flex flex-row">
-                            <strong>Basic Rate:</strong><span class="ml-2">  {{ poDetails.BasicRate | number:'1.2-2' }}</span>
+                            <strong>Basic Rate:</strong><span class="ml-2"> {{ poDetails.BasicRate | number:'1.2-2' }}</span>
                         </div>
                         <div class="col-12 col-md-3 border p-2 d-flex">
                             <strong>GST:</strong>
@@ -75,52 +81,137 @@
                         <div class="col-6 col-md-3 border p-2 d-flex flex-row">
                             <strong>LD Penalty:</strong><span class="ml-2">{{penaltyData?.PenaltyPercent}}</span>
                         </div>
-
+            
                         <div class="col-12 col-md-3 border p-2 d-flex flex-row">
                             <strong>PO Value (Rs):</strong>
                             <span class="ml-2"> {{ poDetails.PoValue | number:'1.2-2' }}</span>
                         </div>
-
+            
                         <div class="col-6 col-md-3 border p-2 d-flex flex-row">
                             <strong>Final Rate:</strong>
-                            <span class="ml-2" > {{ poDetails.FinalRate | number:'1.2-2' }}</span>
+                            <span class="ml-2"> {{ poDetails.FinalRate | number:'1.2-2' }}</span>
                         </div>
-
+            
                         <div class="col-12 col-md-3 border p-2 d-flex flex-row">
-                            <strong >Penalty Approval:</strong>
-                            <span class="ml-2" >detail.tsamt</span>
+                            <strong>Penalty Approval:</strong>
+                            <!-- <span class="ml-2">{{penaltyData?.IsLdPenalty}}</span> -->
+                            <span class="ml-2" *ngIf="penaltyData?.IsLdPenalty == '0' ">Not Specify</span>
+                            <span class="ml-2" *ngIf="penaltyData?.IsLdPenalty == 'Y' ">Granted with Penalty</span>
+                            <span class="ml-2" *ngIf="penaltyData?.IsLdPenalty == 'N' ">Granted without Penalty </span>
                         </div>
                         <div class="col-12 col-md-3 border p-2 d-flex">
-                        <strong>Max Days Allowed:</strong>
-                        <span class="ml-2">{{penaltyData?.CancellationDays}}</span>
-                    </div>
+                            <strong>Max Days Allowed:</strong>
+                            <span class="ml-2">{{penaltyData?.CancellationDays}}Days</span>
+                        </div>
                         <div class="col-12 col-md-3 border p-2 d-flex flex-row">
                             <strong>Dispatched GST:</strong>
                             <span class="ml-2">{{poDetails.InvoiceGst}}</span>
                         </div>
-
+            
                         <div class="col-6 col-md-3 border p-2 d-flex flex-row">
-                            <strong >Extension Granted upto:</strong>
-                            <span class="ml-2" >{{penaltyData?.ExtendedDate}}</span>
+                            <strong>Extension Granted upto:</strong>
+                            <span class="ml-2">
+                                {{ penaltyData?.ExtendedDate === '01-01-1900' ? 'Not Specify' : penaltyData?.ExtendedDate }}
+                            </span>
+                            <!-- <span class="ml-2" *ngIf="penaltyData?.ExtendedDate == '01-01-1900' " >{{penaltyData?.ExtendedDate}} Not Specify </span> -->
                         </div>
-
+            
                         <div class="col-12 col-md-3 border p-2 d-flex flex-row">
-                            <strong >Penalty After Max Days/Unexecuted:</strong>
-                            <span class="ml-2" >detail.tsamt</span>
+                            <strong>Penalty After Max Days/Unexecuted:</strong>
+                            <span class="ml-2">{{penaltyData?.CancellationPercentage}}</span>
                         </div>
                         <div class="col-12 col-md-3 border p-2 d-flex">
-                        <strong>DivisionId:</strong>
-                        <span class="ml-2">detail.divisionid</span>
+                            <!-- <strong>DivisionId:</strong> -->
+                            <!-- <span class="ml-2">detail.divisionid</span> -->
+                        </div>
+                        <div class="col-12 col-md-3 border p-2 d-flex">
+                            <strong class="text-primary">Show Payment recommendation</strong>
+                            <!-- <span class="ml-2">detail.divisionid</span> -->
+                        </div>
+                        <div class="col-12 col-md-3 border p-2 d-flex">
+                            <!-- <strong>DivisionId:</strong> -->
+                            <!-- <span class="ml-2">detail.divisionid</span> -->
+                        </div>
+                        <div class="col-12 col-md-3 border p-2 d-flex">
+                            <strong class="text-primary">Show Extension Approval</strong>
+                            <!-- <span class="ml-2">detail.divisionid</span> -->
+                        </div>
+            
                     </div>
-
+                    <div class="row border border-darki rounded-3 mb-0 mt-1">
+            
+                        <div class="col-12 col-md-4 border p-2 d-flex align-items-center">
+                            <strong class="me-2">Sanction No :</strong>
+                            <div class="flex-grow-1">
+                                <input type="text" class="form-control shadow-sm border-primary w-100"  [(ngModel)]="sanctionNo" name="sanctionnumber" #sanctionnumber="ngModel" />
+                            </div>
+                        </div>
+            
+                        <div class="col-12 col-md-4 border p-2 d-flex align-items-center">
+                            <strong class="me-2">Sanction Preparation Date:</strong>
+                            <div class="flex-grow-1">
+                                <input type="date" class="form-control shadow-sm border-primary w-100" />
+                            </div>
+                        </div>
+            
+                        <div class="col-12 col-md-4 border p-2 d-flex align-items-center">
+                            <strong class="me-2">Budget No:</strong>
+                            <div class="flex-grow-1">
+                                       <ng-select [items]="BudgetDropdownList" bindLabel="BudgetName" bindValue="BudgetId" 
+                           placeholder="-- Choose Target Budget --"  [(ngModel)]="BudgetId" appendTo="body"
+                         class="rounded shadow-sm bg-white form-control border-primary  w-100" [clearable]="false" (change)="onDirectorateSelectedChange()" name="BudgetId" #BudgetId="ngModel" >
+                </ng-select>
+                                <!-- <input type="text" class="form-control shadow-sm border-primary w-100" /> -->
+                            </div>
+                        </div>
+            
+                        <div class="col-12 col-md-4 border p-2 d-flex align-items-center">
+                            <strong class="me-2">GST No in CGMSC Record:</strong>
+                            <div class="flex-grow-1">
+                                <input type="text" class="form-control shadow-sm border-primary w-100"  [(ngModel)]="poDetails.InvoiceGst"/>
+                            </div>
+                        </div>
+            
+                        <div class="col-12 col-md-4 border p-2 d-flex align-items-center">
+                            <strong class="me-2">HSN Code:</strong>
+                            <div class="flex-grow-1">
+                                <input type="text" class="form-control shadow-sm border-primary w-100"  [(ngModel)]="poDetails.HsnCode" />
+                            </div>
+                        </div>
+            
+                        <div class="col-12 col-md-4 border p-2 d-flex align-items-center">
+                            <strong class="me-2">GST NO Checked from invoice & its Fine with CGMSC GST Record:</strong>
+                            <div class="flex-shrink-0">
+                                <input type="checkbox" class="form-check-input shadow-sm border-primary m-0"
+                                    style="width: 1.5em; height: 1.5em;" />
+                            </div>
+                        </div>
+            
+                        <div class="col-12 col-md-6 border p-2 d-flex align-items-center">
+                            <strong class="me-2">Remarks:</strong>
+                            <div class="flex-grow-1">
+                                <textarea class="form-control shadow-sm border-primary w-100" rows="1"></textarea>
+                            </div>
+                        </div>
+            
+                        <div class="col-12 col-md-6 border p-2 d-flex align-items-center justify-content-end">
+                            <button type="button" class="btn btn-primary shadow-sm px-4">Save</button>
+                        </div>
+            
                     </div>
+                   
+                </div>
+                <!-- </form> -->
+                <div *ngIf="!isLoading && !poDetails" class="alert alert-danger mt-3" role="alert">
+                    Failed to load PO details or data not found.
                 </div>
             </div>
-             <div *ngIf="!isLoading && !poDetails" class="alert alert-danger mt-3" role="alert">
-        Failed to load PO details or data not found.
+        
     </div>
-        </div>
-        <!-- <div class="container-fluid py-3">
+</section>
+
+
+<!-- <div class="container-fluid py-3">
     <div *ngIf="isLoading" class="text-center py-5">
         <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -209,9 +300,43 @@
     </div>
 </div> -->
 
-</section>
-
-
+ <!-- <div class="row border border-darki rounded-3 mb-0 mt-1">
+                                          <div class="col-12 col-md-4 border p-2 d-flex">
+                                        <strong class="me-1">Sanction No :</strong>
+                                        <span class="ml-0">
+                                           <input type="text" class="form-control shadow-sm border-primary" />
+                                        </span>
+                                    </div>
+                                    <div class="col-12 col-md-4 border p-2 d-flex">
+                                        <strong class="">Sanction Preparation Date:</strong>
+                                        <span class="ml-2">  <input type="date" class="form-control shadow-sm border-primary" /></span>
+                                    </div>
+                                    <div class="col-12 col-md-4 border p-2 d-flex">
+                                        <strong>Budget No:</strong>
+                                        <span class="ml-2"><input type="text" class="form-control shadow-sm border-primary" /></span>
+                                    </div>
+                                    <div class="col-12 col-md-4 border p-2 d-flex">
+                                        <strong>GST No in CGMSC Record:</strong>
+                                        <span class="ml-2"><input type="text" class="form-control shadow-sm border-primary" /></span>
+                                    </div>
+                                    <div class="col-12 col-md-4 border p-2 d-flex">
+                                        <strong>HSN Code:</strong>
+                                        <span class="ml-2"><input type="text" class="form-control shadow-sm border-primary" /></span>
+                                    </div>
+                                    <div class="col-12 col-md-4 border p-2 d-flex">
+                                        <strong>GST NO Checked from invoice & its Fine with CGMSC GST Record:</strong>
+                                        <span class="ml-2"><input type="checkbox"  class="form-check-input shadow-sm border-primary" /></span>
+                                    </div>
+                                    <div class="col-12 col-md-6 border p-2 d-flex">
+                                        <strong>Remarks:</strong>
+                                        <span class="ml-2"><textarea type="text"  class="form-control shadow-sm border-primary" row="2"></textarea></span>
+                                    </div>
+                                    <div class="col-12 col-md-6 border p-2 d-flex">
+                                        <strong>GST NO Checked from invoice & its Fine with CGMSC GST Record:</strong>
+                                        <span class="ml-2"><button type="button"  class="btn btn-small shadow-sm border-primary">Save</button></span>
+                                    </div>
+                                </div>
+                            </div> -->
 <!-- <section class="container-fluid py-4">
     <div class="row justify-content-center mb-4">
         <div class="col-12 text-center">
