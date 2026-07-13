@@ -9,9 +9,11 @@ import { MenuServiceService } from './service/menu-service.service';
 import { BasicAuthenticationService } from './service/authentication/basic-authentication.service';
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 // import { TokenService } from './services/token.service';
 import { ApiService } from './service/api.service';
+import { ThemeService } from './service/theme.service';
+import { resolvePageTitle } from './service/page-title.util';
 
 @Component({
     selector: 'app-root',
@@ -25,6 +27,11 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   isMobile = false;
   drawerMode: MatDrawerMode = 'side';
   isDrawerOpen = true;
+  sidebarCollapsed = false;
+  menuSearchQuery = '';
+  menuSearchFocused = false;
+  pageHeading = '';
+  private menuSearchBlurTimer: ReturnType<typeof setTimeout> | null = null;
   deferredPrompt: any;
   showButton = false;
   title!: 'VENDER REGISTRATION PORTAL'
@@ -32,6 +39,7 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   roleName = localStorage.getItem('roleName')
   firstname = sessionStorage.getItem('firstname')
   vregid: any;
+  isDarkMode = false;
 
   @HostListener('window:beforeinstallprompt', ['$event'])
   onbeforeinstallprompt(e: Event) {
@@ -45,6 +53,94 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
 
   isExternalLink(route: string): boolean {
     return route.startsWith('http://') || route.startsWith('https://');
+  }
+
+  get menuSearchSuggestions(): { label: string; route: string; parentLabel?: string }[] {
+    const query = this.menuSearchQuery.trim().toLowerCase();
+    if (!query) {
+      return [];
+    }
+
+    const results: { label: string; route: string; parentLabel?: string }[] = [];
+    const seen = new Set<string>();
+
+    for (const item of this.menuItems) {
+      if (item.submenu?.length) {
+        for (const sub of item.submenu) {
+          if (!sub.route) {
+            continue;
+          }
+          const matches =
+            sub.label.toLowerCase().includes(query) || item.label.toLowerCase().includes(query);
+          if (matches && !seen.has(sub.route)) {
+            seen.add(sub.route);
+            results.push({ label: sub.label, route: sub.route, parentLabel: item.label });
+          }
+        }
+        continue;
+      }
+
+      if (item.route && item.label.toLowerCase().includes(query) && !seen.has(item.route)) {
+        seen.add(item.route);
+        results.push({ label: item.label, route: item.route });
+      }
+
+      if (results.length >= 10) {
+        break;
+      }
+    }
+
+    return results.slice(0, 10);
+  }
+
+  onMenuSearchInput(): void {
+    const query = this.menuSearchQuery.trim().toLowerCase();
+    if (!query) {
+      return;
+    }
+
+    for (const item of this.menuItems) {
+      if (!item.submenu?.length) {
+        continue;
+      }
+      const shouldExpand =
+        item.label.toLowerCase().includes(query) ||
+        item.submenu.some((sub) => sub.label.toLowerCase().includes(query));
+      if (shouldExpand) {
+        this.expandedMenus[item.label] = true;
+      }
+    }
+  }
+
+  onMenuSearchFocus(): void {
+    if (this.menuSearchBlurTimer) {
+      clearTimeout(this.menuSearchBlurTimer);
+      this.menuSearchBlurTimer = null;
+    }
+    this.menuSearchFocused = true;
+  }
+
+  onMenuSearchBlur(): void {
+    this.menuSearchBlurTimer = setTimeout(() => {
+      this.menuSearchFocused = false;
+      this.menuSearchBlurTimer = null;
+    }, 150);
+  }
+
+  selectMenuSuggestion(suggestion: { label: string; route: string; parentLabel?: string }): void {
+    if (!suggestion.route) {
+      return;
+    }
+
+    if (this.isExternalLink(suggestion.route)) {
+      window.open(suggestion.route, '_blank', 'noopener');
+    } else {
+      this.router.navigateByUrl(suggestion.route);
+    }
+
+    this.menuSearchQuery = '';
+    this.menuSearchFocused = false;
+    this.closeDrawerOnNavigate();
   }
 
   menuItems: { label: string; route: string; submenu?: { label: string; route: string }[] }[] = [];
@@ -66,13 +162,18 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     private cdr: ChangeDetectorRef,
     private menuService: MenuServiceService,
     private toastr: ToastrService,
-    private router: Router,
+    public readonly router: Router,
     public basicAuthentication: BasicAuthenticationService,
     private api: ApiService,
     private breakpointObserver: BreakpointObserver,
     private https: HttpClient,
+    public readonly themeService: ThemeService,
   ) {
     this.applyDrawerLayout(window.innerWidth <= 991.98, true);
+  }
+
+  onSidebarCollapsedChange(collapsed: boolean): void {
+    this.sidebarCollapsed = collapsed;
   }
 
   logout() {
@@ -97,6 +198,9 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.menuSearchBlurTimer) {
+      clearTimeout(this.menuSearchBlurTimer);
+    }
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -143,10 +247,14 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
           event.urlAfterRedirects === '/GrowthInProcurmentTabPublic' ||
           event.urlAfterRedirects === '/distributionPublic' ||
           event.urlAfterRedirects === '/IndentPendingWHdashPublic' ||
-          event.urlAfterRedirects === '/Registration';
+          event.urlAfterRedirects === '/Registration' ||
+          event.urlAfterRedirects.includes('po-supply-dispatch-report') ||
+          event.urlAfterRedirects.includes('po-supply-installation-print') ||
+          event.urlAfterRedirects.includes('po-supply-po-print');
 
         this.role = this.basicAuthentication.getRole().roleName;
         this.updateMenu();
+        this.updatePageHeading(event.urlAfterRedirects);
         this.closeDrawerOnNavigate();
       }
     });
@@ -154,11 +262,12 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     this.breakpointObserver
       .observe(['(max-width: 991.98px)'])
       .pipe(takeUntil(this.destroy$))
-      .subscribe((result) => {
+      .subscribe((result: BreakpointState) => {
         this.applyDrawerLayout(result.matches, false);
         this.cdr.markForCheck();
       });
-    // this.GetVendorDetailsID(sessionStorage.getItem('facilityid'));
+
+    this.isDarkMode = this.themeService.isDark;
 
   }
 
@@ -217,6 +326,32 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
       
       // For roles without categories, fetch items directly
       this.menuItems = this.menuService.getMenuItems(this.role);
+    }
+    this.expandActiveParentMenu();
+    this.updatePageHeading(this.router.url);
+  }
+
+  private updatePageHeading(url: string): void {
+    const path = url.split('?')[0].split('#')[0];
+    this.pageHeading = resolvePageTitle(path, this.menuItems);
+  }
+
+  private expandActiveParentMenu(): void {
+    const currentPath = this.router.url.split('?')[0].split('#')[0];
+    for (const item of this.menuItems) {
+      if (!item.submenu?.length) {
+        continue;
+      }
+      const hasActiveChild = item.submenu.some((sub) => {
+        if (!sub.route) {
+          return false;
+        }
+        const subPath = sub.route.split('?')[0].split('#')[0];
+        return currentPath === subPath || currentPath.startsWith(`${subPath}/`);
+      });
+      if (hasActiveChild) {
+        this.expandedMenus[item.label] = true;
+      }
     }
   }
   

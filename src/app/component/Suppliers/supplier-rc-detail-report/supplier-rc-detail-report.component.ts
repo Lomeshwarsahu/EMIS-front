@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface TenderOption {
   tenderId: number;
@@ -29,7 +30,7 @@ interface RcDetailRow {
 @Component({
   selector: 'app-supplier-rc-detail-report',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-rc-detail-report.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-rc-detail-report.component.css'],
 })
@@ -62,10 +63,8 @@ export class SupplierRcDetailReportComponent implements OnInit {
       next: (raw) => {
         this.loading = false;
         const list = Array.isArray(raw) ? raw : [];
-        this.tenders = [
-          { tenderId: 0, tenderNo: '--All--' },
-          ...list.map((item) => this.mapTender(item as Record<string, unknown>)),
-        ];
+        this.tenders = list.map((item) => this.mapTender(item as Record<string, unknown>));
+        this.loadReport();
       },
       error: (err) => {
         this.loading = false;
@@ -74,7 +73,20 @@ export class SupplierRcDetailReportComponent implements OnInit {
     });
   }
 
-  showReport(): void {
+  onFilterChange(): void {
+    this.loadReport();
+  }
+
+  clearFilters(): void {
+    this.selectedTenderId = 0;
+    this.loadReport();
+  }
+
+  get hasActiveFilters(): boolean {
+    return this.selectedTenderId !== 0;
+  }
+
+  loadReport(): void {
     this.loading = true;
     this.api.getSupplierRcDetailReport(this.userId, this.selectedTenderId).subscribe({
       next: (raw) => {

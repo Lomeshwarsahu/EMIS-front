@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface TenderOption {
   tenderId: number;
@@ -32,7 +33,7 @@ type FilterMode = 'tender' | 'supplier';
 @Component({
   selector: 'app-supplier-accepted-report',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-accepted-report.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-accepted-report.component.css'],
 })
@@ -106,6 +107,7 @@ export class SupplierAcceptedReportComponent implements OnInit {
           name: String(row['name'] ?? row['Name'] ?? ''),
         };
         this.selectedSupplierId = this.supplierOption.supplierId;
+        this.loadReport();
       },
       error: (err) => {
         this.loading = false;
@@ -114,14 +116,27 @@ export class SupplierAcceptedReportComponent implements OnInit {
     });
   }
 
-  showReport(): void {
+  onFilterChange(): void {
     if (this.filterMode === 'tender' && !this.selectedTenderId) {
-      this.toastr.warning('Please select Tender From Drop Down List.');
+      this.rows = [];
+      this.showExport = false;
+      return;
+    }
+    this.loadReport();
+  }
+
+  clearFilters(): void {
+    this.selectedTenderId = 0;
+    this.rows = [];
+    this.showExport = false;
+  }
+
+  loadReport(): void {
+    if (this.filterMode === 'tender' && !this.selectedTenderId) {
       return;
     }
 
     if (this.filterMode === 'supplier' && !this.selectedSupplierId) {
-      this.toastr.warning('Please select Supplier From Drop Down List.');
       return;
     }
 

@@ -1,8 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
+import { resolveSupplierUserId } from '../supplier-user.util';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import {
+  PoSupplyReceiptFilters,
+  poSupplyReceiptQuery,
+  readPoSupplyReceiptFilters,
+} from '../supplier-transaction-state.util';
 
 interface FinancialYearOption {
   financialYearId: number;
@@ -12,6 +20,7 @@ interface FinancialYearOption {
 interface PoOption {
   poId: number;
   displayText: string;
+  status?: string;
 }
 
 interface ReceiptBatch {
@@ -27,6 +36,9 @@ interface ReceiptBatch {
 interface ReceiptRow {
   poItemId: number;
   poId: number;
+  poNo: string;
+  poDate: string;
+  rowStatus: string;
   consigneeId: number;
   locationName: string;
   itemName: string;
@@ -45,7 +57,7 @@ type PoTypeFilter = 'All' | 'PRI' | 'PD' | 'C';
 @Component({
   selector: 'app-po-supply-receipt',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './po-supply-receipt.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-receipt.component.css'],
 })
@@ -59,18 +71,29 @@ export class PoSupplyReceiptComponent implements OnInit {
   selectedPoId = 0;
   poType: PoTypeFilter = 'All';
   rows: ReceiptRow[] = [];
+  private returnFilters: PoSupplyReceiptFilters = {
+    financialYearId: 0,
+    poType: 'All',
+    poId: 0,
+  };
 
   constructor(
     private readonly api: ApiService,
     private readonly toastr: ToastrService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    this.userId = Number(sessionStorage.getItem('userid') || localStorage.getItem('userid') || 0);
+    this.userId = resolveSupplierUserId();
     if (!this.userId) {
       this.toastr.error('Please login as supplier.');
       return;
     }
+    const initial = readPoSupplyReceiptFilters(this.route.snapshot.queryParams);
+    this.selectedFinancialYearId = initial.financialYearId;
+    this.poType = (initial.poType as PoTypeFilter) || 'All';
+    this.selectedPoId = initial.poId;
     this.loadFilters();
   }
 
@@ -82,6 +105,12 @@ export class PoSupplyReceiptComponent implements OnInit {
         this.financialYears = this.mapFinancialYears(
           (raw['financialYears'] ?? raw['FinancialYears'] ?? []) as unknown[],
         );
+        const hasSelectedYear = this.financialYears.some(
+          (row) => row.financialYearId === this.selectedFinancialYearId,
+        );
+        if (!hasSelectedYear) {
+          this.selectedFinancialYearId = 0;
+        }
         this.loadPoOptions();
       },
       error: (err) => {
@@ -103,35 +132,62 @@ export class PoSupplyReceiptComponent implements OnInit {
     this.loadPoOptions();
   }
 
+  onPoChange(): void {
+    this.loadDetails();
+  }
+
+  clearFilters(): void {
+    this.poType = 'All';
+    this.selectedFinancialYearId = 0;
+    this.selectedPoId = 0;
+    this.rows = [];
+    this.loadPoOptions();
+  }
+
+  get selectablePoOptions(): PoOption[] {
+    return this.poOptions.filter((po) => po.poId > 0);
+  }
+
+  get hasActiveFilters(): boolean {
+    return this.poType !== 'All' || this.selectedFinancialYearId !== 0 || this.selectedPoId !== 0;
+  }
+
   loadPoOptions(): void {
     this.api.getSupplierPoReceiptOptions(this.userId, this.selectedFinancialYearId, this.poType).subscribe({
       next: (raw) => {
         const list = Array.isArray(raw) ? raw : [];
         this.poOptions = list.map((item) => {
           const row = item as Record<string, unknown>;
+          const poId = Number(row['poId'] ?? row['PoId'] ?? 0);
+          const displayText = String(row['displayText'] ?? row['DisplayText'] ?? '');
+          const status = String(row['status'] ?? row['Status'] ?? '');
           return {
-            poId: Number(row['poId'] ?? row['PoId'] ?? 0),
-            displayText: String(row['displayText'] ?? row['DisplayText'] ?? ''),
+            poId,
+            displayText: poId > 0 && status ? `${displayText} - ${status}` : displayText,
+            status,
           };
         });
         if (!this.poOptions.length) {
-          this.poOptions = [{ poId: 0, displayText: 'Select PO' }];
+          this.poOptions = [];
         }
+        const hasSelectedPo = this.poOptions.some((row) => row.poId === this.selectedPoId);
+        if (!hasSelectedPo) {
+          this.selectedPoId = 0;
+        }
+        this.loadDetails();
       },
       error: (err) => {
-        this.poOptions = [{ poId: 0, displayText: 'Select PO' }];
+        this.poOptions = [];
         this.toastr.error(err?.error?.message ?? 'Unable to load PO list.');
       },
     });
   }
 
-  showDetails(): void {
-    if (!this.selectedPoId) {
-      this.toastr.warning('Please select PO.');
-      return;
-    }
+  loadDetails(): void {
     this.loading = true;
-    this.api.getSupplierPoReceipt(this.userId, this.selectedPoId).subscribe({
+    this.api
+      .getSupplierPoReceipt(this.userId, this.selectedPoId, this.selectedFinancialYearId, this.poType)
+      .subscribe({
       next: (raw) => {
         this.loading = false;
         const list = Array.isArray(raw) ? raw : [];
@@ -146,17 +202,33 @@ export class PoSupplyReceiptComponent implements OnInit {
   }
 
   onBatchStatus(batch: ReceiptBatch, row: ReceiptRow): void {
+    this.returnFilters = {
+      financialYearId: this.selectedFinancialYearId,
+      poType: this.poType,
+      poId: this.selectedPoId,
+    };
     if (batch.supplyStatus === 'Installation Completed' && batch.receiptId) {
-      this.toastr.info(`Installation report for receipt ${batch.receiptId} — migration pending.`);
+      this.router.navigate(['/transaction/po-supply-installation-report'], {
+        queryParams: { receiptId: batch.receiptId, ...poSupplyReceiptQuery(this.returnFilters) },
+      });
       return;
     }
-    this.toastr.info(
-      `Receipt entry for PO ${row.poId}, consignee ${row.consigneeId}, issue ${batch.issueId} — migration pending.`,
-    );
+    this.router.navigate(['/transaction/po-supply-receipt-entry'], {
+      queryParams: {
+        poId: row.poId,
+        locId: row.consigneeId,
+        issueId: batch.issueId,
+        ...poSupplyReceiptQuery(this.returnFilters),
+      },
+    });
   }
 
   isStatusLink(batch: ReceiptBatch): boolean {
     return batch.supplyStatus !== 'Dispatch Pending';
+  }
+
+  isRowComplete(row: ReceiptRow): boolean {
+    return row.rowStatus === 'Installation Completed';
   }
 
   private mapFinancialYears(list: unknown[]): FinancialYearOption[] {
@@ -178,6 +250,9 @@ export class PoSupplyReceiptComponent implements OnInit {
     return {
       poItemId: Number(row['poItemId'] ?? row['PoItemId'] ?? 0),
       poId: Number(row['poId'] ?? row['PoId'] ?? 0),
+      poNo: String(row['poNo'] ?? row['PoNo'] ?? ''),
+      poDate: String(row['poDate'] ?? row['PoDate'] ?? ''),
+      rowStatus: String(row['rowStatus'] ?? row['RowStatus'] ?? ''),
       consigneeId: Number(row['consigneeId'] ?? row['ConsigneeId'] ?? 0),
       locationName: String(row['locationName'] ?? row['LocationName'] ?? ''),
       itemName: String(row['itemName'] ?? row['ItemName'] ?? ''),

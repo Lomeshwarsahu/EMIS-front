@@ -1,96 +1,126 @@
-<div class="po-supply-page ems-legacy-page">
-  <p class="gst-note">
-    Please Update your GST info in Supplier Information Section Under Master Menu.
-  </p>
+<div class="supplier-po-page">
+  <div class="gst-note-wrap">
+    <span class="gst-note" role="link" tabindex="0" (click)="goToGstDetails()" (keydown.enter)="goToGstDetails()">
+      <span class="gst-note-icon" aria-hidden="true">ⓘ</span>
+      Please Update your GST info in Supplier Information Section Under Master Menu
+    </span>
+  </div>
 
-  <h2 class="page-title">Purchase Orders Desk</h2>
-
-  <div class="filters">
-    <label>
-      Financial Year:
-      <select [(ngModel)]="selectedFinancialYearId" name="financialYear">
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Financial Year"
+        [(ngModel)]="selectedFinancialYearId"
+        name="financialYear"
+        (change)="onFilterChange()"
+        [class.is-placeholder]="selectedFinancialYearId === 0"
+      >
+        <option [ngValue]="0" disabled hidden>Financial Year</option>
         <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
           {{ year.year }}
         </option>
       </select>
-    </label>
 
-    <label>
-      Tender No:
-      <select [(ngModel)]="selectedTenderId" name="tender">
+      <select
+        aria-label="Tender No"
+        [(ngModel)]="selectedTenderId"
+        name="tender"
+        (change)="onFilterChange()"
+        [class.is-placeholder]="selectedTenderId === 0"
+      >
+        <option [ngValue]="0" disabled hidden>Tender No</option>
         <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
           {{ tender.tenderNo }}
         </option>
       </select>
-    </label>
 
-    <button type="button" class="show-btn" (click)="showOrders()" [disabled]="loading">Show</button>
-  </div>
+      <select
+        aria-label="SD Status"
+        [(ngModel)]="selectedSdFilter"
+        name="sdStatus"
+        [class.is-placeholder]="selectedSdFilter === 'all'"
+      >
+        <option value="all" disabled hidden>SD Status</option>
+        <option value="submitted">Submitted</option>
+        <option value="not-submitted">Not Submitted</option>
+      </select>
 
-  <div *ngIf="loading" class="loading-text">Loading purchase orders...</div>
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+    </div>
 
-  <div class="datagrid" *ngIf="!loading">
-    <div class="table-wrap">
-      <table class="po-grid legacy-fixed-table">
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid">
         <thead>
           <tr>
-            <th class="col-sn">S.No</th>
-            <th class="col-dispatch">CGMSC Dispatch</th>
+            <th class="col-sn text-center">S.No</th>
+            <th class="col-dispatch">Dispatch Details</th>
             <th class="col-date">PO Date</th>
-            <th class="col-item">Item Name</th>
-            <th class="col-rate">Basic Rate/GST</th>
-            <th class="col-qty">PO Qty</th>
-            <th class="col-value">Gross Value</th>
+            <th class="col-item">Item Details</th>
+            <th class="col-rate">Rate / GST</th>
+            <th class="col-qty text-center">Qty</th>
+            <th class="col-value">Value</th>
             <th class="col-tender">Tender No</th>
-            <th class="col-consignee">No of Consignee</th>
-            <th class="col-status">Status</th>
-            <th class="col-print">Print</th>
-            <th class="col-sd">SD Status</th>
-            <th class="col-extension">Apply For<br />Extension</th>
+            <th class="col-consignee text-center">Consignees</th>
+            <th class="col-sd text-center">SD Status</th>
+            <th class="col-extension text-center">Extension</th>
+            <th class="col-print text-center">Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
-            <td class="text-center">{{ i + 1 }}</td>
+          <tr
+            *ngFor="let row of displayedRows; let i = index"
+            [class.sd-not-submitted]="!isSdSubmitted(row)">
+            <td class="text-center text-slate-500">{{ i + 1 }}</td>
             <td>
-              <div>{{ row.outwardNo }}</div>
-              <div>{{ row.poNo }}</div>
+              <div class="text-xs text-slate-500 mb-1">{{ row.outwardNo }}</div>
+              <div class="font-medium text-slate-700">{{ row.poNo }}</div>
             </td>
             <td>{{ row.poDate }}</td>
-            <td class="col-item-cell wrap-cell">
+            <td class="col-item-cell">
               <div>{{ row.itemCode }}</div>
               <div>{{ row.itemName }}</div>
             </td>
-          <td>
-            <div>{{ row.basicRate }}</div>
-            <div>{{ row.percentage }}%</div>
-          </td>
-          <td class="text-center">{{ row.quantity }}</td>
-          <td>{{ row.totalPoValue }}</td>
-          <td>{{ row.tenderNo }}</td>
-          <td class="text-center">{{ row.noOfConsignee }}</td>
-          <td>{{ row.status }}</td>
-          <td class="text-center">
-            <button type="button" class="icon-btn" title="Print PO" (click)="onPrint(row)">🖨</button>
-          </td>
-          <td>
-            <button
-              type="button"
-              class="link-btn"
-              [class.submitted]="isSdSubmitted(row)"
-              (click)="onSdDetails(row)">
-              {{ sdStatusLabel(row) }}
-            </button>
-          </td>
-          <td>
-            <button type="button" class="link-btn" (click)="onApplyExtension(row)">Apply Status</button>
-          </td>
-        </tr>
-        <tr *ngIf="!rows.length">
-          <td colspan="13" class="empty-row">No purchase orders found.</td>
-        </tr>
-      </tbody>
-    </table>
+            <td>
+              <div class="font-medium text-slate-700">₹{{ row.basicRate }}</div>
+              <div class="text-xs text-slate-500">{{ row.percentage }}% GST</div>
+            </td>
+            <td class="text-center font-medium">{{ row.quantity }}</td>
+            <td class="font-bold text-slate-700">₹{{ row.totalPoValue }}</td>
+            <td>{{ row.tenderNo }}</td>
+            <td class="text-center">{{ row.noOfConsignee }}</td>
+            <td class="text-center">
+              <button type="button" class="plain-link" (click)="onSdDetails(row)">
+                {{ sdStatusLabel(row) }}
+              </button>
+            </td>
+            <td class="text-center">
+              <button type="button" class="plain-link" (click)="onApplyExtension(row)">Apply</button>
+            </td>
+            <td class="text-center">
+              <button type="button" class="plain-btn" title="Print PO" (click)="onPrint(row)">
+                Print
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="!displayedRows.length">
+            <td colspan="12" class="empty-row">
+              <div class="empty-state">
+                <div style="font-size: 32px; color: #cbd5e1; margin-bottom: 8px;">&#128451;</div>
+                <p>No purchase orders found matching the selected filters.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

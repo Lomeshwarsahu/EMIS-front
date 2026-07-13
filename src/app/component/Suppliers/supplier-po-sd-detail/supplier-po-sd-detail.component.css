@@ -1,0 +1,114 @@
+.sd-detail-page {
+  overflow: visible;
+}
+
+.sd-page-toolbar {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sd-page-toolbar .back-btn {
+  margin-left: auto;
+}
+
+.submitted-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #15803d;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  border-radius: 999px;
+}
+
+.sd-detail-wrap {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.sd-detail-card {
+  overflow: hidden;
+}
+
+.sd-form-table .sd-info-row td {
+  background: #f8fafc;
+}
+
+.sd-form-table select,
+.sd-form-table input[type='text'],
+.sd-form-table input[type='date'] {
+  width: 100%;
+  max-width: 240px;
+}
+
+.sd-form-table .upload-row td {
+  text-align: left !important;
+}
+
+.sd-form-table .file-mode-row td {
+  text-align: center !important;
+}
+
+.req-mark {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.optional-mark {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+:host-context(html[data-theme='dark']) .submitted-badge {
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(74, 222, 128, 0.35);
+}
+
+:host-context(html[data-theme='dark']) .sd-form-table .sd-info-row td {
+  background: #0c0e12;
+}
+
+:host-context(html[data-theme='dark']) .sd-form-table .label-col {
+  background: #141820;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .sd-form-table .value-col,
+:host-context(html[data-theme='dark']) .sd-form-table td {
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .sd-form-table select,
+:host-context(html[data-theme='dark']) .sd-form-table input[type='text'],
+:host-context(html[data-theme='dark']) .sd-form-table input[type='date'] {
+  background: #0c0e12;
+  border-color: #262b36;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .sd-form-table .upload-row small,
+:host-context(html[data-theme='dark']) .optional-mark {
+  color: #94a3b8;
+}
+
+:host-context(html[data-theme='dark']) .sd-form-table .file-mode-row label {
+  color: #e2e8f0;
+}
+
+@media (max-width: 767.98px) {
+  .sd-page-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .sd-form-table select,
+  .sd-form-table input[type='text'],
+  .sd-form-table input[type='date'] {
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,131 @@
+<div class="supplier-po-page extension-page">
+  <div class="page-toolbar">
+    <button type="button" class="back-btn" (click)="goBack()">Back to PO Supply</button>
+  </div>
+
+  <app-supplier-page-skeleton *ngIf="loading" type="form" [formFields]="7" />
+
+  <div *ngIf="!loading" class="extension-wrap">
+    <div class="detail-form-card extension-card" [class.disabled-panel]="!canApply">
+      <p *ngIf="hasPendingExtension" class="pending-banner">
+        A previous extension request is pending approval. New requests are disabled until it is processed.
+      </p>
+
+      <table class="detail-form-table extension-form-table">
+        <tbody>
+          <tr class="info-row">
+            <td class="label-col">Equipment</td>
+            <td class="value-col" colspan="3">{{ equipmentName }}</td>
+          </tr>
+          <tr class="info-row">
+            <td class="label-col">PO No</td>
+            <td class="value-col">{{ poNo }}</td>
+            <td class="label-col">PO Date</td>
+            <td class="value-col">{{ poDate }}</td>
+          </tr>
+          <tr class="info-row">
+            <td class="label-col">Supply Days</td>
+            <td class="value-col">{{ supplyDays }}</td>
+            <td class="label-col">PO End Date</td>
+            <td class="value-col">{{ poEndDate }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Extension (No of Days)</td>
+            <td class="value-col">
+              <input
+                type="number"
+                [(ngModel)]="extensionDays"
+                name="extensionDays"
+                min="1"
+                (ngModelChange)="onExtensionDaysChange()"
+                [disabled]="!canApply" />
+            </td>
+            <td class="label-col">Extension Date</td>
+            <td class="value-col">{{ extensionDate || '—' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Letter Date</td>
+            <td class="value-col">
+              <input
+                type="date"
+                [(ngModel)]="letterDate"
+                name="letterDate"
+                [disabled]="!canApply" />
+            </td>
+            <td class="label-col">Remark</td>
+            <td class="value-col">
+              <input type="text" [(ngModel)]="remark" name="remark" maxlength="250" [disabled]="!canApply" />
+            </td>
+          </tr>
+          <tr class="upload-row">
+            <td colspan="4">
+              <input
+                type="file"
+                accept=".pdf,application/pdf"
+                (change)="onFileSelected($event)"
+                [disabled]="!canApply" />
+              <small>1 MB, PDF only</small>
+            </td>
+          </tr>
+          <tr class="form-actions-row">
+            <td colspan="4">
+              <button type="button" class="show-btn" (click)="save()" [disabled]="saving || !canApply">
+                {{ saving ? 'Saving...' : 'Submit' }}
+              </button>
+              <button type="button" class="show-btn secondary-btn" (click)="resetForm()" [disabled]="saving">
+                Reset
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="extension-history" *ngIf="rows.length">
+      <h3 class="section-title">Extension History</h3>
+      <div class="datagrid extension-datagrid">
+        <div class="table-wrap">
+          <table class="po-grid extension-grid">
+            <thead>
+              <tr>
+                <th class="col-sn text-center">S.No</th>
+                <th>Days</th>
+                <th>Extended Date</th>
+                <th>PO End Date</th>
+                <th>Letter Date</th>
+                <th>Letter No</th>
+                <th>Apply Date</th>
+                <th>Status</th>
+                <th class="col-doc text-center">Document</th>
+                <th>Remark</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-center">{{ row.days }}</td>
+                <td class="text-center">{{ row.extendedDate }}</td>
+                <td class="text-center">{{ row.poEndDate }}</td>
+                <td class="text-center">{{ row.letterDate }}</td>
+                <td>{{ row.letterNo }}</td>
+                <td class="text-center">{{ row.applyDate }}</td>
+                <td>{{ row.status }}</td>
+                <td class="text-center">
+                  <button
+                    *ngIf="row.hasFile"
+                    type="button"
+                    class="link-btn"
+                    (click)="downloadFile(row)">
+                    Download
+                  </button>
+                  <span *ngIf="!row.hasFile">—</span>
+                </td>
+                <td class="wrap-cell">{{ row.remark }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

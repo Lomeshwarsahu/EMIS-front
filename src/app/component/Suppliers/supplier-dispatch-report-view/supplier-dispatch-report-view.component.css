@@ -1,0 +1,166 @@
+.report-page {
+  padding: 8px 12px 24px;
+  font-family: Arial, 'Times New Roman', Times, serif;
+  color: #000;
+  background: #fff;
+  min-height: 100vh;
+  overflow: visible;
+}
+
+.report-page--inline {
+  min-height: auto;
+  padding: 0;
+  margin-top: 16px;
+}
+
+.print-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-end;
+  width: 1000px;
+  max-width: 100%;
+  margin: 0 auto 8px;
+  padding: 4px 0;
+  background: #fff;
+}
+
+.print-action-btn {
+  background: #f97316;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  min-height: 36px;
+  min-width: 90px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.print-action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.report-layout {
+  width: 1000px;
+  max-width: 100%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.print-cell {
+  padding: 0 0 8px;
+  text-align: left;
+}
+
+.print-text-btn {
+  min-width: 90px;
+}
+
+.loading-text,
+.error-text {
+  text-align: center;
+  padding: 24px;
+}
+
+.error-text {
+  color: #b00020;
+  font-weight: 600;
+}
+
+.report-card {
+  border: 1px solid #000;
+  background: #fff;
+  width: 1000px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.report-inner {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.report-title-cell,
+.section-title-cell {
+  text-align: center;
+  text-decoration: underline;
+  font-size: medium;
+  padding: 10px 8px;
+}
+
+.meta-left,
+.meta-right {
+  padding: 4px 8px 10px;
+  font-size: small;
+  vertical-align: top;
+}
+
+.meta-right {
+  text-align: right;
+}
+
+.details-wrap {
+  text-align: center;
+  padding: 0 8px 8px;
+}
+
+.invoice-wrap {
+  padding: 0 8px 12px;
+  text-align: left;
+}
+
+.info-table,
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: small;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.invoice-table {
+  width: 500px;
+  max-width: 100%;
+}
+
+.info-table td,
+.invoice-table td {
+  border: 1px solid #000;
+  padding: 6px 8px;
+  vertical-align: middle;
+}
+
+.label-cell {
+  background: #f0f0f0;
+  color: #000;
+  white-space: nowrap;
+}
+
+.value-cell {
+  background: #fff;
+  color: #000;
+  white-space: normal;
+  word-break: break-word;
+}
+
+:host {
+  display: block;
+  overflow: visible;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-toolbar {
+    display: none !important;
+  }
+
+  .report-page {
+    padding: 0;
+  }
+}

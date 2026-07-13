@@ -1173,11 +1173,11 @@ export class MenuServiceService {
           route: '',
           submenu: [
             {
-              label: 'Particular Supplier Add',
+              label: 'supplier info',
               route: '/masters/particular-supplier-add',
             },
             {
-              label: 'Supplier GST Entry',
+              label: 'GST Details',
               route: '/masters/supplier-gst-entry',
             },
           ],
@@ -1185,7 +1185,7 @@ export class MenuServiceService {
         {
           label: 'Orders',
           route: '',
-          submenu: [{ label: 'Purchase Orders Desk', route: '/orders/po-supply' }],
+          submenu: [{ label: 'Purchase Orders ', route: '/orders/po-supply' }],
         },
         
         {
@@ -1193,22 +1193,22 @@ export class MenuServiceService {
           route: '',
           submenu: [
             {
-              label: 'Purchase Orders Dispatch Desk',
+              label: 'Dispatch to Consignee',
               route: '/transaction/po-supply-dispatch',
             },
             {
-              label: 'Consignee Wise PO Receipt',
+              label: 'Receipt / installation',
               route: '/transaction/po-supply-receipt',
             },
           ],
         },
         { label: 'Contracts', route: '', submenu: [
             {
-              label: 'Rate Contract Detail Report',
+              label: 'Rate Contract',
               route: '/contracts/rc-detail-report-supplier',
             },
             {
-              label: 'Accepted Report',
+              label: ' Price Accepted By CGMSC',
               route: '/contracts/accepted-report-supplier',
             },
           ] },
@@ -1224,13 +1224,13 @@ export class MenuServiceService {
           ] },
         { label: 'Complain', route: '', submenu: [
             {
-              label: 'Complain Received Against Equipment',
+              label: ' Received Complains',
               route: '/complain/receipt-complain-supplier',
             },
           ] },
         { label: 'EMD Refund', route: '', submenu: [
             {
-              label: 'EMD Refund Request Form',
+              label: 'Apply for EMD Refund',
               route: '/emd-refund/emd-deposit',
             },
           ] },

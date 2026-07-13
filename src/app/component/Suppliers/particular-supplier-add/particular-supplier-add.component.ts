@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface ParticularSupplierForm {
   supplierId: number;
@@ -21,17 +22,15 @@ interface ParticularSupplierForm {
 @Component({
   selector: 'app-particular-supplier-add',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './particular-supplier-add.component.html',
-  styleUrls: ['./particular-supplier-add.component.css'],
+  styleUrls: ['../supplier-po-pages.shared.css', './particular-supplier-add.component.css'],
 })
 export class ParticularSupplierAddComponent implements OnInit {
   loading = false;
   saving = false;
   statusMessage = '';
   statusIsError = false;
-  pageTitle = 'Supplier Information';
-
   model: ParticularSupplierForm = this.emptyModel();
 
   constructor(
@@ -67,7 +66,6 @@ export class ParticularSupplierAddComponent implements OnInit {
           tinNo: String(raw['tinNo'] ?? raw['TinNo'] ?? ''),
           address: String(raw['address'] ?? raw['Address'] ?? ''),
         };
-        this.pageTitle = 'Supplier Information';
       },
       error: (err) => {
         this.loading = false;
@@ -91,9 +89,6 @@ export class ParticularSupplierAddComponent implements OnInit {
         supplierId: this.model.supplierId,
         mobileNo: this.model.mobileNo.trim(),
         email: this.model.email.trim(),
-        gstNo: this.model.gstNo.trim(),
-        gstNo2: this.model.gstNo2.trim(),
-        gstNo3: this.model.gstNo3.trim(),
         phoneNo: this.model.phoneNo.trim(),
         address: this.model.address.trim(),
       })
@@ -122,12 +117,10 @@ export class ParticularSupplierAddComponent implements OnInit {
   private validate(): string | null {
     if (!this.model.mobileNo?.trim()) return 'Please insert Mobile Number.';
     if (!this.model.email?.trim()) return 'Please insert Email Id.';
-    if (!this.model.gstNo?.trim()) return 'Please insert GST No.';
     if (!this.model.phoneNo?.trim()) return 'Please insert Phone No.';
     if (!this.model.address?.trim()) return 'Please insert Address.';
     if (this.model.mobileNo.trim().length !== 10) return 'The limit of Mobile Number is 10 digits.';
     if (this.model.email.trim().length > 50) return 'The limit of Email Id is 50 characters.';
-    if (this.model.gstNo.trim().length > 15) return 'The limit of GST No is 15 characters.';
     const phoneLen = this.model.phoneNo.trim().length;
     if (phoneLen < 10 || phoneLen > 11) return 'The limit of phn No is 11 digits.';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.model.email.trim())) return 'Invalid Email Format.';

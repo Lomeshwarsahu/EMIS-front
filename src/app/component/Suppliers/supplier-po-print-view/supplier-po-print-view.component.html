@@ -1,0 +1,136 @@
+<div class="report-page">
+  <div class="print-toolbar no-print">
+    <button
+      type="button"
+      class="print-action-btn"
+      (click)="printReport()"
+      [disabled]="!report || loading">
+      Print
+    </button>
+  </div>
+
+  <app-supplier-page-skeleton *ngIf="loading" type="lines" [rows]="16" />
+  <div *ngIf="!loading && loadError" class="error-text">{{ loadError }}</div>
+
+  <div [id]="printContainerId" *ngIf="!loading && report && !loadError" class="report-card">
+    <div class="report-block">
+      <div>No: {{ report.outwardNo }}</div>
+      <div class="title-line">To,</div>
+      <div class="title-line">Vendor: {{ report.supplierName }}</div>
+      <div class="title-line">Address: {{ report.supplierAddress }}</div>
+      <div class="title-line">
+        Contact No: {{ report.mobileNo }} EmailId: {{ report.emailId }}
+      </div>
+      <div class="title-line">Subject: Purchase Order of equipment.</div>
+      <div>
+        <strong>Ref:</strong> Equipment Tender No. {{ report.tenderNo }} Tender Date
+        {{ report.tenderDate }}
+      </div>
+    </div>
+
+    <table class="items-table" border="1">
+      <thead>
+        <tr>
+          <th>S.No.</th>
+          <th>Item code No.</th>
+          <th>Description</th>
+          <th>Model No.</th>
+          <th>Qty</th>
+          <th>Rate</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of report.items; let i = index">
+          <td class="center">{{ i + 1 }}</td>
+          <td>{{ item.itemCode }}</td>
+          <td>{{ item.itemName }}</td>
+          <td>{{ item.model }}</td>
+          <td class="center">{{ item.quantity }}</td>
+          <td class="right">{{ item.singleUnitPrice }}</td>
+          <td class="right">{{ item.lineAmount }}</td>
+        </tr>
+        <tr>
+          <td colspan="6" class="right"><strong>Total</strong></td>
+          <td class="right"><strong>{{ report.itemsTotal }}</strong></td>
+        </tr>
+        <tr>
+          <td colspan="7">Amount in Words: {{ report.totalPoValueWords }}</td>
+        </tr>
+        <tr>
+          <td colspan="7">* Basic Price Without Tax: = {{ report.basicRate }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="report-block">
+      <div>
+        1. Kindly arrange to supply equipment as per tender terms &amp; conditions of Tender within:
+        {{ report.trancheDays }} days.
+      </div>
+      <div>GST: {{ report.gstPercent }} %</div>
+    </div>
+
+    <div class="report-block" *ngIf="report.terms.length">
+      <div class="title-line">Terms &amp; Conditions</div>
+      <div *ngFor="let term of report.terms">{{ term.termCondition }}</div>
+    </div>
+
+    <table class="consignee-table report-block" border="1" *ngIf="report.consignees.length">
+      <thead>
+        <tr>
+          <th>Consolidated Date</th>
+          <th>Consignee</th>
+          <th>Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let consignee of report.consignees">
+          <td>{{ consignee.consolidatedDate }}</td>
+          <td>{{ consignee.locationName }}</td>
+          <td class="center">{{ consignee.quantity }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="report-block" *ngIf="report.copyTo.length">
+      <div class="title-line">Copy To</div>
+      <div *ngFor="let row of report.copyTo">{{ row.designation }}{{ row.office }}</div>
+    </div>
+
+    <table class="cmc-table report-block" border="1" *ngIf="report.items.length">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>CMC 1st Year</th>
+          <th>CMC 2nd Year</th>
+          <th>CMC 3rd Year</th>
+          <th>CMC 4th Year</th>
+          <th>CMC 5th Year</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ report.items[0].itemName }}</td>
+          <td class="center">{{ report.cmc1 }}</td>
+          <td class="center">{{ report.cmc2 }}</td>
+          <td class="center">{{ report.cmc3 }}</td>
+          <td class="center">{{ report.cmc4 }}</td>
+          <td class="center">{{ report.cmc5 }}</td>
+          <td class="center">{{ cmcTotal }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="amend-note" *ngIf="showAmendment">
+      Amendment No: {{ report.amendNo }} Previous Dispatch No: {{ report.previousOutwardNo }} PO
+      Dated: {{ report.previousPoDate }} stands nullified
+    </div>
+
+    <div class="report-block right">Raipur, Date: {{ report.poDate }}</div>
+    <div class="report-block">
+      Purchase Order: {{ report.poNo }} GemPO NO: {{ report.gemPo }}
+    </div>
+  </div>
+</div>

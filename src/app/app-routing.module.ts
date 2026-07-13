@@ -7,7 +7,16 @@ import { ParticularSupplierAddComponent } from './component/Suppliers/particular
 import { SupplierGstEntryComponent } from './component/Suppliers/supplier-gst-entry/supplier-gst-entry.component';
 import { PoSupplyComponent } from './component/Suppliers/po-supply/po-supply.component';
 import { PoSupplyDispatchComponent } from './component/Suppliers/po-supply-dispatch/po-supply-dispatch.component';
+import { PoSupplyDispatchEditComponent } from './component/Suppliers/po-supply-dispatch-edit/po-supply-dispatch-edit.component';
+import { PoSupplyDispatchEntryComponent } from './component/Suppliers/po-supply-dispatch-entry/po-supply-dispatch-entry.component';
+import { PoSupplyDispatchReportComponent } from './component/Suppliers/po-supply-dispatch-report/po-supply-dispatch-report.component';
+import { SupplierPoSdDetailComponent } from './component/Suppliers/supplier-po-sd-detail/supplier-po-sd-detail.component';
+import { SupplierPoApplyExtensionComponent } from './component/Suppliers/supplier-po-apply-extension/supplier-po-apply-extension.component';
 import { PoSupplyReceiptComponent } from './component/Suppliers/po-supply-receipt/po-supply-receipt.component';
+import { PoSupplyReceiptEntryComponent } from './component/Suppliers/po-supply-receipt-entry/po-supply-receipt-entry.component';
+import { PoSupplyInstallationReportComponent } from './component/Suppliers/po-supply-installation-report/po-supply-installation-report.component';
+import { PoSupplyInstallationPrintComponent } from './component/Suppliers/po-supply-installation-print/po-supply-installation-print.component';
+import { PoSupplyPoPrintComponent } from './component/Suppliers/po-supply-po-print/po-supply-po-print.component';
 import { SupplierRcDetailReportComponent } from './component/Suppliers/supplier-rc-detail-report/supplier-rc-detail-report.component';
 import { SupplierAcceptedReportComponent } from './component/Suppliers/supplier-accepted-report/supplier-accepted-report.component';
 import { SupplierReceiptComplainComponent } from './component/Suppliers/supplier-receipt-complain/supplier-receipt-complain.component';
@@ -139,8 +148,53 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'orders/po-supply-sd-detail',
+    component: SupplierPoSdDetailComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'SDdetailSupplier',
+    redirectTo: 'orders/po-supply-sd-detail',
+    pathMatch: 'full',
+  },
+  {
+    path: 'orders/po-supply-apply-extension',
+    component: SupplierPoApplyExtensionComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'ApplyForExtension',
+    redirectTo: 'orders/po-supply-apply-extension',
+    pathMatch: 'full',
+  },
+  {
     path: 'transaction/po-supply-dispatch',
     component: PoSupplyDispatchComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'transaction/po-supply-dispatch-edit',
+    component: PoSupplyDispatchEditComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'transaction/po-supply-dispatch-entry',
+    component: PoSupplyDispatchEntryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'po_supply_details',
+    redirectTo: 'transaction/po-supply-dispatch-entry',
+    pathMatch: 'full',
+  },
+  {
+    path: 'transaction/po-supply-dispatch-report',
+    component: PoSupplyDispatchReportComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -150,14 +204,63 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'po_supply_edit',
+    redirectTo: 'transaction/po-supply-dispatch-edit',
+    pathMatch: 'full',
+  },
+  {
+    path: 'rptDispatchDetails',
+    redirectTo: 'transaction/po-supply-dispatch-report',
+    pathMatch: 'full',
+  },
+  {
     path: 'transaction/po-supply-receipt',
     component: PoSupplyReceiptComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
   {
+    path: 'transaction/po-supply-receipt-entry',
+    component: PoSupplyReceiptEntryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
     path: 'Facilitypo_supply_ReceiptSUP',
     redirectTo: 'transaction/po-supply-receipt',
+    pathMatch: 'full',
+  },
+  {
+    path: 'transaction/po-supply-installation-report',
+    component: PoSupplyInstallationReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'Facility_InstallationReportSUP',
+    redirectTo: 'transaction/po-supply-installation-report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'transaction/po-supply-installation-print',
+    component: PoSupplyInstallationPrintComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'transaction/po-supply-po-print',
+    component: PoSupplyPoPrintComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'InstalationReport',
+    redirectTo: 'transaction/po-supply-installation-print',
+    pathMatch: 'full',
+  },
+  {
+    path: 'rdlcPoReport',
+    redirectTo: 'transaction/po-supply-po-print',
     pathMatch: 'full',
   },
   {

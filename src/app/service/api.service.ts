@@ -78,9 +78,6 @@ export class ApiService {
     supplierId: number;
     mobileNo: string;
     email: string;
-    gstNo: string;
-    gstNo2: string;
-    gstNo3: string;
     phoneNo: string;
     address: string;
   }) {
@@ -88,9 +85,6 @@ export class ApiService {
       supplierId: payload.supplierId,
       mobileNo: payload.mobileNo,
       email: payload.email,
-      gstNo: payload.gstNo,
-      gstNo2: payload.gstNo2,
-      gstNo3: payload.gstNo3,
       phoneNo: payload.phoneNo,
       address: payload.address,
     });
@@ -128,9 +122,116 @@ export class ApiService {
     );
   }
 
+  getSupplierPoSdDetail(userId: number, poId: number, itemId: number, grossValue: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/po-sd-detail/by-user/${userId}?poId=${poId}&itemId=${itemId}&grossValue=${grossValue}`,
+    );
+  }
+
+  saveSupplierPoSdDetail(userId: number, formData: FormData) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/po-sd-detail/by-user/${userId}`,
+      formData,
+    );
+  }
+
+  updateSupplierPoSdDetail(userId: number, formData: FormData) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/po-sd-detail/update/by-user/${userId}`,
+      formData,
+    );
+  }
+
+  getSupplierPoExtensionPage(userId: number, poId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/po-extension/by-user/${userId}?poId=${poId}`,
+    );
+  }
+
+  saveSupplierPoExtension(userId: number, formData: FormData) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/po-extension/by-user/${userId}`,
+      formData,
+    );
+  }
+
   getSupplierPoDispatch(userId: number, financialYearId: number, tenderId: number) {
     return this.http.get<Record<string, unknown>[]>(
       `${this.apiUrll}/supplier/po-supply-dispatch/by-user/${userId}?financialYearId=${financialYearId}&tenderId=${tenderId}`,
+    );
+  }
+
+  getSupplierPoDispatchEdit(userId: number, poId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/po-supply-edit/by-user/${userId}?poId=${poId}`,
+    );
+  }
+
+  getSupplierDispatchReport(userId: number, poId: number, locId: number, issueId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/dispatch-report/by-user/${userId}?poId=${poId}&locId=${locId}&issueId=${issueId}`,
+    );
+  }
+
+  getSupplierDispatchEntry(
+    userId: number,
+    poId: number,
+    locId: number,
+    issueId: number,
+    itemId: number,
+  ) {
+    const issueQ = issueId > 0 ? `&issueId=${issueId}` : '';
+    const itemQ = itemId > 0 ? `&itemId=${itemId}` : '';
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/dispatch-entry/by-user/${userId}?poId=${poId}&locId=${locId}${issueQ}${itemQ}`,
+    );
+  }
+
+  saveSupplierDispatchInvoice(userId: number, formData: FormData) {
+    return this.http.post<{ message: string; issueId?: number }>(
+      `${this.apiUrll}/supplier/dispatch-entry/invoice/by-user/${userId}`,
+      formData,
+    );
+  }
+
+  saveSupplierDispatchEquipmentLine(
+    userId: number,
+    body: {
+      issueId: number;
+      issueDetailId: number;
+      serialNo: string;
+      warrantyCardNo: string;
+      supplyQty: number;
+    },
+  ) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/dispatch-entry/equipment-line/by-user/${userId}`,
+      body,
+    );
+  }
+
+  completeSupplierDispatch(
+    userId: number,
+    body: {
+      poId: number;
+      locationId: number;
+      issueId: number;
+      dispatchNo: string;
+      dispatchDate: string;
+      tentativeSupplyDate: string;
+      cgmscLogoPrinted: string;
+      warrantyValidity: string;
+      serviceManual: string;
+      operatingManual: string;
+      calibrationCertificate: string;
+      warrantyCard: string;
+      otherStatutory: string;
+      poDocuments: string;
+    },
+  ) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/dispatch-entry/complete/by-user/${userId}`,
+      body,
     );
   }
 
@@ -146,9 +247,98 @@ export class ApiService {
     );
   }
 
-  getSupplierPoReceipt(userId: number, poId: number) {
+  getSupplierPoReceipt(userId: number, poId: number, financialYearId = 0, poType = 'All') {
     return this.http.get<Record<string, unknown>[]>(
-      `${this.apiUrll}/supplier/po-supply-receipt/by-user/${userId}?poId=${poId}`,
+      `${this.apiUrll}/supplier/po-supply-receipt/by-user/${userId}?poId=${poId}&financialYearId=${financialYearId}&poType=${encodeURIComponent(poType)}`,
+    );
+  }
+
+  getSupplierReceiptEntry(userId: number, poId: number, locId: number, issueId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/receipt-entry/by-user/${userId}?poId=${poId}&locId=${locId}&issueId=${issueId}`,
+    );
+  }
+
+  saveSupplierReceiptEntry(
+    userId: number,
+    body: {
+      poId: number;
+      locationId: number;
+      issueId: number;
+      receivedDate: string;
+      receiptNo: string;
+      receiptQty: string;
+      receiptRemarks: string;
+    },
+  ) {
+    return this.http.post<{ message: string; receiptId: number }>(
+      `${this.apiUrll}/supplier/receipt-entry/by-user/${userId}`,
+      body,
+    );
+  }
+
+  saveSupplierReceiptInstallation(
+    userId: number,
+    body: {
+      receiptId: number;
+      issueDetailId: number;
+      warrantyCardNo: string;
+      receivedQty: number;
+      installationDate: string;
+      installationBy: string;
+      installationLocation: string;
+      cgmscLogoPrinted: string;
+      warrantyValidity: string;
+      serviceManual: string;
+      operatingManual: string;
+      calibrationCertificate: string;
+      warrantyCard: string;
+      otherStatutory: string;
+      poDocuments: string;
+      bulkInst: boolean;
+    },
+  ) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/receipt-entry/installation/by-user/${userId}`,
+      body,
+    );
+  }
+
+  completeSupplierReceiptEntry(
+    userId: number,
+    body: { poId: number; locationId: number; issueId: number; receiptId: number },
+  ) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/receipt-entry/complete/by-user/${userId}`,
+      body,
+    );
+  }
+
+  uploadSupplierReceiptEntryFile(
+    userId: number,
+    formData: FormData,
+  ) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/receipt-entry/file/by-user/${userId}`,
+      formData,
+    );
+  }
+
+  getSupplierInstallationReport(userId: number, receiptId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/installation-report/by-user/${userId}?receiptId=${receiptId}`,
+    );
+  }
+
+  getSupplierInstallationPrintReport(userId: number, receiptItemId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/installation-report/print/by-user/${userId}?receiptItemId=${receiptItemId}`,
+    );
+  }
+
+  getSupplierPoPrintReport(userId: number, poId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/po-report/print/by-user/${userId}?poId=${poId}`,
     );
   }
 

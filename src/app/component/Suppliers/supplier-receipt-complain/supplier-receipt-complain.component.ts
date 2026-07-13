@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface ReceiptComplainRow {
   complaintId: number;
@@ -26,7 +27,7 @@ type ComplainStatus = 'Booked' | 'Closed';
 @Component({
   selector: 'app-supplier-receipt-complain',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-receipt-complain.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-receipt-complain.component.css'],
 })
@@ -47,10 +48,25 @@ export class SupplierReceiptComplainComponent implements OnInit {
     this.userId = Number(sessionStorage.getItem('userid') || localStorage.getItem('userid') || 0);
     if (!this.userId) {
       this.toastr.error('Please login as supplier.');
+      return;
     }
+    this.loadReport();
   }
 
-  showReport(): void {
+  onFilterChange(): void {
+    this.loadReport();
+  }
+
+  clearFilters(): void {
+    this.status = 'Booked';
+    this.loadReport();
+  }
+
+  get hasActiveFilters(): boolean {
+    return this.status !== 'Booked';
+  }
+
+  loadReport(): void {
     this.loading = true;
     this.api.getSupplierReceiptComplain(this.userId, this.status).subscribe({
       next: (raw) => {

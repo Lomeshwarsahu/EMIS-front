@@ -1,72 +1,82 @@
 <div class="supplier-po-page">
-  <h2 class="page-title narrow">Purchase Orders Dispatch Desk</h2>
-
-  <div class="filters">
-    <label>
-      Financial Year:
-      <select [(ngModel)]="selectedFinancialYearId" name="financialYear">
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Financial Year"
+        [(ngModel)]="selectedFinancialYearId"
+        name="financialYear"
+        (change)="onFilterChange()"
+        [class.is-placeholder]="selectedFinancialYearId === 0"
+      >
+        <option [ngValue]="0" disabled hidden>Financial Year</option>
         <option *ngFor="let year of financialYears" [ngValue]="year.financialYearId">
           {{ year.year }}
         </option>
       </select>
-    </label>
 
-    <label>
-      Tender No:
-      <select [(ngModel)]="selectedTenderId" name="tender">
+      <select
+        aria-label="Tender No"
+        [(ngModel)]="selectedTenderId"
+        name="tender"
+        (change)="onFilterChange()"
+        [class.is-placeholder]="selectedTenderId === 0"
+      >
+        <option [ngValue]="0" disabled hidden>Tender No</option>
         <option *ngFor="let tender of tenders" [ngValue]="tender.tenderId">
           {{ tender.tenderNo }}
         </option>
       </select>
-    </label>
 
-    <button type="button" class="show-btn" (click)="showOrders()" [disabled]="loading">Show</button>
-  </div>
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+    </div>
 
-  <div *ngIf="loading" class="loading-text">Loading dispatch orders...</div>
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
 
-  <div class="datagrid" *ngIf="!loading">
-    <div class="table-wrap">
+    <div class="table-wrap" *ngIf="!loading">
       <table class="po-grid dispatch-grid">
         <thead>
           <tr>
-            <th class="col-sn">S.No</th>
-            <th class="col-po">PO No</th>
+            <th class="col-sn text-center">S.No</th>
+            <th class="col-po">Dispatch Details</th>
             <th class="col-date">PO Date</th>
-            <th class="col-item">Item Name</th>
-            <th class="col-rate">Basic Rate/GST</th>
-            <th class="col-consignee">No of Consignee</th>
-            <th class="col-qty">Total Qty</th>
-            <th class="col-value">Gross Value</th>
-            <th class="col-disp">No of QTY Dispatched</th>
+            <th class="col-item">Item Details</th>
+            <th class="col-rate">Rate / GST</th>
+            <th class="col-consignee text-center">Consignees</th>
+            <th class="col-qty text-center">Qty</th>
+            <th class="col-value">Value</th>
+            <th class="col-disp text-center">Dispatched</th>
             <th class="col-status">Supply Status</th>
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let row of rows; let i = index"
-            [ngClass]="rowStatusClass(row.supplyStatus)"
-            [class.alt-row]="i % 2 === 1 && !rowStatusClass(row.supplyStatus)">
-            <td class="text-center">{{ i + 1 }}</td>
+          <tr *ngFor="let row of rows; let i = index" [class.supply-not-supplied]="isNotSupplied(row)">
+            <td class="text-center text-slate-500">{{ i + 1 }}</td>
             <td>
-              <div>{{ row.outwardNo }}</div>
-              <div>{{ row.poNo }}</div>
+              <div class="text-xs text-slate-500 mb-1">{{ row.outwardNo }}</div>
+              <div class="font-medium text-slate-700">{{ row.poNo }}</div>
             </td>
             <td>{{ row.poDate }}</td>
-            <td class="wrap-cell">
+            <td class="col-item-cell">
               <div>{{ row.itemCode }}</div>
               <div>{{ row.itemName }}</div>
             </td>
             <td>
-              <div>{{ row.basicRate }}</div>
-              <div>{{ row.percentage }}%</div>
+              <div class="font-medium text-slate-700">₹{{ row.basicRate }}</div>
+              <div class="text-xs text-slate-500">{{ row.percentage }}% GST</div>
             </td>
             <td class="text-center">{{ row.noOfConsignee }}</td>
-            <td class="text-center">{{ row.quantity }}</td>
-            <td>{{ row.totalPoValue }}</td>
-            <td class="text-center">{{ row.dispatchedQty }}</td>
+            <td class="text-center font-medium">{{ row.quantity }}</td>
+            <td class="font-bold text-slate-700">₹{{ row.totalPoValue }}</td>
+            <td class="text-center font-medium">{{ row.dispatchedQty }}</td>
             <td>
-              <button type="button" class="link-btn" (click)="onSupplyStatus(row)">
+              <button type="button" class="plain-link" (click)="onSupplyStatus(row)">
                 {{ row.supplyStatus }}
               </button>
             </td>

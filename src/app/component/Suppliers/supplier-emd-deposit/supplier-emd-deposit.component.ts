@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface TenderOption {
   tenderId: number;
@@ -30,13 +31,14 @@ interface EmdDepositRow {
 @Component({
   selector: 'app-supplier-emd-deposit',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-emd-deposit.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-emd-deposit.component.css'],
 })
 export class SupplierEmdDepositComponent implements OnInit {
   loading = false;
   saving = false;
+  showRefundForm = false;
   userId = 0;
 
   tenders: TenderOption[] = [];
@@ -83,6 +85,15 @@ export class SupplierEmdDepositComponent implements OnInit {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.selectedFile = input.files?.[0] ?? null;
+  }
+
+  openRefundForm(): void {
+    this.showRefundForm = true;
+  }
+
+  closeRefundForm(): void {
+    this.showRefundForm = false;
+    this.resetForm();
   }
 
   loadLookups(): void {
@@ -177,6 +188,7 @@ export class SupplierEmdDepositComponent implements OnInit {
         const message = String((res as Record<string, unknown>)['message'] ?? 'Record Successfully Inserted');
         this.toastr.success(message);
         this.resetForm();
+        this.showRefundForm = false;
         this.loadLookups();
         this.loadGrid();
       },

@@ -1,28 +1,21 @@
 .receipt-grid {
-  width: 1500px;
-  min-width: 1500px;
-}
-
-.filter-panel {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto 16px;
-  border-collapse: collapse;
-}
-
-.filter-panel td {
-  padding: 8px 10px;
-  vertical-align: middle;
-}
-
-.filter-panel .label-col {
-  width: 140px;
-  text-align: left;
-  font-weight: 600;
+  min-width: 1700px;
 }
 
 .col-sn { width: 45px; }
+.col-po { width: 140px; }
+.col-status { width: 160px; }
 .col-consignee { width: 180px; }
 .col-item { width: 220px; }
 .col-qty { width: 80px; }
 .col-batch { width: 360px; }
+
+.status-complete {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.status-pending {
+  color: #b45309;
+  font-weight: 600;
+}

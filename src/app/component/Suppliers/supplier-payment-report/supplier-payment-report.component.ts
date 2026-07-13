@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
+import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
 interface PaymentReportRow {
   poId: number;
@@ -27,7 +28,7 @@ type PoTypeFilter = 'All' | 'NP' | 'CP';
 @Component({
   selector: 'app-supplier-payment-report',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-payment-report.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-payment-report.component.css'],
 })
@@ -38,6 +39,7 @@ export class SupplierPaymentReportComponent implements OnInit {
 
   poType: PoTypeFilter = 'NP';
   rows: PaymentReportRow[] = [];
+  readonly defaultPoType: PoTypeFilter = 'NP';
 
   constructor(
     private readonly api: ApiService,
@@ -48,10 +50,25 @@ export class SupplierPaymentReportComponent implements OnInit {
     this.userId = Number(sessionStorage.getItem('userid') || localStorage.getItem('userid') || 0);
     if (!this.userId) {
       this.toastr.error('Please login as supplier.');
+      return;
     }
+    this.loadDetails();
   }
 
-  showDetails(): void {
+  onFilterChange(): void {
+    this.loadDetails();
+  }
+
+  clearFilters(): void {
+    this.poType = this.defaultPoType;
+    this.loadDetails();
+  }
+
+  get hasActiveFilters(): boolean {
+    return this.poType !== this.defaultPoType;
+  }
+
+  loadDetails(): void {
     this.loading = true;
     this.api.getSupplierPaymentReport(this.userId, this.poType).subscribe({
       next: (raw) => {

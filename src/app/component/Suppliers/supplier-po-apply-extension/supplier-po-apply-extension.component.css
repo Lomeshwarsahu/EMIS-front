@@ -1,0 +1,110 @@
+.extension-page {
+  overflow: visible;
+}
+
+.extension-wrap {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.extension-card {
+  margin-bottom: 14px;
+}
+
+.extension-card.disabled-panel {
+  opacity: 0.88;
+}
+
+.extension-form-table .info-row td {
+  background: #f8fafc;
+}
+
+.extension-form-table input[type='text'],
+.extension-form-table input[type='number'],
+.extension-form-table input[type='date'] {
+  width: 100%;
+  max-width: 240px;
+}
+
+.extension-form-table .upload-row td {
+  text-align: left !important;
+}
+
+.extension-history {
+  width: 100%;
+}
+
+.extension-datagrid {
+  flex: 0 0 auto;
+  min-height: auto;
+  overflow: visible;
+}
+
+.extension-datagrid .table-wrap {
+  flex: 0 0 auto;
+  min-height: auto;
+  max-height: none;
+  overflow-y: visible;
+}
+
+.extension-grid {
+  width: 100%;
+  min-width: 0;
+  table-layout: auto;
+}
+
+.extension-grid .col-sn {
+  width: 56px;
+}
+
+.extension-grid .col-doc {
+  width: 100px;
+}
+
+.extension-grid th,
+.extension-grid td {
+  font-size: 13px;
+}
+
+:host-context(html[data-theme='dark']) .extension-form-table .info-row td {
+  background: #0c0e12;
+}
+
+:host-context(html[data-theme='dark']) .extension-form-table .label-col {
+  background: #141820;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .extension-form-table .value-col,
+:host-context(html[data-theme='dark']) .extension-form-table td {
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .extension-form-table input[type='text'],
+:host-context(html[data-theme='dark']) .extension-form-table input[type='number'],
+:host-context(html[data-theme='dark']) .extension-form-table input[type='date'] {
+  background: #0c0e12;
+  border-color: #262b36;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .extension-form-table .upload-row small {
+  color: #94a3b8;
+}
+
+@media (max-width: 767.98px) {
+  .extension-form-table input[type='text'],
+  .extension-form-table input[type='number'],
+  .extension-form-table input[type='date'] {
+    max-width: 100%;
+  }
+
+  .extension-datagrid .table-wrap {
+    overflow-x: auto;
+  }
+
+  .extension-grid {
+    min-width: 760px;
+  }
+}

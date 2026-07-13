@@ -1,8 +1,12 @@
 .report-note {
   text-align: center;
   font-weight: 700;
-  margin: 8px auto 16px;
+  margin: 2px auto 6px;
   color: #003399;
+}
+
+:host-context(html[data-theme='dark']) .report-note {
+  color: #a5b4fc;
 }
 
 .payment-grid {
@@ -16,12 +20,3 @@
 .col-date { width: 100px; }
 .col-supplier { width: 160px; }
 .col-amt { width: 100px; }
-
-.filter-panel {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 8px;
-}
