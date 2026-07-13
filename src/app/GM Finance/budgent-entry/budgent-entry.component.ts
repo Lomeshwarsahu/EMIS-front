@@ -134,7 +134,7 @@ constructor(
   // }
 
   onDirectorateSelectedChange() {
-    debugger;
+    // debugger;
     this.instituteList = [];
     this.mappedFundsList = [];
     this.formModel.facilityId = null;
@@ -158,7 +158,7 @@ constructor(
   }
 
   onInstituteSelectedChange() {
-    debugger
+    // debugger
     this.mappedFundsList = [];
     this.formModel.budgetId = null;
     if (this.formModel.facilityId) {
@@ -167,7 +167,7 @@ constructor(
   }
 
   loadMappedFundsDropdown(dirId: number, facId: number) {
-debugger
+// debugger
   this.api.get(`GMFI/GetFundsToMap/${dirId}`).subscribe({
       next: (res:any) =>
         
@@ -187,7 +187,7 @@ debugger
 
   // Triggered on Mapped Fund Selected Index Changed Event (Emulating CheckFirstTimeOP method logic flow)
   onFundHeadSelectedChange() {
-    debugger;
+    // debugger;
     if (!this.formModel.budgetId) return;
 
     const facId = this.formModel.facilityId ? this.formModel.facilityId : 0;
