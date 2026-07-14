@@ -49,6 +49,10 @@
   white-space: nowrap;
 }
 
+.emd-form-table td.label-col::after {
+  content: ' :-';
+}
+
 .emd-form-table input[type='text'],
 .emd-form-table input[type='number'],
 .emd-form-table input[type='date'],

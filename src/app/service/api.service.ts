@@ -414,6 +414,12 @@ export class ApiService {
     );
   }
 
+  getSupplierSanctionReport(userId: number, poId: number, sanctionId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/sanction-report/by-user/${userId}?poId=${poId}&sanctionId=${sanctionId}`,
+    );
+  }
+
   getSupplierBalanceStatus(userId: number, balanceType: string) {
     return this.http.get<Record<string, unknown>[]>(
       `${this.apiUrll}/supplier/balance-status/by-user/${userId}?balanceType=${encodeURIComponent(balanceType)}`,

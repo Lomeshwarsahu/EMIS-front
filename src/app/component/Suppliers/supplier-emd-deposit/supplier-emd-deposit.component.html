@@ -16,7 +16,7 @@
       <table class="emd-form-table">
         <tbody>
           <tr>
-            <td class="label-col">Tender No:</td>
+            <td class="label-col">Tender No</td>
             <td>
               <select [(ngModel)]="selectedTenderId" name="tenderNo" (ngModelChange)="onTenderChange()">
                 <option [ngValue]="-1">-Select-</option>
@@ -28,7 +28,7 @@
               <span class="required-mark">*</span>
             </td>
             <ng-container *ngIf="showOtherTender">
-              <td class="label-col">Other Tender No:</td>
+              <td class="label-col">Other Tender No</td>
               <td>
                 <input type="text" [(ngModel)]="otherTenderNo" name="otherTenderNo" maxlength="100" />
                 <span class="required-mark">*</span>
@@ -36,12 +36,12 @@
             </ng-container>
           </tr>
           <tr>
-            <td class="label-col">EMD Amount:</td>
+            <td class="label-col">EMD Amount</td>
             <td>
               <input type="number" [(ngModel)]="emdAmount" name="emdAmount" min="0" step="0.01" />
               <span class="required-mark">*</span>
             </td>
-            <td class="label-col">EMD Type:</td>
+            <td class="label-col">EMD Type</td>
             <td>
               <select [(ngModel)]="selectedEmdType" name="emdType">
                 <option [ngValue]="0">---Select---</option>
@@ -53,18 +53,18 @@
             </td>
           </tr>
           <tr>
-            <td class="label-col">EMD Document No:</td>
+            <td class="label-col">EMD Document No</td>
             <td>
               <input type="text" [(ngModel)]="emdDocNo" name="emdDocNo" maxlength="50" />
               <span class="required-mark">*</span>
             </td>
-            <td class="label-col">EMD Document / Letter Upload:</td>
+            <td class="label-col">EMD Document / Letter Upload</td>
             <td>
               <input type="file" accept=".pdf,application/pdf" (change)="onFileSelected($event)" />
             </td>
           </tr>
           <tr>
-            <td class="label-col">EMD Deposit Date:</td>
+            <td class="label-col">EMD Deposit Date</td>
             <td colspan="3">
               <input type="date" [(ngModel)]="emdDepositDate" name="emdDepositDate" [max]="maxDepositDate" />
               <span class="required-mark">*</span>

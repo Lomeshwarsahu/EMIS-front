@@ -12,6 +12,7 @@ const EXTRA_ROUTE_TITLES: Record<string, string> = {
   '/masters/particular-supplier-add': 'Supplier Information',
   '/masters/supplier-gst-entry': 'Supplier GST Entry',
   '/reports/payment-report': 'Paid Report of Purchase Orders',
+  '/reports/sanction-report': 'Sanction Report',
   '/reports/pending-receipt-installation': 'Pending Receipt / Installation',
   '/complain/receipt-complain-supplier': 'Complain Received Against Equipment',
   '/emd-refund/emd-deposit': 'EMD Refund Request Form',

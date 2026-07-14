@@ -1,83 +1,143 @@
 <div class="supplier-po-page dispatch-entry-page">
-  <div class="page-toolbar">
+  <div class="page-toolbar dispatch-entry-toolbar">
     <button type="button" class="back-btn" (click)="goBack()">Back to Dispatch Desk</button>
   </div>
 
-  <h2 class="page-title narrow">Dispatch Entry of Equipments</h2>
+  <h2 class="page-title">Dispatch Entry of Equipments</h2>
 
   <app-supplier-page-skeleton *ngIf="loading" type="form" [formFields]="10" />
 
   <div *ngIf="!loading" class="dispatch-entry-wrap">
-    <table class="header-grid">
-      <tbody>
-        <tr>
-          <td>Itemcode</td><td>{{ itemCode }}</td>
-          <td>Item Name</td><td>{{ itemName }}</td>
-          <td>Tax</td><td>{{ taxPercent }}</td>
-        </tr>
-        <tr>
-          <td>PO No.</td><td>{{ poNo }}</td>
-          <td>PO Date</td><td>{{ poDate }}</td>
-          <td>Tender No</td><td>{{ tenderNo }}</td>
-        </tr>
-        <tr>
-          <td>Consignee Name</td><td colspan="3">{{ consigneeName }}</td>
-          <td>Model No</td><td>{{ modelNo }}</td>
-        </tr>
-        <tr>
-          <td>Make</td><td>{{ make }}</td>
-          <td>Basic Rate</td><td>{{ basicRate }}</td>
-          <td>Total Net PO Value</td><td>{{ totalNetPoValue }}</td>
-        </tr>
-        <tr>
-          <td>Total Gross PO Value</td><td>{{ totalGrossPoValue }}</td>
-          <td>PO Qty (All)</td><td>{{ poQtyAllConsignees }}</td>
-          <td>PO Qty (Consignee)</td><td>{{ poQtyConsignee }}</td>
-        </tr>
-        <tr>
-          <td>Dispatched Qty</td><td>{{ dispatchedQty }}</td>
-          <td>Balance Qty</td><td>{{ balanceQty }}</td>
-          <td>Supply Days</td><td>{{ supplyDays }}</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="tab-bar">
-      <button type="button" [class.active]="activeTab === 'invoice'" (click)="setTab('invoice')">Invoice Details</button>
-      <button type="button" [class.active]="activeTab === 'equipment'" (click)="setTab('equipment')" [disabled]="!issueId">Equipment Entry</button>
-      <button type="button" [class.active]="activeTab === 'complete'" (click)="setTab('complete')" [disabled]="!issueId">Complete</button>
+    <div class="detail-header-card">
+      <div class="detail-header-grid cols-3">
+        <div class="detail-header-item">
+          <span class="label">Item Code</span>
+          <span class="value">{{ itemCode || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Item Name</span>
+          <span class="value">{{ itemName || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Tax</span>
+          <span class="value">{{ taxPercent || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">PO No.</span>
+          <span class="value">{{ poNo || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">PO Date</span>
+          <span class="value">{{ poDate || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Tender No</span>
+          <span class="value">{{ tenderNo || '—' }}</span>
+        </div>
+        <div class="detail-header-item consignee-item">
+          <span class="label">Consignee Name</span>
+          <span class="value">{{ consigneeName || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Model No</span>
+          <span class="value">{{ modelNo || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Make</span>
+          <span class="value">{{ make || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Basic Rate</span>
+          <span class="value">{{ basicRate }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Total Net PO Value</span>
+          <span class="value">{{ totalNetPoValue }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Total Gross PO Value</span>
+          <span class="value">{{ totalGrossPoValue }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">PO Qty (All)</span>
+          <span class="value">{{ poQtyAllConsignees }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">PO Qty (Consignee)</span>
+          <span class="value">{{ poQtyConsignee }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Dispatched Qty</span>
+          <span class="value">{{ dispatchedQty }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Balance Qty</span>
+          <span class="value">{{ balanceQty }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Supply Days</span>
+          <span class="value">{{ supplyDays || '—' }}</span>
+        </div>
+      </div>
     </div>
 
-    <div *ngIf="activeTab === 'invoice'" class="tab-panel">
-      <table class="entry-form-table">
+    <div class="tab-bar" role="tablist">
+      <button
+        type="button"
+        role="tab"
+        [class.active]="activeTab === 'invoice'"
+        (click)="setTab('invoice')">
+        Invoice Details
+      </button>
+      <button
+        type="button"
+        role="tab"
+        [class.active]="activeTab === 'equipment'"
+        (click)="setTab('equipment')"
+        [disabled]="!issueId">
+        Equipment Entry
+      </button>
+      <button
+        type="button"
+        role="tab"
+        [class.active]="activeTab === 'complete'"
+        (click)="setTab('complete')"
+        [disabled]="!issueId">
+        Complete
+      </button>
+    </div>
+
+    <div *ngIf="activeTab === 'invoice'" class="detail-form-card tab-panel">
+      <h3 class="section-title">Invoice Details</h3>
+      <table class="detail-form-table entry-form-table">
         <tbody>
           <tr>
-            <td>Challan No.</td>
-            <td><input type="text" [(ngModel)]="challanNo" name="challanNo" /></td>
-            <td>Challan Date</td>
-            <td><input type="date" [(ngModel)]="challanDate" name="challanDate" /></td>
+            <td class="label-col">Challan No.</td>
+            <td class="value-col"><input type="text" [(ngModel)]="challanNo" name="challanNo" /></td>
+            <td class="label-col">Challan Date</td>
+            <td class="value-col"><input type="date" [(ngModel)]="challanDate" name="challanDate" /></td>
           </tr>
           <tr>
-            <td>Invoice No.</td>
-            <td><input type="text" [(ngModel)]="invoiceNo" name="invoiceNo" /></td>
-            <td>Invoice Date</td>
-            <td><input type="date" [(ngModel)]="invoiceDate" name="invoiceDate" /></td>
+            <td class="label-col">Invoice No.</td>
+            <td class="value-col"><input type="text" [(ngModel)]="invoiceNo" name="invoiceNo" /></td>
+            <td class="label-col">Invoice Date</td>
+            <td class="value-col"><input type="date" [(ngModel)]="invoiceDate" name="invoiceDate" /></td>
           </tr>
           <tr>
-            <td>E-Way Bill No.</td>
-            <td><input type="text" [(ngModel)]="ewayBillNo" name="ewayBillNo" /></td>
-            <td>E-Way Bill Date</td>
-            <td><input type="date" [(ngModel)]="ewayBillDate" name="ewayBillDate" /></td>
+            <td class="label-col">E-Way Bill No.</td>
+            <td class="value-col"><input type="text" [(ngModel)]="ewayBillNo" name="ewayBillNo" /></td>
+            <td class="label-col">E-Way Bill Date</td>
+            <td class="value-col"><input type="date" [(ngModel)]="ewayBillDate" name="ewayBillDate" /></td>
           </tr>
           <tr>
-            <td>HSN Code</td>
-            <td><input type="text" [(ngModel)]="hsnCode" name="hsnCode" /></td>
-            <td>TCS Value</td>
-            <td><input type="text" [(ngModel)]="tcsValue" name="tcsValue" /></td>
+            <td class="label-col">HSN Code</td>
+            <td class="value-col"><input type="text" [(ngModel)]="hsnCode" name="hsnCode" /></td>
+            <td class="label-col">TCS Value</td>
+            <td class="value-col"><input type="text" [(ngModel)]="tcsValue" name="tcsValue" /></td>
           </tr>
           <tr>
-            <td>Select GST</td>
-            <td colspan="3">
+            <td class="label-col">Select GST</td>
+            <td class="value-col" colspan="3">
               <select [(ngModel)]="invoiceGst" name="invoiceGst">
                 <option value="">--Select--</option>
                 <option *ngFor="let gst of gstOptions" [value]="gst.gstNo">{{ gst.gstNo }}</option>
@@ -85,20 +145,31 @@
             </td>
           </tr>
           <tr>
-            <td>Remarks</td>
-            <td colspan="3"><textarea [(ngModel)]="remarks" name="remarks" rows="2"></textarea></td>
-          </tr>
-          <tr>
-            <td>Upload Invoice (PDF)</td>
-            <td colspan="3">
-              <input type="file" accept=".pdf,application/pdf" (change)="onInvoiceFileSelected($event)" />
-              <button *ngIf="hasInvoiceFile" type="button" class="link-btn" (click)="downloadInvoice()">Download</button>
+            <td class="label-col">Remarks</td>
+            <td class="value-col" colspan="3">
+              <textarea [(ngModel)]="remarks" name="remarks" rows="2"></textarea>
             </td>
           </tr>
-          <tr>
+          <tr class="upload-row">
+            <td class="label-col">Upload Invoice (PDF)</td>
+            <td class="value-col" colspan="3">
+              <input type="file" accept=".pdf,application/pdf" (change)="onInvoiceFileSelected($event)" />
+              <button *ngIf="hasInvoiceFile" type="button" class="plain-link" (click)="downloadInvoice()">
+                Download
+              </button>
+              <small>PDF only</small>
+            </td>
+          </tr>
+          <tr class="file-mode-row">
             <td colspan="4">
-              <label><input type="radio" name="bulkVsSerial" value="1" [(ngModel)]="bulkVsSerial" /> Serial No Dispatch</label>
-              <label><input type="radio" name="bulkVsSerial" value="2" [(ngModel)]="bulkVsSerial" /> Bulk Dispatch</label>
+              <label>
+                <input type="radio" name="bulkVsSerial" value="1" [(ngModel)]="bulkVsSerial" />
+                Serial No Dispatch
+              </label>
+              <label>
+                <input type="radio" name="bulkVsSerial" value="2" [(ngModel)]="bulkVsSerial" />
+                Bulk Dispatch
+              </label>
             </td>
           </tr>
           <tr>
@@ -106,126 +177,171 @@
               Serial No Dispatch: equipment with unique serial numbers. Bulk Dispatch: items without serial numbers.
             </td>
           </tr>
-          <tr>
-            <td colspan="4" class="actions-cell">
-              <button type="button" class="show-btn" (click)="saveInvoice()" [disabled]="saving">{{ invoiceButtonLabel }}</button>
+          <tr class="form-actions-row">
+            <td colspan="4">
+              <button type="button" class="show-btn" (click)="saveInvoice()" [disabled]="saving">
+                {{ invoiceButtonLabel }}
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div *ngIf="activeTab === 'equipment'" class="tab-panel">
+    <div *ngIf="activeTab === 'equipment'" class="detail-form-card tab-panel">
+      <h3 class="section-title">Equipment Entry</h3>
       <p class="hint-text">If Warranty Card No is not applicable, type NA.</p>
-      <table class="po-grid equipment-grid">
-        <thead>
-          <tr>
-            <th>S.No</th>
-            <th>Serial No</th>
-            <th>Warranty Card No</th>
-            <th>Dispatch QTY</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let line of equipmentLines; let i = index">
-            <td class="text-center">{{ i + 1 }}</td>
-            <td>
-              <ng-container *ngIf="!line.isEditing">{{ line.serialNo }}</ng-container>
-              <input *ngIf="line.isEditing" type="text" [(ngModel)]="line.serialNo" [name]="'serialNo' + line.issueDetailId" />
-            </td>
-            <td>
-              <ng-container *ngIf="!line.isEditing">{{ line.warrantyCardNo }}</ng-container>
-              <input *ngIf="line.isEditing" type="text" [(ngModel)]="line.warrantyCardNo" [name]="'warranty' + line.issueDetailId" />
-            </td>
-            <td class="text-center">
-              <ng-container *ngIf="!line.isEditing">{{ line.supplyQty }}</ng-container>
-              <input *ngIf="line.isEditing" type="number" min="1" [(ngModel)]="line.supplyQty" [name]="'qty' + line.issueDetailId" />
-            </td>
-            <td class="text-center">
-              <button *ngIf="!line.isEditing" type="button" class="link-btn" (click)="editEquipmentLine(line)">Edit</button>
-              <button *ngIf="line.isEditing" type="button" class="link-btn" (click)="saveEquipmentLine(line)" [disabled]="saving">Save</button>
-              <button *ngIf="line.isEditing" type="button" class="link-btn" (click)="cancelEdit(line)">Cancel</button>
-            </td>
-          </tr>
-          <tr *ngIf="canEditEquipment && balanceQty > 0">
-            <td class="text-center">{{ equipmentLines.length + 1 }}</td>
-            <td><input type="text" [(ngModel)]="draftLine.serialNo" name="draftSerialNo" /></td>
-            <td><input type="text" [(ngModel)]="draftLine.warrantyCardNo" name="draftWarranty" /></td>
-            <td class="text-center"><input type="number" min="1" [(ngModel)]="draftLine.supplyQty" name="draftQty" /></td>
-            <td class="text-center">
-              <button type="button" class="add-btn" (click)="saveEquipmentLine()" [disabled]="saving">+</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="datagrid equipment-datagrid">
+        <div class="table-wrap">
+          <table class="po-grid equipment-grid">
+            <thead>
+              <tr>
+                <th class="col-sn text-center">S.No</th>
+                <th>Serial No</th>
+                <th>Warranty Card No</th>
+                <th class="text-center">Dispatch QTY</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let line of equipmentLines; let i = index" [class.alt-row]="i % 2 === 1">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td>
+                  <ng-container *ngIf="!line.isEditing">{{ line.serialNo }}</ng-container>
+                  <input
+                    *ngIf="line.isEditing"
+                    type="text"
+                    [(ngModel)]="line.serialNo"
+                    [name]="'serialNo' + line.issueDetailId" />
+                </td>
+                <td>
+                  <ng-container *ngIf="!line.isEditing">{{ line.warrantyCardNo }}</ng-container>
+                  <input
+                    *ngIf="line.isEditing"
+                    type="text"
+                    [(ngModel)]="line.warrantyCardNo"
+                    [name]="'warranty' + line.issueDetailId" />
+                </td>
+                <td class="text-center">
+                  <ng-container *ngIf="!line.isEditing">{{ line.supplyQty }}</ng-container>
+                  <input
+                    *ngIf="line.isEditing"
+                    type="number"
+                    min="1"
+                    [(ngModel)]="line.supplyQty"
+                    [name]="'qty' + line.issueDetailId" />
+                </td>
+                <td class="text-center">
+                  <button *ngIf="!line.isEditing" type="button" class="plain-link" (click)="editEquipmentLine(line)">
+                    Edit
+                  </button>
+                  <button
+                    *ngIf="line.isEditing"
+                    type="button"
+                    class="plain-link"
+                    (click)="saveEquipmentLine(line)"
+                    [disabled]="saving">
+                    Save
+                  </button>
+                  <button *ngIf="line.isEditing" type="button" class="plain-link" (click)="cancelEdit(line)">
+                    Cancel
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="canEditEquipment && balanceQty > 0" class="add-row">
+                <td class="text-center">{{ equipmentLines.length + 1 }}</td>
+                <td><input type="text" [(ngModel)]="draftLine.serialNo" name="draftSerialNo" /></td>
+                <td><input type="text" [(ngModel)]="draftLine.warrantyCardNo" name="draftWarranty" /></td>
+                <td class="text-center">
+                  <input type="number" min="1" [(ngModel)]="draftLine.supplyQty" name="draftQty" />
+                </td>
+                <td class="text-center">
+                  <button type="button" class="add-btn" (click)="saveEquipmentLine()" [disabled]="saving">+</button>
+                </td>
+              </tr>
+              <tr *ngIf="!equipmentLines.length && !(canEditEquipment && balanceQty > 0)">
+                <td colspan="5" class="empty-row">No equipment lines yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <div *ngIf="activeTab === 'complete'" class="tab-panel">
-      <table class="entry-form-table">
+    <div *ngIf="activeTab === 'complete'" class="detail-form-card tab-panel">
+      <h3 class="section-title">Complete Dispatch</h3>
+      <table class="detail-form-table entry-form-table">
         <tbody>
           <tr>
-            <td>Dispatch No.</td>
-            <td><input type="text" [(ngModel)]="dispatchNo" name="dispatchNo" /></td>
-            <td>Dispatch Date</td>
-            <td><input type="date" [(ngModel)]="dispatchDate" name="dispatchDate" /></td>
+            <td class="label-col">Dispatch No.</td>
+            <td class="value-col"><input type="text" [(ngModel)]="dispatchNo" name="dispatchNo" /></td>
+            <td class="label-col">Dispatch Date</td>
+            <td class="value-col"><input type="date" [(ngModel)]="dispatchDate" name="dispatchDate" /></td>
           </tr>
           <tr>
-            <td>Tentative Date of Supply</td>
-            <td colspan="3"><input type="date" [(ngModel)]="tentativeSupplyDate" name="tentativeSupplyDate" /></td>
+            <td class="label-col">Tentative Date of Supply</td>
+            <td class="value-col" colspan="3">
+              <input type="date" [(ngModel)]="tentativeSupplyDate" name="tentativeSupplyDate" />
+            </td>
           </tr>
-          <tr>
-            <td>CGMSC/Govt Logo Printed</td>
-            <td colspan="3">
+          <tr class="checklist-row">
+            <td class="label-col">CGMSC/Govt Logo Printed</td>
+            <td class="value-col" colspan="3">
               <label><input type="radio" name="cgmscLogo" value="Y" [(ngModel)]="cgmscLogoPrinted" /> Yes</label>
               <label><input type="radio" name="cgmscLogo" value="N" [(ngModel)]="cgmscLogoPrinted" /> No</label>
             </td>
           </tr>
-          <tr>
-            <td>Warranty Validity</td>
-            <td colspan="3">
+          <tr class="checklist-row">
+            <td class="label-col">Warranty Validity</td>
+            <td class="value-col" colspan="3">
               <label><input type="radio" name="warrantyValidity" value="Y" [(ngModel)]="warrantyValidity" /> Yes</label>
               <label><input type="radio" name="warrantyValidity" value="N" [(ngModel)]="warrantyValidity" /> No</label>
             </td>
           </tr>
-          <tr>
-            <td>Service manual Provided</td>
-            <td colspan="3">
+          <tr class="checklist-row">
+            <td class="label-col">Service manual Provided</td>
+            <td class="value-col" colspan="3">
               <label><input type="radio" name="serviceManual" value="Y" [(ngModel)]="serviceManual" /> Yes</label>
               <label><input type="radio" name="serviceManual" value="N" [(ngModel)]="serviceManual" /> No</label>
             </td>
           </tr>
-          <tr>
-            <td>Operating manual provided</td>
-            <td colspan="3">
+          <tr class="checklist-row">
+            <td class="label-col">Operating manual provided</td>
+            <td class="value-col" colspan="3">
               <label><input type="radio" name="operatingManual" value="Y" [(ngModel)]="operatingManual" /> Yes</label>
               <label><input type="radio" name="operatingManual" value="N" [(ngModel)]="operatingManual" /> No</label>
             </td>
           </tr>
-          <tr>
-            <td>Calibration Certificate Provided</td>
-            <td colspan="3">
-              <label><input type="radio" name="calibrationCertificate" value="Y" [(ngModel)]="calibrationCertificate" /> Yes</label>
-              <label><input type="radio" name="calibrationCertificate" value="N" [(ngModel)]="calibrationCertificate" /> No</label>
+          <tr class="checklist-row">
+            <td class="label-col">Calibration Certificate Provided</td>
+            <td class="value-col" colspan="3">
+              <label>
+                <input type="radio" name="calibrationCertificate" value="Y" [(ngModel)]="calibrationCertificate" />
+                Yes
+              </label>
+              <label>
+                <input type="radio" name="calibrationCertificate" value="N" [(ngModel)]="calibrationCertificate" />
+                No
+              </label>
             </td>
           </tr>
-          <tr>
-            <td>Original warranty card Provided</td>
-            <td colspan="3">
+          <tr class="checklist-row">
+            <td class="label-col">Original warranty card Provided</td>
+            <td class="value-col" colspan="3">
               <label><input type="radio" name="warrantyCard" value="Y" [(ngModel)]="warrantyCard" /> Yes</label>
               <label><input type="radio" name="warrantyCard" value="N" [(ngModel)]="warrantyCard" /> No</label>
             </td>
           </tr>
-          <tr>
-            <td>Other statutory documents Provided</td>
-            <td colspan="3">
+          <tr class="checklist-row">
+            <td class="label-col">Other statutory documents Provided</td>
+            <td class="value-col" colspan="3">
               <label><input type="radio" name="otherStatutory" value="Y" [(ngModel)]="otherStatutory" /> Yes</label>
               <label><input type="radio" name="otherStatutory" value="N" [(ngModel)]="otherStatutory" /> No</label>
             </td>
           </tr>
-          <tr>
-            <td>All Accessories in P.O. are Provided</td>
-            <td colspan="3">
+          <tr class="checklist-row">
+            <td class="label-col">All Accessories in P.O. are Provided</td>
+            <td class="value-col" colspan="3">
               <label><input type="radio" name="poDocuments" value="Y" [(ngModel)]="poDocuments" /> Yes</label>
               <label><input type="radio" name="poDocuments" value="N" [(ngModel)]="poDocuments" /> No</label>
             </td>
@@ -235,9 +351,11 @@
               Attach related documents where applicable. Warranty date is captured at installation.
             </td>
           </tr>
-          <tr>
-            <td colspan="4" class="actions-cell">
-              <button type="button" class="show-btn" (click)="completeDispatch()" [disabled]="saving">Complete Dispatch</button>
+          <tr class="form-actions-row">
+            <td colspan="4">
+              <button type="button" class="show-btn" (click)="completeDispatch()" [disabled]="saving">
+                Complete Dispatch
+              </button>
             </td>
           </tr>
         </tbody>

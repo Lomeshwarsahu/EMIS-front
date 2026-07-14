@@ -22,6 +22,7 @@ import { SupplierAcceptedReportComponent } from './component/Suppliers/supplier-
 import { SupplierReceiptComplainComponent } from './component/Suppliers/supplier-receipt-complain/supplier-receipt-complain.component';
 import { SupplierEmdDepositComponent } from './component/Suppliers/supplier-emd-deposit/supplier-emd-deposit.component';
 import { SupplierPaymentReportComponent } from './component/Suppliers/supplier-payment-report/supplier-payment-report.component';
+import { SupplierSanctionReportComponent } from './component/Suppliers/supplier-sanction-report/supplier-sanction-report.component';
 import { SupplierPendingReceiptInstallationComponent } from './component/Suppliers/supplier-pending-receipt-installation/supplier-pending-receipt-installation.component';
 import { LogoutComponent } from './component/auth/logout/logout.component';
 import { RouteGuardService } from './service/authentication/route-guard.service';
@@ -316,6 +317,22 @@ const routes: Routes = [
   {
     path: 'PaymentReport',
     redirectTo: 'reports/payment-report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'reports/sanction-report',
+    component: SupplierSanctionReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'SanctionsRDLC',
+    redirectTo: 'reports/sanction-report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Payment/SanctionsRDLC',
+    redirectTo: 'reports/sanction-report',
     pathMatch: 'full',
   },
   {

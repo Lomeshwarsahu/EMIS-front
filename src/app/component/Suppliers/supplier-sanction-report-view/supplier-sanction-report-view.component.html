@@ -1,0 +1,151 @@
+<div class="report-page">
+  <div class="print-toolbar no-print">
+    <button
+      type="button"
+      class="print-action-btn"
+      (click)="printReport()"
+      [disabled]="!report || loading">
+      Print
+    </button>
+  </div>
+
+  <app-supplier-page-skeleton *ngIf="loading" type="lines" [rows]="16" />
+  <div *ngIf="!loading && loadError" class="error-text">{{ loadError }}</div>
+
+  <div [id]="printContainerId" *ngIf="!loading && report && !loadError" class="report-card">
+    <div class="title">Sanction Report</div>
+
+    <div class="meta">
+      <div><strong>Sanction No :-</strong> {{ report.sanctionNo || report.sanctionId }}</div>
+      <div><strong>Sanction Date :-</strong> {{ report.sanctionDate || '—' }}</div>
+      <div><strong>Fin. Receipt Date :-</strong> {{ report.finReceiptDate || '—' }}</div>
+      <div><strong>PO No :-</strong> {{ report.poNo }}</div>
+      <div><strong>PO Date :-</strong> {{ report.poDate }}</div>
+      <div><strong>Year :-</strong> {{ report.accYear }}</div>
+      <div><strong>Supplier :-</strong> {{ report.supplierName }}</div>
+      <div><strong>Tender / Scheme :-</strong> {{ report.schemeName }}</div>
+      <div><strong>Outward No :-</strong> {{ report.outwardNo || '—' }}</div>
+      <div><strong>SO Issue Date :-</strong> {{ report.soIssueDate || '—' }}</div>
+      <div><strong>Supplier GST :-</strong> {{ report.supGst || '—' }}</div>
+      <div><strong>HSN Code :-</strong> {{ report.hsnCode || '—' }}</div>
+      <div *ngIf="report.remarks && report.remarks !== '-'">
+        <strong>Remarks :-</strong> {{ report.remarks }}
+      </div>
+    </div>
+
+    <div class="section">PO Item Details</div>
+    <table>
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Item Code</th>
+          <th>Item Name</th>
+          <th>GST %</th>
+          <th>Basic Rate</th>
+          <th>Final Rate</th>
+          <th>PO Qty</th>
+          <th>PO Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of report.items; let i = index">
+          <td class="center">{{ i + 1 }}</td>
+          <td>{{ item.itemCode }}</td>
+          <td>{{ item.itemName }}</td>
+          <td class="right">{{ item.percentValue }}</td>
+          <td class="right">{{ item.basicRate }}</td>
+          <td class="right">{{ item.finalRate }}</td>
+          <td class="right">{{ item.poQty }}</td>
+          <td class="right">{{ item.poValue }}</td>
+        </tr>
+        <tr *ngIf="!report.items.length">
+          <td colspan="8" class="center">No item details.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section">Sanction Invoice Lines</div>
+    <table>
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Location</th>
+          <th>Invoice No</th>
+          <th>Invoice Date</th>
+          <th>Ordered Qty</th>
+          <th>Abs. Qty</th>
+          <th>Type</th>
+          <th>Invoice Value</th>
+          <th>Received Date</th>
+          <th>Days</th>
+          <th>LD Days</th>
+          <th>Penalty</th>
+          <th>Logo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let line of report.lines; let i = index">
+          <td class="center">{{ i + 1 }}</td>
+          <td>{{ line.locationName }}</td>
+          <td>{{ line.invoiceNo }}</td>
+          <td>{{ line.invoiceDate }}</td>
+          <td class="right">{{ line.orderedQty }}</td>
+          <td class="right">{{ line.invoiceAbsQty }}</td>
+          <td class="center">{{ line.paymentType }}</td>
+          <td class="right">{{ line.invoiceValueOnBill }}</td>
+          <td>{{ line.receivedDate }}</td>
+          <td class="right">{{ line.daysTaken }}</td>
+          <td class="right">{{ line.ldDays }}</td>
+          <td class="right">{{ line.penaltyAmount }}</td>
+          <td class="center">{{ line.logo }}</td>
+        </tr>
+        <tr *ngIf="!report.lines.length">
+          <td colspan="13" class="center">No sanction invoice lines.</td>
+        </tr>
+        <tr class="summary-row" *ngIf="report.lines.length">
+          <td colspan="7" class="right">Gross Invoice Amount</td>
+          <td class="right">{{ report.grossInvoiceAmount }}</td>
+          <td colspan="5">{{ report.grossAmountWords }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section">Deductions / Additions</div>
+    <table>
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Tax / Charge</th>
+          <th>Category</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tax of report.taxes; let i = index">
+          <td class="center">{{ i + 1 }}</td>
+          <td>{{ tax.taxTypeName }}</td>
+          <td class="center">{{ tax.taxCategory }}</td>
+          <td class="right">{{ tax.taxValue }}</td>
+        </tr>
+        <tr *ngIf="!report.taxes.length">
+          <td colspan="4" class="center">No tax lines.</td>
+        </tr>
+        <tr class="summary-row">
+          <td colspan="3" class="right">Total Deductions</td>
+          <td class="right">{{ report.totalDeductions }}</td>
+        </tr>
+        <tr class="summary-row">
+          <td colspan="3" class="right">Total Additions</td>
+          <td class="right">{{ report.totalAdditions }}</td>
+        </tr>
+        <tr class="summary-row">
+          <td colspan="3" class="right">Amount Paid</td>
+          <td class="right">{{ report.paidAmount }}</td>
+        </tr>
+        <tr>
+          <td colspan="4"><strong>Amount in Words :-</strong> {{ report.paidAmountWords }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

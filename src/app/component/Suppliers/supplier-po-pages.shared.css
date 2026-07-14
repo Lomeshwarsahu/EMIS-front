@@ -697,6 +697,10 @@ table.filter-panel .label-col {
   width: 14%;
 }
 
+.supplier-po-page .header-grid td:nth-child(odd)::after {
+  content: ' :';
+}
+
 :host-context(html[data-theme='dark']) .supplier-po-page .header-grid {
   background: var(--table-cell-bg);
   border-color: var(--table-wrap-border);
@@ -833,6 +837,22 @@ table.filter-panel .label-col {
 .detail-header-item .label {
   font-weight: 700;
   color: #334155;
+}
+
+.detail-header-item .label::after {
+  content: ' :';
+}
+
+.detail-form-table .label-col::after {
+  content: ' :';
+}
+
+.detail-form-table .label-col:has(> .lbl)::after {
+  content: none;
+}
+
+.detail-form-table .label-col > .lbl::after {
+  content: ' :';
 }
 
 .detail-header-item .value {
