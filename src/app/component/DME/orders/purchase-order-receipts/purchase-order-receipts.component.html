@@ -32,7 +32,9 @@
       </button>
     </div>
 
-    <div class="table-wrap">
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="9" />
+
+    <div class="table-wrap" *ngIf="!loading">
       <table class="orders-grid por-grid">
         <colgroup>
           <col class="col-sno" />
@@ -112,10 +114,7 @@
               </ng-template>
             </td>
           </tr>
-          <tr *ngIf="loading">
-            <td colspan="9" class="empty-row">Loading…</td>
-          </tr>
-          <tr *ngIf="!loading && !rows.length">
+          <tr *ngIf="!rows.length">
             <td colspan="9" class="empty-row">
               <div class="empty-state">
                 <p>No records found.</p>

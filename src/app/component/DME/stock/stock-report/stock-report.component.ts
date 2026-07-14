@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
+import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 
 interface MainEquipmentType {
   Pid: number;
@@ -28,7 +29,7 @@ interface CovidStockRow {
 @Component({
   selector: 'app-stock-report',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './stock-report.component.html',
   styleUrls: ['./stock-report.component.css'],
 })

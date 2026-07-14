@@ -19,12 +19,14 @@
       </select>
 
       <button type="button" class="show-btn" (click)="loadGrid()" [disabled]="loading">
-        {{ loading ? 'Loading…' : 'Refresh' }}
+        Refresh
       </button>
       <button type="button" class="show-btn accent-btn" (click)="addNew()">Add New</button>
     </div>
 
-    <div class="table-wrap">
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
+
+    <div class="table-wrap" *ngIf="!loading">
       <table class="stock-grid">
         <thead>
           <tr>
@@ -62,10 +64,7 @@
               <button type="button" class="edit-btn" title="Edit" (click)="editRow(row)">Edit</button>
             </td>
           </tr>
-          <tr *ngIf="loading">
-            <td colspan="12" class="empty-row">Loading…</td>
-          </tr>
-          <tr *ngIf="!loading && !rows.length">
+          <tr *ngIf="!rows.length">
             <td colspan="12" class="empty-row">
               <div class="empty-state">
                 <p>No records found. Select equipment type or click Add New.</p>

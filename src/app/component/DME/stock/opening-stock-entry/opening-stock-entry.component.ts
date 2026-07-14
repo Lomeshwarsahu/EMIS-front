@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { NewOpeningStockEntryComponent } from '../new-opening-stock-entry/new-opening-stock-entry.component';
+import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 
 interface MainEquipmentType {
   Pid: number;
@@ -29,7 +30,7 @@ interface OpeningStockRow {
 @Component({
   selector: 'app-opening-stock-entry',
   standalone: true,
-  imports: [CommonModule, FormsModule, NewOpeningStockEntryComponent],
+  imports: [CommonModule, FormsModule, NewOpeningStockEntryComponent, DmePageSkeletonComponent],
   templateUrl: './opening-stock-entry.component.html',
   styleUrls: ['./opening-stock-entry.component.css'],
 })

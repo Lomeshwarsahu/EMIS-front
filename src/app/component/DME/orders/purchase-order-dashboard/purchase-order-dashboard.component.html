@@ -33,7 +33,9 @@
       </button>
     </div>
 
-    <div class="table-wrap">
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
+
+    <div class="table-wrap" *ngIf="!loading">
       <table class="orders-grid">
         <thead>
           <tr>
@@ -96,10 +98,7 @@
               <button type="button" class="print-btn" title="Print PO">Print</button>
             </td>
           </tr>
-          <tr *ngIf="loading">
-            <td colspan="12" class="empty-row">Loading…</td>
-          </tr>
-          <tr *ngIf="!loading && !rows.length">
+          <tr *ngIf="!rows.length">
             <td colspan="12" class="empty-row">
               <div class="empty-state">
                 <p>No purchase orders found.</p>

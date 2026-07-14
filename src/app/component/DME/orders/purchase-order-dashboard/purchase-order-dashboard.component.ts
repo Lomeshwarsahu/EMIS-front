@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
+import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 
 interface FinancialYearOption {
   FinancialYearId: number;
@@ -37,7 +38,7 @@ interface PoDashboardRow {
 @Component({
   selector: 'app-purchase-order-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './purchase-order-dashboard.component.html',
   styleUrls: ['./purchase-order-dashboard.component.css'],
 })

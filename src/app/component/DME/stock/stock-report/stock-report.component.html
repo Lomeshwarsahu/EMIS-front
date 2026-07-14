@@ -52,7 +52,9 @@
       </button>
     </div>
 
-    <div class="table-wrap">
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="11" />
+
+    <div class="table-wrap" *ngIf="!loading">
       <table class="stock-grid">
         <thead>
           <tr>
@@ -86,10 +88,7 @@
             <td>{{ row.SuppliedFrom || '—' }}</td>
             <td>{{ row.Remarks || '—' }}</td>
           </tr>
-          <tr *ngIf="loading">
-            <td colspan="11" class="empty-row">Loading…</td>
-          </tr>
-          <tr *ngIf="!loading && !rows.length">
+          <tr *ngIf="!rows.length">
             <td colspan="11" class="empty-row">
               <div class="empty-state">
                 <p>No records found.</p>
