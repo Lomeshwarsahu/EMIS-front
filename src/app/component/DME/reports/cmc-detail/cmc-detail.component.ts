@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
+import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 import { apiErrorMessage } from '../../shared/session.util';
 
 interface CmcItemOption {
@@ -30,7 +31,7 @@ interface CmcDetailRow {
 @Component({
   selector: 'app-cmc-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './cmc-detail.component.html',
   styleUrls: ['./cmc-detail.component.css'],
 })
@@ -46,6 +47,10 @@ export class CmcDetailComponent implements OnInit {
   loading = false;
   tendersLoading = false;
 
+  get hasActiveFilter(): boolean {
+    return (this.selectedItemCode !== '0' && !!this.selectedItemCode) || this.selectedTenderId > 0;
+  }
+
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
@@ -53,12 +58,15 @@ export class CmcDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadItems();
+    this.loadDetail();
   }
 
   onItemChange(): void {
     this.selectedTenderId = 0;
     this.tenderOptions = [];
+
     if (!this.selectedItemCode || this.selectedItemCode === '0') {
+      this.loadDetail();
       return;
     }
 
@@ -69,20 +77,28 @@ export class CmcDetailComponent implements OnInit {
         next: (res) => {
           this.tenderOptions = this.mapTenders(res);
           this.tendersLoading = false;
+          this.loadDetail();
         },
         error: (e) => {
           this.tendersLoading = false;
           this.toastr.error(apiErrorMessage(e, 'Could not load tenders.'));
+          this.loadDetail();
         },
       });
   }
 
-  show(): void {
-    if (this.selectedItemCode && this.selectedItemCode !== '0' && !this.selectedTenderId) {
-      this.toastr.warning('Please select Tender.');
-      return;
-    }
+  onTenderChange(): void {
+    this.loadDetail();
+  }
 
+  clearFilters(): void {
+    this.selectedItemCode = '0';
+    this.selectedTenderId = 0;
+    this.tenderOptions = [];
+    this.loadDetail();
+  }
+
+  loadDetail(): void {
     this.loading = true;
     const params = new URLSearchParams();
     if (this.selectedItemCode && this.selectedItemCode !== '0') {
@@ -97,9 +113,6 @@ export class CmcDetailComponent implements OnInit {
       next: (res) => {
         this.rows = this.mapRows(res);
         this.loading = false;
-        if (!this.rows.length) {
-          this.toastr.info('No record found.');
-        }
       },
       error: (e) => {
         this.loading = false;

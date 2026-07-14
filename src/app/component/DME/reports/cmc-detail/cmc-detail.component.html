@@ -6,6 +6,7 @@
         [(ngModel)]="selectedItemCode"
         name="selectedItemCode"
         (ngModelChange)="onItemChange()"
+        [disabled]="loading"
         [class.is-placeholder]="selectedItemCode === '0'">
         <option *ngFor="let i of itemOptions" [ngValue]="i.ItemCodeAsPerTender">{{ i.ItemName }}</option>
       </select>
@@ -14,21 +15,30 @@
         aria-label="Tender No"
         [(ngModel)]="selectedTenderId"
         name="selectedTenderId"
-        [disabled]="!selectedItemCode || selectedItemCode === '0' || tendersLoading"
+        (ngModelChange)="onTenderChange()"
+        [disabled]="!selectedItemCode || selectedItemCode === '0' || tendersLoading || loading"
         [class.is-placeholder]="selectedTenderId === 0">
-        <option [ngValue]="0">{{ tendersLoading ? 'Loading…' : 'Select Tender' }}</option>
+        <option [ngValue]="0">{{ tendersLoading ? 'Loading tenders…' : 'Select Tender' }}</option>
         <option *ngFor="let t of tenderOptions" [ngValue]="t.TenderId">{{ t.TenderNo }}</option>
       </select>
 
-      <button type="button" class="show-btn" (click)="show()" [disabled]="loading">
-        {{ loading ? 'Loading…' : 'Show' }}
+      <button
+        *ngIf="hasActiveFilter"
+        type="button"
+        class="clear-btn"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
       </button>
+
       <button type="button" class="show-btn accent-btn" (click)="exportExcel()" [disabled]="loading || !rows.length">
         Export
       </button>
     </div>
 
-    <div class="table-wrap">
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="9" />
+
+    <div class="table-wrap" *ngIf="!loading">
       <table class="cmc-grid emis-full-width-table">
         <colgroup>
           <col class="col-sn" />
@@ -66,13 +76,10 @@
             <td class="text-center">{{ row.Cmc4 }}</td>
             <td class="text-center">{{ row.Cmc5 }}</td>
           </tr>
-          <tr *ngIf="loading">
-            <td colspan="9" class="empty-row">Loading…</td>
-          </tr>
-          <tr *ngIf="!loading && !rows.length">
+          <tr *ngIf="!rows.length">
             <td colspan="9" class="empty-row">
               <div class="empty-state">
-                <p>No CMC detail found. Select filters and click Show.</p>
+                <p>No CMC detail found.</p>
               </div>
             </td>
           </tr>
