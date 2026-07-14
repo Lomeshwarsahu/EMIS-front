@@ -21,6 +21,7 @@
         <thead>
           <tr>
             <th class="col-sn text-center">S.No</th>
+            <th class="text-center">Indent Id</th>
             <th>MC/MCH Name</th>
             <th class="text-center">Indent Initiation Date</th>
             <th>AS Letter No</th>
@@ -38,6 +39,7 @@
         <tbody>
           <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
             <td class="text-center">{{ i + 1 }}</td>
+            <td class="text-center">{{ row.IndentId }}</td>
             <td>{{ row.McName || '—' }}</td>
             <td class="text-center">{{ row.ConsolidatedDate || '—' }}</td>
             <td>{{ row.AsLetterNo || '—' }}</td>
@@ -63,7 +65,7 @@
                 class="add-btn"
                 [disabled]="isCompleted(row.EStatus)"
                 (click)="onAddIndent(row)"
-                title="Add indent items">
+                [title]="'Add indent items for #' + row.IndentId">
                 +
               </button>
             </td>
@@ -82,10 +84,10 @@
             </td>
           </tr>
           <tr *ngIf="loading">
-            <td colspan="13" class="empty-row">Loading…</td>
+            <td colspan="14" class="empty-row">Loading…</td>
           </tr>
           <tr *ngIf="!loading && !rows.length">
-            <td colspan="13" class="empty-row">
+            <td colspan="14" class="empty-row">
               <div class="empty-state">
                 <p>No annual indents found for the selected filter.</p>
               </div>

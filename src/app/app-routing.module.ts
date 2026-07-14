@@ -72,6 +72,8 @@ import { PurchaseOrderDashboardComponent } from './component/DME/orders/purchase
 import { PurchaseOrderReceiptsComponent } from './component/DME/orders/purchase-order-receipts/purchase-order-receipts.component';
 import { DmeFacHeadsComponent } from './component/DME/indent/dme-fac-heads/dme-fac-heads.component';
 import { ConsolidatedIndentDmeComponent } from './component/DME/indent/consolidated-indent-dme/consolidated-indent-dme.component';
+import { DmeFacAddIndentComponent } from './component/DME/indent/dme-fac-add-indent/dme-fac-add-indent.component';
+import { DmeFacIndentReportComponent } from './component/DME/indent/dme-fac-indent-report/dme-fac-indent-report.component';
 import { CmcDetailComponent } from './component/DME/reports/cmc-detail/cmc-detail.component';
 import { FacilityComplainStoreComponent } from './component/DME/complain/facility-complain-store/facility-complain-store.component';
 import { TenderCoverAComponent } from './component/BME/tender-cover-a/tender-cover-a.component';
@@ -882,6 +884,28 @@ const routes: Routes = [
     component: ConsolidatedIndentDmeComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'indents/annual-indent-items',
+    component: DmeFacAddIndentComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'indents/annual-indent-report',
+    component: DmeFacIndentReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'DMEFACADDIndent',
+    redirectTo: 'indents/annual-indent-items',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Indent_ReportDME_MCwise',
+    redirectTo: 'indents/annual-indent-report',
+    pathMatch: 'full',
   },
   {
     path: 'indents/from-facilities',

@@ -456,6 +456,15 @@ canvas {
   border-collapse: collapse;
 }
 
+/* Full-width fixed tables (Budget Heads, short master lists) */
+.page-outlet-wrapper .table-wrap table.emis-full-width-table,
+.emis-page-content .table-wrap table.emis-full-width-table {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: none !important;
+  table-layout: fixed !important;
+}
+
 .page-outlet-wrapper .legacy-fixed-table,
 .emis-page-content .legacy-fixed-table {
   width: auto !important;
@@ -480,6 +489,14 @@ canvas {
   word-wrap: normal;
   overflow-wrap: normal;
   vertical-align: middle;
+}
+
+.page-outlet-wrapper .table-wrap table.emis-full-width-table th,
+.page-outlet-wrapper .table-wrap table.emis-full-width-table td,
+.emis-page-content .table-wrap table.emis-full-width-table th,
+.emis-page-content .table-wrap table.emis-full-width-table td {
+  white-space: normal;
+  word-break: break-word;
 }
 
 .page-outlet-wrapper .datagrid .wrap-cell,

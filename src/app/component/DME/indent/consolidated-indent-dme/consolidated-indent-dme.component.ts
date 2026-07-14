@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { apiErrorMessage, resolveLoginUserId } from '../../shared/session.util';
@@ -59,6 +60,7 @@ export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -144,11 +146,19 @@ export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
   }
 
   onAddIndent(row: FacilityIndentRow): void {
-    this.toastr.info(`Add indent items for #${row.IndentId} — detail screen coming soon.`);
+    if (this.isCompleted(row.EStatus)) {
+      this.toastr.warning('Indent is completed. Items cannot be added.');
+      return;
+    }
+    this.router.navigate(['/indents/annual-indent-items'], {
+      queryParams: { indentId: row.IndentId },
+    });
   }
 
   onShowIndent(row: FacilityIndentRow): void {
-    this.toastr.info(`Indent report for #${row.IndentId} — coming soon.`);
+    this.router.navigate(['/indents/annual-indent-report'], {
+      queryParams: { indentId: row.IndentId },
+    });
   }
 
   onDownload(row: FacilityIndentRow): void {
@@ -156,7 +166,65 @@ export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
       this.toastr.warning('File not uploaded for this indent.');
       return;
     }
-    this.toastr.info('Download requires legacy file path — coming soon.');
+    if (!this.userId) {
+      this.toastr.warning('Please login again — user id missing.');
+      return;
+    }
+
+    this.http
+      .get(`${this.orderApi}facility-indents/${row.IndentId}/download?userId=${this.userId}`, {
+        responseType: 'blob',
+        observe: 'response',
+      })
+      .subscribe({
+        next: (res) => {
+          const blob = res.body;
+          if (!blob || blob.size === 0) {
+            this.toastr.error('File not found.');
+            return;
+          }
+          // API may return JSON error with blob content-type mistaken — check JSON.
+          if (blob.type && blob.type.includes('application/json')) {
+            blob.text().then((t) => {
+              try {
+                const parsed = JSON.parse(t) as { message?: string };
+                this.toastr.error(parsed.message || 'Could not download file.');
+              } catch {
+                this.toastr.error('Could not download file.');
+              }
+            });
+            return;
+          }
+
+          const cd = res.headers.get('content-disposition') || '';
+          const match = /filename\*?=(?:UTF-8''|")?([^\";]+)/i.exec(cd);
+          const fileName = match
+            ? decodeURIComponent(match[1].replace(/"/g, '').trim())
+            : `indent_${row.IndentId}.pdf`;
+
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName;
+          a.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: async (e) => {
+          let msg = 'Could not download file.';
+          const errBlob = e?.error;
+          if (errBlob instanceof Blob) {
+            try {
+              const parsed = JSON.parse(await errBlob.text()) as { message?: string };
+              if (parsed.message) {
+                msg = parsed.message;
+              }
+            } catch {
+              /* keep default */
+            }
+          }
+          this.toastr.error(msg);
+        },
+      });
   }
 
   isCompleted(status: string): boolean {
