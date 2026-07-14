@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
+import { NewOpeningStockEntryComponent } from '../new-opening-stock-entry/new-opening-stock-entry.component';
 
 interface MainEquipmentType {
   Pid: number;
@@ -29,11 +29,11 @@ interface OpeningStockRow {
 @Component({
   selector: 'app-opening-stock-entry',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, NewOpeningStockEntryComponent],
   templateUrl: './opening-stock-entry.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './opening-stock-entry.component.css'],
+  styleUrls: ['./opening-stock-entry.component.css'],
 })
-export class OpeningStockEntryComponent implements OnInit {
+export class OpeningStockEntryComponent implements OnInit, OnDestroy {
   private readonly apiRoot = `${environment.apiUrl}/DMEStock/`;
 
   equipmentTypes: MainEquipmentType[] = [];
@@ -43,10 +43,14 @@ export class OpeningStockEntryComponent implements OnInit {
   loading = false;
   userId = 0;
 
+  showFormModal = false;
+  formEditItemId = 0;
+  /** Bumps so embedded form remounts cleanly each open. */
+  formInstanceKey = 0;
+
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
-    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -55,18 +59,36 @@ export class OpeningStockEntryComponent implements OnInit {
     this.loadGrid();
   }
 
+  ngOnDestroy(): void {
+    document.body.classList.remove('emis-modal-open');
+  }
+
   onEquipmentChange(): void {
     this.loadGrid();
   }
 
   addNew(): void {
-    void this.router.navigate(['/stock/new-opening-stock-entry']);
+    this.formEditItemId = 0;
+    this.formInstanceKey += 1;
+    this.showFormModal = true;
+    document.body.classList.add('emis-modal-open');
   }
 
   editRow(row: OpeningStockRow): void {
-    void this.router.navigate(['/stock/new-opening-stock-entry'], {
-      queryParams: { existingItemId: row.ExistingItemId, mode: 'Edit' },
-    });
+    this.formEditItemId = row.ExistingItemId;
+    this.formInstanceKey += 1;
+    this.showFormModal = true;
+    document.body.classList.add('emis-modal-open');
+  }
+
+  closeFormModal(): void {
+    this.showFormModal = false;
+    document.body.classList.remove('emis-modal-open');
+  }
+
+  onFormSaved(): void {
+    this.closeFormModal();
+    this.loadGrid();
   }
 
   loadGrid(): void {
@@ -96,7 +118,7 @@ export class OpeningStockEntryComponent implements OnInit {
     this.http.get<MainEquipmentType[]>(`${this.apiRoot}main-equipment-types`).subscribe({
       next: (res) => {
         this.equipmentTypes = [
-          { Pid: 0, PItemName: '-Select-' },
+          { Pid: 0, PItemName: 'All Equipment Types' },
           ...this.mapTypes(res),
         ];
       },

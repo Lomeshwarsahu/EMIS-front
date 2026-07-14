@@ -32,7 +32,7 @@ interface CmcDetailRow {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './cmc-detail.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css'],
+  styleUrls: ['./cmc-detail.component.css'],
 })
 export class CmcDetailComponent implements OnInit {
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
@@ -44,6 +44,7 @@ export class CmcDetailComponent implements OnInit {
   selectedItemCode = '0';
   selectedTenderId = 0;
   loading = false;
+  tendersLoading = false;
 
   constructor(
     private readonly http: HttpClient,
@@ -61,11 +62,18 @@ export class CmcDetailComponent implements OnInit {
       return;
     }
 
+    this.tendersLoading = true;
     this.http
       .get<CmcTenderOption[]>(`${this.apiRoot}cmc-tenders?itemCode=${encodeURIComponent(this.selectedItemCode)}`)
       .subscribe({
-        next: (res) => (this.tenderOptions = this.mapTenders(res)),
-        error: (e) => this.toastr.error(apiErrorMessage(e, 'Could not load tenders.')),
+        next: (res) => {
+          this.tenderOptions = this.mapTenders(res);
+          this.tendersLoading = false;
+        },
+        error: (e) => {
+          this.tendersLoading = false;
+          this.toastr.error(apiErrorMessage(e, 'Could not load tenders.'));
+        },
       });
   }
 
@@ -89,6 +97,9 @@ export class CmcDetailComponent implements OnInit {
       next: (res) => {
         this.rows = this.mapRows(res);
         this.loading = false;
+        if (!this.rows.length) {
+          this.toastr.info('No record found.');
+        }
       },
       error: (e) => {
         this.loading = false;

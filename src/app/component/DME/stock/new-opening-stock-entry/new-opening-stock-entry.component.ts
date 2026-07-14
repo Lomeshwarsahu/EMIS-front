@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -16,10 +16,16 @@ interface OptionItem {
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './new-opening-stock-entry.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './new-opening-stock-entry.component.css'],
+  styleUrls: ['./new-opening-stock-entry.component.css'],
 })
 export class NewOpeningStockEntryComponent implements OnInit {
   private readonly apiRoot = `${environment.apiUrl}/DMEStock/`;
+
+  /** When true, form is shown inside Opening Stock Reports popup (no route navigation). */
+  @Input() embedded = false;
+  @Input() editExistingItemId = 0;
+  @Output() closed = new EventEmitter<void>();
+  @Output() saved = new EventEmitter<void>();
 
   userId = 0;
   existingItemId = 0;
@@ -68,8 +74,15 @@ export class NewOpeningStockEntryComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = this.resolveUserId();
-    this.existingItemId = Number(this.route.snapshot.queryParamMap.get('existingItemId') ?? 0);
-    this.isEdit = this.route.snapshot.queryParamMap.get('mode') === 'Edit' && this.existingItemId > 0;
+
+    if (this.embedded) {
+      this.existingItemId = Number(this.editExistingItemId || 0);
+      this.isEdit = this.existingItemId > 0;
+    } else {
+      this.existingItemId = Number(this.route.snapshot.queryParamMap.get('existingItemId') ?? 0);
+      this.isEdit = this.route.snapshot.queryParamMap.get('mode') === 'Edit' && this.existingItemId > 0;
+    }
+
     if (this.isEdit) {
       this.pageTitle = 'Updation of Existing Equipment';
       this.saveLabel = 'Update';
@@ -173,7 +186,11 @@ export class NewOpeningStockEntryComponent implements OnInit {
       next: (res) => {
         this.saving = false;
         this.toastr.success(res?.message ?? 'Saved successfully');
-        void this.router.navigate(['/stock/opening-stock-entry']);
+        if (this.embedded) {
+          this.saved.emit();
+        } else {
+          void this.router.navigate(['/stock/opening-stock-entry']);
+        }
       },
       error: (e) => {
         this.saving = false;
@@ -183,6 +200,10 @@ export class NewOpeningStockEntryComponent implements OnInit {
   }
 
   back(): void {
+    if (this.embedded) {
+      this.closed.emit();
+      return;
+    }
     void this.router.navigate(['/stock/opening-stock-entry']);
   }
 

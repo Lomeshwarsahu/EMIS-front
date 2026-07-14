@@ -1,88 +1,118 @@
-<div class="ems-legacy-page">
-  <div class="header-wrap">
-    <span class="header-bar">Complaint of Warranty Valid Equipments</span>
+<div class="dme-complain-page">
+  <div class="form-card">
+    <div class="form-grid">
+      <label class="field">
+        <span class="field-label">Equipment</span>
+        <select
+          [(ngModel)]="selectedItemId"
+          name="selectedItemId"
+          (ngModelChange)="onItemChange()"
+          [class.is-placeholder]="selectedItemId === 0"
+          [disabled]="saving">
+          <option *ngFor="let i of items" [ngValue]="i.ItemId">{{ i.ItemName }}</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span class="field-label">Complain Date</span>
+        <input type="date" [(ngModel)]="complainDateIso" name="complainDateIso" [disabled]="true" />
+      </label>
+
+      <label class="field">
+        <span class="field-label">Equipment Not Functioning Since</span>
+        <input
+          type="date"
+          [(ngModel)]="notFunctionDateIso"
+          name="notFunctionDateIso"
+          [disabled]="saving" />
+      </label>
+
+      <label class="field">
+        <span class="field-label">Problems</span>
+        <select
+          [(ngModel)]="selectedTroubleId"
+          name="selectedTroubleId"
+          [class.is-placeholder]="selectedTroubleId === 0"
+          [disabled]="saving">
+          <option *ngFor="let t of troubles" [ngValue]="t.TroubleId">{{ t.TroubleText }}</option>
+        </select>
+      </label>
+
+      <label class="field field-span-2">
+        <span class="field-label">Equipment / Serial No / Department</span>
+        <select
+          [(ngModel)]="selectedDeptId"
+          name="selectedDeptId"
+          (ngModelChange)="onDeptChange()"
+          [class.is-placeholder]="selectedDeptId === 0"
+          [disabled]="saving || !selectedItemId || deptsLoading">
+          <option [ngValue]="0">
+            {{ deptsLoading ? 'Loading…' : !selectedItemId ? 'Select Equipment first' : 'Select Department' }}
+          </option>
+          <option *ngFor="let d of departments" [ngValue]="d.ItemDetailId">
+            {{ d.Label }}
+          </option>
+        </select>
+      </label>
+
+      <label class="field field-span-2">
+        <span class="field-label">Complain Summary</span>
+        <textarea
+          [(ngModel)]="complainDetails"
+          name="complainDetails"
+          rows="4"
+          maxlength="2000"
+          placeholder="Describe the complaint…"
+          [disabled]="saving"></textarea>
+      </label>
+    </div>
   </div>
 
-  <div class="datagrid">
-    <table class="panel-table">
-      <tbody>
-        <tr>
-          <td>
-            <table class="form-table">
-              <tr>
-                <td class="label-col">Equipment</td>
-                <td>
-                  <select class="legacy-select" style="min-width: 210px" [(ngModel)]="selectedItemId" (ngModelChange)="onItemChange()">
-                    <option *ngFor="let i of items" [ngValue]="i.ItemId">{{ i.ItemName }}</option>
-                  </select>
-                </td>
-                <td class="label-col">Complain Date</td>
-                <td><input class="legacy-input" [(ngModel)]="complainDate" readonly /></td>
-              </tr>
-              <tr>
-                <td class="label-col">Equipment Not Functioning Since</td>
-                <td><input class="legacy-input" [(ngModel)]="notFunctionDate" placeholder="dd/MM/yyyy" /></td>
-                <td class="label-col">Problems</td>
-                <td>
-                  <select class="legacy-select" style="min-width: 210px" [(ngModel)]="selectedTroubleId">
-                    <option *ngFor="let t of troubles" [ngValue]="t.TroubleId">{{ t.TroubleText }}</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td class="label-col">Equipment/Serial No/Department</td>
-                <td colspan="3">
-                  <select class="legacy-select" style="min-width: 210px" [(ngModel)]="selectedDeptId" (ngModelChange)="onDeptChange()">
-                    <option *ngFor="let d of departments" [ngValue]="d.ItemDetailId">{{ d.Label }}</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td class="label-col">Supplier Name</td>
-                <td class="readonly-val">{{ detail?.SupplierName || '---' }}</td>
-                <td class="label-col" rowspan="3">Complain Summary</td>
-                <td rowspan="3">
-                  <textarea class="legacy-textarea" [(ngModel)]="complainDetails"></textarea>
-                </td>
-              </tr>
-              <tr>
-                <td class="label-col">Supplier Contact</td>
-                <td class="readonly-val">{{ detail?.SupplierMobile || '---' }}</td>
-              </tr>
-              <tr>
-                <td class="label-col">Supplier Email</td>
-                <td class="readonly-val">{{ detail?.SupplierEmail || '---' }}</td>
-              </tr>
-              <tr>
-                <td class="label-col">Warranty Valid Date</td>
-                <td class="readonly-val">{{ detail?.WarrantyValidDate || '---' }}</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td class="label-col">Location</td>
-                <td class="readonly-val" colspan="3">{{ detail?.LocationName || '---' }}</td>
-              </tr>
-              <tr>
-                <td colspan="4">
-                  <strong>Upload PDF Signed Copy of Authorized Incharge</strong>
-                  <input type="file" accept=".pdf,application/pdf" (change)="onFileSelected($event)" />
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <button type="button" class="btn-legacy" (click)="sendComplain()" [disabled]="saving">
-                    {{ saving ? 'Sending…' : 'Send Complain' }}
-                  </button>
-                </td>
-                <td colspan="2">
-                  <button type="button" class="btn-legacy btn-secondary" (click)="reset()">Reset</button>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="detail-card">
+    <h3 class="section-title">Supplier / Equipment Details</h3>
+    <div class="detail-grid" *ngIf="!detailLoading; else detailLoadingTpl">
+      <div class="detail-item">
+        <span class="label">Supplier Name</span>
+        <span class="value">{{ detail?.SupplierName || '—' }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Supplier Contact</span>
+        <span class="value">{{ detail?.SupplierMobile || '—' }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Supplier Email</span>
+        <span class="value">{{ detail?.SupplierEmail || '—' }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Warranty Valid Date</span>
+        <span class="value">{{ detail?.WarrantyValidDate || '—' }}</span>
+      </div>
+      <div class="detail-item field-span-2">
+        <span class="label">Location</span>
+        <span class="value">{{ detail?.LocationName || '—' }}</span>
+      </div>
+    </div>
+    <ng-template #detailLoadingTpl>
+      <div class="detail-loading">Loading supplier details…</div>
+    </ng-template>
+  </div>
+
+  <div class="form-card upload-card">
+    <h3 class="section-title">Upload PDF Signed Copy of Authorized Incharge</h3>
+    <div class="upload-row">
+      <label class="file-btn">
+        Choose PDF
+        <input type="file" accept=".pdf,application/pdf" (change)="onFileSelected($event)" [disabled]="saving" />
+      </label>
+      <span class="file-name" [class.has-file]="!!selectedFileName">
+        {{ selectedFileName || 'No file selected' }}
+      </span>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="show-btn" (click)="sendComplain()" [disabled]="saving">
+        {{ saving ? 'Sending…' : 'Send Complain' }}
+      </button>
+      <button type="button" class="ghost-btn" (click)="reset()" [disabled]="saving">Reset</button>
+    </div>
   </div>
 </div>
