@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
@@ -35,9 +35,9 @@ interface FacilityIndentRow {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './consolidated-indent-dme.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './consolidated-indent-dme.component.css'],
+  styleUrls: ['./consolidated-indent-dme.component.css'],
 })
-export class ConsolidatedIndentDmeComponent implements OnInit {
+export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
   private readonly orderApi = `${environment.apiUrl}/DMEOrder/`;
 
   financialYears: FinancialYearOption[] = [];
@@ -51,9 +51,9 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
   showNewModal = false;
   newFinancialYearId = 0;
   newBudgetId = 0;
-  newIndentDate = '';
+  newIndentDateIso = '';
   newAsLetterNo = '';
-  newAsDate = '';
+  newAsDateIso = '';
   saving = false;
 
   constructor(
@@ -66,6 +66,10 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
     this.loadFinancialYears();
     this.loadBudgetHeads();
     this.show();
+  }
+
+  ngOnDestroy(): void {
+    document.body.classList.remove('emis-modal-open');
   }
 
   show(): void {
@@ -91,16 +95,18 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
   }
 
   openNewIndent(): void {
-    this.newFinancialYearId = this.selectedFinancialYearId || this.financialYears[1]?.FinancialYearId || 0;
+    this.newFinancialYearId = this.selectedFinancialYearId || this.financialYears[0]?.FinancialYearId || 0;
     this.newBudgetId = 0;
-    this.newIndentDate = this.todayDdMmYyyy();
+    this.newIndentDateIso = this.todayIso();
     this.newAsLetterNo = '';
-    this.newAsDate = '';
+    this.newAsDateIso = '';
     this.showNewModal = true;
+    document.body.classList.add('emis-modal-open');
   }
 
   closeNewIndent(): void {
     this.showNewModal = false;
+    document.body.classList.remove('emis-modal-open');
   }
 
   saveNewIndent(): void {
@@ -108,7 +114,7 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
       this.toastr.warning('Select Financial Year and Fund/Budget.');
       return;
     }
-    if (!this.newIndentDate || !this.newAsLetterNo.trim() || !this.newAsDate) {
+    if (!this.newIndentDateIso || !this.newAsLetterNo.trim() || !this.newAsDateIso) {
       this.toastr.warning('Fill Indent Date, AS Letter No and AS Date.');
       return;
     }
@@ -119,14 +125,14 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
         UserId: this.userId,
         BudgetId: this.newBudgetId,
         FinancialYearId: this.newFinancialYearId,
-        IndentDate: this.newIndentDate,
+        IndentDate: this.fromIsoDate(this.newIndentDateIso),
         AsLetterNo: this.newAsLetterNo.trim(),
-        AsDate: this.newAsDate,
+        AsDate: this.fromIsoDate(this.newAsDateIso),
       })
       .subscribe({
         next: (res: { message?: string }) => {
           this.saving = false;
-          this.showNewModal = false;
+          this.closeNewIndent();
           this.toastr.success(res?.message ?? 'Indent created successfully.');
           this.show();
         },
@@ -177,11 +183,19 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
     });
   }
 
-  private todayDdMmYyyy(): string {
+  private todayIso(): string {
     const d = new Date();
     const dd = String(d.getDate()).padStart(2, '0');
     const mm = String(d.getMonth() + 1).padStart(2, '0');
-    return `${dd}/${mm}/${d.getFullYear()}`;
+    return `${d.getFullYear()}-${mm}-${dd}`;
+  }
+
+  private fromIsoDate(isoDate: string): string {
+    if (!isoDate) {
+      return '';
+    }
+    const [year, month, day] = isoDate.split('-');
+    return `${day}/${month}/${year}`;
   }
 
   private mapYears(raw: unknown): FinancialYearOption[] {
