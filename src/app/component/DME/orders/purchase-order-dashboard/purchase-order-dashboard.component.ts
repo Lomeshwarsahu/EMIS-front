@@ -39,7 +39,7 @@ interface PoDashboardRow {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './purchase-order-dashboard.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './purchase-order-dashboard.component.css'],
+  styleUrls: ['./purchase-order-dashboard.component.css'],
 })
 export class PurchaseOrderDashboardComponent implements OnInit {
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
@@ -53,6 +53,10 @@ export class PurchaseOrderDashboardComponent implements OnInit {
   loading = false;
   userId = 0;
 
+  get hasActiveFilter(): boolean {
+    return this.selectedFinancialYearId > 0 || (this.selectedItemCode !== '0' && !!this.selectedItemCode);
+  }
+
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
@@ -62,16 +66,22 @@ export class PurchaseOrderDashboardComponent implements OnInit {
     this.userId = this.resolveUserId();
     this.loadFinancialYears();
     this.loadEquipmentOptions();
+    this.loadOrders();
   }
 
-  show(): void {
+  onFilterChange(): void {
+    this.loadOrders();
+  }
+
+  clearFilters(): void {
+    this.selectedFinancialYearId = 0;
+    this.selectedItemCode = '0';
+    this.loadOrders();
+  }
+
+  loadOrders(): void {
     if (!this.userId) {
       this.toastr.warning('Please login again — user id missing.');
-      return;
-    }
-
-    if (this.selectedFinancialYearId <= 0 && (!this.selectedItemCode || this.selectedItemCode === '0')) {
-      this.toastr.warning('Please select PO Year or Equipment.');
       return;
     }
 
@@ -105,9 +115,7 @@ export class PurchaseOrderDashboardComponent implements OnInit {
     this.http.get<FinancialYearOption[]>(`${this.apiRoot}financial-years`).subscribe({
       next: (res) => {
         this.financialYears = this.mapYears(res);
-        if (this.financialYears.length) {
-          this.selectedFinancialYearId = this.financialYears[0].FinancialYearId;
-        }
+        this.selectedFinancialYearId = 0;
       },
       error: (e) => this.toastr.error(this.apiError(e, 'Could not load financial years.')),
     });

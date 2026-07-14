@@ -52,7 +52,7 @@ interface PoReceiptDeskRow {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './purchase-order-receipts.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './purchase-order-receipts.component.css'],
+  styleUrls: ['./purchase-order-receipts.component.css'],
 })
 export class PurchaseOrderReceiptsComponent implements OnInit {
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
@@ -67,6 +67,10 @@ export class PurchaseOrderReceiptsComponent implements OnInit {
   userId = 0;
   authorityId = '';
 
+  get hasActiveFilter(): boolean {
+    return this.selectedFinancialYearId > 0 || (this.selectedItemCode !== '0' && !!this.selectedItemCode);
+  }
+
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
@@ -77,9 +81,20 @@ export class PurchaseOrderReceiptsComponent implements OnInit {
     this.authorityId = resolveLoginAuthorityId();
     this.loadFinancialYears();
     this.loadItemOptions();
+    this.loadDesk();
   }
 
-  show(): void {
+  onFilterChange(): void {
+    this.loadDesk();
+  }
+
+  clearFilters(): void {
+    this.selectedFinancialYearId = 0;
+    this.selectedItemCode = '0';
+    this.loadDesk();
+  }
+
+  loadDesk(): void {
     if (!this.userId) {
       this.toastr.warning('Please login again — user id missing.');
       return;
@@ -125,6 +140,7 @@ export class PurchaseOrderReceiptsComponent implements OnInit {
     this.http.get<FinancialYearOption[]>(`${this.apiRoot}financial-years`).subscribe({
       next: (res) => {
         this.financialYears = this.mapYears(res);
+        this.selectedFinancialYearId = 0;
       },
       error: (e) => this.toastr.error(apiErrorMessage(e, 'Could not load financial years.')),
     });

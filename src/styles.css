@@ -465,6 +465,33 @@ canvas {
   table-layout: fixed !important;
 }
 
+/* PO Receipt Desk — fixed column layout (nested dispatch grid) */
+.page-outlet-wrapper .table-wrap table.por-grid,
+.emis-page-content .table-wrap table.por-grid {
+  width: 100% !important;
+  min-width: 1100px !important;
+  max-width: none !important;
+  table-layout: fixed !important;
+}
+
+.page-outlet-wrapper .table-wrap table.por-grid th,
+.page-outlet-wrapper .table-wrap table.por-grid td,
+.emis-page-content .table-wrap table.por-grid th,
+.emis-page-content .table-wrap table.por-grid td,
+.page-outlet-wrapper .table-wrap table.por-grid .wrap-cell,
+.emis-page-content .table-wrap table.por-grid .wrap-cell {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.page-outlet-wrapper .table-wrap table.por-grid .nested-grid,
+.emis-page-content .table-wrap table.por-grid .nested-grid {
+  width: 100% !important;
+  min-width: 0 !important;
+  table-layout: fixed !important;
+}
+
 .page-outlet-wrapper .legacy-fixed-table,
 .emis-page-content .legacy-fixed-table {
   width: auto !important;
