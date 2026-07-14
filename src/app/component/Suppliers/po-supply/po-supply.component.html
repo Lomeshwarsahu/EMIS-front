@@ -123,4 +123,111 @@
       </table>
     </div>
   </div>
+
+  <div class="extension-modal-backdrop" *ngIf="showExtensionForm" (click)="closeExtensionForm()">
+    <div class="detail-form-card extension-modal-card" (click)="$event.stopPropagation()">
+      <div class="extension-modal-head">
+        <h3 class="section-title">Apply For Extension</h3>
+        <button
+          type="button"
+          class="extension-close-btn"
+          aria-label="Close"
+          title="Close"
+          (click)="closeExtensionForm()"
+          [disabled]="extensionSaving">
+          &times;
+        </button>
+      </div>
+
+      <app-supplier-page-skeleton *ngIf="extensionLoading" type="form" [formFields]="7" />
+
+      <ng-container *ngIf="!extensionLoading">
+        <p *ngIf="extensionHasPending" class="pending-banner">
+          A previous extension request is pending approval. New requests are disabled until it is processed.
+        </p>
+
+        <table class="detail-form-table extension-form-table">
+          <tbody>
+            <tr class="info-row">
+              <td class="label-col">Equipment</td>
+              <td class="value-col" colspan="3">{{ extensionEquipmentName }}</td>
+            </tr>
+            <tr class="info-row">
+              <td class="label-col">PO No</td>
+              <td class="value-col">{{ extensionPoNo }}</td>
+              <td class="label-col">PO Date</td>
+              <td class="value-col">{{ extensionPoDate }}</td>
+            </tr>
+            <tr class="info-row">
+              <td class="label-col">Supply Days</td>
+              <td class="value-col">{{ extensionSupplyDays }}</td>
+              <td class="label-col">PO End Date</td>
+              <td class="value-col">{{ extensionPoEndDate }}</td>
+            </tr>
+            <tr>
+              <td class="label-col">Extension (No of Days)</td>
+              <td class="value-col">
+                <input
+                  type="number"
+                  [(ngModel)]="extensionDays"
+                  name="extensionDays"
+                  min="1"
+                  (ngModelChange)="onExtensionDaysChange()"
+                  [disabled]="!extensionCanApply || extensionSaving" />
+              </td>
+              <td class="label-col">Extension Date</td>
+              <td class="value-col">{{ extensionDate || '—' }}</td>
+            </tr>
+            <tr>
+              <td class="label-col">Letter Date</td>
+              <td class="value-col">
+                <input
+                  type="date"
+                  [(ngModel)]="extensionLetterDate"
+                  name="extensionLetterDate"
+                  [disabled]="!extensionCanApply || extensionSaving" />
+              </td>
+              <td class="label-col">Remark</td>
+              <td class="value-col">
+                <input
+                  type="text"
+                  [(ngModel)]="extensionRemark"
+                  name="extensionRemark"
+                  maxlength="250"
+                  [disabled]="!extensionCanApply || extensionSaving" />
+              </td>
+            </tr>
+            <tr class="upload-row">
+              <td colspan="4">
+                <input
+                  type="file"
+                  accept=".pdf,application/pdf"
+                  (change)="onExtensionFileSelected($event)"
+                  [disabled]="!extensionCanApply || extensionSaving" />
+                <small>1 MB, PDF only</small>
+              </td>
+            </tr>
+            <tr class="form-actions-row">
+              <td colspan="4">
+                <button
+                  type="button"
+                  class="show-btn"
+                  (click)="saveExtension()"
+                  [disabled]="extensionSaving || !extensionCanApply">
+                  {{ extensionSaving ? 'Saving...' : 'Submit' }}
+                </button>
+                <button
+                  type="button"
+                  class="extension-cancel-btn"
+                  (click)="closeExtensionForm()"
+                  [disabled]="extensionSaving">
+                  Cancel
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
+    </div>
+  </div>
 </div>

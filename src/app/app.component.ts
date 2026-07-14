@@ -14,6 +14,10 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { ApiService } from './service/api.service';
 import { ThemeService } from './service/theme.service';
 import { resolvePageTitle } from './service/page-title.util';
+import {
+  AppNotification,
+  NotificationService,
+} from './service/notification.service';
 
 @Component({
     selector: 'app-root',
@@ -31,6 +35,9 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   menuSearchQuery = '';
   menuSearchFocused = false;
   pageHeading = '';
+  notificationsOpen = false;
+  notifications: AppNotification[] = [];
+  unreadNotificationCount = 0;
   private menuSearchBlurTimer: ReturnType<typeof setTimeout> | null = null;
   deferredPrompt: any;
   showButton = false;
@@ -168,12 +175,38 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private https: HttpClient,
     public readonly themeService: ThemeService,
+    private readonly notificationService: NotificationService,
   ) {
     this.applyDrawerLayout(window.innerWidth <= 991.98, true);
   }
 
   onSidebarCollapsedChange(collapsed: boolean): void {
     this.sidebarCollapsed = collapsed;
+  }
+
+  toggleNotifications(event: MouseEvent): void {
+    event.stopPropagation();
+    this.notificationsOpen = !this.notificationsOpen;
+    this.menuSearchFocused = false;
+  }
+
+  markAllNotificationsRead(): void {
+    this.notificationService.markAllRead();
+  }
+
+  onNotificationClick(item: AppNotification): void {
+    this.notificationService.markRead(item.id);
+    this.notificationsOpen = false;
+    if (item.route) {
+      this.router.navigateByUrl(item.route);
+    }
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    if (this.notificationsOpen) {
+      this.notificationsOpen = false;
+    }
   }
 
   logout() {
@@ -256,6 +289,7 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
         this.updateMenu();
         this.updatePageHeading(event.urlAfterRedirects);
         this.closeDrawerOnNavigate();
+        this.notificationsOpen = false;
       }
     });
 
@@ -269,6 +303,13 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
 
     this.isDarkMode = this.themeService.isDark;
 
+    this.notificationService.notifications$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((list) => {
+        this.notifications = list;
+        this.unreadNotificationCount = list.filter((item) => !item.read).length;
+        this.cdr.markForCheck();
+      });
   }
 
   ngDoCheck(): void {

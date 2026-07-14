@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -46,7 +46,7 @@ interface PoSupplyRow {
   templateUrl: './po-supply.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply.component.css'],
 })
-export class PoSupplyComponent implements OnInit {
+export class PoSupplyComponent implements OnInit, OnDestroy {
   loading = false;
   userId = 0;
   supplierId = 0;
@@ -59,6 +59,24 @@ export class PoSupplyComponent implements OnInit {
   defaultFinancialYearId = 0;
 
   rows: PoSupplyRow[] = [];
+
+  showExtensionForm = false;
+  extensionLoading = false;
+  extensionSaving = false;
+  extensionPoId = 0;
+  extensionEquipmentName = '';
+  extensionPoNo = '';
+  extensionPoDate = '';
+  extensionSupplyDays = 0;
+  extensionPoEndDate = '';
+  extensionBaseEndDate = '';
+  extensionCanApply = true;
+  extensionHasPending = false;
+  extensionDays: number | null = null;
+  extensionDate = '';
+  extensionLetterDate = '';
+  extensionRemark = '';
+  extensionFile: File | null = null;
 
   private restoreFilters = { financialYearId: 0, tenderId: 0 };
 
@@ -77,6 +95,10 @@ export class PoSupplyComponent implements OnInit {
     }
     this.restoreFilters = readPoSupplyListFilters(this.route.snapshot.queryParams);
     this.loadFilters();
+  }
+
+  ngOnDestroy(): void {
+    this.setModalOpenClass(false);
   }
 
   loadFilters(): void {
@@ -200,12 +222,159 @@ export class PoSupplyComponent implements OnInit {
   }
 
   onApplyExtension(row: PoSupplyRow): void {
-    this.router.navigate(['/orders/po-supply-apply-extension'], {
-      queryParams: {
-        poId: row.poId,
-        ...this.currentListQuery(),
+    this.extensionPoId = row.poId;
+    this.showExtensionForm = true;
+    this.setModalOpenClass(true);
+    this.extensionLoading = true;
+    this.resetExtensionForm();
+    this.api.getSupplierPoExtensionPage(this.userId, row.poId).subscribe({
+      next: (raw) => {
+        this.extensionLoading = false;
+        const data = raw as Record<string, unknown>;
+        this.extensionEquipmentName = String(data['equipmentName'] ?? data['EquipmentName'] ?? row.itemName);
+        this.extensionPoNo = String(data['poNo'] ?? data['PoNo'] ?? row.poNo);
+        this.extensionPoDate = String(data['poDate'] ?? data['PoDate'] ?? row.poDate);
+        this.extensionSupplyDays = Number(data['supplyDays'] ?? data['SupplyDays'] ?? 0);
+        this.extensionPoEndDate = String(data['poEndDate'] ?? data['PoEndDate'] ?? '');
+        this.extensionBaseEndDate = String(
+          data['baseEndDate'] ?? data['BaseEndDate'] ?? this.extensionPoEndDate,
+        );
+        this.extensionCanApply = Boolean(data['canApply'] ?? data['CanApply'] ?? true);
+        this.extensionHasPending = Boolean(
+          data['hasPendingExtension'] ?? data['HasPendingExtension'] ?? false,
+        );
+        if (!this.extensionCanApply) {
+          this.toastr.warning('An extension request is already pending for this PO.');
+        }
+      },
+      error: (err) => {
+        this.extensionLoading = false;
+        this.showExtensionForm = false;
+        this.setModalOpenClass(false);
+        this.toastr.error(err?.error?.message ?? 'Unable to load extension form.');
       },
     });
+  }
+
+  closeExtensionForm(): void {
+    this.showExtensionForm = false;
+    this.setModalOpenClass(false);
+    this.resetExtensionForm();
+  }
+
+  onExtensionDaysChange(): void {
+    const days = Number(this.extensionDays ?? 0);
+    if (!this.extensionBaseEndDate || days <= 0) {
+      this.extensionDate = '';
+      return;
+    }
+    const base = this.parseDisplayDate(this.extensionBaseEndDate);
+    if (!base) {
+      this.extensionDate = '';
+      return;
+    }
+    const result = new Date(base);
+    result.setDate(result.getDate() + days);
+    this.extensionDate = this.formatDisplayDate(result);
+  }
+
+  onExtensionFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.extensionFile = input.files?.[0] ?? null;
+  }
+
+  saveExtension(): void {
+    if (!this.extensionCanApply) {
+      this.toastr.warning('An extension request is already pending for this PO.');
+      return;
+    }
+    const days = Number(this.extensionDays ?? 0);
+    if (!days) {
+      this.toastr.warning('Extension Days Should Not be Empty.');
+      return;
+    }
+    if (!this.extensionLetterDate.trim()) {
+      this.toastr.warning('Letter Date Should Not be Empty.');
+      return;
+    }
+    if (!this.extensionRemark.trim()) {
+      this.toastr.warning('Remark Should Not be Empty');
+      return;
+    }
+    if (!this.extensionFile) {
+      this.toastr.warning('You are not selected any File yet.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('poId', String(this.extensionPoId));
+    formData.append('extensionDays', String(days));
+    formData.append('letterDate', this.fromIsoDate(this.extensionLetterDate));
+    formData.append('remark', this.extensionRemark.trim());
+    formData.append('file', this.extensionFile);
+
+    this.extensionSaving = true;
+    this.api.saveSupplierPoExtension(this.userId, formData).subscribe({
+      next: (res) => {
+        this.extensionSaving = false;
+        this.toastr.success(res?.message ?? 'Successfully Saved.');
+        this.closeExtensionForm();
+        this.loadGrid();
+      },
+      error: (err) => {
+        this.extensionSaving = false;
+        this.toastr.error(err?.error?.message ?? 'Unable to save extension request.');
+      },
+    });
+  }
+
+  private resetExtensionForm(): void {
+    this.extensionDays = null;
+    this.extensionDate = '';
+    this.extensionLetterDate = '';
+    this.extensionRemark = '';
+    this.extensionFile = null;
+  }
+
+  private setModalOpenClass(open: boolean): void {
+    document.body.classList.toggle('emis-modal-open', open);
+  }
+
+  private parseDisplayDate(value: string): Date | null {
+    const trimmed = value.trim();
+    if (!trimmed) {
+      return null;
+    }
+    const slashParts = trimmed.split('/');
+    if (slashParts.length === 3) {
+      const [day, month, year] = slashParts.map((part) => Number(part));
+      if (day && month && year) {
+        return new Date(year, month - 1, day);
+      }
+    }
+    const dashParts = trimmed.split('-');
+    if (dashParts.length === 3) {
+      const [day, month, year] = dashParts.map((part) => Number(part));
+      if (day && month && year) {
+        return new Date(year, month - 1, day);
+      }
+    }
+    return null;
+  }
+
+  private formatDisplayDate(date: Date): string {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+
+  private fromIsoDate(isoDate: string): string {
+    if (!isoDate) {
+      return '';
+    }
+    const [year, month, day] = isoDate.split('-');
+    return `${day}-${month}-${year}`;
   }
 
   private currentListQuery(): Record<string, number> {

@@ -89,10 +89,12 @@ export class SupplierEmdDepositComponent implements OnInit {
 
   openRefundForm(): void {
     this.showRefundForm = true;
+    document.body.classList.add('emis-modal-open');
   }
 
   closeRefundForm(): void {
     this.showRefundForm = false;
+    document.body.classList.remove('emis-modal-open');
     this.resetForm();
   }
 
@@ -189,6 +191,7 @@ export class SupplierEmdDepositComponent implements OnInit {
         this.toastr.success(message);
         this.resetForm();
         this.showRefundForm = false;
+        document.body.classList.remove('emis-modal-open');
         this.loadLookups();
         this.loadGrid();
       },

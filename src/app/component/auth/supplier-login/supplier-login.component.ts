@@ -6,6 +6,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { BasicAuthenticationService } from 'src/app/service/authentication/basic-authentication.service';
+import { NotificationService } from 'src/app/service/notification.service';
 
 interface SupplierOption {
   user_id: number;
@@ -34,6 +35,7 @@ export class SupplierLoginComponent implements OnInit {
     private readonly loginService: BasicAuthenticationService,
     private readonly toastr: ToastrService,
     private readonly router: Router,
+    private readonly notificationService: NotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -155,6 +157,11 @@ export class SupplierLoginComponent implements OnInit {
             localStorage.setItem('roleName', 'Suppliers');
             this.loginService.setRole('Suppliers');
 
+            this.notificationService.add(
+              'Login successful',
+              `Welcome ${res?.username ?? 'Supplier'}. You are signed in to EMIS Supplier portal.`,
+              '/orders/po-supply',
+            );
             this.toastr.success('Login successful');
             this.router.navigate(['/welcome']);
           } else {
