@@ -7,6 +7,7 @@ import {
   readPoSupplyListFilters,
 } from '../supplier-po-supply-state.util';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 
@@ -37,6 +38,12 @@ interface PoSupplyRow {
   status: string;
   sdName: string;
   submissionStatus: string;
+}
+
+interface SdPaymentMode {
+  sdMode: string;
+  sdName: string;
+  maturityOptional: boolean;
 }
 
 @Component({
@@ -77,6 +84,25 @@ export class PoSupplyComponent implements OnInit, OnDestroy {
   extensionLetterDate = '';
   extensionRemark = '';
   extensionFile: File | null = null;
+
+  showSdForm = false;
+  sdLoading = false;
+  sdSaving = false;
+  sdPoId = 0;
+  sdItemId = 0;
+  sdGrossValue = 0;
+  sdEquipmentName = '';
+  sdAmount = 0;
+  sdHasExisting = false;
+  sdHasFile = false;
+  sdIsSubmitted = false;
+  sdPaymentModes: SdPaymentMode[] = [];
+  sdSelectedPaymentMode = '0';
+  sdIssueDate = '';
+  sdMaturityDate = '';
+  sdDocumentNo = '';
+  sdFileMode: 'UPLOAD' | 'VIEW' = 'VIEW';
+  sdSelectedFile: File | null = null;
 
   private restoreFilters = { financialYearId: 0, tenderId: 0 };
 
@@ -210,18 +236,223 @@ export class PoSupplyComponent implements OnInit, OnDestroy {
   }
 
   onSdDetails(row: PoSupplyRow): void {
-    this.router.navigate(['/orders/po-supply-sd-detail'], {
-      queryParams: {
-        poId: row.poId,
-        supplierId: this.supplierId,
-        gValue: row.totalPoValue,
-        itemId: row.itemId,
-        ...this.currentListQuery(),
+    this.closeExtensionForm();
+    this.sdPoId = row.poId;
+    this.sdItemId = row.itemId;
+    this.sdGrossValue = row.totalPoValue;
+    this.showSdForm = true;
+    this.setModalOpenClass(true);
+    this.sdLoading = true;
+    this.resetSdFormFields();
+    this.api.getSupplierPoSdDetail(this.userId, row.poId, row.itemId, row.totalPoValue).subscribe({
+      next: (raw) => {
+        this.sdLoading = false;
+        const data = raw as Record<string, unknown>;
+        this.sdEquipmentName = String(data['equipmentName'] ?? data['EquipmentName'] ?? row.itemName);
+        this.sdAmount = Number(data['sdAmount'] ?? data['SdAmount'] ?? 0);
+        this.sdHasExisting = Boolean(data['hasExisting'] ?? data['HasExisting']);
+        this.sdHasFile = Boolean(data['hasFile'] ?? data['HasFile']);
+        this.sdIsSubmitted = Boolean(data['isSubmitted'] ?? data['IsSubmitted']);
+        this.supplierId = Number(data['supplierId'] ?? data['SupplierId'] ?? this.supplierId);
+        this.sdGrossValue = Number(data['grossValue'] ?? data['GrossValue'] ?? this.sdGrossValue);
+        this.sdSelectedPaymentMode = String(data['paymentMode'] ?? data['PaymentMode'] ?? '0') || '0';
+        this.sdIssueDate = this.toIsoDate(String(data['issueDate'] ?? data['IssueDate'] ?? ''));
+        this.sdMaturityDate = this.toIsoDate(String(data['maturityDate'] ?? data['MaturityDate'] ?? ''));
+        this.sdDocumentNo = String(data['documentNo'] ?? data['DocumentNo'] ?? '');
+        this.sdPaymentModes = this.mapSdPaymentModes(
+          (data['paymentModes'] ?? data['PaymentModes'] ?? []) as unknown[],
+        );
+        this.sdFileMode = this.sdIsSubmitted || this.sdHasFile ? 'VIEW' : 'UPLOAD';
+      },
+      error: (err) => {
+        this.sdLoading = false;
+        this.showSdForm = false;
+        this.setModalOpenClass(false);
+        this.toastr.error(err?.error?.message ?? 'Unable to load SD detail.');
       },
     });
   }
 
+  closeSdForm(): void {
+    this.showSdForm = false;
+    this.setModalOpenClass(false);
+    this.resetSdFormFields();
+  }
+
+  get sdShowSubmit(): boolean {
+    return !this.sdHasExisting;
+  }
+
+  get sdShowUpdate(): boolean {
+    return this.sdHasExisting && !this.sdIsSubmitted;
+  }
+
+  get sdIsViewOnly(): boolean {
+    return this.sdHasExisting && this.sdIsSubmitted;
+  }
+
+  get sdShowFileUpload(): boolean {
+    if (this.sdIsViewOnly) {
+      return false;
+    }
+    if (!this.sdHasExisting) {
+      return true;
+    }
+    return this.sdFileMode === 'UPLOAD';
+  }
+
+  get sdIsMaturityOptional(): boolean {
+    const mode = this.sdPaymentModes.find((item) => item.sdMode === this.sdSelectedPaymentMode);
+    return mode ? mode.maturityOptional : false;
+  }
+
+  onSdFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.sdSelectedFile = input.files?.[0] ?? null;
+  }
+
+  onSdFileModeChange(): void {
+    if (this.sdFileMode === 'VIEW') {
+      this.sdSelectedFile = null;
+    }
+  }
+
+  saveSd(): void {
+    if (this.sdHasExisting) {
+      this.updateSd();
+      return;
+    }
+
+    if (this.sdSelectedPaymentMode === '0') {
+      this.toastr.warning('Please select Payment mode.');
+      return;
+    }
+    if (!this.sdIssueDate) {
+      this.toastr.warning('Please fill Issue Date');
+      return;
+    }
+    if (!this.sdIsMaturityOptional && !this.sdMaturityDate) {
+      this.toastr.warning('Please fill Maturity Date');
+      return;
+    }
+    if (!this.sdDocumentNo.trim()) {
+      this.toastr.warning('Please SD Document Ref. No');
+      return;
+    }
+    if (!this.sdSelectedFile) {
+      this.toastr.warning('Please select document to be uplaoded.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('poId', String(this.sdPoId));
+    formData.append('itemId', String(this.sdItemId));
+    formData.append('supplierId', String(this.supplierId));
+    formData.append('paymentMode', this.sdSelectedPaymentMode);
+    formData.append('issueDate', this.fromIsoDateSlash(this.sdIssueDate));
+    formData.append('sdAmount', String(this.sdAmount));
+    formData.append('documentNo', this.sdDocumentNo.trim());
+    if (this.sdMaturityDate) {
+      formData.append('maturityDate', this.fromIsoDateSlash(this.sdMaturityDate));
+    }
+    formData.append('file', this.sdSelectedFile);
+
+    this.sdSaving = true;
+    this.api.saveSupplierPoSdDetail(this.userId, formData).subscribe({
+      next: (res) => {
+        this.sdSaving = false;
+        this.toastr.success(res?.message ?? 'Successfully Saved.');
+        this.closeSdForm();
+        this.loadGrid();
+      },
+      error: (err) => {
+        this.sdSaving = false;
+        this.toastr.error(err?.error?.message ?? 'Unable to save SD detail.');
+      },
+    });
+  }
+
+  updateSd(): void {
+    if (this.sdSelectedPaymentMode === '0') {
+      this.toastr.warning('Please select Payment mode.');
+      return;
+    }
+    if (!this.sdIssueDate) {
+      this.toastr.warning('Please fill Issue Date');
+      return;
+    }
+    if (!this.sdIsMaturityOptional && !this.sdMaturityDate) {
+      this.toastr.warning('Please fill Maturity Date');
+      return;
+    }
+    if (this.sdFileMode === 'UPLOAD' && !this.sdSelectedFile) {
+      this.toastr.warning('Please select document to be uplaoded.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('poId', String(this.sdPoId));
+    formData.append('itemId', String(this.sdItemId));
+    formData.append('supplierId', String(this.supplierId));
+    formData.append('paymentMode', this.sdSelectedPaymentMode);
+    formData.append('issueDate', this.fromIsoDateSlash(this.sdIssueDate));
+    formData.append('sdAmount', String(this.sdAmount));
+    formData.append('fileMode', this.sdFileMode);
+    if (this.sdMaturityDate) {
+      formData.append('maturityDate', this.fromIsoDateSlash(this.sdMaturityDate));
+    }
+    if (this.sdSelectedFile) {
+      formData.append('file', this.sdSelectedFile);
+    }
+
+    this.sdSaving = true;
+    this.api.updateSupplierPoSdDetail(this.userId, formData).subscribe({
+      next: (res) => {
+        this.sdSaving = false;
+        this.toastr.success(res?.message ?? 'Successfully Saved.');
+        this.closeSdForm();
+        this.loadGrid();
+      },
+      error: (err) => {
+        this.sdSaving = false;
+        this.toastr.error(err?.error?.message ?? 'Unable to update SD detail.');
+      },
+    });
+  }
+
+  downloadSdFile(): void {
+    const url = `${environment.apiUrl}/Auth/supplier/po-sd-detail/file/by-user/${this.userId}?poId=${this.sdPoId}`;
+    window.open(url, '_blank');
+  }
+
+  resetSdForm(): void {
+    this.sdSelectedPaymentMode = '0';
+    this.sdIssueDate = '';
+    this.sdMaturityDate = '';
+    this.sdDocumentNo = '';
+    this.sdSelectedFile = null;
+    this.sdFileMode = this.sdHasFile ? 'VIEW' : 'UPLOAD';
+    if (this.sdHasExisting && this.sdPoId && this.sdItemId) {
+      this.sdLoading = true;
+      this.api.getSupplierPoSdDetail(this.userId, this.sdPoId, this.sdItemId, this.sdGrossValue).subscribe({
+        next: (raw) => {
+          this.sdLoading = false;
+          const data = raw as Record<string, unknown>;
+          this.sdSelectedPaymentMode = String(data['paymentMode'] ?? data['PaymentMode'] ?? '0') || '0';
+          this.sdIssueDate = this.toIsoDate(String(data['issueDate'] ?? data['IssueDate'] ?? ''));
+          this.sdMaturityDate = this.toIsoDate(String(data['maturityDate'] ?? data['MaturityDate'] ?? ''));
+          this.sdDocumentNo = String(data['documentNo'] ?? data['DocumentNo'] ?? '');
+          this.sdFileMode = this.sdIsSubmitted || this.sdHasFile ? 'VIEW' : 'UPLOAD';
+        },
+        error: () => {
+          this.sdLoading = false;
+        },
+      });
+    }
+  }
+
   onApplyExtension(row: PoSupplyRow): void {
+    this.closeSdForm();
     this.extensionPoId = row.poId;
     this.showExtensionForm = true;
     this.setModalOpenClass(true);
@@ -336,8 +567,69 @@ export class PoSupplyComponent implements OnInit, OnDestroy {
     this.extensionFile = null;
   }
 
+  private resetSdFormFields(): void {
+    this.sdEquipmentName = '';
+    this.sdAmount = 0;
+    this.sdHasExisting = false;
+    this.sdHasFile = false;
+    this.sdIsSubmitted = false;
+    this.sdPaymentModes = [];
+    this.sdSelectedPaymentMode = '0';
+    this.sdIssueDate = '';
+    this.sdMaturityDate = '';
+    this.sdDocumentNo = '';
+    this.sdFileMode = 'VIEW';
+    this.sdSelectedFile = null;
+  }
+
   private setModalOpenClass(open: boolean): void {
-    document.body.classList.toggle('emis-modal-open', open);
+    if (open) {
+      document.body.classList.add('emis-modal-open');
+      return;
+    }
+    if (!this.showExtensionForm && !this.showSdForm) {
+      document.body.classList.remove('emis-modal-open');
+    }
+  }
+
+  private mapSdPaymentModes(list: unknown[]): SdPaymentMode[] {
+    return list.map((item) => {
+      const row = item as Record<string, unknown>;
+      const sdName = String(row['sdName'] ?? row['SdName'] ?? '');
+      const upper = sdName.toUpperCase();
+      return {
+        sdMode: String(row['sdMode'] ?? row['SdMode'] ?? ''),
+        sdName,
+        maturityOptional:
+          Boolean(row['maturityOptional'] ?? row['MaturityOptional']) ||
+          upper.includes('NEFT') ||
+          upper.includes('RTGS'),
+      };
+    });
+  }
+
+  private toIsoDate(displayDate: string): string {
+    const trimmed = displayDate.trim();
+    if (!trimmed) {
+      return '';
+    }
+    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+      return trimmed;
+    }
+    const parts = trimmed.split('/');
+    if (parts.length !== 3) {
+      return '';
+    }
+    const [day, month, year] = parts;
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  }
+
+  private fromIsoDateSlash(isoDate: string): string {
+    if (!isoDate) {
+      return '';
+    }
+    const [year, month, day] = isoDate.split('-');
+    return `${day}/${month}/${year}`;
   }
 
   private parseDisplayDate(value: string): Date | null {
@@ -375,13 +667,6 @@ export class PoSupplyComponent implements OnInit, OnDestroy {
     }
     const [year, month, day] = isoDate.split('-');
     return `${day}-${month}-${year}`;
-  }
-
-  private currentListQuery(): Record<string, number> {
-    return poSupplyListQuery({
-      financialYearId: this.selectedFinancialYearId,
-      tenderId: this.selectedTenderId,
-    });
   }
 
   goToGstDetails(): void {

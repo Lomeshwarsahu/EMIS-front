@@ -230,4 +230,152 @@
       </ng-container>
     </div>
   </div>
+
+  <div class="extension-modal-backdrop" *ngIf="showSdForm" (click)="closeSdForm()">
+    <div class="detail-form-card extension-modal-card" (click)="$event.stopPropagation()">
+      <div class="extension-modal-head">
+        <h3 class="section-title">
+          Security Deposit Detail
+          <span *ngIf="sdIsViewOnly" class="submitted-badge">Submitted</span>
+        </h3>
+        <button
+          type="button"
+          class="extension-close-btn"
+          aria-label="Close"
+          title="Close"
+          (click)="closeSdForm()"
+          [disabled]="sdSaving">
+          &times;
+        </button>
+      </div>
+
+      <app-supplier-page-skeleton *ngIf="sdLoading" type="form" [formFields]="8" />
+
+      <ng-container *ngIf="!sdLoading">
+        <table class="detail-form-table sd-form-table">
+          <tbody>
+            <tr class="sd-info-row">
+              <td class="label-col">Equipment</td>
+              <td class="value-col" colspan="3">{{ sdEquipmentName }}</td>
+            </tr>
+            <tr class="sd-info-row">
+              <td class="label-col">Gross Value</td>
+              <td class="value-col" colspan="3">{{ sdGrossValue | number: '1.2-2' }}</td>
+            </tr>
+            <tr>
+              <td class="label-col">Payment Mode</td>
+              <td class="value-col">
+                <select [(ngModel)]="sdSelectedPaymentMode" name="sdPaymentMode" [disabled]="sdIsViewOnly || sdSaving">
+                  <option value="0">select</option>
+                  <option *ngFor="let mode of sdPaymentModes" [value]="mode.sdMode">
+                    {{ mode.sdName }}
+                  </option>
+                </select>
+              </td>
+              <td class="label-col">Issue Date</td>
+              <td class="value-col">
+                <input type="date" [(ngModel)]="sdIssueDate" name="sdIssueDate" [disabled]="sdIsViewOnly || sdSaving" />
+              </td>
+            </tr>
+            <tr>
+              <td class="label-col">SD Amount</td>
+              <td class="value-col">
+                <input type="text" [value]="sdAmount" disabled />
+              </td>
+              <td class="label-col">
+                Maturity Date
+                <span *ngIf="!sdIsMaturityOptional" class="req-mark">*</span>
+                <span *ngIf="sdIsMaturityOptional" class="optional-mark">(optional)</span>
+              </td>
+              <td class="value-col">
+                <input
+                  type="date"
+                  [(ngModel)]="sdMaturityDate"
+                  name="sdMaturityDate"
+                  [disabled]="sdIsViewOnly || sdSaving" />
+              </td>
+            </tr>
+            <tr>
+              <td class="label-col">Document No</td>
+              <td class="value-col" colspan="3">
+                <input
+                  type="text"
+                  [(ngModel)]="sdDocumentNo"
+                  name="sdDocumentNo"
+                  maxlength="100"
+                  [disabled]="sdIsViewOnly || sdHasExisting || sdSaving" />
+              </td>
+            </tr>
+            <tr *ngIf="sdShowUpdate" class="file-mode-row">
+              <td colspan="4">
+                <label>
+                  <input
+                    type="radio"
+                    name="sdFileMode"
+                    value="UPLOAD"
+                    [(ngModel)]="sdFileMode"
+                    (change)="onSdFileModeChange()"
+                    [disabled]="sdSaving" />
+                  Upload File
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="sdFileMode"
+                    value="VIEW"
+                    [(ngModel)]="sdFileMode"
+                    (change)="onSdFileModeChange()"
+                    [disabled]="sdSaving" />
+                  View File
+                </label>
+              </td>
+            </tr>
+            <tr class="upload-row">
+              <td colspan="4">
+                <input
+                  *ngIf="sdShowFileUpload"
+                  type="file"
+                  accept=".pdf,application/pdf"
+                  (change)="onSdFileSelected($event)"
+                  [disabled]="sdSaving" />
+                <button
+                  *ngIf="(sdShowUpdate && sdFileMode === 'VIEW' && sdHasFile) || (sdIsViewOnly && sdHasFile)"
+                  type="button"
+                  class="show-btn small-btn"
+                  (click)="downloadSdFile()">
+                  View File
+                </button>
+                <small *ngIf="sdShowFileUpload">Max 3 MB, PDF only</small>
+              </td>
+            </tr>
+            <tr class="form-actions-row">
+              <td colspan="4">
+                <button *ngIf="sdShowSubmit" type="button" class="show-btn" (click)="saveSd()" [disabled]="sdSaving">
+                  {{ sdSaving ? 'Saving...' : 'Submit' }}
+                </button>
+                <button *ngIf="sdShowUpdate" type="button" class="show-btn" (click)="updateSd()" [disabled]="sdSaving">
+                  {{ sdSaving ? 'Saving...' : 'Update' }}
+                </button>
+                <button
+                  *ngIf="!sdIsViewOnly"
+                  type="button"
+                  class="show-btn secondary-btn"
+                  (click)="resetSdForm()"
+                  [disabled]="sdSaving">
+                  Reset
+                </button>
+                <button
+                  type="button"
+                  class="extension-cancel-btn"
+                  (click)="closeSdForm()"
+                  [disabled]="sdSaving">
+                  Cancel
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
+    </div>
+  </div>
 </div>
