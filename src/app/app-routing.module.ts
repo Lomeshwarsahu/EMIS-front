@@ -70,6 +70,8 @@ import { OpeningStockEntryComponent } from './component/DME/stock/opening-stock-
 import { NewOpeningStockEntryComponent } from './component/DME/stock/new-opening-stock-entry/new-opening-stock-entry.component';
 import { PurchaseOrderDashboardComponent } from './component/DME/orders/purchase-order-dashboard/purchase-order-dashboard.component';
 import { PurchaseOrderReceiptsComponent } from './component/DME/orders/purchase-order-receipts/purchase-order-receipts.component';
+import { PoReceiptEntryComponent } from './component/DME/orders/po-receipt-entry/po-receipt-entry.component';
+import { PoInstallationReportComponent } from './component/DME/orders/po-installation-report/po-installation-report.component';
 import { DmeFacHeadsComponent } from './component/DME/indent/dme-fac-heads/dme-fac-heads.component';
 import { ConsolidatedIndentDmeComponent } from './component/DME/indent/consolidated-indent-dme/consolidated-indent-dme.component';
 import { DmeFacAddIndentComponent } from './component/DME/indent/dme-fac-add-indent/dme-fac-add-indent.component';
@@ -832,6 +834,18 @@ const routes: Routes = [
     data: { allowedRoles: ['DME'] },
   },
   {
+    path: 'orders/po-receipt-entry',
+    component: PoReceiptEntryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'orders/po-installation-report',
+    component: PoInstallationReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
     path: 'contracts/dashboard',
     component: EMSRCDashbordComponent,
     canActivate: [RouteGuardService],
@@ -1031,6 +1045,16 @@ const routes: Routes = [
   {
     path: 'purchase-order-receipts',
     redirectTo: 'orders/purchase-order-receipts',
+    pathMatch: 'full',
+  },
+  {
+    path: 'FacilityPO_ReceiptDME',
+    redirectTo: 'orders/po-receipt-entry',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Facility_InstallationReportDME',
+    redirectTo: 'orders/po-installation-report',
     pathMatch: 'full',
   },
   {

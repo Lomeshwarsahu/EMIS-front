@@ -1,0 +1,313 @@
+<div class="dme-detail-page receipt-entry-page">
+  <div class="page-toolbar">
+    <button type="button" class="back-btn" (click)="goBack()">Back to Receipt Desk</button>
+  </div>
+
+  <app-dme-page-skeleton *ngIf="loading" type="form" [rows]="10" />
+
+  <ng-container *ngIf="!loading">
+    <table class="header-grid">
+      <tbody>
+        <tr>
+          <td>Item Code</td>
+          <td>{{ itemCode || '—' }}</td>
+          <td>Item Name</td>
+          <td>{{ itemName || '—' }}</td>
+          <td>Tax</td>
+          <td>{{ taxPercent || '—' }}</td>
+        </tr>
+        <tr>
+          <td>PO No.</td>
+          <td>{{ poNo || '—' }}</td>
+          <td>PO Date</td>
+          <td>{{ poDate || '—' }}</td>
+          <td>Tender No</td>
+          <td>{{ tenderNo || '—' }}</td>
+        </tr>
+        <tr>
+          <td>Consignee Name</td>
+          <td colspan="3">{{ consigneeName || '—' }}</td>
+          <td>Model No</td>
+          <td>{{ modelNo || '—' }}</td>
+        </tr>
+        <tr>
+          <td>Make</td>
+          <td>{{ make || '—' }}</td>
+          <td>Basic Rate</td>
+          <td>{{ basicRate }}</td>
+          <td>Total Net PO Value</td>
+          <td>{{ totalNetPoValue }}</td>
+        </tr>
+        <tr>
+          <td>Total Gross PO Value</td>
+          <td>{{ totalGrossPoValue }}</td>
+          <td>PO Qty (All)</td>
+          <td>{{ poQtyAllConsignees }}</td>
+          <td>PO Qty (Consignee)</td>
+          <td>{{ poQtyConsignee }}</td>
+        </tr>
+        <tr>
+          <td>Dispatched Qty</td>
+          <td>{{ dispatchedQty }}</td>
+          <td>Balance Qty</td>
+          <td>{{ balanceQty }}</td>
+          <td>Supply Days</td>
+          <td>{{ supplyDays || '-' }}</td>
+        </tr>
+        <tr>
+          <td>Warranty Year</td>
+          <td>{{ warrantyYears }}</td>
+          <td class="deadline-label">Max Allowed Days from PO</td>
+          <td class="emphasis-value">{{ maxAllowedDaysDisplay }}</td>
+          <td class="deadline-label">Last Date to be Received of PO</td>
+          <td class="deadline-value">{{ lastReceiptDateDisplay }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tabs">
+      <button type="button" [class.active]="activeTab === 'receipt'" (click)="setTab('receipt')">
+        Receipt Details
+      </button>
+      <button
+        type="button"
+        [class.active]="activeTab === 'installation'"
+        (click)="setTab('installation')"
+        [disabled]="!receiptId && !loading">
+        Installation Details
+      </button>
+      <button
+        type="button"
+        [class.active]="activeTab === 'complete'"
+        (click)="setTab('complete')"
+        [disabled]="!receiptId && !loading">
+        Complete
+      </button>
+    </div>
+
+    <div class="tab-panel" *ngIf="activeTab === 'receipt'">
+      <div class="form-grid">
+        <label>Challan No <input [value]="challanNo" disabled /></label>
+        <label>Challan Date <input [value]="challanDate" disabled /></label>
+        <label>Invoice No <input [value]="invoiceNo" disabled /></label>
+        <label>Invoice Date <input [value]="invoiceDate" disabled /></label>
+        <label>Dispatch No <input [value]="dispatchNo" disabled /></label>
+        <label>Dispatch Date <input [value]="dispatchDate" disabled /></label>
+        <label class="full-width">Supplier Remarks <textarea [value]="supplierRemarks" disabled rows="2"></textarea></label>
+        <label>
+          Received Date *
+          <input
+            type="date"
+            [(ngModel)]="receivedDate"
+            name="receivedDate"
+            [min]="minReceivedDate || null"
+            [max]="maxReceivedDate || null" />
+        </label>
+        <label>Receipt No / Stock Book No * <input [(ngModel)]="receiptNo" name="receiptNo" /></label>
+        <label>
+          Receipt Qty *
+          <input
+            type="number"
+            [(ngModel)]="receiptQty"
+            name="receiptQty"
+            min="1"
+            [max]="dispatchedQty || null" />
+        </label>
+        <label class="full-width">
+          Receipt Remarks *
+          <textarea [(ngModel)]="receiptRemarks" name="receiptRemarks" rows="2"></textarea>
+        </label>
+      </div>
+      <p class="help-text note-red" *ngIf="dispatchedQty > 0">
+        Maximum receipt qty for this dispatch: {{ dispatchedQty }}
+      </p>
+      <button type="button" class="show-btn" (click)="saveReceipt()" [disabled]="saving">
+        {{ saving ? 'Saving...' : 'Save Receipt Details' }}
+      </button>
+    </div>
+
+    <div class="tab-panel" *ngIf="activeTab === 'installation'">
+      <p class="section-title">Select Dispatched Item</p>
+      <div class="form-grid">
+        <label>
+          Serial No *
+          <select
+            [(ngModel)]="selectedIssueDetailId"
+            name="selectedIssueDetailId"
+            (ngModelChange)="onSerialSelected()">
+            <option [ngValue]="0">Select Serial</option>
+            <option *ngFor="let item of issueDetailOptions" [ngValue]="item.issueDetailId">
+              {{ item.serialNo }} (Qty {{ item.dispatchedQty }})
+            </option>
+          </select>
+        </label>
+        <label>Warranty Certificate No <input [value]="selectedWarrantyCertificateNo" disabled /></label>
+        <label>Dispatch Qty <input [value]="selectedDispatchQty" disabled /></label>
+        <label>Serial No <input [value]="selectedSerialNo" disabled /></label>
+        <label>Warranty Card No * <input [(ngModel)]="warrantyCardNo" name="warrantyCardNo" /></label>
+        <label>
+          To be Installed Qty *
+          <input
+            type="number"
+            [(ngModel)]="installQty"
+            name="installQty"
+            min="1"
+            [max]="selectedDispatchQty || null" />
+        </label>
+        <label>
+          Installation Date *
+          <input
+            type="date"
+            [(ngModel)]="installationDate"
+            name="installationDate"
+            [min]="minInstallationDate || null"
+            [max]="maxReceivedDate || null"
+            (ngModelChange)="onInstallationDateChanged()" />
+        </label>
+        <label>Installation By * <input [(ngModel)]="installationBy" name="installationBy" /></label>
+        <label>Installation Location * <input [(ngModel)]="installationLocation" name="installationLocation" /></label>
+        <label>Warranty From Date <input [value]="warrantyFromDate" disabled /></label>
+        <label>Warranty To Date <input [value]="warrantyToDate" disabled /></label>
+      </div>
+
+      <div class="yes-no-grid">
+        <div class="yes-no-item">
+          <span>CGMSC/Govt Logo Printed</span>
+          <div class="radio-group">
+            <label><input type="radio" name="cgmscLogo" value="Y" [(ngModel)]="cgmscLogoPrinted" /> Yes</label>
+            <label><input type="radio" name="cgmscLogo" value="N" [(ngModel)]="cgmscLogoPrinted" /> No</label>
+          </div>
+        </div>
+        <div class="yes-no-item">
+          <span>Warranty Validity</span>
+          <div class="radio-group">
+            <label><input type="radio" name="warrantyValidity" value="Y" [(ngModel)]="warrantyValidity" /> Yes</label>
+            <label><input type="radio" name="warrantyValidity" value="N" [(ngModel)]="warrantyValidity" /> No</label>
+          </div>
+        </div>
+        <div class="yes-no-item">
+          <span>Service Manual Provided</span>
+          <div class="radio-group">
+            <label><input type="radio" name="serviceManual" value="Y" [(ngModel)]="serviceManual" /> Yes</label>
+            <label><input type="radio" name="serviceManual" value="N" [(ngModel)]="serviceManual" /> No</label>
+          </div>
+        </div>
+        <div class="yes-no-item">
+          <span>Operating Manual Provided</span>
+          <div class="radio-group">
+            <label><input type="radio" name="operatingManual" value="Y" [(ngModel)]="operatingManual" /> Yes</label>
+            <label><input type="radio" name="operatingManual" value="N" [(ngModel)]="operatingManual" /> No</label>
+          </div>
+        </div>
+        <div class="yes-no-item">
+          <span>Original Warranty Card Provided</span>
+          <div class="radio-group">
+            <label><input type="radio" name="warrantyCard" value="Y" [(ngModel)]="warrantyCard" /> Yes</label>
+            <label><input type="radio" name="warrantyCard" value="N" [(ngModel)]="warrantyCard" /> No</label>
+          </div>
+        </div>
+        <div class="yes-no-item">
+          <span>Other Statutory Documents Provided</span>
+          <div class="radio-group">
+            <label><input type="radio" name="otherStatutory" value="Y" [(ngModel)]="otherStatutory" /> Yes</label>
+            <label><input type="radio" name="otherStatutory" value="N" [(ngModel)]="otherStatutory" /> No</label>
+          </div>
+        </div>
+        <div class="yes-no-item">
+          <span>All Accessories Indicated in P.O. are Provided</span>
+          <div class="radio-group">
+            <label><input type="radio" name="poDocuments" value="Y" [(ngModel)]="poDocuments" /> Yes</label>
+            <label><input type="radio" name="poDocuments" value="N" [(ngModel)]="poDocuments" /> No</label>
+          </div>
+        </div>
+        <div class="yes-no-item">
+          <span>Calibration Certificate Provided</span>
+          <div class="radio-group">
+            <label><input type="radio" name="calibrationCertificate" value="Y" [(ngModel)]="calibrationCertificate" /> Yes</label>
+            <label><input type="radio" name="calibrationCertificate" value="N" [(ngModel)]="calibrationCertificate" /> No</label>
+          </div>
+        </div>
+      </div>
+
+      <label class="bulk-checkbox">
+        <input type="checkbox" [(ngModel)]="bulkInst" name="bulkInst" />
+        For all serial numbers for this consignee, a single file will be uploaded before completion.
+      </label>
+
+      <button type="button" class="show-btn" (click)="saveInstallationLine()" [disabled]="saving">
+        {{ saving ? 'Saving...' : 'Save Installation Details' }}
+      </button>
+
+      <div class="datagrid" *ngIf="installationLines.length">
+        <div class="table-wrap">
+          <table class="orders-grid">
+            <thead>
+              <tr>
+                <th>Serial No</th>
+                <th>Warranty Card No</th>
+                <th>Qty</th>
+                <th>Installation Date</th>
+                <th>Warranty From</th>
+                <th>Warranty To</th>
+                <th>Installed By</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of installationLines; let i = index" [class.alt-row]="i % 2 === 1">
+                <td>{{ row.serialNo }}</td>
+                <td>{{ row.warrantyCardNo }}</td>
+                <td class="text-center">{{ row.receivedQty }}</td>
+                <td class="text-center">{{ row.installationDate }}</td>
+                <td class="text-center">{{ row.warrantyFromDate }}</td>
+                <td class="text-center">{{ row.warrantyToDate }}</td>
+                <td>{{ row.installationBy }}</td>
+                <td class="wrap-cell">{{ row.installationLocation }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" *ngIf="activeTab === 'complete'">
+      <div class="datagrid" *ngIf="installationLines.length">
+        <div class="table-wrap">
+          <table class="orders-grid">
+            <thead>
+              <tr>
+                <th>Serial No</th>
+                <th>Installation Date</th>
+                <th>Warranty From / To</th>
+                <th>Qty</th>
+                <th>Installed By</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of installationLines; let i = index" [class.alt-row]="i % 2 === 1">
+                <td>{{ row.serialNo }}</td>
+                <td class="text-center">{{ row.installationDate }}</td>
+                <td class="text-center">{{ row.warrantyFromDate }} / {{ row.warrantyToDate }}</td>
+                <td class="text-center">{{ row.receivedQty }}</td>
+                <td>{{ row.installationBy }}</td>
+                <td class="wrap-cell">{{ row.installationLocation }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="help-text warning-text">
+        Complete when all dispatched serials have installation details. PDF upload can be done later from the
+        installation report where available.
+      </p>
+      <button
+        type="button"
+        class="show-btn complete-btn"
+        (click)="completeInstallation()"
+        [disabled]="saving || !receiptId || !installationLines.length">
+        {{ saving ? 'Completing...' : 'Complete Installation' }}
+      </button>
+    </div>
+  </ng-container>
+</div>

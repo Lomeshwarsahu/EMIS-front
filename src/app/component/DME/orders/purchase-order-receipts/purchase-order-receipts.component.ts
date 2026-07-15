@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
@@ -75,6 +76,7 @@ export class PurchaseOrderReceiptsComponent implements OnInit {
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -127,9 +129,27 @@ export class PurchaseOrderReceiptsComponent implements OnInit {
   }
 
   onReceiptAction(row: PoReceiptDeskRow, batch: PoReceiptBatch): void {
-    this.toastr.info(
-      `Receipt detail (${batch.SupplyStatus}) — PO ${row.PoNo}, Issue ${batch.IssueId}. Full receipt screen coming soon.`,
-    );
+    const status = (batch.SupplyStatus || '').trim();
+    if (status === 'Installation Completed' && batch.ReceiptId) {
+      this.router.navigate(['/orders/po-installation-report'], {
+        queryParams: { receiptId: batch.ReceiptId },
+      });
+      return;
+    }
+
+    const issueId = Number(batch.IssueId);
+    if (!row.PoId || !row.ConsigneeId || !issueId) {
+      this.toastr.warning('PO, consignee and issue are required to open receipt entry.');
+      return;
+    }
+
+    this.router.navigate(['/orders/po-receipt-entry'], {
+      queryParams: {
+        poId: row.PoId,
+        locId: row.ConsigneeId,
+        issueId,
+      },
+    });
   }
 
   formatPrice(value?: number): string {
