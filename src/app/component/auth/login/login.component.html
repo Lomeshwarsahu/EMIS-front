@@ -553,7 +553,7 @@
                 <!-- Supplier — 3 mode buttons + Login / New User / Forgot OTP flow -->
                 <div class="tab-pane fade" id="SUPPLIER" role="tabpanel" aria-labelledby="supplier-tab">
                   <div class="supplier-auth-panel">
-                    <div class="manual-links-sup mb-3">
+                    <div class="manual-links-sup">
                       <a href="assets/manuals/EMIS_Supplier_Mannual.pdf" target="_blank" rel="noopener">
                         Download Supplier Mannual
                       </a>
@@ -562,7 +562,7 @@
                       </a>
                     </div>
 
-                    <div class="mode-btn-row mb-3">
+                    <div class="mode-btn-row" role="group" aria-label="Supplier auth mode">
                       <button
                         type="button"
                         class="mode-btn"
@@ -586,9 +586,9 @@
                       </button>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="supplier-field">
                       <label class="form-label">Select Supplier</label>
-                      <div class="input-group">
+                      <div class="input-group supplier-select-group">
                         <span class="input-group-text bg-light">
                           <i class="fas fa-user"></i>
                         </span>
@@ -603,29 +603,30 @@
                           [searchable]="true"
                           [clearable]="true"
                           [appendTo]="'body'"
-                          class="form-control">
+                          class="form-control supplier-ng-select">
                         </ng-select>
                       </div>
                     </div>
 
                     <ng-container *ngIf="supplierAuthMode === 'login'">
-                      <div class="mb-3 position-relative">
-                        <label class="form-label">Enter Password</label>
+                      <div class="supplier-field supplier-field--password">
+                        <label class="form-label">Password</label>
                         <input
                           [type]="isPasswordVisible ? 'text' : 'password'"
                           class="form-control"
                           name="supplierPwd"
                           [(ngModel)]="pwd"
-                          placeholder="Enter Password" />
+                          placeholder="Enter Password"
+                          (keyup.enter)="handleSupplierLogin()" />
                         <i
-                          class="fa toggle-eye"
+                          class="fa toggle-eye supplier-toggle-eye"
                           [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
                           (click)="togglePassword()">
                         </i>
                       </div>
                       <button
                         type="button"
-                        class="btn btn-primary text-white w-100"
+                        class="btn btn-primary text-white w-100 supplier-action-btn"
                         [disabled]="!supplierUserId || !pwd.trim() || supplierAuthBusy"
                         (click)="handleSupplierLogin()">
                         {{ supplierAuthBusy ? 'Please wait...' : 'Login' }}
@@ -635,32 +636,35 @@
                     <ng-container *ngIf="supplierAuthMode !== 'login'">
                       <button
                         type="button"
-                        class="btn btn-primary text-white w-100"
+                        class="btn btn-primary text-white w-100 supplier-action-btn"
                         [disabled]="!supplierUserId || supplierAuthBusy"
                         (click)="openSupplierPasswordFlow()">
                         {{ supplierAuthBusy
                           ? 'Please wait...'
                           : supplierAuthMode === 'new'
-                            ? 'Action:Creat User'
-                            : 'Action:Forgot & Reset  User' }}
+                            ? 'Action: Create User'
+                            : 'Action: Forgot & Reset User' }}
                       </button>
                     </ng-container>
 
-                    <!-- OTP / create / reset panel -->
-                    <div class="supplier-otp-panel mt-3" *ngIf="supplierShowOtp && supplierProfile">
-                      <div class="row g-2 mb-2">
-                        <div class="col-4 fw-bold">Supplier</div>
-                        <div class="col-8">{{ supplierProfile.name }}</div>
+                    <div class="supplier-otp-panel" *ngIf="supplierShowOtp && supplierProfile">
+                      <div class="supplier-otp-title">OTP Verification</div>
+                      <div class="supplier-otp-meta">
+                        <div class="supplier-otp-row">
+                          <span>Supplier</span>
+                          <strong>{{ supplierProfile.name }}</strong>
+                        </div>
+                        <div class="supplier-otp-row">
+                          <span>Mobile No</span>
+                          <strong>{{ supplierProfile.maskedMobile }}</strong>
+                        </div>
+                        <div class="supplier-otp-row">
+                          <span>e-Mail</span>
+                          <strong>{{ supplierProfile.email }}</strong>
+                        </div>
                       </div>
-                      <div class="row g-2 mb-2">
-                        <div class="col-4 fw-bold">Mobile No</div>
-                        <div class="col-8">{{ supplierProfile.maskedMobile }}</div>
-                      </div>
-                      <div class="row g-2 mb-2">
-                        <div class="col-4 fw-bold">e-Mail</div>
-                        <div class="col-8">{{ supplierProfile.email }}</div>
-                      </div>
-                      <div class="mb-2">
+
+                      <div class="supplier-field">
                         <label class="form-label">Enter Userid</label>
                         <div class="input-group">
                           <input
@@ -672,14 +676,16 @@
                           <span class="input-group-text" *ngIf="supplierAuthMode === 'new'">@ems.in</span>
                         </div>
                       </div>
+
                       <button
                         type="button"
-                        class="btn btn-outline-primary btn-sm mb-2"
+                        class="btn btn-outline-primary supplier-otp-send"
                         [disabled]="supplierOtpSending"
                         (click)="sendSupplierOtp()">
                         {{ supplierOtpSending ? 'Sending...' : 'Send OTP' }}
                       </button>
-                      <div class="mb-2">
+
+                      <div class="supplier-field">
                         <label class="form-label">Enter OTP</label>
                         <input
                           type="text"
@@ -687,34 +693,39 @@
                           [(ngModel)]="supplierOtp"
                           name="supplierOtp"
                           maxlength="4"
-                          inputmode="numeric" />
+                          inputmode="numeric"
+                          placeholder="4 digit OTP" />
                       </div>
-                      <div class="mb-2">
+                      <div class="supplier-field">
                         <label class="form-label">New Password</label>
                         <input
                           type="password"
                           class="form-control"
                           [(ngModel)]="supplierNewPassword"
-                          name="supplierNewPassword" />
+                          name="supplierNewPassword"
+                          placeholder="New Password" />
                       </div>
-                      <div class="mb-2">
+                      <div class="supplier-field">
                         <label class="form-label">Repeat Password</label>
                         <input
                           type="password"
                           class="form-control"
                           [(ngModel)]="supplierRepeatPassword"
-                          name="supplierRepeatPassword" />
+                          name="supplierRepeatPassword"
+                          placeholder="Repeat Password" />
                       </div>
-                      <p class="small fw-bold mb-2" *ngIf="supplierOtpMessage">{{ supplierOtpMessage }}</p>
-                      <div class="d-flex gap-2">
+
+                      <p class="supplier-otp-msg" *ngIf="supplierOtpMessage">{{ supplierOtpMessage }}</p>
+
+                      <div class="supplier-otp-actions">
                         <button
                           type="button"
-                          class="btn btn-primary"
+                          class="btn btn-primary flex-fill"
                           [disabled]="supplierOtpSubmitting"
                           (click)="submitSupplierPassword()">
                           {{ supplierOtpSubmitting ? 'Saving...' : 'Submit' }}
                         </button>
-                        <button type="button" class="btn btn-secondary" (click)="cancelSupplierOtp()">
+                        <button type="button" class="btn btn-outline-secondary flex-fill" (click)="cancelSupplierOtp()">
                           Cancel
                         </button>
                       </div>
