@@ -284,6 +284,7 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
           event.urlAfterRedirects.includes('po-supply-dispatch-report') ||
           event.urlAfterRedirects.includes('po-supply-installation-print') ||
           event.urlAfterRedirects.includes('po-supply-po-print') ||
+          event.urlAfterRedirects.includes('/orders/po-print') ||
           event.urlAfterRedirects.includes('sanction-report');
 
         this.role = this.basicAuthentication.getRole().roleName;

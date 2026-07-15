@@ -72,6 +72,7 @@ import { PurchaseOrderDashboardComponent } from './component/DME/orders/purchase
 import { PurchaseOrderReceiptsComponent } from './component/DME/orders/purchase-order-receipts/purchase-order-receipts.component';
 import { PoReceiptEntryComponent } from './component/DME/orders/po-receipt-entry/po-receipt-entry.component';
 import { PoInstallationReportComponent } from './component/DME/orders/po-installation-report/po-installation-report.component';
+import { PoPrintComponent } from './component/DME/orders/po-print/po-print.component';
 import { DmeFacHeadsComponent } from './component/DME/indent/dme-fac-heads/dme-fac-heads.component';
 import { ConsolidatedIndentDmeComponent } from './component/DME/indent/consolidated-indent-dme/consolidated-indent-dme.component';
 import { DmeFacAddIndentComponent } from './component/DME/indent/dme-fac-add-indent/dme-fac-add-indent.component';
@@ -844,6 +845,12 @@ const routes: Routes = [
     component: PoInstallationReportComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'orders/po-print',
+    component: PoPrintComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'AUPO'] },
   },
   {
     path: 'contracts/dashboard',

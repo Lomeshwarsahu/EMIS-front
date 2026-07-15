@@ -74,13 +74,14 @@
             </td>
             <td class="text-center">
               <button
+                *ngIf="row.UploadStatus === 'Uploaded'; else noPdf"
                 type="button"
-                class="pdf-btn"
-                [disabled]="row.UploadStatus !== 'Uploaded'"
+                class="pdf-icon-btn"
                 (click)="onDownload(row)"
                 title="Download PDF">
-                PDF
+                <img src="assets/images/pdfDownload.png" alt="PDF" class="pdf-icon" />
               </button>
+              <ng-template #noPdf>—</ng-template>
             </td>
           </tr>
           <tr *ngIf="loading">

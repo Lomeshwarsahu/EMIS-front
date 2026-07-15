@@ -26,6 +26,7 @@ const EXTRA_ROUTE_TITLES: Record<string, string> = {
   '/transaction/po-supply-installation-report': 'Installation Report',
   '/orders/po-receipt-entry': 'Receipt / Installation Entry',
   '/orders/po-installation-report': 'Complete Installation Report',
+  '/orders/po-print': 'Purchase Order Print',
   '/transaction/po-supply-dispatch-report': 'Dispatch Details',
   '/transaction/po-supply-installation-print': 'Installation Report Print',
   '/transaction/po-supply-po-print': 'Purchase Order Print',

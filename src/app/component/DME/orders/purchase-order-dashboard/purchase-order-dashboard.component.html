@@ -76,26 +76,37 @@
             <td>{{ row.SupplierName || '—' }}</td>
             <td class="text-center">
               <button
+                *ngIf="hasFile(row.FilePathReagent); else noReagent"
                 type="button"
-                class="file-btn"
-                [class.has-file]="hasFile(row.FilePathReagent)"
-                [disabled]="!hasFile(row.FilePathReagent)"
-                title="Reagent list">
-                {{ hasFile(row.FilePathReagent) ? 'PDF' : '—' }}
+                class="pdf-icon-btn"
+                title="Open reagent list PDF"
+                (click)="openAttachment(row, 'reagent')">
+                <img src="assets/images/pdfDownload.png" alt="PDF" class="pdf-icon" />
               </button>
+              <ng-template #noReagent>—</ng-template>
             </td>
             <td class="text-center">
               <button
+                *ngIf="hasFile(row.FilePathAccessories); else noAccessories"
                 type="button"
-                class="file-btn"
-                [class.has-file]="hasFile(row.FilePathAccessories)"
-                [disabled]="!hasFile(row.FilePathAccessories)"
-                title="Accessories list">
-                {{ hasFile(row.FilePathAccessories) ? 'PDF' : '—' }}
+                class="pdf-icon-btn"
+                title="Open accessories list PDF"
+                (click)="openAttachment(row, 'accessories')">
+                <img src="assets/images/pdfDownload.png" alt="PDF" class="pdf-icon" />
               </button>
+              <ng-template #noAccessories>—</ng-template>
             </td>
             <td class="text-center">
-              <button type="button" class="print-btn" title="Print PO">Print</button>
+              <a
+                *ngIf="row.PoId; else noPrint"
+                class="plain-link"
+                title="Print PO"
+                [href]="printUrl(row)"
+                target="_blank"
+                rel="noopener noreferrer">
+                Print
+              </a>
+              <ng-template #noPrint>—</ng-template>
             </td>
           </tr>
           <tr *ngIf="!rows.length">
