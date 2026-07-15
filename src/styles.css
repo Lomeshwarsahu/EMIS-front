@@ -465,31 +465,37 @@ canvas {
   table-layout: fixed !important;
 }
 
-/* PO Receipt Desk — fixed column layout (nested dispatch grid) */
+/* PO Receipt Desk — content-width columns, no mid-word squeeze */
 .page-outlet-wrapper .table-wrap table.por-grid,
 .emis-page-content .table-wrap table.por-grid {
-  width: 100% !important;
-  min-width: 1100px !important;
+  width: max-content !important;
+  min-width: 100% !important;
   max-width: none !important;
-  table-layout: fixed !important;
+  table-layout: auto !important;
 }
 
-.page-outlet-wrapper .table-wrap table.por-grid th,
-.page-outlet-wrapper .table-wrap table.por-grid td,
-.emis-page-content .table-wrap table.por-grid th,
-.emis-page-content .table-wrap table.por-grid td,
-.page-outlet-wrapper .table-wrap table.por-grid .wrap-cell,
-.emis-page-content .table-wrap table.por-grid .wrap-cell {
+.page-outlet-wrapper .table-wrap table.por-grid > thead > tr > th,
+.page-outlet-wrapper .table-wrap table.por-grid > tbody > tr > td,
+.emis-page-content .table-wrap table.por-grid > thead > tr > th,
+.emis-page-content .table-wrap table.por-grid > tbody > tr > td {
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
+  letter-spacing: 0.02em;
+}
+
+.page-outlet-wrapper .table-wrap table.por-grid .nested-cell,
+.page-outlet-wrapper .table-wrap table.por-grid .cell-stack,
+.emis-page-content .table-wrap table.por-grid .nested-cell,
+.emis-page-content .table-wrap table.por-grid .cell-stack {
   white-space: normal;
-  word-break: break-word;
-  overflow-wrap: anywhere;
 }
 
 .page-outlet-wrapper .table-wrap table.por-grid .nested-grid,
 .emis-page-content .table-wrap table.por-grid .nested-grid {
-  width: 100% !important;
-  min-width: 0 !important;
-  table-layout: fixed !important;
+  width: auto !important;
+  min-width: 400px !important;
+  table-layout: auto !important;
 }
 
 .page-outlet-wrapper .legacy-fixed-table,

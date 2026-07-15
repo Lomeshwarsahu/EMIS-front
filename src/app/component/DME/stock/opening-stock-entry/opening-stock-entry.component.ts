@@ -14,6 +14,7 @@ interface MainEquipmentType {
 
 interface OpeningStockRow {
   ExistingItemId: number;
+  Pid: number;
   ItemName: string;
   ItemCode: string;
   MakeSerialNo: string;
@@ -38,6 +39,8 @@ export class OpeningStockEntryComponent implements OnInit, OnDestroy {
   private readonly apiRoot = `${environment.apiUrl}/DMEStock/`;
 
   equipmentTypes: MainEquipmentType[] = [];
+  /** Full dataset for this DME user (loaded once; filter applied locally). */
+  allRows: OpeningStockRow[] = [];
   rows: OpeningStockRow[] = [];
 
   selectedPid = 0;
@@ -49,6 +52,10 @@ export class OpeningStockEntryComponent implements OnInit, OnDestroy {
   /** Bumps so embedded form remounts cleanly each open. */
   formInstanceKey = 0;
 
+  get hasActiveFilter(): boolean {
+    return this.selectedPid > 0;
+  }
+
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
@@ -57,7 +64,7 @@ export class OpeningStockEntryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userId = this.resolveUserId();
     this.loadEquipmentTypes();
-    this.loadGrid();
+    this.loadAllData();
   }
 
   ngOnDestroy(): void {
@@ -65,7 +72,12 @@ export class OpeningStockEntryComponent implements OnInit, OnDestroy {
   }
 
   onEquipmentChange(): void {
-    this.loadGrid();
+    this.applyFilter();
+  }
+
+  clearFilters(): void {
+    this.selectedPid = 0;
+    this.applyFilter();
   }
 
   addNew(): void {
@@ -89,30 +101,35 @@ export class OpeningStockEntryComponent implements OnInit, OnDestroy {
 
   onFormSaved(): void {
     this.closeFormModal();
-    this.loadGrid();
+    this.loadAllData();
   }
 
-  loadGrid(): void {
+  /** Always fetches full opening stock for this user; filter is optional client-side. */
+  loadAllData(): void {
     if (!this.userId) {
       this.toastr.warning('Please login again — user id missing.');
       return;
     }
 
     this.loading = true;
-    const pidParam = this.selectedPid > 0 ? `&pid=${this.selectedPid}` : '';
-    this.http
-      .get<OpeningStockRow[]>(`${this.apiRoot}opening-stock?userId=${this.userId}${pidParam}`)
-      .subscribe({
-        next: (res) => {
-          this.rows = this.mapRows(res);
-          this.loading = false;
-        },
-        error: (e) => {
-          this.loading = false;
-          this.rows = [];
-          this.toastr.error(this.apiError(e, 'Could not load opening stock.'));
-        },
-      });
+    this.http.get<OpeningStockRow[]>(`${this.apiRoot}opening-stock?userId=${this.userId}`).subscribe({
+      next: (res) => {
+        this.allRows = this.mapRows(res);
+        this.applyFilter();
+        this.loading = false;
+      },
+      error: (e) => {
+        this.loading = false;
+        this.allRows = [];
+        this.rows = [];
+        this.toastr.error(this.apiError(e, 'Could not load opening stock.'));
+      },
+    });
+  }
+
+  private applyFilter(): void {
+    this.rows =
+      this.selectedPid > 0 ? this.allRows.filter((r) => r.Pid === this.selectedPid) : [...this.allRows];
   }
 
   private loadEquipmentTypes(): void {
@@ -144,6 +161,7 @@ export class OpeningStockEntryComponent implements OnInit, OnDestroy {
     const arr = Array.isArray(raw) ? raw : [];
     return arr.map((r: Record<string, unknown>) => ({
       ExistingItemId: Number(r['ExistingItemId'] ?? r['existingItemId'] ?? 0),
+      Pid: Number(r['Pid'] ?? r['pid'] ?? 0),
       ItemName: String(r['ItemName'] ?? r['itemName'] ?? ''),
       ItemCode: String(r['ItemCode'] ?? r['itemCode'] ?? ''),
       MakeSerialNo: String(r['MakeSerialNo'] ?? r['makeSerialNo'] ?? ''),
