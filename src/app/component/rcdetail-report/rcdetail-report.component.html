@@ -1,198 +1,191 @@
-<section class="container-fluid  vh-100 bg-light">
-  <div class="card border-0 ">
-    <div class="card p-4 mb-4 shadow-smm text-center bg-light border-0 rounded-3">
-      <h2 class="fw-bold text-primary mb-2">Rate Contract Detail Report</h2>
-      <p class="text-muted mb-0 fs-6">
-         Detailed view of rate contract items, suppliers, and pricing information
-      </p>
-    </div>
-    <div class="card shadow-lgg p-2 border-0 bg-white rounded ">
-      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lighty"
-        style="height: auto; overflow: hidden; position: relative;">
-        <div class="mb-0 Fon-family" style="text-align: justify;">
-          <form class="p-2">
-            <div class="card shadow-sm p-3 mt-2">
+<div class="rc-detail-page">
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Tender"
+        [(ngModel)]="tender_id"
+        name="tenderId"
+        (ngModelChange)="onFilterChange()"
+        [disabled]="loading">
+        <option *ngFor="let t of Tenterlist" [ngValue]="t.tender_id">{{ t.tender_no }}</option>
+      </select>
 
-              <div class="row text-center align-items-start">
-
-                <div class="col-md-4 border-end">
-                  <h6 class="fw-bold text-primary mb-3">
-                    <i class="bi bi-folder me-1"></i>Select Tender
-                  </h6>
-                  <div class="d-flex justify-content-center flex-wrap">
-                    <ng-select [items]="Tenterlist" bindLabel="tender_no" bindValue="tender_id"
-                        class="form-control" appendTo="body"
-                        name="selecteditem" placeholder="Select Tender" [(ngModel)]="tender_id">
-                    </ng-select>
-                  </div>
-                </div>
-
-                <div class="col-md-4 border-end">
-                  <h6 class="fw-bold text-success mb-3">
-                    <i class="bi bi-cash-coin me-1"></i> Category Types
-                  </h6>
-                  <div class="d-flex justify-content-center flex-wrap">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="CategoryType" value="E"
-                        [(ngModel)]="CategoryType">
-                      <label class="form-check-label">Equipment</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="CategoryType" value="R"
-                        [(ngModel)]="CategoryType">
-                      <label class="form-check-label">Reagent</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-4">
-                  <h6 class="fw-bold text-warning mb-3">
-                    <i class="bi bi-person-workspace me-1"></i>RcType
-                  </h6>
-                  <div class="d-flex justify-content-center">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="RcType" value="R"
-                        [(ngModel)]="RcType">
-                      <label class="form-check-label">Current RC Valid</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="RcType" value="D"
-                        [(ngModel)]="RcType">
-                      <label class="form-check-label">Expired or Previous RC</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-center mt-3">
-                  <button type="submit" class="btn btn-primary" (click)="GetRcDetailReport()">
-                    Show Details
-                  </button>
-                </div>
-              </div>
-
-            </div>
-          </form>
-
-        </div>
+      <div class="radio-group" role="radiogroup" aria-label="Category">
+        <label>
+          <input
+            type="radio"
+            name="CategoryType"
+            value="E"
+            [(ngModel)]="CategoryType"
+            (ngModelChange)="onFilterChange()"
+            [disabled]="loading" />
+          Equipment
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="CategoryType"
+            value="R"
+            [(ngModel)]="CategoryType"
+            (ngModelChange)="onFilterChange()"
+            [disabled]="loading" />
+          Reagent
+        </label>
       </div>
-    </div>
-    <div class="card shadow-lgg p-2 mt-0 pt-0 border-0 bg-white rounded ">
-      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lightt"
-        style="height: auto; overflow: hidden; position: relative;">
 
-        <div class="container-fluid p-3 m-0">
-          <div class="row justify-content-center g-4 ">
-
-            <div class="col-lg-12 mb-2">
-              <div class=" card row shadow ">
-                <div class="d-flex justify-content-between align-items-center m-2">
-                  <div class="filter-field flex-grow-1">
-                    <input type="text" class="form-control" placeholder="Search" (keyup)="applyTextFilter($event)">
-                  </div>
-
-                  <div class="export-menu-container m-2">
-                    <button type="button" class="btn border rounded btn-outline-secondary" mat-button
-                      [matMenuTriggerFor]="exportMenu">Export</button>
-                    <mat-menu #exportMenu="matMenu">
-                      <button mat-menu-item
-                        (click)="exporter.exportTable('xlsx', { fileName: 'RCDetailReport', sheet: 'RCDetailReport', Props: { Author: 'cgmsc' }})">Excel</button>
-                    </mat-menu>
-                  </div>
-                </div>
-                <div class="table-responsive">
-                  <table class="table table-bordered table-striped border rounded " mat-table matTableExporter
-                    [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
-
-                    <ng-container matColumnDef="sno">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No </th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.sno}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="contractItemId">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>contract Item Id </th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.contractItemId}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="itemId">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Id</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.itemId}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="itemCode">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.itemCode}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="itemName">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.itemName}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="make">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Make </th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.make}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="model">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.model}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="supplierName">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier Name</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.supplierName}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="tenderNo">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.tenderNo}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="contractDate">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Date</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.contractDate}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="contractEndDate">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract End Date</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.contractEndDate}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="basicRate">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Basic Rate</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.basicRate}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="gst">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>GST</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.gst}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="singleUnitPrice">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Single Unit Price</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.singleUnitPrice}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="cmc1">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>cmc1</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.cmc1}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="cmc2">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>cmc2</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.cmc2}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="cmc3">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>cmc3</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.cmc3}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="cmc4">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>cmc4</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.cmc4}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="cmc5">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>cmc5</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.cmc5}}</td>
-                    </ng-container>
-                    <ng-container matColumnDef="tenderId">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender Id</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.tenderId}}</td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                  </table>
-                  <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons></mat-paginator>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="radio-group" role="radiogroup" aria-label="RC Type">
+        <label>
+          <input
+            type="radio"
+            name="RcType"
+            value="R"
+            [(ngModel)]="RcType"
+            (ngModelChange)="onFilterChange()"
+            [disabled]="loading" />
+          Current RC Valid
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="RcType"
+            value="D"
+            [(ngModel)]="RcType"
+            (ngModelChange)="onFilterChange()"
+            [disabled]="loading" />
+          Expired / Previous RC
+        </label>
       </div>
+
+      <button
+        *ngIf="hasActiveFilter"
+        type="button"
+        class="clear-btn"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+
+      <button
+        type="button"
+        class="show-btn accent-btn"
+        (click)="exportExcel()"
+        [disabled]="loading || !dataSource.data.length">
+        Export
+      </button>
+    </div>
+
+    <div class="search-row" *ngIf="!loading && dataSource.data.length">
+      <input
+        type="search"
+        class="search-input"
+        placeholder="Search in table…"
+        (keyup)="applyTextFilter($event)"
+        aria-label="Search table" />
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table
+        class="rc-grid"
+        mat-table
+        matTableExporter
+        [dataSource]="dataSource"
+        #exporter="matTableExporter"
+        matSort
+        #sort="matSort">
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>S.No</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.sno }}</td>
+        </ng-container>
+        <ng-container matColumnDef="contractItemId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Item Id</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.contractItemId }}</td>
+        </ng-container>
+        <ng-container matColumnDef="itemId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Id</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.itemId }}</td>
+        </ng-container>
+        <ng-container matColumnDef="itemCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+          <td mat-cell *matCellDef="let element">{{ element.itemCode }}</td>
+        </ng-container>
+        <ng-container matColumnDef="itemName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.itemName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="make">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Make</th>
+          <td mat-cell *matCellDef="let element">{{ element.make }}</td>
+        </ng-container>
+        <ng-container matColumnDef="model">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
+          <td mat-cell *matCellDef="let element">{{ element.model }}</td>
+        </ng-container>
+        <ng-container matColumnDef="supplierName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.supplierName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="tenderNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No</th>
+          <td mat-cell *matCellDef="let element">{{ element.tenderNo }}</td>
+        </ng-container>
+        <ng-container matColumnDef="contractDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.contractDate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="contractEndDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract End Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.contractEndDate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="basicRate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Basic Rate</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.basicRate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="gst">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>GST</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.gst }}</td>
+        </ng-container>
+        <ng-container matColumnDef="singleUnitPrice">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Single Unit Price</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.singleUnitPrice }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cmc1">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>CMC1</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.cmc1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cmc2">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>CMC2</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.cmc2 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cmc3">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>CMC3</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.cmc3 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cmc4">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>CMC4</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.cmc4 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cmc5">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>CMC5</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.cmc5 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="tenderId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender Id</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.tenderId }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <div class="empty-row" *ngIf="!dataSource.data.length">No records found.</div>
+
+      <mat-paginator
+        *ngIf="dataSource.data.length"
+        #paginator
+        [pageSizeOptions]="[10, 15, 30, 50]"
+        showFirstLastButtons></mat-paginator>
     </div>
   </div>
-</section>
+</div>

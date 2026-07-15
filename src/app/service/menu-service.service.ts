@@ -640,7 +640,7 @@ export class MenuServiceService {
               route: '/masters/store-home',
             },
             {
-              label: 'Report-Specification',
+              label: 'Specification Upload',
               route: '/masters/report-specification',
             },
           ],
@@ -712,7 +712,13 @@ export class MenuServiceService {
         {
           label: 'Reports',
           route: '',
-          submenu: [{ label: 'CMC Detail', route: '/reports/cmc-detail' }],
+          submenu: [
+            { label: 'CMC Detail', route: '/reports/cmc-detail' },
+            {
+              label: 'Specification Upload',
+              route: '/reports/eel-specification',
+            },
+          ],
         },
         {
           label: 'Complain',

@@ -262,30 +262,24 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     const breakpointChanged = this.isMobile !== isMobile;
     this.isMobile = isMobile;
     this.drawerMode = isMobile ? 'over' : 'side';
+    if (this.isLoginPage) {
+      this.isDrawerOpen = false;
+      return;
+    }
     if (forceOpenState || breakpointChanged) {
       this.isDrawerOpen = !isMobile;
     }
   }
 
   ngOnInit(): void {
+    this.isLoginPage = this.isShellFreeUrl(this.router.url);
+
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.isLoginPage =
-          event.urlAfterRedirects === '/login' ||
-          event.urlAfterRedirects === '/supplier-login' ||
-          event.urlAfterRedirects === '/LoginEmsSup' ||
-          event.urlAfterRedirects === '/otp' ||
-          event.urlAfterRedirects === '/collector-login' ||
-          event.urlAfterRedirects === '/public-view' ||
-          event.urlAfterRedirects === '/GrowthInProcurmentTabPublic' ||
-          event.urlAfterRedirects === '/distributionPublic' ||
-          event.urlAfterRedirects === '/IndentPendingWHdashPublic' ||
-          event.urlAfterRedirects === '/Registration' ||
-          event.urlAfterRedirects.includes('po-supply-dispatch-report') ||
-          event.urlAfterRedirects.includes('po-supply-installation-print') ||
-          event.urlAfterRedirects.includes('po-supply-po-print') ||
-          event.urlAfterRedirects.includes('/orders/po-print') ||
-          event.urlAfterRedirects.includes('sanction-report');
+        this.isLoginPage = this.isShellFreeUrl(event.urlAfterRedirects || event.url);
+        if (this.isLoginPage) {
+          this.isDrawerOpen = false;
+        }
 
         this.role = this.basicAuthentication.getRole().roleName;
         this.updateMenu();
@@ -312,6 +306,28 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
         this.unreadNotificationCount = list.filter((item) => !item.read).length;
         this.cdr.markForCheck();
       });
+  }
+
+  /** Login / print / public pages — no sidebar or header (ignore ?query). */
+  private isShellFreeUrl(url: string): boolean {
+    const path = (url || '').split('?')[0].split('#')[0];
+    return (
+      path === '/login' ||
+      path === '/supplier-login' ||
+      path === '/LoginEmsSup' ||
+      path === '/otp' ||
+      path === '/collector-login' ||
+      path === '/public-view' ||
+      path === '/GrowthInProcurmentTabPublic' ||
+      path === '/distributionPublic' ||
+      path === '/IndentPendingWHdashPublic' ||
+      path === '/Registration' ||
+      path.includes('po-supply-dispatch-report') ||
+      path.includes('po-supply-installation-print') ||
+      path.includes('po-supply-po-print') ||
+      path.includes('/orders/po-print') ||
+      path.includes('sanction-report')
+    );
   }
 
   ngDoCheck(): void {

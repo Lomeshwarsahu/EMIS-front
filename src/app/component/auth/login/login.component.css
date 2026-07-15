@@ -482,6 +482,58 @@ body {
   font-family: --awb-fusion-font-family-typography;
 }
 
+.manual-links-sup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.manual-links-sup a {
+  color: #003399;
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: underline;
+}
+
+.mode-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mode-btn {
+  background: #fff;
+  border: 1px solid #4d67a0;
+  color: #4d67a0;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.mode-btn:hover {
+  background: #eef2ff;
+}
+
+.mode-btn--active {
+  background: #4d67a0;
+  color: #fff;
+}
+
+.supplier-auth-panel {
+  width: 100%;
+}
+
+.supplier-otp-panel {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 12px;
+}
+
 .toggle-eye {
   position: absolute;
   right: 10px;

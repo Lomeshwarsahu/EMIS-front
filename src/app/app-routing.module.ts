@@ -971,6 +971,12 @@ const routes: Routes = [
     data: { allowedRoles: ['DME'] },
   },
   {
+    path: 'reports/eel-specification',
+    component: ReportSpecificationComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
     path: 'reports/po-summary',
     component: POSummaryReportComponent,
     canActivate: [RouteGuardService],
@@ -1017,6 +1023,16 @@ const routes: Routes = [
   {
     path: 'report-specification',
     redirectTo: 'masters/report-specification',
+    pathMatch: 'full',
+  },
+  {
+    path: 'report_specification',
+    redirectTo: 'reports/eel-specification',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Itemspecification',
+    redirectTo: 'reports/eel-specification',
     pathMatch: 'full',
   },
   {

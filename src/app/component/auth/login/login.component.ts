@@ -78,6 +78,7 @@ approle:any;
 
   ngOnInit() {
     this.getallusers('6');
+    this.loadSupplierAuthOptions();
   }
 
   onUserChange(event: Event): void {
@@ -239,11 +240,80 @@ approle:any;
   selectedStatussup: any = '0';
   supplierUserId: number | null = null;
   supplierLoginEmail = '';
+  /** login | new | reset — SUPPLIER tab (LoginEmsSUP flow) */
+  supplierAuthMode: 'login' | 'new' | 'reset' = 'login';
+  supplierAuthOptions: Array<{ user_id: number; user_name: string; e_mail_id: string }> = [];
+  supplierAuthBusy = false;
+  supplierShowOtp = false;
+  supplierOtpSending = false;
+  supplierOtpSubmitting = false;
+  supplierProfile: {
+    supplierId: number;
+    name: string;
+    maskedMobile: string;
+    email: string;
+    userEmail: string;
+  } | null = null;
+  supplierDesiredUserId = '';
+  supplierOtp = '';
+  supplierNewPassword = '';
+  supplierRepeatPassword = '';
+  supplierOtpMessage = '';
   userdatas: any;
   EMAIL: any;
+
+  get supplierSelectPlaceholder(): string {
+    if (this.supplierAuthMode === 'new') {
+      return 'Select Supplier for New Userid';
+    }
+    return this.supplierAuthMode === 'reset' ? 'Select User' : 'Select Supplier';
+  }
+
   getallusers(id: any) {
     this.api.getUsers(id).subscribe((res) => {
       this.userdatas = Array.isArray(res) ? res : [];
+    });
+  }
+
+  setSupplierAuthMode(mode: 'login' | 'new' | 'reset'): void {
+    this.supplierAuthMode = mode;
+    this.supplierUserId = null;
+    this.supplierLoginEmail = '';
+    this.pwd = '';
+    this.cancelSupplierOtp();
+    this.loadSupplierAuthOptions();
+  }
+
+  private loadSupplierAuthOptions(): void {
+    const listId = this.supplierAuthMode === 'new' ? 8 : 6;
+    this.api.getUsers(listId).subscribe({
+      next: (res: unknown) => {
+        const rows = Array.isArray(res) ? res : [];
+        this.supplierAuthOptions = rows
+          .map((row: Record<string, unknown>) => ({
+            user_id: Number(row['user_id'] ?? row['User_Id'] ?? 0),
+            user_name: String(row['user_name'] ?? row['User_Name'] ?? '').trim(),
+            e_mail_id: String(row['e_mail_id'] ?? row['E_Mail_Id'] ?? '').trim(),
+          }))
+          .filter((row) => row.user_id > 0 && row.user_name);
+        this.userdatas = this.supplierAuthOptions;
+        if (!this.supplierAuthOptions.length) {
+          this.toastr.warning(
+            this.supplierAuthMode === 'new'
+              ? 'No supplier pending new User-ID.'
+              : 'No supplier found.',
+          );
+        }
+      },
+      error: () => {
+        this.supplierAuthOptions = [];
+        this.userdatas = [];
+        if (this.supplierAuthMode === 'new') {
+          this.toastr.warning('No supplier pending new User-ID.');
+          return;
+        }
+        this.toastr.error('Unable to load supplier list.');
+      },
     });
   }
   // https://localhost:7036/api/Auth/GetUserEmail/5
@@ -290,7 +360,11 @@ approle:any;
 
   onSupplierTabSelect(): void {
     this.supplierLoginEmail = '';
+    this.cancelSupplierOtp();
     if (!this.supplierUserId) {
+      return;
+    }
+    if (this.supplierAuthMode === 'new') {
       return;
     }
 
@@ -312,17 +386,124 @@ approle:any;
     });
   }
 
-  private getSupplierEmailFromList(userId: number): string {
-    const selected = Array.isArray(this.userdatas)
-      ? this.userdatas.find(
-          (row: Record<string, unknown>) =>
-            Number(row['user_id'] ?? row['User_Id']) === userId,
-        )
-      : null;
+  openSupplierPasswordFlow(): void {
+    if (!this.supplierUserId) {
+      this.toastr.warning('Please Select Supplier');
+      return;
+    }
+    const mode = this.supplierAuthMode === 'new' ? 'new' : 'reset';
+    this.supplierAuthBusy = true;
+    this.api.getSupplierProfile(this.supplierUserId, mode).subscribe({
+      next: (res) => {
+        this.supplierAuthBusy = false;
+        this.supplierProfile = {
+          supplierId: Number(res.supplierId ?? res.SupplierId ?? 0),
+          name: String(res.name ?? res.Name ?? '').trim(),
+          maskedMobile: String(res.maskedMobile ?? res.MaskedMobile ?? '').trim(),
+          email: String(res.email ?? res.Email ?? '-').trim() || '-',
+          userEmail: String(res.userEmail ?? res.UserEmail ?? '').trim(),
+        };
+        if (!this.supplierProfile.supplierId) {
+          this.toastr.error('Supplier mapping not found.');
+          return;
+        }
+        this.supplierDesiredUserId =
+          mode === 'reset'
+            ? this.supplierProfile.userEmail || this.supplierLoginEmail
+            : '';
+        this.supplierOtp = '';
+        this.supplierNewPassword = '';
+        this.supplierRepeatPassword = '';
+        this.supplierOtpMessage = '';
+        this.supplierShowOtp = true;
+      },
+      error: (err) => {
+        this.supplierAuthBusy = false;
+        this.toastr.error(err?.error?.message ?? 'Unable to load supplier profile.');
+      },
+    });
+  }
 
-    return String(
-      selected?.['e_mail_id'] ?? selected?.['E_Mail_Id'] ?? selected?.['e_mail_Id'] ?? '',
-    ).trim();
+  sendSupplierOtp(): void {
+    if (!this.supplierProfile?.supplierId) {
+      this.toastr.warning('Please Select Supplier');
+      return;
+    }
+    this.supplierOtpSending = true;
+    this.api.sendSupplierOtp(this.supplierProfile.supplierId).subscribe({
+      next: (res) => {
+        this.supplierOtpSending = false;
+        this.supplierOtpMessage = res?.message ?? 'OTP has been Sent.';
+        this.toastr.success(this.supplierOtpMessage);
+      },
+      error: (err) => {
+        this.supplierOtpSending = false;
+        this.supplierOtpMessage = err?.error?.message ?? 'Failed to send OTP.';
+        this.toastr.error(this.supplierOtpMessage);
+      },
+    });
+  }
+
+  submitSupplierPassword(): void {
+    if (!this.supplierProfile?.supplierId) {
+      this.toastr.warning('Please Select Supplier');
+      return;
+    }
+    if (!this.supplierOtp?.trim()) {
+      this.toastr.warning('Please Submit 4 digit OTP sent on your mobile.');
+      return;
+    }
+    if (this.supplierNewPassword !== this.supplierRepeatPassword) {
+      this.toastr.error('Both New Password & Retype Password Not Matched');
+      return;
+    }
+    if (this.supplierAuthMode === 'new' && !this.supplierDesiredUserId?.trim()) {
+      this.toastr.warning('Please enter desired user id.');
+      return;
+    }
+    const mode = this.supplierAuthMode === 'new' ? 'new' : 'reset';
+    this.supplierOtpSubmitting = true;
+    this.api
+      .completeSupplierPassword({
+        supplierId: this.supplierProfile.supplierId,
+        otp: this.supplierOtp.trim(),
+        newPassword: this.supplierNewPassword,
+        repeatPassword: this.supplierRepeatPassword,
+        mode,
+        desiredUserId: mode === 'new' ? this.supplierDesiredUserId.trim() : '',
+      })
+      .subscribe({
+        next: (res) => {
+          this.supplierOtpSubmitting = false;
+          this.toastr.success(
+            res?.message ?? 'Your have Succesully Generated/Reset Password,Please Login in EMIS',
+          );
+          this.setSupplierAuthMode('login');
+        },
+        error: (err) => {
+          this.supplierOtpSubmitting = false;
+          this.supplierOtpMessage = err?.error?.message ?? 'Password Not Saved';
+          this.toastr.error(this.supplierOtpMessage);
+        },
+      });
+  }
+
+  cancelSupplierOtp(): void {
+    this.supplierShowOtp = false;
+    this.supplierProfile = null;
+    this.supplierDesiredUserId = '';
+    this.supplierOtp = '';
+    this.supplierNewPassword = '';
+    this.supplierRepeatPassword = '';
+    this.supplierOtpMessage = '';
+    this.supplierOtpSending = false;
+    this.supplierOtpSubmitting = false;
+    this.supplierAuthBusy = false;
+  }
+
+  private getSupplierEmailFromList(userId: number): string {
+    const selected = this.supplierAuthOptions.find((row) => row.user_id === userId);
+    return selected?.e_mail_id?.trim() ?? '';
   }
 
   private pickSupplierEmail(res: {
