@@ -271,6 +271,33 @@
     </div>
 
     <div class="tab-panel" *ngIf="activeTab === 'complete'">
+      <div class="form-grid" style="margin-bottom: 1rem">
+        <label>
+          Installation Dispatch No *
+          <input type="text" [(ngModel)]="installDispatchNo" name="installDispatchNo" />
+        </label>
+        <label>
+          Installation Dispatch Date *
+          <input type="date" [(ngModel)]="installDispatchDate" name="installDispatchDate" />
+        </label>
+      </div>
+
+      <ng-container *ngIf="bulkInst">
+        <p class="section-title">Bulk document upload (all serials)</p>
+        <div class="upload-row" *ngFor="let row of bulkUploadRows">
+          <span class="upload-label">{{ row.label }}</span>
+          <input type="file" accept=".pdf" #bulkFileInput />
+          <button
+            type="button"
+            class="show-btn upload-btn"
+            (click)="uploadFile(bulkFileInput, row.fileType, 0, true)"
+            [disabled]="uploading || saving">
+            Upload
+          </button>
+          <span *ngIf="row.hasFile" class="upload-ok">Uploaded</span>
+        </div>
+      </ng-container>
+
       <div class="datagrid" *ngIf="installationLines.length">
         <div class="table-wrap">
           <table class="orders-grid">
@@ -280,8 +307,10 @@
                 <th>Installation Date</th>
                 <th>Warranty From / To</th>
                 <th>Qty</th>
-                <th>Installed By</th>
-                <th>Location</th>
+                <th *ngIf="!bulkInst">Installation Report</th>
+                <th *ngIf="!bulkInst">Photos</th>
+                <th *ngIf="!bulkInst">Warranty Card</th>
+                <th *ngIf="!bulkInst">Challan / Invoice</th>
               </tr>
             </thead>
             <tbody>
@@ -290,22 +319,47 @@
                 <td class="text-center">{{ row.installationDate }}</td>
                 <td class="text-center">{{ row.warrantyFromDate }} / {{ row.warrantyToDate }}</td>
                 <td class="text-center">{{ row.receivedQty }}</td>
-                <td>{{ row.installationBy }}</td>
-                <td class="wrap-cell">{{ row.installationLocation }}</td>
+                <td *ngIf="!bulkInst">
+                  <ng-container *ngIf="!row.hasInstallationReport">
+                    <input type="file" accept=".pdf" #insReportInput />
+                    <button type="button" class="show-btn upload-btn" (click)="uploadFile(insReportInput, 'insreport', row.itemDetailId)" [disabled]="uploading || saving">Upload</button>
+                  </ng-container>
+                  <span *ngIf="row.hasInstallationReport" class="upload-ok">Uploaded</span>
+                </td>
+                <td *ngIf="!bulkInst">
+                  <ng-container *ngIf="!row.hasInstallationPhoto">
+                    <input type="file" accept=".pdf" #insPhotoInput />
+                    <button type="button" class="show-btn upload-btn" (click)="uploadFile(insPhotoInput, 'insphoto', row.itemDetailId)" [disabled]="uploading || saving">Upload</button>
+                  </ng-container>
+                  <span *ngIf="row.hasInstallationPhoto" class="upload-ok">Uploaded</span>
+                </td>
+                <td *ngIf="!bulkInst">
+                  <ng-container *ngIf="!row.hasWarrantyCard">
+                    <input type="file" accept=".pdf" #warrantyInput />
+                    <button type="button" class="show-btn upload-btn" (click)="uploadFile(warrantyInput, 'waranty', row.itemDetailId)" [disabled]="uploading || saving">Upload</button>
+                  </ng-container>
+                  <span *ngIf="row.hasWarrantyCard" class="upload-ok">Uploaded</span>
+                </td>
+                <td *ngIf="!bulkInst">
+                  <ng-container *ngIf="!row.hasChallan">
+                    <input type="file" accept=".pdf" #challanInput />
+                    <button type="button" class="show-btn upload-btn" (click)="uploadFile(challanInput, 'chalan', row.itemDetailId)" [disabled]="uploading || saving">Upload</button>
+                  </ng-container>
+                  <span *ngIf="row.hasChallan" class="upload-ok">Uploaded</span>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
       <p class="help-text warning-text">
-        Complete when all dispatched serials have installation details. PDF upload can be done later from the
-        installation report where available.
+        Upload all required PDF files and enter installation dispatch details before Complete.
       </p>
       <button
         type="button"
         class="show-btn complete-btn"
         (click)="completeInstallation()"
-        [disabled]="saving || !receiptId || !installationLines.length">
+        [disabled]="saving || uploading || !receiptId || !installationLines.length">
         {{ saving ? 'Completing...' : 'Complete Installation' }}
       </button>
     </div>

@@ -201,6 +201,8 @@ export class ApiService {
       issueDetailId: number;
       serialNo: string;
       warrantyCardNo: string;
+      mfgDate?: string;
+      expDate?: string;
       supplyQty: number;
     },
   ) {
@@ -322,6 +324,44 @@ export class ApiService {
       `${this.apiUrll}/supplier/receipt-entry/file/by-user/${userId}`,
       formData,
     );
+  }
+
+  deleteSupplierReceiptInstallation(
+    userId: number,
+    body: { poId: number; locationId: number; issueId: number; receiptId: number },
+  ) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/receipt-entry/delete/by-user/${userId}`,
+      body,
+    );
+  }
+
+  saveSupplierReceiptDenied(
+    userId: number,
+    body: {
+      poId: number;
+      locationId: number;
+      issueId: number;
+      deniedStatus: string;
+      deniedQty: number;
+      remarks: string;
+    },
+  ) {
+    return this.http.post<{ message: string; descrepencyId?: number }>(
+      `${this.apiUrll}/supplier/receipt-entry/denied/by-user/${userId}`,
+      body,
+    );
+  }
+
+  uploadSupplierReceiptDeniedFile(userId: number, formData: FormData) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/receipt-entry/denied/file/by-user/${userId}`,
+      formData,
+    );
+  }
+
+  getSupplierReceiptDeniedFileUrl(userId: number, descrepencyId: number, fileKind: string): string {
+    return `${this.apiUrll}/supplier/receipt-entry/denied/file/by-user/${userId}?descrepencyId=${descrepencyId}&fileKind=${encodeURIComponent(fileKind)}`;
   }
 
   getSupplierInstallationReport(userId: number, receiptId: number) {

@@ -47,6 +47,7 @@ export class PoReceiptEntryComponent implements OnInit {
 
   loading = false;
   saving = false;
+  uploading = false;
   activeTab: ReceiptTab = 'receipt';
   userId = 0;
 
@@ -54,6 +55,14 @@ export class PoReceiptEntryComponent implements OnInit {
   locId = 0;
   issueId = 0;
   receiptId = 0;
+  categoryId = 0;
+
+  hasBulkInstallationReport = false;
+  hasBulkInstallationPhoto = false;
+  hasBulkWarrantyCard = false;
+  hasBulkChallan = false;
+  installDispatchNo = '';
+  installDispatchDate = '';
 
   itemCode = '';
   itemName = '';
@@ -330,6 +339,10 @@ export class PoReceiptEntryComponent implements OnInit {
       this.toastr.warning('Please save receipt details first.');
       return;
     }
+    if (!this.installDispatchNo.trim() || !this.installDispatchDate) {
+      this.toastr.warning('Please enter installation dispatch no and date.');
+      return;
+    }
     this.saving = true;
     this.http
       .post<{ message?: string }>(`${this.apiRoot}receipt-entry/complete`, {
@@ -338,6 +351,8 @@ export class PoReceiptEntryComponent implements OnInit {
         locationId: this.locId,
         issueId: this.issueId,
         receiptId: this.receiptId,
+        installDispatchNo: this.installDispatchNo.trim(),
+        installDispatchDate: this.fromIsoDate(this.installDispatchDate),
       })
       .subscribe({
         next: (res) => {
@@ -350,6 +365,52 @@ export class PoReceiptEntryComponent implements OnInit {
           this.toastr.error(apiErrorMessage(err, 'Unable to complete installation.'));
         },
       });
+  }
+
+  uploadFile(
+    input: HTMLInputElement,
+    fileType: 'insreport' | 'insphoto' | 'waranty' | 'chalan',
+    itemDetailId = 0,
+    bulk = false,
+  ): void {
+    const file = input.files?.[0];
+    if (!file) {
+      this.toastr.warning('Please select a PDF file.');
+      return;
+    }
+    if (!this.receiptId) {
+      this.toastr.warning('Please save receipt details first.');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('userId', String(this.userId));
+    formData.append('receiptId', String(this.receiptId));
+    formData.append('fileType', fileType);
+    formData.append('itemDetailId', String(itemDetailId));
+    formData.append('bulk', String(bulk));
+    formData.append('file', file);
+    this.uploading = true;
+    this.http.post<{ message?: string }>(`${this.apiRoot}receipt-entry/file`, formData).subscribe({
+      next: (res) => {
+        this.uploading = false;
+        input.value = '';
+        this.toastr.success(res?.message ?? 'File uploaded.');
+        this.loadPage();
+      },
+      error: (err) => {
+        this.uploading = false;
+        this.toastr.error(apiErrorMessage(err, 'Unable to upload file.'));
+      },
+    });
+  }
+
+  get bulkUploadRows(): { fileType: 'insreport' | 'insphoto' | 'waranty' | 'chalan'; label: string; hasFile: boolean }[] {
+    return [
+      { fileType: 'insreport', label: 'Combined Receipt / Installation Report', hasFile: this.hasBulkInstallationReport },
+      { fileType: 'insphoto', label: 'Installation Photos', hasFile: this.hasBulkInstallationPhoto },
+      { fileType: 'waranty', label: 'Warranty Cards', hasFile: this.hasBulkWarrantyCard },
+      { fileType: 'chalan', label: 'Challan / Invoice Copies', hasFile: this.hasBulkChallan },
+    ];
   }
 
   goBack(): void {
@@ -376,6 +437,7 @@ export class PoReceiptEntryComponent implements OnInit {
 
   private applyPage(data: Record<string, unknown>): void {
     this.receiptId = Number(data['receiptId'] ?? data['ReceiptId'] ?? 0);
+    this.categoryId = Number(data['categoryId'] ?? data['CategoryId'] ?? 0);
     this.itemCode = String(data['itemCode'] ?? data['ItemCode'] ?? '');
     this.itemName = String(data['itemName'] ?? data['ItemName'] ?? '');
     this.taxPercent = String(data['taxPercent'] ?? data['TaxPercent'] ?? '');
@@ -399,6 +461,16 @@ export class PoReceiptEntryComponent implements OnInit {
     ).trim();
     this.lastReceiptDate = String(data['lastReceiptDate'] ?? data['LastReceiptDate'] ?? '');
     this.bulkInst = Boolean(data['bulkInst'] ?? data['BulkInst'] ?? false);
+    this.hasBulkInstallationReport = Boolean(
+      data['hasBulkInstallationReport'] ?? data['HasBulkInstallationReport'] ?? false,
+    );
+    this.hasBulkInstallationPhoto = Boolean(
+      data['hasBulkInstallationPhoto'] ?? data['HasBulkInstallationPhoto'] ?? false,
+    );
+    this.hasBulkWarrantyCard = Boolean(
+      data['hasBulkWarrantyCard'] ?? data['HasBulkWarrantyCard'] ?? false,
+    );
+    this.hasBulkChallan = Boolean(data['hasBulkChallan'] ?? data['HasBulkChallan'] ?? false);
 
     this.challanNo = String(data['challanNo'] ?? data['ChallanNo'] ?? '');
     this.challanDate = String(data['challanDate'] ?? data['ChallanDate'] ?? '');
@@ -411,6 +483,10 @@ export class PoReceiptEntryComponent implements OnInit {
     this.receiptNo = String(data['receiptNo'] ?? data['ReceiptNo'] ?? '');
     this.receiptQty = String(data['receiptQty'] ?? data['ReceiptQty'] ?? '');
     this.receiptRemarks = String(data['receiptRemarks'] ?? data['ReceiptRemarks'] ?? '');
+    this.installDispatchNo = String(data['installDispatchNo'] ?? data['InstallDispatchNo'] ?? '');
+    this.installDispatchDate = this.toIsoDate(
+      String(data['installDispatchDate'] ?? data['InstallDispatchDate'] ?? ''),
+    );
     if (!this.receiptQty && this.dispatchedQty > 0) {
       this.receiptQty = String(this.dispatchedQty);
     }

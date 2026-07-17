@@ -276,9 +276,13 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
 
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
+        const wasShellFree = this.isLoginPage;
         this.isLoginPage = this.isShellFreeUrl(event.urlAfterRedirects || event.url);
         if (this.isLoginPage) {
           this.isDrawerOpen = false;
+        } else if (wasShellFree) {
+          // Print/login shell pages force drawer closed — restore for normal pages.
+          this.applyDrawerLayout(this.isMobile, true);
         }
 
         this.role = this.basicAuthentication.getRole().roleName;
@@ -310,23 +314,34 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
 
   /** Login / print / public pages — no sidebar or header (ignore ?query). */
   private isShellFreeUrl(url: string): boolean {
-    const path = (url || '').split('?')[0].split('#')[0];
+    const path = (url || '').split('?')[0].split('#')[0].toLowerCase();
+    const exactShellFree = new Set([
+      '/login',
+      '/supplier-login',
+      '/loginemssup',
+      '/otp',
+      '/collector-login',
+      '/public-view',
+      '/growthinprocurmenttabpublic',
+      '/distributionpublic',
+      '/indentpendingwhdashpublic',
+      '/registration',
+      '/transaction/po-supply-dispatch-report',
+      '/transaction/po-supply-installation-print',
+      '/transaction/po-supply-po-print',
+      '/orders/po-print',
+      '/reports/sanction-report',
+    ]);
+    if (exactShellFree.has(path)) {
+      return true;
+    }
+    // Legacy ASPX-style redirects sometimes land with trailing segments.
     return (
-      path === '/login' ||
-      path === '/supplier-login' ||
-      path === '/LoginEmsSup' ||
-      path === '/otp' ||
-      path === '/collector-login' ||
-      path === '/public-view' ||
-      path === '/GrowthInProcurmentTabPublic' ||
-      path === '/distributionPublic' ||
-      path === '/IndentPendingWHdashPublic' ||
-      path === '/Registration' ||
-      path.includes('po-supply-dispatch-report') ||
-      path.includes('po-supply-installation-print') ||
-      path.includes('po-supply-po-print') ||
-      path.includes('/orders/po-print') ||
-      path.includes('sanction-report')
+      path.endsWith('/po-supply-dispatch-report') ||
+      path.endsWith('/po-supply-installation-print') ||
+      path.endsWith('/po-supply-po-print') ||
+      path.endsWith('/orders/po-print') ||
+      path.endsWith('/sanction-report')
     );
   }
 

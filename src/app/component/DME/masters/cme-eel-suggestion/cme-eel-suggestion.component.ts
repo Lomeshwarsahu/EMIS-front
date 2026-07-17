@@ -62,12 +62,41 @@ export class CmeEelSuggestionComponent implements OnInit {
 
   onDownloadLetter(row: EelSuggestionRow): void {
     if (!this.hasUpload(row.UploadLetter)) return;
-    this.toastr.info('Document download requires legacy file store (MongoDB) — not yet wired in API.');
+    this.downloadDoc(row, 'letter', row.UploadLetter, row.Ext);
   }
 
   onDownloadRelevant(row: EelSuggestionRow): void {
     if (!this.hasUpload(row.UploadRelevantDoc)) return;
-    this.toastr.info('Document download requires legacy file store (MongoDB) — not yet wired in API.');
+    this.downloadDoc(row, 'relevant', row.UploadRelevantDoc, row.Ext);
+  }
+
+  private downloadDoc(
+    row: EelSuggestionRow,
+    docType: 'letter' | 'relevant',
+    nameHint?: string,
+    ext?: string,
+  ): void {
+    this.http
+      .get(`${this.apiRoot}eel-suggestions/${row.Id}/file?docType=${docType}`, {
+        responseType: 'blob',
+      })
+      .subscribe({
+        next: (blob) => {
+          const suffix = ext?.startsWith('.') ? ext : `.${ext || 'pdf'}`;
+          const fileName = `${nameHint || `eel-${row.Id}-${docType}`}${
+            nameHint?.includes('.') ? '' : suffix
+          }`;
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName;
+          a.click();
+          URL.revokeObjectURL(url);
+        },
+        error: () => {
+          this.toastr.error('Could not download document.');
+        },
+      });
   }
 
   exportExcel(): void {

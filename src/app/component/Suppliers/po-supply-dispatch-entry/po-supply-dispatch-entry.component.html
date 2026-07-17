@@ -3,7 +3,7 @@
     <button type="button" class="back-btn" (click)="goBack()">Back to Dispatch Desk</button>
   </div>
 
-  <h2 class="page-title">Dispatch Entry of Equipments</h2>
+  <h2 class="page-title">{{ pageTitle }}</h2>
 
   <app-supplier-page-skeleton *ngIf="loading" type="form" [formFields]="10" />
 
@@ -95,7 +95,7 @@
         [class.active]="activeTab === 'equipment'"
         (click)="setTab('equipment')"
         [disabled]="!issueId">
-        Equipment Entry
+        {{ lineTabLabel }}
       </button>
       <button
         type="button"
@@ -189,16 +189,19 @@
     </div>
 
     <div *ngIf="activeTab === 'equipment'" class="detail-form-card tab-panel">
-      <h3 class="section-title">Equipment Entry</h3>
-      <p class="hint-text">If Warranty Card No is not applicable, type NA.</p>
+      <h3 class="section-title">{{ lineTabLabel }}</h3>
+      <p class="hint-text" *ngIf="!isReagent">If Warranty Card No is not applicable, type NA.</p>
+      <p class="hint-text" *ngIf="isReagent">Enter Batch No with Manufacturing and Expiry dates.</p>
       <div class="datagrid equipment-datagrid">
         <div class="table-wrap">
           <table class="po-grid equipment-grid">
             <thead>
               <tr>
                 <th class="col-sn text-center">S.No</th>
-                <th>Serial No</th>
-                <th>Warranty Card No</th>
+                <th>{{ isReagent ? 'Batch No' : 'Serial No' }}</th>
+                <th *ngIf="!isReagent">Warranty Card No</th>
+                <th *ngIf="isReagent">Mfg Date</th>
+                <th *ngIf="isReagent">Expiry Date</th>
                 <th class="text-center">Dispatch QTY</th>
                 <th class="text-center">Action</th>
               </tr>
@@ -214,13 +217,29 @@
                     [(ngModel)]="line.serialNo"
                     [name]="'serialNo' + line.issueDetailId" />
                 </td>
-                <td>
+                <td *ngIf="!isReagent">
                   <ng-container *ngIf="!line.isEditing">{{ line.warrantyCardNo }}</ng-container>
                   <input
                     *ngIf="line.isEditing"
                     type="text"
                     [(ngModel)]="line.warrantyCardNo"
                     [name]="'warranty' + line.issueDetailId" />
+                </td>
+                <td *ngIf="isReagent">
+                  <ng-container *ngIf="!line.isEditing">{{ line.mfgDate || '—' }}</ng-container>
+                  <input
+                    *ngIf="line.isEditing"
+                    type="date"
+                    [(ngModel)]="line.mfgDate"
+                    [name]="'mfg' + line.issueDetailId" />
+                </td>
+                <td *ngIf="isReagent">
+                  <ng-container *ngIf="!line.isEditing">{{ line.expDate || '—' }}</ng-container>
+                  <input
+                    *ngIf="line.isEditing"
+                    type="date"
+                    [(ngModel)]="line.expDate"
+                    [name]="'exp' + line.issueDetailId" />
                 </td>
                 <td class="text-center">
                   <ng-container *ngIf="!line.isEditing">{{ line.supplyQty }}</ng-container>
@@ -251,7 +270,15 @@
               <tr *ngIf="canEditEquipment && balanceQty > 0" class="add-row">
                 <td class="text-center">{{ equipmentLines.length + 1 }}</td>
                 <td><input type="text" [(ngModel)]="draftLine.serialNo" name="draftSerialNo" /></td>
-                <td><input type="text" [(ngModel)]="draftLine.warrantyCardNo" name="draftWarranty" /></td>
+                <td *ngIf="!isReagent">
+                  <input type="text" [(ngModel)]="draftLine.warrantyCardNo" name="draftWarranty" />
+                </td>
+                <td *ngIf="isReagent">
+                  <input type="date" [(ngModel)]="draftLine.mfgDate" name="draftMfg" />
+                </td>
+                <td *ngIf="isReagent">
+                  <input type="date" [(ngModel)]="draftLine.expDate" name="draftExp" />
+                </td>
                 <td class="text-center">
                   <input type="number" min="1" [(ngModel)]="draftLine.supplyQty" name="draftQty" />
                 </td>
@@ -260,7 +287,7 @@
                 </td>
               </tr>
               <tr *ngIf="!equipmentLines.length && !(canEditEquipment && balanceQty > 0)">
-                <td colspan="5" class="empty-row">No equipment lines yet.</td>
+                <td colspan="6" class="empty-row">No lines yet.</td>
               </tr>
             </tbody>
           </table>
@@ -289,6 +316,7 @@
             <td class="value-col" colspan="3">
               <label><input type="radio" name="cgmscLogo" value="Y" [(ngModel)]="cgmscLogoPrinted" /> Yes</label>
               <label><input type="radio" name="cgmscLogo" value="N" [(ngModel)]="cgmscLogoPrinted" /> No</label>
+              <label *ngIf="isReagent"><input type="radio" name="cgmscLogo" value="NA" [(ngModel)]="cgmscLogoPrinted" /> NA</label>
             </td>
           </tr>
           <tr class="checklist-row">
@@ -296,6 +324,7 @@
             <td class="value-col" colspan="3">
               <label><input type="radio" name="warrantyValidity" value="Y" [(ngModel)]="warrantyValidity" /> Yes</label>
               <label><input type="radio" name="warrantyValidity" value="N" [(ngModel)]="warrantyValidity" /> No</label>
+              <label *ngIf="isReagent"><input type="radio" name="warrantyValidity" value="NA" [(ngModel)]="warrantyValidity" /> NA</label>
             </td>
           </tr>
           <tr class="checklist-row">
@@ -303,6 +332,7 @@
             <td class="value-col" colspan="3">
               <label><input type="radio" name="serviceManual" value="Y" [(ngModel)]="serviceManual" /> Yes</label>
               <label><input type="radio" name="serviceManual" value="N" [(ngModel)]="serviceManual" /> No</label>
+              <label *ngIf="isReagent"><input type="radio" name="serviceManual" value="NA" [(ngModel)]="serviceManual" /> NA</label>
             </td>
           </tr>
           <tr class="checklist-row">
@@ -310,6 +340,7 @@
             <td class="value-col" colspan="3">
               <label><input type="radio" name="operatingManual" value="Y" [(ngModel)]="operatingManual" /> Yes</label>
               <label><input type="radio" name="operatingManual" value="N" [(ngModel)]="operatingManual" /> No</label>
+              <label *ngIf="isReagent"><input type="radio" name="operatingManual" value="NA" [(ngModel)]="operatingManual" /> NA</label>
             </td>
           </tr>
           <tr class="checklist-row">
@@ -323,6 +354,10 @@
                 <input type="radio" name="calibrationCertificate" value="N" [(ngModel)]="calibrationCertificate" />
                 No
               </label>
+              <label *ngIf="isReagent">
+                <input type="radio" name="calibrationCertificate" value="NA" [(ngModel)]="calibrationCertificate" />
+                NA
+              </label>
             </td>
           </tr>
           <tr class="checklist-row">
@@ -330,6 +365,7 @@
             <td class="value-col" colspan="3">
               <label><input type="radio" name="warrantyCard" value="Y" [(ngModel)]="warrantyCard" /> Yes</label>
               <label><input type="radio" name="warrantyCard" value="N" [(ngModel)]="warrantyCard" /> No</label>
+              <label *ngIf="isReagent"><input type="radio" name="warrantyCard" value="NA" [(ngModel)]="warrantyCard" /> NA</label>
             </td>
           </tr>
           <tr class="checklist-row">
@@ -337,6 +373,7 @@
             <td class="value-col" colspan="3">
               <label><input type="radio" name="otherStatutory" value="Y" [(ngModel)]="otherStatutory" /> Yes</label>
               <label><input type="radio" name="otherStatutory" value="N" [(ngModel)]="otherStatutory" /> No</label>
+              <label *ngIf="isReagent"><input type="radio" name="otherStatutory" value="NA" [(ngModel)]="otherStatutory" /> NA</label>
             </td>
           </tr>
           <tr class="checklist-row">
@@ -344,6 +381,7 @@
             <td class="value-col" colspan="3">
               <label><input type="radio" name="poDocuments" value="Y" [(ngModel)]="poDocuments" /> Yes</label>
               <label><input type="radio" name="poDocuments" value="N" [(ngModel)]="poDocuments" /> No</label>
+              <label *ngIf="isReagent"><input type="radio" name="poDocuments" value="NA" [(ngModel)]="poDocuments" /> NA</label>
             </td>
           </tr>
           <tr>

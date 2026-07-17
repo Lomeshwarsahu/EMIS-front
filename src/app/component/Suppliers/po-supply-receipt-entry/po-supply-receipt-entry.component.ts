@@ -13,7 +13,7 @@ import {
   readPoSupplyReceiptFilters,
 } from '../supplier-transaction-state.util';
 
-type ReceiptTab = 'receipt' | 'installation' | 'complete';
+type ReceiptTab = 'receipt' | 'installation' | 'complete' | 'denied';
 type InstallationFileType = 'insreport' | 'insphoto' | 'waranty' | 'chalan';
 
 interface IssueDetailOption {
@@ -65,6 +65,16 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
   locId = 0;
   issueId = 0;
   receiptId = 0;
+  categoryId = 0;
+  canDeleteInstallation = false;
+  deniedStatus = 'RI';
+  deniedQty: number | null = null;
+  deniedRemarks = '';
+  descrepencyId = 0;
+  hasDeniedLetter = false;
+  hasReceivedCopy = false;
+  maxDeniedInstallQty = 0;
+  deniedModeLocked = false;
 
   itemCode = '';
   itemName = '';
@@ -177,6 +187,26 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
   get lastReceiptDateDisplay(): string {
     const value = this.lastReceiptDate.trim();
     return value || '-';
+  }
+
+  get isReagent(): boolean {
+    return this.categoryId === 2;
+  }
+
+  get serialLabel(): string {
+    return this.isReagent ? 'Batch No' : 'Serial No';
+  }
+
+  get showDeniedReceivedQty(): boolean {
+    return this.deniedStatus === 'RI';
+  }
+
+  get showDeniedInstallQty(): boolean {
+    return this.deniedStatus === 'I';
+  }
+
+  get showReceivedCopyUpload(): boolean {
+    return this.deniedStatus === 'I';
   }
 
   get minReceivedDate(): string {
@@ -473,6 +503,103 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
       });
   }
 
+  deleteInstallation(): void {
+    if (!this.receiptId || !this.canDeleteInstallation) {
+      return;
+    }
+    if (!confirm('Delete this incomplete installation and re-enter details?')) {
+      return;
+    }
+    this.saving = true;
+    this.api
+      .deleteSupplierReceiptInstallation(this.userId, {
+        poId: this.poId,
+        locationId: this.locId,
+        issueId: this.issueId,
+        receiptId: this.receiptId,
+      })
+      .subscribe({
+        next: (res) => {
+          this.saving = false;
+          this.toastr.success(res?.message ?? 'Deleted successfully.');
+          navigateToPoSupplyReceipt(this.router, this.returnFilters);
+        },
+        error: (err) => {
+          this.saving = false;
+          this.toastr.error(err?.error?.message ?? 'Unable to delete installation.');
+        },
+      });
+  }
+
+  saveDenied(): void {
+    if (!this.deniedQty || this.deniedQty <= 0) {
+      this.toastr.warning('Please enter denied quantity.');
+      return;
+    }
+    if (!this.deniedRemarks.trim()) {
+      this.toastr.warning('Please enter remarks.');
+      return;
+    }
+    this.saving = true;
+    this.api
+      .saveSupplierReceiptDenied(this.userId, {
+        poId: this.poId,
+        locationId: this.locId,
+        issueId: this.issueId,
+        deniedStatus: this.deniedStatus,
+        deniedQty: Number(this.deniedQty),
+        remarks: this.deniedRemarks.trim(),
+      })
+      .subscribe({
+        next: (res) => {
+          this.saving = false;
+          this.descrepencyId = Number(res?.descrepencyId ?? this.descrepencyId);
+          this.toastr.success(res?.message ?? 'Denied details saved.');
+          this.loadPage();
+        },
+        error: (err) => {
+          this.saving = false;
+          this.toastr.error(err?.error?.message ?? 'Unable to save denied details.');
+        },
+      });
+  }
+
+  uploadDeniedFile(input: HTMLInputElement, fileKind: 'deniedLetter' | 'receivedCopy'): void {
+    if (!this.descrepencyId) {
+      this.toastr.warning('Please save denied details first.');
+      return;
+    }
+    const file = input.files?.[0];
+    if (!file) {
+      this.toastr.warning('Please select a PDF file.');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('descrepencyId', String(this.descrepencyId));
+    formData.append('fileKind', fileKind);
+    formData.append('file', file);
+    this.uploading = true;
+    this.api.uploadSupplierReceiptDeniedFile(this.userId, formData).subscribe({
+      next: (res) => {
+        this.uploading = false;
+        input.value = '';
+        this.toastr.success(res?.message ?? 'File uploaded.');
+        this.loadPage();
+      },
+      error: (err) => {
+        this.uploading = false;
+        this.toastr.error(err?.error?.message ?? 'Unable to upload file.');
+      },
+    });
+  }
+
+  downloadDeniedFile(fileKind: 'deniedLetter' | 'receivedCopy'): void {
+    if (!this.descrepencyId) {
+      return;
+    }
+    window.open(this.api.getSupplierReceiptDeniedFileUrl(this.userId, this.descrepencyId, fileKind), '_blank');
+  }
+
   goBack(): void {
     navigateToPoSupplyReceipt(this.router, this.returnFilters);
   }
@@ -493,6 +620,22 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
 
   private applyPage(data: Record<string, unknown>): void {
     this.receiptId = Number(data['receiptId'] ?? data['ReceiptId'] ?? 0);
+    this.categoryId = Number(data['categoryId'] ?? data['CategoryId'] ?? 0);
+    this.canDeleteInstallation = Boolean(
+      data['canDeleteInstallation'] ?? data['CanDeleteInstallation'] ?? false,
+    );
+    this.descrepencyId = Number(data['descrepencyId'] ?? data['DescrepencyId'] ?? 0);
+    this.deniedStatus = String(data['deniedStatus'] ?? data['DeniedStatus'] ?? (this.receiptId > 0 ? 'I' : 'RI'));
+    this.deniedModeLocked = this.receiptId > 0;
+    if (this.receiptId > 0) {
+      this.deniedStatus = 'I';
+    }
+    const deniedQtyRaw = data['deniedQty'] ?? data['DeniedQty'];
+    this.deniedQty = deniedQtyRaw == null || deniedQtyRaw === '' ? null : Number(deniedQtyRaw);
+    this.deniedRemarks = String(data['deniedRemarks'] ?? data['DeniedRemarks'] ?? '');
+    this.hasDeniedLetter = Boolean(data['hasDeniedLetter'] ?? data['HasDeniedLetter'] ?? false);
+    this.hasReceivedCopy = Boolean(data['hasReceivedCopy'] ?? data['HasReceivedCopy'] ?? false);
+    this.maxDeniedInstallQty = Number(data['maxDeniedInstallQty'] ?? data['MaxDeniedInstallQty'] ?? 0);
     this.itemCode = String(data['itemCode'] ?? data['ItemCode'] ?? '');
     this.itemName = String(data['itemName'] ?? data['ItemName'] ?? '');
     this.taxPercent = String(data['taxPercent'] ?? data['TaxPercent'] ?? '');
