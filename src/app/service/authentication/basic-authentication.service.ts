@@ -96,9 +96,14 @@ export class BasicAuthenticationService {
 getRole() {
   const data = JSON.parse(localStorage.getItem('loginData') || '{}');
   const storedRole = localStorage.getItem('roleName');
-
+  // Prefer persisted role after login/logout so in-memory value cannot stick
+  // across department switches in the same SPA session.
+  const resolved = storedRole || data.user_type || this.approle || null;
+  if (resolved && this.approle !== resolved) {
+    this.approle = resolved;
+  }
   return {
-    roleName: this.approle ?? storedRole ?? data.user_type,
+    roleName: resolved,
   };
 }
 
@@ -111,7 +116,9 @@ getRole() {
   }
 
   logout() {
+    this.approle = null;
     sessionStorage.removeItem('authenticatedUser');
     sessionStorage.removeItem('role');
+    localStorage.removeItem('roleName');
   }
 }

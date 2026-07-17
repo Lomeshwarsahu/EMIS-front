@@ -21,6 +21,7 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { RouterModule } from '@angular/router';
 import { persistSupplierUserId } from '../../Suppliers/supplier-user.util';
+import { MenuServiceService } from 'src/app/service/menu-service.service';
 import { json } from 'stream/consumers';
 declare var bootstrap: any;
 @Component({
@@ -73,6 +74,7 @@ approle:any;
     private toastr: ToastrService,
     private router: Router,
     public hardcodedAuthenticationService: HardcodedAuthenticationService,
+    private menuService: MenuServiceService,
   ) {}
 
   days: any = 0;
@@ -140,8 +142,32 @@ approle:any;
   }
 
   setRole(approle: string) {
-    this.approle = approle;
-    localStorage.setItem('roleName', approle);
+    const menuRole = this.resolveMenuRole(approle);
+    this.approle = menuRole;
+    localStorage.setItem('roleName', menuRole);
+    this.loginService.setRole(menuRole);
+  }
+
+  /** Map API user_type / dropdown role to menu-service keys. */
+  private resolveMenuRole(rawRole: string | null | undefined): string {
+    const role = (rawRole || '').trim();
+    if (!role) {
+      return '';
+    }
+    const upper = role.toUpperCase();
+    const aliases: Record<string, string> = {
+      SUP: 'Suppliers',
+      SUPPLIER: 'Suppliers',
+      SUPPLIERS: 'Suppliers',
+      FU: 'DME',
+      PRINCIPAL: 'DME',
+      FDA: 'DME',
+      GMF: 'AUGMF',
+      'GM FINANCE': 'AUGMF',
+      'PO-CELL': 'AUPO',
+      POCELL: 'AUPO',
+    };
+    return aliases[upper] || aliases[role] || role;
   }
 
   Manualssliddesk(URL: any) {
@@ -535,6 +561,8 @@ approle:any;
 
       sessionStorage.clear();
       localStorage.clear();
+      this.loginService.logout();
+      this.menuService.clearSelectedCategory();
 
       this.loginService
         .executeAuthenticationService1(email.trim(), this.pwd.trim(), 'EMAIL')
@@ -555,8 +583,7 @@ approle:any;
                 this.toastr.error('Login succeeded but user id is missing. Please contact support.');
                 return;
               }
-              localStorage.setItem('roleName', 'Suppliers');
-              this.loginService.setRole('Suppliers');
+              this.setRole('Suppliers');
               this.toastr.success('Login successful');
               this.router.navigate(['/welcome']);
             } else {
@@ -602,6 +629,8 @@ approle:any;
 
     sessionStorage.clear();
     localStorage.clear();
+    this.loginService.logout();
+    this.menuService.clearSelectedCategory();
 
     const user_id = this.emailid.toString().trim();
     this.pwd = (this.pwd ?? '').trim();
@@ -645,13 +674,14 @@ localStorage.setItem('loginData', JSON.stringify(updatedRes));
 
             // Persist user id for supplier APIs (session + localStorage)
             persistSupplierUserId(
-              res?.user_id ?? res?.User_Id ?? res?.userId ?? res?.UserId,
+              updatedRes?.user_id ?? updatedRes?.User_Id ?? updatedRes?.userId ?? updatedRes?.UserId,
             );
 
-            const role = res?.user_type?.toUpperCase();
+            const role = String(updatedRes?.user_type ?? res?.user_type ?? '').toUpperCase();
             console.log('User Role:', role);
+            this.setRole(updatedRes?.user_type ?? res?.user_type ?? role);
 
-            // this.InsertUserLoginLog();
+            // this.InsertUserPageViewLog();
 
             if (role === 'FU' || role === 'PRINCIPAL' || role === 'FDA') {
               this.router.navigate(['/masters/store-home']);
@@ -670,7 +700,9 @@ localStorage.setItem('loginData', JSON.stringify(updatedRes));
               role === 'IT' ||
               role === 'SCI' ||
               role === 'SUP' ||
-              role === 'TPO'
+              role === 'TPO' ||
+              role === 'AUPO' ||
+              role === 'AUGMF'
             ) {
               this.router.navigate(['/welcome']);
             } else if (role === 'QC') {

@@ -1,4 +1,6 @@
 <div class="rc-detail-page">
+  <h2 class="page-title">Rate Contract Detail Report</h2>
+
   <div class="datagrid">
     <div class="table-toolbar filters filters--compact">
       <select
@@ -98,58 +100,62 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>S.No</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.sno }}</td>
         </ng-container>
-        <ng-container matColumnDef="contractItemId">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Item Id</th>
-          <td mat-cell *matCellDef="let element" class="text-center">{{ element.contractItemId }}</td>
-        </ng-container>
-        <ng-container matColumnDef="itemId">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Id</th>
-          <td mat-cell *matCellDef="let element" class="text-center">{{ element.itemId }}</td>
-        </ng-container>
+
         <ng-container matColumnDef="itemCode">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ codeColumnLabel }}</th>
           <td mat-cell *matCellDef="let element">{{ element.itemCode }}</td>
         </ng-container>
+
         <ng-container matColumnDef="itemName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ nameColumnLabel }}</th>
           <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.itemName }}</td>
         </ng-container>
+
         <ng-container matColumnDef="make">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Make</th>
           <td mat-cell *matCellDef="let element">{{ element.make }}</td>
         </ng-container>
+
         <ng-container matColumnDef="model">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
           <td mat-cell *matCellDef="let element">{{ element.model }}</td>
         </ng-container>
+
         <ng-container matColumnDef="supplierName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier Name</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
           <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.supplierName }}</td>
         </ng-container>
+
         <ng-container matColumnDef="tenderNo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender</th>
           <td mat-cell *matCellDef="let element">{{ element.tenderNo }}</td>
         </ng-container>
+
         <ng-container matColumnDef="contractDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Date</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Start Date</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.contractDate }}</td>
         </ng-container>
+
         <ng-container matColumnDef="contractEndDate">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract End Date</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.contractEndDate }}</td>
         </ng-container>
+
         <ng-container matColumnDef="basicRate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Basic Rate</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Basic Price</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.basicRate }}</td>
         </ng-container>
+
         <ng-container matColumnDef="gst">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>GST</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tax</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.gst }}</td>
         </ng-container>
+
         <ng-container matColumnDef="singleUnitPrice">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Single Unit Price</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Value</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.singleUnitPrice }}</td>
         </ng-container>
+
         <ng-container matColumnDef="cmc1">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>CMC1</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.cmc1 }}</td>
@@ -170,16 +176,27 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>CMC5</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.cmc5 }}</td>
         </ng-container>
-        <ng-container matColumnDef="tenderId">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender Id</th>
-          <td mat-cell *matCellDef="let element" class="text-center">{{ element.tenderId }}</td>
+
+        <ng-container matColumnDef="fileUpload">
+          <th mat-header-cell *matHeaderCellDef>File Upload</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <button
+              *ngIf="element.hasSpecification; else noFile"
+              type="button"
+              class="link-btn"
+              title="Download specification"
+              (click)="downloadSpecification(element)">
+              Download
+            </button>
+            <ng-template #noFile>—</ng-template>
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 
-      <div class="empty-row" *ngIf="!dataSource.data.length">No records found.</div>
+      <div class="empty-row" *ngIf="!dataSource.data.length">No Record found.</div>
 
       <mat-paginator
         *ngIf="dataSource.data.length"

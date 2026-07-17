@@ -27,6 +27,27 @@
   overflow: hidden;
 }
 
+.page-title {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+:host-context(html[data-theme='dark']) .page-title {
+  color: #f8fafc;
+}
+
+.link-btn {
+  border: none;
+  background: transparent;
+  color: var(--page-accent);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
 :host-context(html[data-theme='dark']) .rc-detail-page {
   --page-accent: #6e00b3;
   --table-head-bg: #6e00b3;

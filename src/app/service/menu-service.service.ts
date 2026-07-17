@@ -1266,6 +1266,11 @@ export class MenuServiceService {
     localStorage.setItem('selectedCategory', category); // Save category to localStorage
   }
 
+  clearSelectedCategory(): void {
+    this.selectedCategory = undefined;
+    localStorage.removeItem('selectedCategory');
+  }
+
   // Get the stored category from localStorage or memory
   getSelectedCategory():
     | 'DrugsConsumables'
@@ -1299,11 +1304,24 @@ export class MenuServiceService {
     const rolesUsingCategories = ['Collector', 'SEC1', 'DHS', 'CME', 'DME1'];
 
     if (rolesUsingCategories.includes(role) && roleMenu.categories) {
-      const selectedCategory = this.getSelectedCategory();
+      let selectedCategory = this.getSelectedCategory();
+      if (!selectedCategory || !roleMenu.categories[selectedCategory]) {
+        const keys = Object.keys(roleMenu.categories) as Array<
+          'DrugsConsumables' | 'EquipmentReagent' | 'Infrastructure' | 'Admin'
+        >;
+        const preferred =
+          (role === 'DME1' || role === 'CME') && keys.includes('EquipmentReagent')
+            ? 'EquipmentReagent'
+            : keys[0];
+        if (preferred) {
+          this.setSelectedCategory(preferred);
+          selectedCategory = preferred;
+        }
+      }
       if (selectedCategory && roleMenu.categories[selectedCategory]) {
         return roleMenu.categories[selectedCategory].map((item) => ({
           ...item,
-          submenu: this.getSubmenu(item.label), // Add submenu dynamically if needed
+          submenu: this.getSubmenu(item.label),
         }));
       }
       return [];

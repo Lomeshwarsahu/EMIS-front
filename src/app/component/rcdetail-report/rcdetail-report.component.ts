@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTableExporterDirective, MatTableExporterModule } from 'mat-table-exporter';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 import { ContractItem } from 'src/app/Model/models';
 import { MaterialModule } from 'src/app/material-module';
 import { ApiService } from 'src/app/service/api.service';
@@ -27,7 +28,7 @@ import { DmePageSkeletonComponent } from '../DME/shared/dme-page-skeleton/dme-pa
   templateUrl: './rcdetail-report.component.html',
   styleUrls: ['./rcdetail-report.component.css'],
 })
-export class RCDetailReportComponent {
+export class RCDetailReportComponent implements OnInit {
   Tenterlist: { tender_id: number; tender_no: string }[] = [];
   tender_id = 0;
   CategoryType = 'E';
@@ -39,10 +40,9 @@ export class RCDetailReportComponent {
   @ViewChild('sort') sort!: MatSort;
   @ViewChild(MatTableExporterDirective) exporter?: MatTableExporterDirective;
 
+  /** Legacy RCDetailReport.aspx grid columns (display names, not DB ids). */
   displayedColumns: string[] = [
     'sno',
-    'contractItemId',
-    'itemId',
     'itemCode',
     'itemName',
     'make',
@@ -59,11 +59,19 @@ export class RCDetailReportComponent {
     'cmc3',
     'cmc4',
     'cmc5',
-    'tenderId',
+    'fileUpload',
   ];
 
   get hasActiveFilter(): boolean {
     return this.tender_id > 0 || this.CategoryType !== 'E' || this.RcType !== 'R';
+  }
+
+  get codeColumnLabel(): string {
+    return this.CategoryType === 'R' ? 'Reagent Code' : 'Equipment Code';
+  }
+
+  get nameColumnLabel(): string {
+    return this.CategoryType === 'R' ? 'Reagent Name' : 'Equipment Name';
   }
 
   constructor(
@@ -97,7 +105,7 @@ export class RCDetailReportComponent {
           tender_no: String(r['tender_no'] ?? r['TenderNo'] ?? ''),
         }));
         const hasAll = mapped.some((t) => t.tender_id === 0);
-        this.Tenterlist = hasAll ? mapped : [{ tender_id: 0, tender_no: 'All' }, ...mapped];
+        this.Tenterlist = hasAll ? mapped : [{ tender_id: 0, tender_no: '--All--' }, ...mapped];
         this.tender_id = 0;
       },
       error: () => this.toastr.error('Could not load tender list.'),
@@ -136,6 +144,14 @@ export class RCDetailReportComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  downloadSpecification(row: ContractItem): void {
+    if (!row.hasSpecification || !row.itemId) {
+      this.toastr.warning('Specification file not found.');
+      return;
+    }
+    window.open(`${environment.apiUrl}/ReportSpecification/items/${row.itemId}/download`, '_blank');
+  }
+
   exportExcel(): void {
     if (!this.exporter || !this.dataSource.data.length) {
       this.toastr.warning('No data to export.');
@@ -154,23 +170,28 @@ export class RCDetailReportComponent {
       sno: index + 1,
       contractItemId: Number(r['ContractItemId'] ?? r['contractItemId'] ?? 0),
       itemId: Number(r['ItemId'] ?? r['itemId'] ?? 0),
-      itemCode: String(r['ItemCode'] ?? r['itemCode'] ?? ''),
-      itemName: String(r['ItemName'] ?? r['itemName'] ?? ''),
+      itemCode: String(r['ItemCode'] ?? r['itemCode'] ?? r['item_codeE'] ?? ''),
+      itemName: String(r['ItemName'] ?? r['itemName'] ?? r['item_nameE'] ?? ''),
       make: String(r['Make'] ?? r['make'] ?? ''),
       model: String(r['Model'] ?? r['model'] ?? ''),
-      supplierName: String(r['SupplierName'] ?? r['supplierName'] ?? ''),
-      tenderNo: String(r['TenderNo'] ?? r['tenderNo'] ?? ''),
-      contractDate: String(r['ContractDate'] ?? r['contractDate'] ?? ''),
-      contractEndDate: String(r['ContractEndDate'] ?? r['contractEndDate'] ?? ''),
-      basicRate: Number(r['BasicRate'] ?? r['basicRate'] ?? 0),
-      gst: Number(r['GST'] ?? r['gst'] ?? 0),
-      singleUnitPrice: Number(r['SingleUnitPrice'] ?? r['singleUnitPrice'] ?? 0),
+      supplierName: String(r['SupplierName'] ?? r['supplierName'] ?? r['name'] ?? ''),
+      tenderNo: String(r['TenderNo'] ?? r['tenderNo'] ?? r['tender_no'] ?? ''),
+      contractDate: String(r['ContractDate'] ?? r['contractDate'] ?? r['contract_date'] ?? ''),
+      contractEndDate: String(
+        r['ContractEndDate'] ?? r['contractEndDate'] ?? r['contract_end_date'] ?? '',
+      ),
+      basicRate: Number(r['BasicRate'] ?? r['basicRate'] ?? r['basic_rate'] ?? 0),
+      gst: Number(r['GST'] ?? r['gst'] ?? r['percentage'] ?? 0),
+      singleUnitPrice: Number(
+        r['SingleUnitPrice'] ?? r['singleUnitPrice'] ?? r['single_unit_price'] ?? 0,
+      ),
       cmc1: Number(r['CMC1'] ?? r['cmc1'] ?? 0),
       cmc2: Number(r['CMC2'] ?? r['cmc2'] ?? 0),
       cmc3: Number(r['CMC3'] ?? r['cmc3'] ?? 0),
       cmc4: Number(r['CMC4'] ?? r['cmc4'] ?? 0),
       cmc5: Number(r['CMC5'] ?? r['cmc5'] ?? 0),
-      tenderId: Number(r['TenderId'] ?? r['tenderId'] ?? 0),
+      tenderId: Number(r['TenderId'] ?? r['tenderId'] ?? r['tender_id'] ?? 0),
+      hasSpecification: Boolean(r['HasSpecification'] ?? r['hasSpecification'] ?? false),
     }));
   }
 }

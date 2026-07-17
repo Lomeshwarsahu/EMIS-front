@@ -224,6 +224,8 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
       this.toastr.success('Logout Successfully');
       this.router.navigate(['login'])
     }
+    this.role = '';
+    this.menuItems = [];
   }
 
   goBack(): void {
@@ -346,20 +348,21 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   ngDoCheck(): void {
-    const role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
-    // this.role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
+    const role = this.basicAuthentication.getRole().roleName;
     const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
     this.firstname = loginData?.username || 'User';
     this.roleName = role;
-    // this.firstname = sessionStorage.getItem('firstname');
-    if(this.firstname==='Public'){
-      this.firstname='Public View Of Drugs and Consumables'
+    if (this.firstname === 'Public') {
+      this.firstname = 'Public View Of Drugs and Consumables';
     }
 
-    // this.GetVendorDetailsID(sessionStorage.getItem('facilityid'));
+    // Refresh sidebar when department/role changes without full reload.
+    if (role && role !== this.role) {
+      this.role = role;
+      this.updateMenu();
+    }
 
     this.cdr.detectChanges();
-
   }
 
   GetVendorDetailsID(supplierId: any) {
@@ -384,21 +387,15 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   }
   
   private updateMenu() {
-    
-    // Check if the role has categories or direct items
-    const hasCategories = ['SEC1', 'DHS', 'CME'].includes(this.role);
-    
+    const hasCategories = ['SEC1', 'DHS', 'CME', 'Collector', 'DME1'].includes(this.role);
+
     if (hasCategories) {
-      const category = this.menuService.getSelectedCategory();
-      if (category) {
-        this.menuItems = this.menuService.getMenuItems(this.role);
-      } else {
-        // Handle the case where no category is selected
-        this.menuItems = [];
+      // Ensure a category exists so sidebar is never blank after department switch.
+      if (!this.menuService.getSelectedCategory()) {
+        this.menuService.setSelectedCategory('DrugsConsumables');
       }
+      this.menuItems = this.menuService.getMenuItems(this.role);
     } else {
-      
-      // For roles without categories, fetch items directly
       this.menuItems = this.menuService.getMenuItems(this.role);
     }
     this.expandActiveParentMenu();
