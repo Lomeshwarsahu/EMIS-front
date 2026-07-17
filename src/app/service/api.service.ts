@@ -425,6 +425,12 @@ export class ApiService {
       `${this.apiUrll}/supplier/balance-status/by-user/${userId}?balanceType=${encodeURIComponent(balanceType)}`,
     );
   }
+
+  getSupplierBalanceStatusDrillDown(userId: number, poId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/balance-status/drill-down/by-user/${userId}?poId=${poId}`,
+    );
+  }
   // https://localhost:7036/api/GenerateNasti/Getyear
   // public get(url: string, data?: FormData, options?: any){
   //    return this.http.get(this.apiUrll + url, data, options);

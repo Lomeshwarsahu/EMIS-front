@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { BasicAuthenticationService } from 'src/app/service/authentication/basic-authentication.service';
 import { NotificationService } from 'src/app/service/notification.service';
+import { persistSupplierUserId } from '../../Suppliers/supplier-user.util';
 
 /** Mirrors LoginEmsSUP.aspx rbType: 3=login, 1=new, 2=reset */
 type AuthMode = 'login' | 'new' | 'reset';
@@ -430,8 +431,13 @@ export class SupplierLoginComponent implements OnInit {
             sessionStorage.setItem('authenticatedUser', this.userId.trim());
             sessionStorage.setItem('firstname', res?.username ?? 'Supplier');
             sessionStorage.setItem('roleId', res?.roleid ?? '');
-            sessionStorage.setItem('userid', String(res?.user_id ?? ''));
-            localStorage.setItem('userid', String(res?.user_id ?? ''));
+            const uid = persistSupplierUserId(
+              res?.user_id ?? res?.User_Id ?? res?.userId ?? res?.UserId,
+            );
+            if (!uid) {
+              this.toastr.error('Login succeeded but user id is missing.');
+              return;
+            }
             localStorage.setItem('roleName', 'Suppliers');
             this.loginService.setRole('Suppliers');
 

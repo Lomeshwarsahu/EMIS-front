@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { RouterModule } from '@angular/router';
+import { persistSupplierUserId } from '../../Suppliers/supplier-user.util';
 import { json } from 'stream/consumers';
 declare var bootstrap: any;
 @Component({
@@ -547,7 +548,13 @@ approle:any;
               sessionStorage.setItem('authenticatedUser', email.trim());
               sessionStorage.setItem('firstname', res?.username ?? 'Supplier');
               sessionStorage.setItem('roleId', res?.roleid ?? '');
-              sessionStorage.setItem('userid', res?.user_id ?? '');
+              const uid = persistSupplierUserId(
+                res?.user_id ?? res?.User_Id ?? res?.userId ?? res?.UserId,
+              );
+              if (!uid) {
+                this.toastr.error('Login succeeded but user id is missing. Please contact support.');
+                return;
+              }
               localStorage.setItem('roleName', 'Suppliers');
               this.loginService.setRole('Suppliers');
               this.toastr.success('Login successful');
@@ -635,6 +642,11 @@ localStorage.setItem('loginData', JSON.stringify(updatedRes));
             if (res?.token) {
               sessionStorage.setItem('token', res.token);
             }
+
+            // Persist user id for supplier APIs (session + localStorage)
+            persistSupplierUserId(
+              res?.user_id ?? res?.User_Id ?? res?.userId ?? res?.UserId,
+            );
 
             const role = res?.user_type?.toUpperCase();
             console.log('User Role:', role);

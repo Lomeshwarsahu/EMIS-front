@@ -85,6 +85,19 @@ export class DmeFacAddIndentComponent implements OnInit {
   departments: DeptRow[] = [];
   cart: CartRow[] = [];
 
+  showFinalizeModal = false;
+  finalizeLoading = false;
+  otpSending = false;
+  otpSent = false;
+  finalizeMobile = '';
+  finalizeEmail = '';
+  finalizeFacilityName = '';
+  finalizeOtp = '';
+  finalizeDispatchNo = '';
+  finalizeDispatchDate = '';
+  letterFile: File | null = null;
+  specFile: File | null = null;
+
   constructor(
     private readonly http: HttpClient,
     private readonly route: ActivatedRoute,
@@ -242,6 +255,158 @@ export class DmeFacAddIndentComponent implements OnInit {
           this.toastr.error(apiErrorMessage(e, 'Could not delete items.'));
         },
       });
+  }
+
+  openFinalizeModal(): void {
+    if (this.header?.IsCompleted) {
+      this.toastr.warning('Indent is Complete , Now No updation is allowed.');
+      return;
+    }
+    if (!this.cart.length) {
+      this.toastr.warning('Please Enter Indent First');
+      return;
+    }
+
+    this.resetFinalizeForm();
+    this.showFinalizeModal = true;
+    this.http
+      .get<Record<string, unknown>>(
+        `${this.orderApi}facility-indents/${this.indentId}/otp-contact?userId=${this.userId}`,
+      )
+      .subscribe({
+        next: (res) => {
+          this.finalizeMobile = String(res['mobile'] ?? res['Mobile'] ?? '');
+          this.finalizeEmail = String(res['email'] ?? res['Email'] ?? '');
+          this.finalizeFacilityName = String(res['facilityName'] ?? res['FacilityName'] ?? '');
+        },
+        error: (e) => {
+          this.toastr.error(apiErrorMessage(e, 'Could not load contact details.'));
+        },
+      });
+  }
+
+  closeFinalizeModal(): void {
+    if (this.finalizeLoading) {
+      return;
+    }
+    this.showFinalizeModal = false;
+  }
+
+  sendFinalizeOtp(): void {
+    if (!this.finalizeMobile.trim()) {
+      this.toastr.warning('Please Provide Mobile Number.');
+      return;
+    }
+    if (!this.finalizeEmail.trim()) {
+      this.toastr.warning('Please Provide Email Id.');
+      return;
+    }
+
+    this.otpSending = true;
+    this.http
+      .post<{ message?: string }>(`${this.orderApi}facility-indents/${this.indentId}/send-otp`, {
+        UserId: this.userId,
+        Mobile: this.finalizeMobile.trim(),
+        Email: this.finalizeEmail.trim(),
+      })
+      .subscribe({
+        next: (res) => {
+          this.otpSending = false;
+          this.otpSent = true;
+          this.toastr.success(res?.message ?? 'OTP is sent to Your Mobile Number.');
+        },
+        error: (e) => {
+          this.otpSending = false;
+          this.toastr.error(apiErrorMessage(e, 'Failed to send OTP.'));
+        },
+      });
+  }
+
+  onLetterSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.letterFile = input.files?.[0] ?? null;
+  }
+
+  onSpecSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.specFile = input.files?.[0] ?? null;
+  }
+
+  submitFinalize(): void {
+    if (!this.finalizeOtp.trim()) {
+      this.toastr.warning('Please Submit 4 digit OTP sent on your mobile/email ');
+      return;
+    }
+    if (!this.otpSent) {
+      this.toastr.warning('Please click to send OTP first');
+      return;
+    }
+    if (!this.finalizeDispatchNo.trim()) {
+      this.toastr.warning('Please enter Dispatch No.');
+      return;
+    }
+    if (!this.finalizeDispatchDate.trim()) {
+      this.toastr.warning('Please enter Dispatch Date.');
+      return;
+    }
+    if (!this.letterFile) {
+      this.toastr.warning('Please Select Document to Upload.');
+      return;
+    }
+    if (!this.specFile) {
+      this.toastr.warning('Please Upload Specificaiton in Single PDF File');
+      return;
+    }
+    if (!this.letterFile.name.toLowerCase().endsWith('.pdf') || !this.specFile.name.toLowerCase().endsWith('.pdf')) {
+      this.toastr.warning('Please upload pdf file only');
+      return;
+    }
+    if (this.letterFile.size > 2_000_000) {
+      this.toastr.warning("You can't upload file more then 2 mb.");
+      return;
+    }
+    if (this.specFile.size > 5_000_000) {
+      this.toastr.warning("You can't upload file more then 5 mb.");
+      return;
+    }
+
+    const form = new FormData();
+    form.append('userId', String(this.userId));
+    form.append('otp', this.finalizeOtp.trim());
+    form.append('dispatchNo', this.finalizeDispatchNo.trim());
+    form.append('dispatchDate', this.finalizeDispatchDate.trim());
+    form.append('letter', this.letterFile, this.letterFile.name);
+    form.append('spec', this.specFile, this.specFile.name);
+
+    this.finalizeLoading = true;
+    this.http
+      .post<{ message?: string }>(`${this.orderApi}facility-indents/${this.indentId}/finalize`, form)
+      .subscribe({
+        next: (res) => {
+          this.finalizeLoading = false;
+          this.showFinalizeModal = false;
+          this.toastr.success(res?.message ?? 'Uploaded Successfully.');
+          void this.router.navigate(['/indents/annual-indent']);
+        },
+        error: (e) => {
+          this.finalizeLoading = false;
+          this.toastr.error(apiErrorMessage(e, 'Failed to Upload ,Please Retry'));
+        },
+      });
+  }
+
+  private resetFinalizeForm(): void {
+    this.otpSending = false;
+    this.otpSent = false;
+    this.finalizeLoading = false;
+    this.finalizeMobile = '';
+    this.finalizeEmail = '';
+    this.finalizeFacilityName = '';
+    this.finalizeOtp = '';
+    this.finalizeDispatchNo = '';
+    this.finalizeDispatchDate = '';
+    this.letterFile = null;
+    this.specFile = null;
   }
 
   private loadPage(): void {

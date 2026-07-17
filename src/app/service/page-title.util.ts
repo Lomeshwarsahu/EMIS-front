@@ -14,6 +14,7 @@ const EXTRA_ROUTE_TITLES: Record<string, string> = {
   '/reports/payment-report': 'Paid Report of Purchase Orders',
   '/reports/sanction-report': 'Sanction Report',
   '/reports/pending-receipt-installation': 'Pending Receipt / Installation',
+  '/reports/pending-install-drill-down': 'Pending Receipt / Installation Detail',
   '/complain/receipt-complain-supplier': 'Complain Received Against Equipment',
   '/emd-refund/emd-deposit': 'EMD Refund Request Form',
   '/contracts/rc-detail-report': 'Rate Contract Detail Report',

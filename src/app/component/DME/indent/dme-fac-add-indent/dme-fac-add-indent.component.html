@@ -1,5 +1,13 @@
 <div class="dme-add-indent-page">
   <div class="page-toolbar">
+    <button
+      type="button"
+      class="show-btn finalize-btn"
+      *ngIf="header && !header.IsCompleted"
+      (click)="openFinalizeModal()"
+      [disabled]="!cart.length">
+      Finalize &amp; Upload Letter
+    </button>
     <button type="button" class="back-btn" (click)="goBack()">Back to Annual Indent</button>
   </div>
 
@@ -165,4 +173,66 @@
       </div>
     </div>
   </ng-container>
+
+  <div class="finalize-backdrop" *ngIf="showFinalizeModal" (click)="closeFinalizeModal()">
+    <div class="finalize-modal" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">
+      <div class="finalize-modal-head">
+        <h3>Send Indent to CME</h3>
+        <button type="button" class="modal-close" (click)="closeFinalizeModal()" [disabled]="finalizeLoading">×</button>
+      </div>
+      <p class="finalize-hint">
+        Print indent report, get seal/signature, enter dispatch details, verify OTP, then upload covering letter (≤2&nbsp;MB)
+        and specification PDF (≤5&nbsp;MB).
+      </p>
+      <div class="finalize-grid">
+        <label>
+          <span>Mobile :-</span>
+          <input type="text" [(ngModel)]="finalizeMobile" name="finalizeMobile" maxlength="15" />
+        </label>
+        <label>
+          <span>Email :-</span>
+          <input type="email" [(ngModel)]="finalizeEmail" name="finalizeEmail" maxlength="100" />
+        </label>
+        <div class="otp-row">
+          <button type="button" class="show-btn" (click)="sendFinalizeOtp()" [disabled]="otpSending || finalizeLoading">
+            {{ otpSending ? 'Sending…' : 'Send OTP' }}
+          </button>
+          <span class="facility-name" *ngIf="finalizeFacilityName">{{ finalizeFacilityName }}</span>
+        </div>
+        <label>
+          <span>Enter OTP :-</span>
+          <input type="text" [(ngModel)]="finalizeOtp" name="finalizeOtp" maxlength="4" inputmode="numeric" />
+        </label>
+        <label>
+          <span>Dispatch No :-</span>
+          <input type="text" [(ngModel)]="finalizeDispatchNo" name="finalizeDispatchNo" maxlength="50" />
+        </label>
+        <label>
+          <span>Dispatch Date :-</span>
+          <input
+            type="text"
+            [(ngModel)]="finalizeDispatchDate"
+            name="finalizeDispatchDate"
+            placeholder="dd/MM/yyyy"
+            maxlength="10" />
+        </label>
+        <label class="file-label">
+          <span>Covering Letter (PDF ≤2 MB) :-</span>
+          <input type="file" accept=".pdf,application/pdf" (change)="onLetterSelected($event)" />
+        </label>
+        <label class="file-label">
+          <span>Specification (PDF ≤5 MB) :-</span>
+          <input type="file" accept=".pdf,application/pdf" (change)="onSpecSelected($event)" />
+        </label>
+      </div>
+      <div class="finalize-actions">
+        <button type="button" class="cancel-btn" (click)="closeFinalizeModal()" [disabled]="finalizeLoading">
+          Close
+        </button>
+        <button type="button" class="show-btn" (click)="submitFinalize()" [disabled]="finalizeLoading">
+          {{ finalizeLoading ? 'Uploading…' : 'Send to CME' }}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

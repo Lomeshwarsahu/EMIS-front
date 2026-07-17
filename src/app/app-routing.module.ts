@@ -24,6 +24,7 @@ import { SupplierEmdDepositComponent } from './component/Suppliers/supplier-emd-
 import { SupplierPaymentReportComponent } from './component/Suppliers/supplier-payment-report/supplier-payment-report.component';
 import { SupplierSanctionReportComponent } from './component/Suppliers/supplier-sanction-report/supplier-sanction-report.component';
 import { SupplierPendingReceiptInstallationComponent } from './component/Suppliers/supplier-pending-receipt-installation/supplier-pending-receipt-installation.component';
+import { SupplierPendingInstallDrillDownComponent } from './component/Suppliers/supplier-pending-install-drill-down/supplier-pending-install-drill-down.component';
 import { LogoutComponent } from './component/auth/logout/logout.component';
 import { RouteGuardService } from './service/authentication/route-guard.service';
 import { OtpComponent } from './component/auth/otp/otp.component';
@@ -347,8 +348,19 @@ const routes: Routes = [
     data: { allowedRoles: ['SUP'] },
   },
   {
+    path: 'reports/pending-install-drill-down',
+    component: SupplierPendingInstallDrillDownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
     path: 'BalanceStatussupplier',
     redirectTo: 'reports/pending-receipt-installation',
+    pathMatch: 'full',
+  },
+  {
+    path: 'PendingInstallDrillDownsupplier',
+    redirectTo: 'reports/pending-install-drill-down',
     pathMatch: 'full',
   },
   { path: 'Registration', component: Registration },
