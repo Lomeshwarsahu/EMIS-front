@@ -15,6 +15,7 @@
   --table-cell-bg: #ffffff;
   --table-row-border: #e2e8f0;
   --table-wrap-border: #e2e8f0;
+  --btn-close-filter: none;
 
   display: flex;
   flex-direction: column;
@@ -45,6 +46,7 @@
   --table-cell-bg: #0c0e12;
   --table-row-border: #262b36;
   --table-wrap-border: #262b36;
+  --btn-close-filter: invert(1);
   color: #e2e8f0;
 }
 
@@ -77,6 +79,12 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.filter-group select {
+  flex: none !important;
+  height: 34px !important;
+  width: 100%;
 }
 
 .filter-label {
@@ -438,4 +446,30 @@
   .search-input {
     flex: 1 1 100%;
   }
+}
+
+/* Modals styling for theme consistency */
+::ng-deep .modal-content {
+  background-color: var(--table-cell-bg) !important;
+  color: inherit !important;
+  border: 1px solid var(--table-wrap-border) !important;
+  border-radius: 12px !important;
+}
+
+::ng-deep .modal-header {
+  border-bottom: 1px solid var(--table-row-border) !important;
+  color: inherit !important;
+}
+
+::ng-deep .modal-header .modal-title {
+  color: inherit !important;
+  font-weight: 750 !important;
+}
+
+::ng-deep .modal-body {
+  color: inherit !important;
+}
+
+::ng-deep .btn-close {
+  filter: var(--btn-close-filter) !important;
 }
