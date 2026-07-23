@@ -748,6 +748,43 @@ export interface TenderSupplierParticipationDto {
     ItemCode:string,
     TenderQuantity:number
 }
+export interface TenderSupplierParticipationDtos {
+  [x: string]: any
+  sno:number
+   SlNo:number
+    SchStatusDid: number
+    // TenderItemId: number
+    TenderId: number
+    SupplierName: string
+    Emd: number
+    ReqEMDAMt: number
+    SubmittedEMDAMT: number
+    TpAmount: number
+    EmdDocType: string
+    DTypeName: string
+    EmdPath: string
+    EmdFileName: string
+    TpFileName: string
+    TpPath: string
+    EmdDocNo: string
+    SupplierId: number
+    Remark: string
+    PItems: number
+    IsEligibleB: string
+    IsCovTechEli: string,
+    IsCOVFinEli: string,
+    CovATechRemarksBefore_OBClM: string,
+    CovAFINRemarksBefore_OBClM: string,
+    Csid: number,
+    ItemId:number,
+    TenderItemId:number,
+    ItemName:string,
+    ItemCodeAsPerTender:string,
+    ItemCode:string,
+    TenderQuantity:number
+
+
+}
 export interface GetTenderItemsDTO {
   sno:number
    SlNo:number

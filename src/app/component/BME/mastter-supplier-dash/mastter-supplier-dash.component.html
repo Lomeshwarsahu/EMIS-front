@@ -1,7 +1,7 @@
 <section class="container-fluid bg-light min-vh-100 py-4">
     
-    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
-        <div>
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 p-3">
+        <div class="">
             <h2 class="fw-bold text-primary mb-1">Supplier Management</h2>
             <p class="text-muted mb-0 fs-6">Manage MAS supplier information and pricing details</p>
         </div>
@@ -121,8 +121,8 @@
                 </div>
             </div>
 
-            <div class="table-responsive border rounded">
-                <table class="table table-hover align-middle mb-0" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+            <div class="table-responsive border rounded" >
+                <table class="table table-hover align-middle mb-0" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort" style="width: 100% !important;">
 
                     <ng-container matColumnDef="sno">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-light"> S.No </th>
