@@ -1287,7 +1287,7 @@ const routes: Routes = [
     path: 'FileMRCDashboardFINFile',
     component: FileMRCDashboardFINFileComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUGMF'] },
+    data: { allowedRoles: ['AUGMF', 'AU'] },
   },
 //#endregion
 

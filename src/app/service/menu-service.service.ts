@@ -412,6 +412,13 @@ export class MenuServiceService {
             { label: 'Reagent PO Report', route: '/reports/reagent-po' },
           ],
         },
+        {
+          label: 'File Movements',
+          route: '',
+          submenu: [
+            { label: 'File MRC Dashboard', route: '/FileMRCDashboardFINFile' },
+          ],
+        },
       ],
     },
 
