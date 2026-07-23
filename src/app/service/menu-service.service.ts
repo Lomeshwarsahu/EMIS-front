@@ -500,7 +500,7 @@ export class MenuServiceService {
           label: 'Masters',
           route: '',
           submenu: [
-            { label: 'Health Facility Users', route: '/EditReceivedAndInstallationDate' },
+            { label: 'Update in Received/Installation Date', route: '/EditReceivedAndInstallationDate' },
             { label: 'Suppliers Accounts/GST', route: '/Supplier' },
             { label: 'CGMSCL Bank Accounts', route: '/CgmscBankAccounts' },
             // { label: 'Add New Items', route: '/ItemsBME' },
@@ -516,7 +516,7 @@ export class MenuServiceService {
           submenu: [
             { label: 'Add Funds', route: '/NewFundMaster' },
             { label: 'Fund Map', route: '/FundMap' },
-            { label: 'Budgent Entry', route: '/BudgentEntry' },
+            { label: 'Fund Receipt Entry', route: '/BudgentEntry' },
           ],
         },
             {
@@ -737,6 +737,8 @@ export class MenuServiceService {
           route: '',
           submenu: [
             { label: 'Generation FileNo', route: '/GenerationFileNonasti' },
+            { label: 'Suppliers', route: '/MasterSupplierDash'},
+
           ],
         },
         {
@@ -780,6 +782,164 @@ export class MenuServiceService {
         // { label: 'Supply/Installation Status', route: '/dispatchPending' },
         // { label: 'Orders', route: '/dhs' },
         // { label: 'Reagent Issue', route: '/ReagentIssue' },
+      ],
+    },
+    // TPOT: {
+    //   items: [
+    //     // { label: 'Home', route: '/home' },
+    //     { label: 'Home', route: '/home' },
+    //     {
+    //       label: 'Masters',
+    //       route: '',
+    //       submenu: [
+    //         // { label: 'Generation FileNo', route: '/GenerationFileNonasti' },
+    //         { label: 'Suppliers', route: '/MasterSupplierDash'},
+
+    //       ],
+    //     },
+    //     {
+    //       label: 'Orders',
+    //       route: '',
+    //       submenu: [
+    //         // { label: 'Extension HO Detail', route: '/ExtensionHODetail' },
+    //       ],
+    //     },
+
+    //     {
+    //       label: 'Reports',
+    //       route: '',
+    //       submenu: [
+    //         // {
+    //         //   label: 'Item Wise Detail PO Cell',
+    //         //   route: '/ItemWiseDetailPOCell',
+    //         // },
+    //         // {
+    //         //   label: 'District Wise PO Detail',
+    //         //   route: '/DistrictWisePODetail',
+    //         // },
+    //         // {
+    //         //   label: 'Indent PO Summary Dirwise',
+    //         //   route: '/IndentPOSummaryDirwise',
+    //         // },
+    //       ],
+    //     },
+    //     {
+    //       label: 'File Movements',
+    //       route: '',
+    //       // submenu: [{ label: 'File MRC Dashboard', route: '/FileMRCDashbord' }],
+    //     },
+    //     // { label: '  Generation FileNo', route: '/GenerationFileNonasti' },
+
+    //     // { label: '  Generation FileNo', route: '/GenerationFileNonasti' },
+
+    //     // { label: 'Dashboard', route: '/eqp-dash' },
+    //     // { label: 'RCDetail', route: '/Rcdetail' },
+    //     // { label: 'Complaints', route: '/complaints' },
+    //     // { label: 'Supply/Installation Status', route: '/dispatchPending' },
+    //     // { label: 'Orders', route: '/dhs' },
+    //     // { label: 'Reagent Issue', route: '/ReagentIssue' },
+    //   ],
+    // },
+     TPOT: {
+      items: [
+        { label: 'Home', route: '/home' },
+        {
+          label: 'Masters',
+          route: '',
+          submenu: [
+            { label: 'Supplier', route: '/masters/supplier' },
+            { label: 'Add New Items', route: '/masters/items' },
+            { label: 'Mapping to Main items', route: '/masters/map-items' },
+            {
+              label: 'Update Mapping to Main items',
+              route: '/masters/map-items-update',
+            },
+            {
+              label: 'Main Equipment Mapped Report',
+              route: '/masters/map-items-report',
+            },
+          ],
+        },
+        // {
+        //   label: 'Contracts',
+        //   route: '',
+        //   submenu: [
+        //     { label: 'Contract Dashboard', route: '/contracts/dashboard'},
+        //     { label: 'New Contract', route: '/contracts/new-rc'},
+           
+        //   ],
+        // },
+        {
+          label: 'Tender',
+          route: '',
+          submenu: [
+            { label: 'Plan a Tender', route: '/PlanaTenderD' },
+            { label: 'Evaluation A', route: '/TenderCoverA' },
+            {
+              label: 'Claim-Object Preparation',
+              route: '/TenderCoverAObClaim',
+            },
+            {
+              label: 'Finalization of Cover A',
+              route: '/TenderCoverAObClaimAfter',
+            },
+            { label: 'Gem-Price Entry', route: '/TenderDetailsPriceEntryGEM' },
+          ],
+        },
+        {
+          label: 'Indents',
+          route: '',
+          submenu: [
+            { label: 'Add Indent DME', route: 'ConsolidatedIndentPOCell' },
+              { label: 'Add Indent', route: '/ConsolidatedIndentDHSPO' },
+               { label: 'Approve Indent-CME', route: '/ConsolidatedIndentCGMSC'},
+       
+          ],
+        },
+        {
+          label: 'Finance Report',
+          route: '',
+          submenu: [
+            {
+              label: 'Year Wise PO Abstract',
+              route: '/finance/year-wise-po-abstract',
+            },
+            {
+              label: 'PO Wise Payment FReport',
+              route: '/finance/po-wise-payment',
+            },
+            {
+              label: 'Cheque Wise Payment Report',
+              route: '/finance/cheque-wise-payment',
+            },
+          ],
+        },
+        {
+          label: 'Complain',
+          route: '',
+          submenu: [{ label: 'Complain Report', route: '/complain/report' }],
+        },
+        {
+          label: 'Reports',
+          route: '',
+          submenu: [
+            { label: 'PO Summary', route: '/reports/po-summary' },
+            {
+              label: 'PO Wise Payment Report',
+              route: '/reports/po-wise-payment',
+            },
+            { label: 'Tenders Status', route: '/reports/tenders-status' },
+            {
+              label: 'PO Receipts summary',
+              route: '/reports/po-receipts-summary',
+            },
+            {
+              label: 'Item Status in Tenter',
+              route: '/reports/tender-item-status',
+            },
+            { label: 'Reagent PO Report', route: '/reports/reagent-po' },
+          ],
+        },
       ],
     },
     MDGMT: {
@@ -1283,7 +1443,7 @@ export class MenuServiceService {
     label: string;
     route: string;
     submenu?: { label: string; route: string }[];
-  }[] {
+    }[] {
     const roleMenu = this.menu[role];
 
     if (!roleMenu) {
@@ -1305,6 +1465,48 @@ export class MenuServiceService {
 
     return roleMenu.items || [];
   }
+
+// getMenuItems(role: string): {
+//     label: string;
+//     route: string;
+//     submenu?: { label: string; route: string }[];
+//   }[] {
+//     const roleMenu = this.menu[role];
+
+//     if (!roleMenu) {
+//       return [];
+//     }
+
+//     const rolesUsingCategories = ['Collector', 'SEC1', 'DHS', 'CME', 'DME1'];
+//     let items: any[] = [];
+
+//     if (rolesUsingCategories.includes(role) && roleMenu.categories) {
+//       const selectedCategory = this.getSelectedCategory();
+//       if (selectedCategory && roleMenu.categories[selectedCategory]) {
+//         items = roleMenu.categories[selectedCategory].map((item: any) => ({
+//           ...item,
+//           submenu: this.getSubmenu(item.label),
+//         }));
+//       }
+//     } else {
+//       items = roleMenu.items || [];
+//     }
+
+//     // ==========================================
+//     // 💡 YAHAN CONDITION APPLY KI GAYI HAI
+//     // ==========================================
+//     const currentUserId = localStorage.getItem('user_id'); // LocalStorage se user_id nikalna
+
+//     return items.filter((item) => {
+//       // Check karein ki kya ye 'Suppliers' item hai
+//       if (item.label === 'Suppliers') {
+//         // Agar user_id '2323' hai, tabhi true return karega (dikhega), nahi toh hide ho jayega
+//         return currentUserId === '2323';
+//       }
+//       // Baki saare menu items normal tarike se dikhenge
+//       return true;
+//     });
+//   }
 
   // Example submenu provider (optional)
   getSubmenu(label: string): { label: string; route: string }[] | undefined {
