@@ -158,6 +158,15 @@ export class MenuServiceService {
           { label: 'Home', route: '/home' },
           { label: 'Dashboard', route: '/admin-dash' },
           { label: 'Attendance', route: '/attendance-dash' },
+          {
+            label: 'IT Management',
+            route: '',
+            submenu: [
+              { label: 'Add New Screen', route: '/IT/add-sub-menu' },
+              { label: 'Map Screens to Roles', route: '/IT/add-role-in-screen' },
+              { label: 'Manage Menus & Sub-Menus', route: '/IT/delete-menu' },
+            ],
+          },
         ],
       },
     },
@@ -293,6 +302,15 @@ export class MenuServiceService {
               route: '/reports/tender-item-status',
             },
             { label: 'Reagent PO Report', route: '/reports/reagent-po' },
+          ],
+        },
+        {
+          label: 'IT Management',
+          route: '',
+          submenu: [
+            { label: 'Add New Screen', route: '/IT/add-sub-menu' },
+            { label: 'Map Screens to Roles', route: '/IT/add-role-in-screen' },
+            { label: 'Manage Menus & Sub-Menus', route: '/IT/delete-menu' },
           ],
         },
       ],

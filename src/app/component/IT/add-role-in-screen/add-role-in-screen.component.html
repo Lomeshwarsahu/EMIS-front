@@ -1,0 +1,129 @@
+<div class="it-page">
+  <h2 class="page-title">Map Screens to Roles</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Main Menu"
+        [(ngModel)]="selectedMenuId"
+        name="mainMenu"
+        (ngModelChange)="onMenuChange()"
+        [disabled]="loading">
+        <option [ngValue]="null">Select Main Menu</option>
+        <option *ngFor="let m of menus" [ngValue]="m.MenuId">{{ m.MenuName }}</option>
+      </select>
+
+      <select
+        aria-label="Role"
+        [(ngModel)]="selectedRoleId"
+        name="role"
+        (ngModelChange)="onRoleChange()"
+        [disabled]="loading">
+        <option [ngValue]="null">Select Role</option>
+        <option *ngFor="let r of roles" [ngValue]="r.RoleId">{{ r.RoleName }}</option>
+      </select>
+
+      <button
+        type="button"
+        class="show-btn accent-btn"
+        (click)="mapSelected()"
+        [disabled]="selectedSubMenuIds.size === 0">
+        Update Mapping ({{ selectedSubMenuIds.size }})
+      </button>
+    </div>
+
+    <!-- Top panel: Available sub-menus -->
+    <div class="section-label" *ngIf="selectedMenuId && selectedRoleId">
+      Available Screens — tick to assign
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="5" />
+
+    <div class="table-wrap" *ngIf="!loading && subMenus.length">
+      <table
+        class="it-grid"
+        mat-table
+        [dataSource]="topDataSource"
+        matSort
+        #topSort="matSort">
+        <ng-container matColumnDef="check">
+          <th mat-header-cell *matHeaderCellDef class="text-center" style="width:48px;">✓</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <input
+              type="checkbox"
+              [checked]="isSelected(row.SubMenuId)"
+              (change)="toggleSelection(row.SubMenuId)" />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let row; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="subMenuName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sub-Menu</th>
+          <td mat-cell *matCellDef="let row" class="wrap-cell">{{ row.SubMenuName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="subMenuLink">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Link</th>
+          <td mat-cell *matCellDef="let row"><code>{{ row.SubMenuLink }}</code></td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Already Mapped</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <span class="status-pill" [class.status-done]="row.AddedOrNot > 0">
+              {{ row.AddedOrNot > 0 ? 'Yes' : 'No' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="topColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: topColumns;"></tr>
+      </table>
+    </div>
+
+    <div class="empty-row" *ngIf="!loading && selectedMenuId && selectedRoleId && !subMenus.length">
+      No sub-menus found for the selected menu.
+    </div>
+
+    <!-- Bottom panel: Already assigned -->
+    <div class="section-label" *ngIf="assignedSubMenus.length">
+      Currently Assigned
+    </div>
+
+    <div class="table-wrap" *ngIf="assignedSubMenus.length">
+      <table
+        class="it-grid"
+        mat-table
+        [dataSource]="bottomDataSource"
+        matSort
+        #bottomSort="matSort">
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let row; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="menuName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Main Menu</th>
+          <td mat-cell *matCellDef="let row">{{ row.MenuName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="subMenuName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sub-Menu</th>
+          <td mat-cell *matCellDef="let row" class="wrap-cell">{{ row.SubMenuName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="subMenuLink">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Link</th>
+          <td mat-cell *matCellDef="let row"><code>{{ row.SubMenuLink }}</code></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="bottomColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: bottomColumns;"></tr>
+      </table>
+    </div>
+  </div>
+</div>

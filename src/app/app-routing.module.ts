@@ -114,6 +114,9 @@ import { TDSdataReportComponent } from './Reports/tdsdata-report/tdsdata-report.
 import { PaymentsCPReport20perComponent } from './Reports/payments-cpreport20per/payments-cpreport20per.component';
 import { FileMRCDashboardFINFileComponent } from './GM Finance/file-mrcdashboard-finfile/file-mrcdashboard-finfile.component';
 import { SanctionComponent } from './GM Finance/sanction/sanction.component';
+import { AddSubMenuComponent } from './component/IT/add-sub-menu/add-sub-menu.component';
+import { AddRoleInScreenComponent } from './component/IT/add-role-in-screen/add-role-in-screen.component';
+import { DeleteMenuComponent } from './component/IT/delete-menu/delete-menu.component';
 
 
 const routes: Routes = [
@@ -1287,6 +1290,28 @@ const routes: Routes = [
     data: { allowedRoles: ['AUGMF'] },
   },
 //#endregion
+
+  //#region IT Module
+  {
+    path: 'IT/add-sub-menu',
+    component: AddSubMenuComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SEC1', 'AD'] },
+  },
+  {
+    path: 'IT/add-role-in-screen',
+    component: AddRoleInScreenComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SEC1', 'AD'] },
+  },
+  {
+    path: 'IT/delete-menu',
+    component: DeleteMenuComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SEC1', 'AD'] },
+  },
+  //#endregion
+
   { path: '**', redirectTo: 'login' },
 ];
 
