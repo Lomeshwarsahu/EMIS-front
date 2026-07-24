@@ -50,6 +50,7 @@ export class AppSidebarComponent {
       }
       return item.submenu?.some((sub) => sub.label.toLowerCase().includes(query));
     });
+    
   }
 
   filteredSubmenu(item: AppSidebarMenuItem): { label: string; route: string }[] {
@@ -98,6 +99,7 @@ export class AppSidebarComponent {
   }
 
   onNavHover(item: AppSidebarMenuItem, event?: MouseEvent): void {
+    debugger;
     if (!this.collapsed) {
       return;
     }
@@ -241,4 +243,11 @@ export class AppSidebarComponent {
     if (parentKey.includes('report')) return 'bar_chart';
     return 'subdirectory_arrow_right';
   }
+
+
+
+// canShowSupplierMenu(): boolean {
+//   const userId = localStorage.getItem('user_id');
+//   return userId === '2323';
+// }
 }

@@ -117,6 +117,9 @@ import { SanctionComponent } from './GM Finance/sanction/sanction.component';
 import { AddSubMenuComponent } from './component/IT/add-sub-menu/add-sub-menu.component';
 import { AddRoleInScreenComponent } from './component/IT/add-role-in-screen/add-role-in-screen.component';
 import { DeleteMenuComponent } from './component/IT/delete-menu/delete-menu.component';
+import { MasterSupplierDashComponent } from './component/Tender Cell/master-supplier-dash/master-supplier-dash.component';
+import { ConsolidatedIndentCGMSCComponent } from './component/Tender Cell/consolidated-indent-cgmsc/consolidated-indent-cgmsc.component';
+import { TenderCoverAObClaimAfterComponent } from './component/Tender Cell/tender-cover-aob-claim-after/tender-cover-aob-claim-after.component';
 
 
 const routes: Routes = [
@@ -437,6 +440,7 @@ const routes: Routes = [
         'SCI',
         'SUP',
         'TPO',
+        'TPOT',
       ],
     },
   },
@@ -465,6 +469,7 @@ const routes: Routes = [
         'SCI',
         'SUP',
         'TPO',
+        'TPOT',
       ],
     },
   },
@@ -474,6 +479,12 @@ const routes: Routes = [
     component: GenerationFileNonastiComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO'] },
+  },
+  {
+    path: 'MasterSupplierDash',
+    component: MasterSupplierDashComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPOT'] },
   },
   {
     path: 'FileMRCDashbord',
@@ -556,19 +567,25 @@ const routes: Routes = [
     path: 'PlanaTenderD',
     component: PlanaTenderDComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU', 'DME','AUPO'] },
+    data: { allowedRoles: ['AU', 'DME','AUPO','TPOT'] },
+  },
+  {
+    path: 'TenderCoverAObClaimAfter',
+    component: TenderCoverAObClaimAfterComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPOT'] },
   },
   {
     path: 'TenderCoverA',
     component: TenderCoverAComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU'] },
+    data: { allowedRoles: ['AU','TPOT'] },
   },
   {
     path: 'TenderCoverAObClaim',
     component: TenderCoverAObClaimComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU'] },
+    data: { allowedRoles: ['AU','TPOT'] },
   },
   {
     path: 'TenderItemsPriceGEM',
@@ -586,7 +603,7 @@ const routes: Routes = [
     path: 'ConsolidatedIndentPOCell',
     component: ConsolidatedIndentPOCellComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU','AUPO'] },
+    data: { allowedRoles: ['AU','AUPO','TPOT'] },
   },
   // POCell
   // {path:'MasFacilityUsers',component:MasFacilityUsersComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
@@ -675,9 +692,17 @@ const routes: Routes = [
     component: ConsolidatedIndentDHSPOComponent,
     canActivate: [RouteGuardService],
     data: {
-      allowedRoles: ['AUPO'],
+      allowedRoles: ['AUPO','TPOT'],
       // allowedUsersid: [2307]
       // allowedUsers: ['rahul_au', 'amit_au']
+    },
+  },
+  {
+    path: 'ConsolidatedIndentCGMSC',
+    component: ConsolidatedIndentCGMSCComponent,
+    canActivate: [RouteGuardService],
+    data: {
+      allowedRoles: ['TPOT'],
     },
   },
   {
@@ -793,31 +818,31 @@ const routes: Routes = [
     path: 'masters/supplier',
     component: MastterSupplierDashComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU', 'DME'] },
+    data: { allowedRoles: ['AU', 'DME','TPOT'] },
   },
   {
     path: 'masters/items',
     component: ItemsBMEComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU', 'DME'] },
+    data: { allowedRoles: ['AU', 'DME','TPOT'] },
   },
   {
     path: 'masters/map-items',
     component: MapitemsEithTypeComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU', 'DME'] },
+    data: { allowedRoles: ['AU', 'DME','TPOT'] },
   },
   {
     path: 'masters/map-items-update',
     component: MapitemswithTypeUpdateComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU', 'DME'] },
+    data: { allowedRoles: ['AU', 'DME','TPOT'] },
   },
   {
     path: 'masters/map-items-report',
     component: MapitemswithMainitemTypeRepoComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU', 'DME'] },
+    data: { allowedRoles: ['AU', 'DME','TPOT'] },
   },
   {
     path: 'stock/covid-stock-report',
