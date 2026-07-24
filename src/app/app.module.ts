@@ -59,9 +59,17 @@ import { AppSidebarComponent } from './component/layout/app-sidebar/app-sidebar.
     MatTableExporterModule, MatButtonModule,
     AppSidebarComponent,
     ToastrModule.forRoot({
-        positionClass: 'toast-top-right' // Set the position to top right
-    })
-  
+      positionClass: 'toast-top-right',
+      timeOut: 3500,
+      extendedTimeOut: 1200,
+      closeButton: true,
+      progressBar: true,
+      newestOnTop: true,
+      preventDuplicates: true,
+      tapToDismiss: true,
+      easeTime: 250,
+      toastClass: 'ngx-toastr emis-toast',
+    }),
 ], providers: [DatePipe, 
       { provide: APP_BASE_HREF, useValue: '/EMIS/' }, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {

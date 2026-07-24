@@ -1,6 +1,17 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
 .receipt-entry-page {
   max-width: 1180px;
   margin: 0 auto;
+  overflow: visible;
+  height: auto;
+  min-height: 0;
 }
 
 .receipt-entry-page .header-grid td.deadline-label,
@@ -131,6 +142,35 @@ textarea {
 
 .complete-btn {
   background-color: #198754;
+}
+
+.complete-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.delete-install-btn {
+  background-color: #7f1d1d;
+}
+
+.denied-form .radio-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.35rem;
+}
+
+.denied-form .full-width {
+  grid-column: 1 / -1;
+}
+
+.denied-form .hint-text {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 11px;
+  color: #64748b;
 }
 
 .upload-row {

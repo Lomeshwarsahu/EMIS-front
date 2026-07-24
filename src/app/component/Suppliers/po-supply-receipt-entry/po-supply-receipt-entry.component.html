@@ -60,6 +60,9 @@
       <button type="button" [class.active]="activeTab === 'complete'" (click)="setTab('complete')" [disabled]="!receiptId && !loading">
         Complete
       </button>
+      <button type="button" [class.active]="activeTab === 'denied'" (click)="setTab('denied')">
+        Receipt/Installation Denied
+      </button>
     </div>
 
     <div class="tab-panel" *ngIf="activeTab === 'receipt'">
@@ -101,7 +104,7 @@
       <p class="section-title">Select Supplier Dispatched Item</p>
       <div class="form-grid">
         <label>
-          Serial No *
+          {{ serialLabel }} *
           <select [(ngModel)]="selectedIssueDetailId" name="selectedIssueDetailId" (ngModelChange)="onSerialSelected()">
             <option [ngValue]="0">Select Serial</option>
             <option *ngFor="let item of issueDetailOptions" [ngValue]="item.issueDetailId">
@@ -111,7 +114,7 @@
         </label>
         <label>Warranty Certificate No <input [value]="selectedWarrantyCertificateNo" disabled /></label>
         <label>Dispatch Qty <input [value]="selectedDispatchQty" disabled /></label>
-        <label>Serial No <input [value]="selectedSerialNo" disabled /></label>
+        <label>{{ serialLabel }} <input [value]="selectedSerialNo" disabled /></label>
         <label>Warranty Card No * <input [(ngModel)]="warrantyCardNo" name="warrantyCardNo" /></label>
         <label>
           To be Installed Qty *
@@ -210,7 +213,7 @@
           <table class="po-grid line-table">
             <thead>
               <tr>
-                <th>Serial No</th>
+                <th>{{ serialLabel }}</th>
                 <th>Warranty Card No</th>
                 <th>Qty</th>
                 <th>Installation Date</th>
@@ -265,7 +268,7 @@
           <table class="po-grid line-table complete-table">
             <thead>
               <tr>
-                <th>Serial No</th>
+                <th>{{ serialLabel }}</th>
                 <th>Installation Date</th>
                 <th>Warranty From / To</th>
                 <th *ngIf="!bulkInst">Installation Report</th>
@@ -317,9 +320,71 @@
         Before clicking Complete Installation, ensure receipt, installation date and uploaded PDF files are correct.
         If anything is wrong, go back to Installation Details and rework.
       </p>
-      <button type="button" class="show-btn complete-btn" (click)="completeInstallation()" [disabled]="saving || uploading || !receiptId || !installationLines.length">
-        {{ saving ? 'Completing...' : 'Complete Installation' }}
+      <div class="complete-actions">
+        <button type="button" class="show-btn complete-btn" (click)="completeInstallation()" [disabled]="saving || uploading || !receiptId || !installationLines.length">
+          {{ saving ? 'Completing...' : 'Complete Installation' }}
+        </button>
+        <button
+          type="button"
+          class="show-btn delete-install-btn"
+          *ngIf="canDeleteInstallation"
+          (click)="deleteInstallation()"
+          [disabled]="saving || uploading">
+          Delete Installation
+        </button>
+      </div>
+    </div>
+
+    <div class="tab-panel" *ngIf="activeTab === 'denied'">
+      <p class="section-title">Receipt / Installation Denied</p>
+      <div class="form-grid denied-form">
+        <label class="full-width">
+          Deny Type
+          <div class="radio-row">
+            <label>
+              <input type="radio" name="deniedStatus" value="I" [(ngModel)]="deniedStatus" [disabled]="deniedModeLocked" />
+              Installation Denied
+            </label>
+            <label>
+              <input type="radio" name="deniedStatus" value="RI" [(ngModel)]="deniedStatus" [disabled]="deniedModeLocked" />
+              Receipt &amp; Installation both denied
+            </label>
+          </div>
+        </label>
+        <label *ngIf="showDeniedReceivedQty">
+          Denied Received Qty *
+          <input type="number" min="0.01" step="0.01" [(ngModel)]="deniedQty" name="deniedReceivedQty" />
+        </label>
+        <label *ngIf="showDeniedInstallQty">
+          Denied Installation Qty *
+          <input type="number" min="0.01" step="0.01" [(ngModel)]="deniedQty" name="deniedInstallQty" />
+          <span class="hint-text" *ngIf="maxDeniedInstallQty > 0">Max: {{ maxDeniedInstallQty }}</span>
+        </label>
+        <label class="full-width">
+          Remarks *
+          <textarea rows="3" [(ngModel)]="deniedRemarks" name="deniedRemarks"></textarea>
+        </label>
+      </div>
+      <button type="button" class="show-btn" (click)="saveDenied()" [disabled]="saving || uploading || !!descrepencyId">
+        {{ descrepencyId ? 'Denied details saved' : 'Save Denied Details' }}
       </button>
+
+      <div class="upload-row" *ngIf="descrepencyId">
+        <span class="upload-label">Denied Letter (PDF) *</span>
+        <input type="file" accept=".pdf" #deniedLetterInput />
+        <button type="button" class="show-btn upload-btn" (click)="uploadDeniedFile(deniedLetterInput, 'deniedLetter')" [disabled]="uploading || saving">
+          Upload
+        </button>
+        <button type="button" class="link-btn" *ngIf="hasDeniedLetter" (click)="downloadDeniedFile('deniedLetter')">Download</button>
+      </div>
+      <div class="upload-row" *ngIf="descrepencyId && showReceivedCopyUpload">
+        <span class="upload-label">Received / Challan Copy (PDF) *</span>
+        <input type="file" accept=".pdf" #receivedCopyInput />
+        <button type="button" class="show-btn upload-btn" (click)="uploadDeniedFile(receivedCopyInput, 'receivedCopy')" [disabled]="uploading || saving">
+          Upload
+        </button>
+        <button type="button" class="link-btn" *ngIf="hasReceivedCopy" (click)="downloadDeniedFile('receivedCopy')">Download</button>
+      </div>
     </div>
   </ng-container>
 </div>

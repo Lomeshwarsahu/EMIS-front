@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
+import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 import {
   apiErrorMessage,
   resolveLoginAuthorityId,
@@ -50,9 +52,9 @@ interface PoReceiptDeskRow {
 @Component({
   selector: 'app-purchase-order-receipts',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './purchase-order-receipts.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './purchase-order-receipts.component.css'],
+  styleUrls: ['./purchase-order-receipts.component.css'],
 })
 export class PurchaseOrderReceiptsComponent implements OnInit {
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
@@ -67,9 +69,14 @@ export class PurchaseOrderReceiptsComponent implements OnInit {
   userId = 0;
   authorityId = '';
 
+  get hasActiveFilter(): boolean {
+    return this.selectedFinancialYearId > 0 || (this.selectedItemCode !== '0' && !!this.selectedItemCode);
+  }
+
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -77,9 +84,20 @@ export class PurchaseOrderReceiptsComponent implements OnInit {
     this.authorityId = resolveLoginAuthorityId();
     this.loadFinancialYears();
     this.loadItemOptions();
+    this.loadDesk();
   }
 
-  show(): void {
+  onFilterChange(): void {
+    this.loadDesk();
+  }
+
+  clearFilters(): void {
+    this.selectedFinancialYearId = 0;
+    this.selectedItemCode = '0';
+    this.loadDesk();
+  }
+
+  loadDesk(): void {
     if (!this.userId) {
       this.toastr.warning('Please login again — user id missing.');
       return;
@@ -111,9 +129,27 @@ export class PurchaseOrderReceiptsComponent implements OnInit {
   }
 
   onReceiptAction(row: PoReceiptDeskRow, batch: PoReceiptBatch): void {
-    this.toastr.info(
-      `Receipt detail (${batch.SupplyStatus}) — PO ${row.PoNo}, Issue ${batch.IssueId}. Full receipt screen coming soon.`,
-    );
+    const status = (batch.SupplyStatus || '').trim();
+    if (status === 'Installation Completed' && batch.ReceiptId) {
+      this.router.navigate(['/orders/po-installation-report'], {
+        queryParams: { receiptId: batch.ReceiptId },
+      });
+      return;
+    }
+
+    const issueId = Number(batch.IssueId);
+    if (!row.PoId || !row.ConsigneeId || !issueId) {
+      this.toastr.warning('PO, consignee and issue are required to open receipt entry.');
+      return;
+    }
+
+    this.router.navigate(['/orders/po-receipt-entry'], {
+      queryParams: {
+        poId: row.PoId,
+        locId: row.ConsigneeId,
+        issueId,
+      },
+    });
   }
 
   formatPrice(value?: number): string {
@@ -125,6 +161,7 @@ export class PurchaseOrderReceiptsComponent implements OnInit {
     this.http.get<FinancialYearOption[]>(`${this.apiRoot}financial-years`).subscribe({
       next: (res) => {
         this.financialYears = this.mapYears(res);
+        this.selectedFinancialYearId = 0;
       },
       error: (e) => this.toastr.error(apiErrorMessage(e, 'Could not load financial years.')),
     });

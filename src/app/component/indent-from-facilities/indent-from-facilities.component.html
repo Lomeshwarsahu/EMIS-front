@@ -1,220 +1,154 @@
-<section class="container-fluid">
-  <div class="card">
-    <div class="card p-4 mb-4 shadow-smm text-center bg-light border-0 rounded-3">
-      <!-- Main Heading Centered -->
-      <h2 class="fw-bold text-primary mb-2">Indent Received from Directorate/Facilities</h2>
+<div class="indent-facilities-page">
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Financial Year"
+        [(ngModel)]="financial_year_id"
+        name="financialYearId"
+        (ngModelChange)="onFilterChange()"
+        [disabled]="loading"
+        [class.is-placeholder]="!financial_year_id">
+        <option [ngValue]="0">All Years</option>
+        <option *ngFor="let y of yearlist" [ngValue]="y.financial_year_id">{{ y.year }}</option>
+      </select>
 
-      <!-- Optional small subtitle for clarity -->
-      <p class="text-muted mb-0 fs-6">
-         Overview of indents received from various directorates and facilities for further processing and approval
-      </p>
+      <select
+        aria-label="Item Name"
+        [(ngModel)]="ItemId"
+        name="itemId"
+        (ngModelChange)="onFilterChange()"
+        [disabled]="loading"
+        [class.is-placeholder]="!ItemId">
+        <option [ngValue]="0">All Items</option>
+        <option *ngFor="let i of ItemsList" [ngValue]="i.ItemId">{{ i.ItemName }}</option>
+      </select>
+
+      <select
+        aria-label="Directorate / HOD"
+        [(ngModel)]="facility_aut_id"
+        name="facilityAutId"
+        (ngModelChange)="onDirectorateChange($event)"
+        [disabled]="loading"
+        [class.is-placeholder]="!facility_aut_id">
+        <option [ngValue]="0">All Directorates</option>
+        <option *ngFor="let d of Diectoratelist" [ngValue]="d.facility_aut_id">
+          {{ d.facility_aut_name }}
+        </option>
+      </select>
+
+      <select
+        aria-label="Med. Coll. / District"
+        [(ngModel)]="UserId"
+        name="userId"
+        (ngModelChange)="onFilterChange()"
+        [disabled]="loading || !facility_aut_id"
+        [class.is-placeholder]="!UserId">
+        <option [ngValue]="0">{{ facility_aut_id ? 'All Facilities' : 'Select Directorate first' }}</option>
+        <option *ngFor="let u of UsersByAuthoritylist" [ngValue]="u.UserId">{{ u.UserName }}</option>
+      </select>
+
+      <button
+        *ngIf="hasActiveFilter"
+        type="button"
+        class="clear-btn"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+
+      <button
+        type="button"
+        class="show-btn accent-btn"
+        (click)="exportExcel()"
+        [disabled]="loading || !dataSource.data.length">
+        Export
+      </button>
     </div>
-    <div class="card shadow-lgg p-2 border-0 bg-white rounded ">
-      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lighty"
-        style="height: auto; overflow: hidden; position: relative;">
-        <div class="mb-0 Fon-family" style="text-align: justify;">
-          <form class="p-2">
-            <div class="card shadow-sm p-3 mt-2">
-    
-              <div class="row text-center align-items-start">
-                   <div class="col-md-3 border-end">
-    
-                  <h6 class="fw-bold text-dark mb-3">
-                    <i class="bi bi-cash-coin me-1"></i>Select Financial Year
-                  </h6>
-    
-                  <div class="d-flex justify-content-center flex-wrap">
-                    <ng-select [items]="yearlist" bindLabel="year" bindValue="financial_year_id" class="form-control"
-                      appendTo="body" [(ngModel)]="selecteditem" name="selecteditem" placeholder="Select year"
-                      (change)="onSelectedyearlist($event)">
-                    </ng-select>
-    
-                  </div>
-    
-                </div>
-                <!-- PO TYPES -->
-                <div class="col-md-3 border-end">
-    
-                  <h6 class="fw-bold text-warning mb-3">
-                    <i class="bi bi-folder me-1"></i>Select Item Name
-                  </h6>
-    
-                  <div class="d-flex justify-content-center flex-wrap">
-                    <ng-select [items]="ItemsList" bindLabel="ItemName" bindValue="ItemId" [(ngModel)]="ItemId"
-                     class="form-control" appendTo="body"
-                      placeholder="Select Item" (change)="onSelectedItem($event)">
-                    </ng-select>
-    
-                  </div>
-    
-    
-                </div>
-                <div class="col-md-3 border-end">
-    
-                  <h6 class="fw-bold text-primary mb-3">
-                    <i class="bi bi-folder me-1"></i>Select Directorate/HOD
-                  </h6>
-    
-                  <div class="d-flex justify-content-center flex-wrap">
-                    <ng-select [items]="Diectoratelist" bindLabel="facility_aut_name" bindValue="facility_aut_id" [(ngModel)]="facility_aut_id"
-                     class="form-control" appendTo="body"
-                      placeholder="Select Directorate/HOD" (change)="onSelectedDirectorate($event)">
-                    </ng-select>
-    
-                  </div>
-    
-    
-                </div>
-    
-    
-                <!-- PAYMENT TYPES -->
-                <div class="col-md-3 border-end">
-    
-                  <h6 class="fw-bold text-success mb-3">
-                    <i class="bi bi-cash-coin me-1"></i>Select Med.Coll./District 
-                  </h6>
-    
-                  <div class="d-flex justify-content-center flex-wrap">
-                    <ng-select [items]="UsersByAuthoritylist" bindLabel="UserName" bindValue="UserId" [(ngModel)]="UserId" class="form-control"
-                      appendTo="body"  name="selecteditem" placeholder="Select Med.Coll./District"
-                      (change)="onSelectedUsers($event)">
-                    </ng-select>
-    
-                  </div>
-    
-                </div>
-               
-                <div class="d-flex justify-content-center mt-3">
-                  <button type="submit" class="btn btn-primary" (click)="GetIndentConsolidation()">
-                    Show Details
-                  </button>
-                </div>
-                <!-- [disabled]="fileForm.invalid" -->
-              </div>
-    
-            </div>
-          </form>
-    
-        </div>
-      </div>
+
+    <div class="search-row" *ngIf="!loading && dataSource.data.length">
+      <input
+        type="search"
+        class="search-input"
+        placeholder="Search in table…"
+        (keyup)="applyTextFilter($event)"
+        aria-label="Search table" />
     </div>
-    <!-- data table -->
-    <div class="card shadow-lgg p-2 mt-0 pt-0 border-0 bg-white rounded ">
-      <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-lightt"
-        style="height: auto; overflow: hidden; position: relative;">
 
-        <div class="container-fluid p-3 m-0">
-          <div class="row justify-content-center g-4 ">
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="8" />
 
-            <div class="col-lg-12 mb-2">
-              <div class=" card row shadow ">
-                <div class="d-flex justify-content-between align-items-center m-2">
-                  <div class="filter-field flex-grow-1">
-                    <input type="text" class="form-control" placeholder="Search" (keyup)="applyTextFilter($event)">
-                  </div>
+    <div class="table-wrap" *ngIf="!loading">
+      <table
+        class="indent-grid"
+        mat-table
+        matTableExporter
+        [dataSource]="dataSource"
+        #exporter="matTableExporter"
+        matSort
+        #sort="matSort">
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>S.No</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.sno }}</td>
+        </ng-container>
+        <ng-container matColumnDef="IndentConsolidationId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Indent Consolidation Id</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.IndentConsolidationId }}</td>
+        </ng-container>
+        <ng-container matColumnDef="IndentConNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Indent Con No</th>
+          <td mat-cell *matCellDef="let element">{{ element.IndentConNo }}</td>
+        </ng-container>
+        <ng-container matColumnDef="IndentDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Indent Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.IndentDate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="ItemCount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Count</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.ItemCount }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let element">{{ element.Status }}</td>
+        </ng-container>
+        <ng-container matColumnDef="FacilityAutName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Facility / Authority</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.FacilityAutName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.Description }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Path">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Path</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.Path }}</td>
+        </ng-container>
+        <ng-container matColumnDef="UserType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>User Type</th>
+          <td mat-cell *matCellDef="let element">{{ element.UserType }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Designation">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation</th>
+          <td mat-cell *matCellDef="let element">{{ element.Designation }}</td>
+        </ng-container>
+        <ng-container matColumnDef="UserId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>User Id</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.UserId }}</td>
+        </ng-container>
+        <ng-container matColumnDef="UserName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.UserName }}</td>
+        </ng-container>
 
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
 
-                  <div class="export-menu-container m-2">
+      <div class="empty-row" *ngIf="!dataSource.data.length">No records found.</div>
 
-                    <button type="button" class="btn border rounded btn-outline-secondary" mat-button
-                      [matMenuTriggerFor]="exportMenu">Export</button>
-                    <mat-menu #exportMenu="matMenu">
-                      <button mat-menu-item
-                        (click)="exporter.exportTable('xlsx', { fileName: 'PODetails', sheet: 'PODetails', Props: { Author: 'cgmsc' }})">Excel</button>
-                    </mat-menu>
-                  </div>
-                </div>
-                <div class="table-responsive">
-                  <table class="table table-bordered table-striped border rounded " mat-table matTableExporter
-                    [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
-
-                    <ng-container matColumnDef="sno">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No </th>
-                      <td mat-cell *matCellDef="let element" class="text-center">
-                        {{element.sno}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="IndentConsolidationId">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Indent Consolidation Id</th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.IndentConsolidationId}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="IndentConNo">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Indent Con No</th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.IndentConNo}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="IndentDate">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Indent Date</th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.IndentDate}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="ItemCount">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Count</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">{{element.ItemCount}}
-                      </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Status">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status </th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.Status}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="FacilityAutName">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Facility Aut Name</th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.FacilityAutName}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="Description">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.Description}} </td>
-
-                    </ng-container>
-                    <ng-container matColumnDef="Path">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Path</th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.Path}} </td>
-
-                    </ng-container>
-                    <ng-container matColumnDef="UserType">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>User Type</th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.UserType}} </td>
-
-                    </ng-container>
-
-                    <ng-container matColumnDef="Designation">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation</th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.Designation}} </td>
-
-                    </ng-container>
-                    <ng-container matColumnDef="UserId">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>User Id</th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.UserId}} </td>
-
-                    </ng-container>
-                    <ng-container matColumnDef="UserName">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
-                      <td mat-cell *matCellDef="let element" class="text-center"> {{element.UserName}} </td>
-
-                    </ng-container>
-
-
-                    <!-- <ng-container matColumnDef="action">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Download IDetails</th>
-                      <td mat-cell *matCellDef="let element" class="text-center">
-                        <span class="d-flex  flex-row-reverse p-2 ">
-                          <button
-                            class="btn btn-sm text-light align-items-center border rounded btn-outline-info-subtle  bg-info-subtle"
-                            mat-button (click)="onButtonClick(element.PoId)">
-                            <i class="bi bi-arrow-down text-primary"></i>
-                          </button>
-                        </span>
-                      </td>
-                    </ng-container> -->
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                  </table>
-                  <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons></mat-paginator>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <mat-paginator
+        *ngIf="dataSource.data.length"
+        #paginator
+        [pageSizeOptions]="[10, 15, 30, 50]"
+        showFirstLastButtons></mat-paginator>
     </div>
   </div>
-</section>
+</div>

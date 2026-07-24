@@ -145,13 +145,8 @@ export class PoSupplyDispatchEditComponent implements OnInit {
   private navigateToDispatchEntry(
     row: DispatchEditRow,
     issueId: number,
-    categoryId = row.categoryId,
+    _categoryId = row.categoryId,
   ): void {
-    if (categoryId === 2) {
-      this.toastr.info('Reagent dispatch entry is not migrated yet.');
-      return;
-    }
-
     this.router.navigate(['/transaction/po-supply-dispatch-entry'], {
       queryParams: {
         poId: row.poId,

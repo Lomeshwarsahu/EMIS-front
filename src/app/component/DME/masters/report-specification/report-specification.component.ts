@@ -41,7 +41,7 @@ interface ReportSpecificationSummary {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './report-specification.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './report-specification.component.css'],
+  styleUrls: ['./report-specification.component.css'],
 })
 export class ReportSpecificationComponent implements OnInit {
   private readonly apiRoot = `${environment.apiUrl}/ReportSpecification/`;
@@ -50,7 +50,6 @@ export class ReportSpecificationComponent implements OnInit {
   searchOptions: EquipmentSearchOption[] = [];
   items: ReportSpecificationItem[] = [];
   summary: ReportSpecificationSummary | null = null;
-  summaryVisible = true;
   activeSummaryKey: string | null = null;
   showAllChecked = true;
 
@@ -124,10 +123,6 @@ export class ReportSpecificationComponent implements OnInit {
     this.editingItemId = null;
     this.loadSearchOptions();
     this.reloadItems();
-  }
-
-  closeSummary(): void {
-    this.summaryVisible = false;
   }
 
   loadSummary(): void {

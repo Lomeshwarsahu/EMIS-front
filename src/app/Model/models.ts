@@ -274,7 +274,7 @@ export interface IndentConsolidationReportDto {
   CreatedOn: string
 }
 export interface ContractItem {
-      sno:number
+  sno: number;
   contractItemId: number;
   itemId: number;
 
@@ -301,6 +301,7 @@ export interface ContractItem {
   cmc5: number;
 
   tenderId: number;
+  hasSpecification?: boolean;
 }
 export interface TenderSupplierDataDTO {
      sno:number

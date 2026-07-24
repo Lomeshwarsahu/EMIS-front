@@ -1,0 +1,7 @@
+.install-grid {
+  min-width: 1100px;
+}
+
+.installation-report-page .datagrid {
+  flex: 1 1 auto;
+}

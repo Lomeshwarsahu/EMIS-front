@@ -1,0 +1,103 @@
+<div class="it-page">
+  <h2 class="page-title">Add New Screen (Sub-Menu)</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Parent Menu"
+        [(ngModel)]="selectedMenuId"
+        name="parentMenu"
+        (ngModelChange)="onMenuChange()"
+        [disabled]="loading">
+        <option [ngValue]="null">Select Main Menu</option>
+        <option *ngFor="let m of menus" [ngValue]="m.MenuId">{{ m.MenuName }}</option>
+      </select>
+
+      <button
+        type="button"
+        class="show-btn accent-btn"
+        (click)="showForm = !showForm">
+        {{ showForm ? 'Hide Form' : 'Add New' }}
+      </button>
+    </div>
+
+    <!-- Add form -->
+    <div class="form-card" *ngIf="showForm && selectedMenuId">
+      <div class="form-grid">
+        <label class="field">
+          <span class="field-label">Sub-Menu Name <em>*</em></span>
+          <input
+            type="text"
+            [(ngModel)]="newSubMenuName"
+            placeholder="Enter display name"
+            [disabled]="saving" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Sub-Menu Link <em>*</em></span>
+          <input
+            type="text"
+            [(ngModel)]="newSubMenuLink"
+            placeholder="e.g. MyPage.aspx"
+            [disabled]="saving" />
+          <span class="field-hint">Must end with .aspx</span>
+        </label>
+      </div>
+
+      <div class="actions-row">
+        <button
+          type="button"
+          class="primary-btn"
+          (click)="save()"
+          [disabled]="saving">
+          {{ saving ? 'Saving…' : 'Save Sub-Menu' }}
+        </button>
+      </div>
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="5" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table
+        class="it-grid"
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        #sort="matSort">
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let row; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="menuName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Main Menu</th>
+          <td mat-cell *matCellDef="let row">{{ row.MenuName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="subMenuName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sub-Menu</th>
+          <td mat-cell *matCellDef="let row" class="wrap-cell">{{ row.SubMenuName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="subMenuLink">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Link</th>
+          <td mat-cell *matCellDef="let row"><code>{{ row.SubMenuLink }}</code></td>
+        </ng-container>
+
+        <ng-container matColumnDef="isActive">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Active</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <span class="status-pill" [class.status-done]="row.IsActive">
+              {{ row.IsActive ? 'Yes' : 'No' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <div class="empty-row" *ngIf="!subMenus.length">No sub-menus found for the selected menu.</div>
+    </div>
+  </div>
+</div>

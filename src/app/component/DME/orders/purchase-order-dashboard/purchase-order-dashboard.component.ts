@@ -1,9 +1,13 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
+import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
+
+type PoAttachmentType = 'reagent' | 'accessories';
 
 interface FinancialYearOption {
   FinancialYearId: number;
@@ -37,9 +41,9 @@ interface PoDashboardRow {
 @Component({
   selector: 'app-purchase-order-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './purchase-order-dashboard.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './purchase-order-dashboard.component.css'],
+  styleUrls: ['./purchase-order-dashboard.component.css'],
 })
 export class PurchaseOrderDashboardComponent implements OnInit {
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
@@ -53,25 +57,37 @@ export class PurchaseOrderDashboardComponent implements OnInit {
   loading = false;
   userId = 0;
 
+  get hasActiveFilter(): boolean {
+    return this.selectedFinancialYearId > 0 || (this.selectedItemCode !== '0' && !!this.selectedItemCode);
+  }
+
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
+    private readonly router: Router,
+    private readonly location: Location,
   ) {}
 
   ngOnInit(): void {
     this.userId = this.resolveUserId();
     this.loadFinancialYears();
     this.loadEquipmentOptions();
+    this.loadOrders();
   }
 
-  show(): void {
+  onFilterChange(): void {
+    this.loadOrders();
+  }
+
+  clearFilters(): void {
+    this.selectedFinancialYearId = 0;
+    this.selectedItemCode = '0';
+    this.loadOrders();
+  }
+
+  loadOrders(): void {
     if (!this.userId) {
       this.toastr.warning('Please login again — user id missing.');
-      return;
-    }
-
-    if (this.selectedFinancialYearId <= 0 && (!this.selectedItemCode || this.selectedItemCode === '0')) {
-      this.toastr.warning('Please select PO Year or Equipment.');
       return;
     }
 
@@ -101,13 +117,78 @@ export class PurchaseOrderDashboardComponent implements OnInit {
     return Boolean(path?.trim());
   }
 
+  /** Same new-tab open as supplier PO Supply Print (`target=_blank`). */
+  printUrl(row: PoDashboardRow): string {
+    if (!row.PoId) {
+      return '#';
+    }
+    const urlTree = this.router.createUrlTree(['/orders/po-print'], {
+      queryParams: { poId: row.PoId },
+    });
+    return this.location.prepareExternalUrl(this.router.serializeUrl(urlTree));
+  }
+
+  openAttachment(row: PoDashboardRow, fileType: PoAttachmentType): void {
+    if (!this.userId || !row.PoId) {
+      this.toastr.warning('Please login again — user id missing.');
+      return;
+    }
+
+    this.http
+      .get(`${this.apiRoot}po-attachment?userId=${this.userId}&poId=${row.PoId}&fileType=${fileType}`, {
+        responseType: 'blob',
+        observe: 'response',
+      })
+      .subscribe({
+        next: (res) => {
+          const blob = res.body;
+          if (!blob || blob.size === 0) {
+            this.toastr.error('File not found.');
+            return;
+          }
+          if (blob.type && blob.type.includes('application/json')) {
+            blob.text().then((t) => {
+              try {
+                const parsed = JSON.parse(t) as { message?: string };
+                this.toastr.error(parsed.message || 'Could not open file.');
+              } catch {
+                this.toastr.error('Could not open file.');
+              }
+            });
+            return;
+          }
+
+          const url = window.URL.createObjectURL(blob);
+          const opened = window.open(url, '_blank', 'noopener,noreferrer');
+          if (!opened) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${fileType}_${row.PoId}.pdf`;
+            a.click();
+          }
+          setTimeout(() => window.URL.revokeObjectURL(url), 60_000);
+        },
+        error: async (e) => {
+          let msg = 'Could not open file.';
+          const errBlob = e?.error;
+          if (errBlob instanceof Blob) {
+            try {
+              const parsed = JSON.parse(await errBlob.text()) as { message?: string; detail?: string };
+              msg = parsed.detail || parsed.message || msg;
+            } catch {
+              /* keep default */
+            }
+          }
+          this.toastr.error(msg);
+        },
+      });
+  }
+
   private loadFinancialYears(): void {
     this.http.get<FinancialYearOption[]>(`${this.apiRoot}financial-years`).subscribe({
       next: (res) => {
         this.financialYears = this.mapYears(res);
-        if (this.financialYears.length) {
-          this.selectedFinancialYearId = this.financialYears[0].FinancialYearId;
-        }
+        this.selectedFinancialYearId = 0;
       },
       error: (e) => this.toastr.error(this.apiError(e, 'Could not load financial years.')),
     });

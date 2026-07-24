@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import { resolveSupplierUserId } from '../supplier-user.util';
 
 interface BalanceStatusRow {
   poId: number;
@@ -44,10 +46,11 @@ export class SupplierPendingReceiptInstallationComponent implements OnInit {
   constructor(
     private readonly api: ApiService,
     private readonly toastr: ToastrService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.userId = Number(sessionStorage.getItem('userid') || localStorage.getItem('userid') || 0);
+    this.userId = resolveSupplierUserId();
     if (!this.userId) {
       this.toastr.error('Please login as supplier.');
       return;
@@ -65,6 +68,14 @@ export class SupplierPendingReceiptInstallationComponent implements OnInit {
   }
 
   loadReport(): void {
+    this.userId = resolveSupplierUserId();
+    if (!this.userId) {
+      this.loading = false;
+      this.rows = [];
+      this.toastr.error('Please login as supplier.');
+      return;
+    }
+
     this.loading = true;
     this.api.getSupplierBalanceStatus(this.userId, this.balanceType).subscribe({
       next: (raw) => {
@@ -82,7 +93,14 @@ export class SupplierPendingReceiptInstallationComponent implements OnInit {
   }
 
   onBalanceQtyClick(row: BalanceStatusRow): void {
-    this.toastr.info(`Drill-down for PO ${row.poNo} — migration pending.`);
+    if (!row.poId) {
+      this.toastr.warning('PO id is missing for this row.');
+      return;
+    }
+
+    void this.router.navigate(['/reports/pending-install-drill-down'], {
+      queryParams: { poId: row.poId },
+    });
   }
 
   exportExcel(): void {

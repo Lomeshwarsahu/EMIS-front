@@ -1,57 +1,107 @@
-<div class="consignee-page">
-  <div class="header-strip">Equipment Essential List - Consignee</div>
+<div class="contact-page">
+  <app-dme-page-skeleton *ngIf="loading" type="form" [rows]="10" />
 
-  <div class="card">
-    <div class="card-title">Update Consignee Information</div>
-    <div class="subtitle">Medical College / Hospital Contact Details</div>
-
-    <div class="meta-row">
-      <div class="meta-label">UserID (for Login)</div>
-      <div class="meta-value">{{ model.LoginEmail || '—' }}</div>
-      <div class="meta-actions">
-        <button (click)="load()" class="btn small">Refresh</button>
-      </div>
-    </div>
-
-    <form class="form-grid" (ngSubmit)="save()">
-      <div class="form-col">
-        <label for="deanName">Dean / Superintendent Name</label>
-        <input id="deanName" name="deanName" type="text" [(ngModel)]="model.DeanName" />
-
-        <label for="storeOfficer">Store Officer</label>
-        <input id="storeOfficer" name="storeOfficer" type="text" [(ngModel)]="model.StoreOfficerName" />
-
-        <label for="officeEmail">Email (office)</label>
-        <input id="officeEmail" name="officeEmail" type="email" [(ngModel)]="model.OfficeEmail" />
-
-        <label for="addr1">Address Line 1</label>
-        <input id="addr1" name="addr1" type="text" [(ngModel)]="model.AddressLine1" />
+  <ng-container *ngIf="!loading">
+    <form class="form-card" (ngSubmit)="save()">
+      <div class="section-head">
+        <h2 class="section-title">Contact Information</h2>
+        <button type="button" class="ghost-btn" (click)="load()" [disabled]="saving">Refresh</button>
       </div>
 
-      <div class="form-col">
-        <label for="deanMobile">Dean Mobile No</label>
-        <input id="deanMobile" name="deanMobile" type="text" [(ngModel)]="model.DeanMobile" />
+      <div class="form-grid">
+        <label class="field">
+          <span class="field-label">Dean / Superintendent Name <em>*</em></span>
+          <input
+            type="text"
+            name="deanName"
+            [(ngModel)]="model.DeanName"
+            autocomplete="name"
+            [disabled]="saving" />
+        </label>
 
-        <label for="storeMobile">Store Officer Mobile No (for login & indent finalization)</label>
-        <input id="storeMobile" name="storeMobile" type="text" [(ngModel)]="model.StoreOfficerMobile" />
+        <label class="field">
+          <span class="field-label">Dean Mobile No <em>*</em></span>
+          <input
+            type="text"
+            name="deanMobile"
+            [(ngModel)]="model.DeanMobile"
+            inputmode="numeric"
+            maxlength="15"
+            (keypress)="digitsOnly($event)"
+            [disabled]="saving" />
+        </label>
 
-        <label for="officePhone">Contact No (office)</label>
-        <input id="officePhone" name="officePhone" type="text" [(ngModel)]="model.OfficeContactNo" />
+        <label class="field">
+          <span class="field-label">Store Officer <em>*</em></span>
+          <input
+            type="text"
+            name="storeOfficer"
+            [(ngModel)]="model.StoreOfficerName"
+            [disabled]="saving" />
+        </label>
 
-        <label for="addr2">Address Line 2</label>
-        <textarea id="addr2" name="addr2" rows="2" [(ngModel)]="model.AddressLine2"></textarea>
-      </div>
+        <label class="field">
+          <span class="field-label">Store Officer Mobile No <em>*</em></span>
+          <input
+            type="text"
+            name="storeMobile"
+            [(ngModel)]="model.StoreOfficerMobile"
+            inputmode="numeric"
+            maxlength="15"
+            (keypress)="digitsOnly($event)"
+            [disabled]="saving" />
+          <span class="field-hint">Used for login &amp; indent finalization OTP</span>
+        </label>
 
-      <div class="form-grid single">
-        <div class="form-col wide">
-          <label for="addr3">Address Line 3</label>
-          <textarea id="addr3" name="addr3" rows="2" [(ngModel)]="model.AddressLine3"></textarea>
-        </div>
+        <label class="field">
+          <span class="field-label">Email (office) <em>*</em></span>
+          <input
+            type="email"
+            name="officeEmail"
+            [(ngModel)]="model.OfficeEmail"
+            autocomplete="email"
+            [disabled]="saving" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Contact No (office)</span>
+          <input
+            type="text"
+            name="officePhone"
+            [(ngModel)]="model.OfficeContactNo"
+            inputmode="tel"
+            [disabled]="saving" />
+        </label>
+
+        <label class="field field-span-2">
+          <span class="field-label">Address Line 1 <em>*</em></span>
+          <input type="text" name="addr1" [(ngModel)]="model.AddressLine1" [disabled]="saving" />
+        </label>
+
+        <label class="field field-span-2">
+          <span class="field-label">Address Line 2 <em>*</em></span>
+          <textarea
+            name="addr2"
+            rows="2"
+            [(ngModel)]="model.AddressLine2"
+            [disabled]="saving"></textarea>
+        </label>
+
+        <label class="field field-span-2">
+          <span class="field-label">Address Line 3</span>
+          <textarea
+            name="addr3"
+            rows="2"
+            [(ngModel)]="model.AddressLine3"
+            [disabled]="saving"></textarea>
+        </label>
       </div>
 
       <div class="actions-row">
-        <button type="submit" class="btn primary" [disabled]="saving || loading">{{ saving ? 'Saving…' : 'Update Contacts' }}</button>
+        <button type="submit" class="primary-btn" [disabled]="saving || !model.UserId">
+          {{ saving ? 'Updating…' : 'Update Contacts' }}
+        </button>
       </div>
     </form>
-  </div>
+  </ng-container>
 </div>

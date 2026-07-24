@@ -20,6 +20,8 @@ interface EquipmentLine {
   issueDetailId: number;
   serialNo: string;
   warrantyCardNo: string;
+  mfgDate: string;
+  expDate: string;
   supplyQty: number;
   isEditing?: boolean;
 }
@@ -132,6 +134,18 @@ export class PoSupplyDispatchEntryComponent implements OnInit {
     return this.hasInvoice ? 'Update Invoice' : 'Generate Invoice';
   }
 
+  get isReagent(): boolean {
+    return this.categoryId === 2;
+  }
+
+  get pageTitle(): string {
+    return this.isReagent ? 'Dispatch Entry of Reagents' : 'Dispatch Entry of Equipments';
+  }
+
+  get lineTabLabel(): string {
+    return this.isReagent ? 'Reagent Entry' : 'Equipment Entry';
+  }
+
   get canEditEquipment(): boolean {
     return this.issueId > 0 && !!this.bulkVsSerial;
   }
@@ -201,18 +215,20 @@ export class PoSupplyDispatchEntryComponent implements OnInit {
         issueDetailId: target.issueDetailId,
         serialNo: target.serialNo.trim(),
         warrantyCardNo: target.warrantyCardNo.trim(),
+        mfgDate: this.fromIsoDate(target.mfgDate),
+        expDate: this.fromIsoDate(target.expDate),
         supplyQty: Number(target.supplyQty),
       })
       .subscribe({
         next: (res) => {
           this.saving = false;
-          this.toastr.success(res?.message ?? 'Equipment line saved.');
+          this.toastr.success(res?.message ?? 'Line saved.');
           this.draftLine = this.emptyDraftLine();
           this.loadPage();
         },
         error: (err) => {
           this.saving = false;
-          this.toastr.error(err?.error?.message ?? 'Unable to save equipment line.');
+          this.toastr.error(err?.error?.message ?? 'Unable to save line.');
         },
       });
   }
@@ -337,14 +353,16 @@ export class PoSupplyDispatchEntryComponent implements OnInit {
     this.dispatchNo = String(data['dispatchNo'] ?? data['DispatchNo'] ?? '');
     this.dispatchDate = this.toIsoDate(String(data['dispatchDate'] ?? data['DispatchDate'] ?? ''));
     this.tentativeSupplyDate = this.toIsoDate(String(data['tentativeSupplyDate'] ?? data['TentativeSupplyDate'] ?? ''));
-    this.cgmscLogoPrinted = String(data['cgmscLogoPrinted'] ?? data['CgmscLogoPrinted'] ?? 'N');
-    this.warrantyValidity = String(data['warrantyValidity'] ?? data['WarrantyValidity'] ?? 'N');
-    this.serviceManual = String(data['serviceManual'] ?? data['ServiceManual'] ?? 'N');
-    this.operatingManual = String(data['operatingManual'] ?? data['OperatingManual'] ?? 'N');
-    this.calibrationCertificate = String(data['calibrationCertificate'] ?? data['CalibrationCertificate'] ?? 'N');
-    this.warrantyCard = String(data['warrantyCard'] ?? data['WarrantyCard'] ?? 'N');
-    this.otherStatutory = String(data['otherStatutory'] ?? data['OtherStatutory'] ?? 'N');
-    this.poDocuments = String(data['poDocuments'] ?? data['PoDocuments'] ?? 'N');
+    this.cgmscLogoPrinted = String(data['cgmscLogoPrinted'] ?? data['CgmscLogoPrinted'] ?? (this.isReagent ? 'NA' : 'N'));
+    this.warrantyValidity = String(data['warrantyValidity'] ?? data['WarrantyValidity'] ?? (this.isReagent ? 'NA' : 'N'));
+    this.serviceManual = String(data['serviceManual'] ?? data['ServiceManual'] ?? (this.isReagent ? 'NA' : 'N'));
+    this.operatingManual = String(data['operatingManual'] ?? data['OperatingManual'] ?? (this.isReagent ? 'NA' : 'N'));
+    this.calibrationCertificate = String(
+      data['calibrationCertificate'] ?? data['CalibrationCertificate'] ?? (this.isReagent ? 'NA' : 'N'),
+    );
+    this.warrantyCard = String(data['warrantyCard'] ?? data['WarrantyCard'] ?? (this.isReagent ? 'NA' : 'N'));
+    this.otherStatutory = String(data['otherStatutory'] ?? data['OtherStatutory'] ?? (this.isReagent ? 'NA' : 'N'));
+    this.poDocuments = String(data['poDocuments'] ?? data['PoDocuments'] ?? (this.isReagent ? 'NA' : 'N'));
 
     const gstRaw = (data['gstOptions'] ?? data['GstOptions'] ?? []) as unknown[];
     this.gstOptions = gstRaw.map((item) => {
@@ -362,13 +380,15 @@ export class PoSupplyDispatchEntryComponent implements OnInit {
         issueDetailId: Number(row['issueDetailId'] ?? row['IssueDetailId'] ?? 0),
         serialNo: String(row['serialNo'] ?? row['SerialNo'] ?? ''),
         warrantyCardNo: String(row['warrantyCardNo'] ?? row['WarrantyCardNo'] ?? ''),
+        mfgDate: this.toIsoDate(String(row['mfgDate'] ?? row['MfgDate'] ?? '')),
+        expDate: this.toIsoDate(String(row['expDate'] ?? row['ExpDate'] ?? '')),
         supplyQty: Number(row['supplyQty'] ?? row['SupplyQty'] ?? 0),
       };
     });
   }
 
   private emptyDraftLine(): EquipmentLine {
-    return { issueDetailId: 0, serialNo: '', warrantyCardNo: '', supplyQty: 1 };
+    return { issueDetailId: 0, serialNo: '', warrantyCardNo: '', mfgDate: '', expDate: '', supplyQty: 1 };
   }
 
   private toIsoDate(displayDate: string): string {

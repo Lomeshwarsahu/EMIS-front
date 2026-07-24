@@ -1,130 +1,133 @@
-<div class="ems-legacy-page">
-  <div class="header-wrap">
-    <span class="header-bar medium">Equipment Essential List- CME</span>
-  </div>
-
+<div class="dme-spec-page">
   <div class="datagrid">
-    <table class="panel-table">
-      <tbody>
-        <tr>
-          <td colspan="2" class="filter-center">
-            <div class="toolbar-row">
-              <span>Select Equipment Category:</span>
-              <select
-                class="legacy-select"
-                [(ngModel)]="selectedCategoryId"
-                (ngModelChange)="onCategoryDropdownChange()"
-              >
-                <option *ngFor="let c of categories" [ngValue]="c.EqpCatId">{{ c.EqpCatName }}</option>
-              </select>
-              <label>
-                <input type="checkbox" [(ngModel)]="showAllChecked" (change)="onShowAllCheckChange()" />
-                Show All Items
-              </label>
-            </div>
-            <div class="toolbar-row">
-              <span>Search Equipment:</span>
-              <input
-                type="text"
-                class="legacy-input"
-                style="min-width: 280px"
-                placeholder="Search item..."
-                [(ngModel)]="searchInput"
-                list="equipmentSearchList"
-                (change)="onSearchPick()"
-              />
-              <datalist id="equipmentSearchList">
-                <option *ngFor="let opt of searchOptions" [value]="opt.DisplayText"></option>
-              </datalist>
-              <button type="button" class="btn-clear-all" (click)="clearAll()">Clear All</button>
-            </div>
-          </td>
-        </tr>
-        <tr *ngIf="summaryVisible && summary">
-          <td colspan="2">
-            <div class="summary-panel">
-              <strong>Summary Of Equipment Essential List - Specification</strong>
-              <div class="summary-links">
-                <button
-                  type="button"
-                  class="summary-link"
-                  *ngFor="let row of summary.Categories"
-                  [class.active]="activeSummaryKey === row.CategoryName"
-                  (click)="filterBySummaryCategory(row)"
-                >
-                  Category {{ row.CategoryName }}: {{ row.Uploaded }}/{{ row.Total }}
-                </button>
-                <button
-                  type="button"
-                  class="summary-link"
-                  [class.active]="activeSummaryKey === 'ALL'"
-                  (click)="filterBySummaryTotal()"
-                >
-                  Total Uploaded: {{ summary.TotalUploaded }}/{{ summary.TotalItems }}
-                </button>
-                <button type="button" class="summary-link" (click)="closeSummary()">Close</button>
+    <div class="sticky-top">
+      <div class="table-toolbar filters filters--compact">
+        <select
+          aria-label="Equipment Category"
+          [(ngModel)]="selectedCategoryId"
+          name="selectedCategoryId"
+          (ngModelChange)="onCategoryDropdownChange()"
+          [class.is-placeholder]="selectedCategoryId === 0">
+          <option *ngFor="let c of categories" [ngValue]="c.EqpCatId">{{ c.EqpCatName }}</option>
+        </select>
+
+        <label class="show-all-check">
+          <input type="checkbox" [(ngModel)]="showAllChecked" name="showAllChecked" (change)="onShowAllCheckChange()" />
+          Show All
+        </label>
+
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search equipment…"
+          [(ngModel)]="searchInput"
+          name="searchInput"
+          list="equipmentSearchList"
+          (change)="onSearchPick()" />
+        <datalist id="equipmentSearchList">
+          <option *ngFor="let opt of searchOptions" [value]="opt.DisplayText"></option>
+        </datalist>
+
+        <button type="button" class="show-btn" (click)="showAllItems()" [disabled]="loading">
+          {{ loading ? 'Loading…' : 'Show All' }}
+        </button>
+        <button type="button" class="ghost-btn" (click)="clearAll()" [disabled]="loading">Clear</button>
+      </div>
+
+      <div class="summary-bar" *ngIf="summary">
+        <div class="summary-title">Specification Upload Summary</div>
+        <div class="summary-pills">
+          <button
+            type="button"
+            class="summary-pill"
+            *ngFor="let row of summary.Categories"
+            [class.active]="activeSummaryKey === row.CategoryName"
+            (click)="filterBySummaryCategory(row)">
+            {{ row.CategoryName }} · {{ row.Uploaded }}/{{ row.Total }}
+          </button>
+          <button
+            type="button"
+            class="summary-pill summary-total"
+            [class.active]="activeSummaryKey === 'ALL'"
+            (click)="filterBySummaryTotal()">
+            Total · {{ summary.TotalUploaded }}/{{ summary.TotalItems }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="spec-grid emis-full-width-table">
+        <colgroup>
+          <col class="col-sn" />
+          <col class="col-code" />
+          <col class="col-name" />
+          <col class="col-cat" />
+          <col class="col-spec" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="text-center">S.No</th>
+            <th>Equipment Code</th>
+            <th>Equipment Name</th>
+            <th>Category</th>
+            <th class="text-center">Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of items; index as i" [class.alt-row]="i % 2 === 1">
+            <ng-container *ngIf="editingItemId !== row.ItemId; else editRow">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>{{ row.ItemCode || '—' }}</td>
+              <td>{{ row.ItemName || '—' }}</td>
+              <td>{{ displayCategory(row.EqpCatName) || '—' }}</td>
+              <td class="text-center">
+                <div class="spec-cell">
+                  <button
+                    *ngIf="row.HasSpecification"
+                    type="button"
+                    class="pdf-btn"
+                    title="Download PDF"
+                    (click)="download(row.ItemId)">
+                    PDF
+                  </button>
+                  <span *ngIf="!row.HasSpecification" class="status-pill status-missing">Not Uploaded</span>
+                  <button type="button" class="edit-btn" title="Upload specification" (click)="startEdit(row.ItemId)">
+                    Upload
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+            <ng-template #editRow>
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>{{ row.ItemCode || '—' }}</td>
+              <td>{{ row.ItemName || '—' }}</td>
+              <td>{{ displayCategory(row.EqpCatName) || '—' }}</td>
+              <td class="text-center">
+                <div class="spec-cell">
+                  <input type="file" class="file-input" accept=".pdf" (change)="onFileSelected($event)" />
+                  <button type="button" class="show-btn small" [disabled]="uploading" (click)="upload(row.ItemId)">
+                    {{ uploading ? 'Uploading…' : 'Save' }}
+                  </button>
+                  <button type="button" class="ghost-btn small" (click)="cancelEdit()" [disabled]="uploading">
+                    Cancel
+                  </button>
+                </div>
+              </td>
+            </ng-template>
+          </tr>
+          <tr *ngIf="loading">
+            <td colspan="5" class="empty-row">Loading…</td>
+          </tr>
+          <tr *ngIf="!loading && !items.length">
+            <td colspan="5" class="empty-row">
+              <div class="empty-state">
+                <p>No equipment found for selected category.</p>
               </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <table class="legacy-grid">
-              <thead>
-                <tr>
-                  <th>S.No</th>
-                  <th>Equipment Code</th>
-                  <th>Equipment Name</th>
-                  <th>Category</th>
-                  <th class="center">Specification</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let row of items; index as i">
-                  <ng-container *ngIf="editingItemId !== row.ItemId; else editRow">
-                    <td class="center">{{ i + 1 }}</td>
-                    <td>{{ row.ItemCode }}</td>
-                    <td>{{ row.ItemName }}</td>
-                    <td class="center">{{ displayCategory(row.EqpCatName) }}</td>
-                    <td class="center">
-                      <button
-                        *ngIf="row.HasSpecification"
-                        type="button"
-                        class="icon-btn icon-pdf"
-                        title="Download PDF"
-                        (click)="download(row.ItemId)"
-                      >
-                        PDF
-                      </button>
-                      <span *ngIf="!row.HasSpecification" class="note-red">Not Uploaded</span>
-                      <button type="button" class="icon-btn" title="Upload" (click)="startEdit(row.ItemId)">✎</button>
-                    </td>
-                  </ng-container>
-                  <ng-template #editRow>
-                    <td class="center">{{ i + 1 }}</td>
-                    <td>{{ row.ItemCode }}</td>
-                    <td>{{ row.ItemName }}</td>
-                    <td class="center">{{ displayCategory(row.EqpCatName) }}</td>
-                    <td class="center">
-                      <input type="file" accept=".pdf" (change)="onFileSelected($event)" />
-                      <button type="button" class="btn-legacy" [disabled]="uploading" (click)="upload(row.ItemId)">
-                        {{ uploading ? '…' : 'Upload' }}
-                      </button>
-                      <button type="button" class="btn-legacy btn-secondary" (click)="cancelEdit()">Cancel</button>
-                    </td>
-                  </ng-template>
-                </tr>
-                <tr *ngIf="loading">
-                  <td colspan="5" class="grid-empty">Loading…</td>
-                </tr>
-                <tr *ngIf="!loading && !items.length">
-                  <td colspan="5" class="grid-empty">No equipment found for selected category.</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

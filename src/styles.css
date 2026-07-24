@@ -456,6 +456,48 @@ canvas {
   border-collapse: collapse;
 }
 
+/* Full-width fixed tables (Budget Heads, short master lists) */
+.page-outlet-wrapper .table-wrap table.emis-full-width-table,
+.emis-page-content .table-wrap table.emis-full-width-table {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: none !important;
+  table-layout: fixed !important;
+}
+
+/* PO Receipt Desk — content-width columns, no mid-word squeeze */
+.page-outlet-wrapper .table-wrap table.por-grid,
+.emis-page-content .table-wrap table.por-grid {
+  width: max-content !important;
+  min-width: 100% !important;
+  max-width: none !important;
+  table-layout: auto !important;
+}
+
+.page-outlet-wrapper .table-wrap table.por-grid > thead > tr > th,
+.page-outlet-wrapper .table-wrap table.por-grid > tbody > tr > td,
+.emis-page-content .table-wrap table.por-grid > thead > tr > th,
+.emis-page-content .table-wrap table.por-grid > tbody > tr > td {
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
+  letter-spacing: 0.02em;
+}
+
+.page-outlet-wrapper .table-wrap table.por-grid .nested-cell,
+.page-outlet-wrapper .table-wrap table.por-grid .cell-stack,
+.emis-page-content .table-wrap table.por-grid .nested-cell,
+.emis-page-content .table-wrap table.por-grid .cell-stack {
+  white-space: normal;
+}
+
+.page-outlet-wrapper .table-wrap table.por-grid .nested-grid,
+.emis-page-content .table-wrap table.por-grid .nested-grid {
+  width: auto !important;
+  min-width: 400px !important;
+  table-layout: auto !important;
+}
+
 .page-outlet-wrapper .legacy-fixed-table,
 .emis-page-content .legacy-fixed-table {
   width: auto !important;
@@ -480,6 +522,14 @@ canvas {
   word-wrap: normal;
   overflow-wrap: normal;
   vertical-align: middle;
+}
+
+.page-outlet-wrapper .table-wrap table.emis-full-width-table th,
+.page-outlet-wrapper .table-wrap table.emis-full-width-table td,
+.emis-page-content .table-wrap table.emis-full-width-table th,
+.emis-page-content .table-wrap table.emis-full-width-table td {
+  white-space: normal;
+  word-break: break-word;
 }
 
 .page-outlet-wrapper .datagrid .wrap-cell,
@@ -612,4 +662,159 @@ canvas {
   text-decoration: underline;
   cursor: pointer;
   font-weight: bold;
+}
+
+/* Supplier modals must sit above Material drawer / sidebar (drawer ~1002, collapse pill ~2100) */
+body.emis-modal-open mat-drawer.premium-drawer,
+body.emis-modal-open mat-drawer.premium-drawer.premium-drawer--collapsed,
+body.emis-modal-open mat-drawer.premium-drawer.premium-drawer--dark-collapsed,
+body.emis-modal-open mat-drawer.premium-drawer.mat-drawer-side,
+body.emis-modal-open mat-drawer.premium-drawer.mat-drawer-over {
+  z-index: 1 !important;
+}
+
+body.emis-modal-open .mat-drawer-content {
+  position: relative;
+  z-index: 10040 !important;
+}
+
+body.emis-modal-open .mat-drawer-backdrop {
+  z-index: 0 !important;
+}
+
+/* ================= EMIS Toast Notifications ================= */
+#toast-container.toast-top-right {
+  top: 14px;
+  right: 14px;
+}
+
+#toast-container > .toast.emis-toast,
+#toast-container > .ngx-toastr.emis-toast {
+  width: min(260px, calc(100vw - 28px));
+  min-height: 40px;
+  padding: 8px 34px 8px 12px;
+  margin: 0 0 8px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  cursor: pointer;
+  background-image: none !important;
+  opacity: 1;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+#toast-container > .toast.emis-toast:hover,
+#toast-container > .ngx-toastr.emis-toast:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.2);
+  filter: brightness(0.98);
+}
+
+#toast-container > .toast.emis-toast .toast-title,
+#toast-container > .ngx-toastr.emis-toast .toast-title {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 1px;
+}
+
+#toast-container > .toast.emis-toast .toast-message,
+#toast-container > .ngx-toastr.emis-toast .toast-message {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  opacity: 0.96;
+}
+
+#toast-container > .toast.emis-toast .toast-close-button,
+#toast-container > .ngx-toastr.emis-toast .toast-close-button {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  opacity: 0.85;
+  cursor: pointer;
+  text-shadow: none;
+  font-weight: 700;
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+#toast-container > .toast.emis-toast .toast-close-button:hover,
+#toast-container > .ngx-toastr.emis-toast .toast-close-button:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+#toast-container > .toast.emis-toast .toast-progress,
+#toast-container > .ngx-toastr.emis-toast .toast-progress {
+  height: 2px;
+  opacity: 0.55;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+/* Success — green */
+#toast-container > .toast-success.emis-toast {
+  background-color: #16a34a !important;
+  color: #ffffff !important;
+}
+
+/* Error / false — red */
+#toast-container > .toast-error.emis-toast {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+/* Warning */
+#toast-container > .toast-warning.emis-toast {
+  background-color: #f59e0b !important;
+  color: #1f2937 !important;
+}
+
+#toast-container > .toast-warning.emis-toast .toast-close-button {
+  background: rgba(15, 23, 42, 0.1);
+  color: #1f2937;
+}
+
+#toast-container > .toast-warning.emis-toast .toast-progress {
+  background: rgba(15, 23, 42, 0.35);
+}
+
+/* Info */
+#toast-container > .toast-info.emis-toast {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+html[data-theme='dark'] #toast-container > .toast.emis-toast,
+html[data-theme='dark'] #toast-container > .ngx-toastr.emis-toast {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme='dark'] #toast-container > .toast-success.emis-toast {
+  background-color: #22c55e !important;
+}
+
+html[data-theme='dark'] #toast-container > .toast-error.emis-toast {
+  background-color: #ef4444 !important;
+}
+
+@media (max-width: 576px) {
+  #toast-container.toast-top-right {
+    top: 10px;
+    right: 10px;
+    left: auto;
+  }
+
+  #toast-container > .toast.emis-toast,
+  #toast-container > .ngx-toastr.emis-toast {
+    width: min(260px, calc(100vw - 20px));
+  }
 }

@@ -7,7 +7,7 @@
 .refund-modal-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 1200;
+  z-index: 10050;
   background: rgba(15, 23, 42, 0.45);
   display: flex;
   align-items: flex-start;
@@ -47,6 +47,10 @@
   width: 180px;
   font-weight: 600;
   white-space: nowrap;
+}
+
+.emd-form-table td.label-col::after {
+  content: ' :-';
 }
 
 .emd-form-table input[type='text'],

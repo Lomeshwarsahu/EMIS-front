@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
+import { NewOpeningStockEntryComponent } from '../new-opening-stock-entry/new-opening-stock-entry.component';
+import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 
 interface MainEquipmentType {
   Pid: number;
@@ -13,6 +14,7 @@ interface MainEquipmentType {
 
 interface OpeningStockRow {
   ExistingItemId: number;
+  Pid: number;
   ItemName: string;
   ItemCode: string;
   MakeSerialNo: string;
@@ -29,74 +31,112 @@ interface OpeningStockRow {
 @Component({
   selector: 'app-opening-stock-entry',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, NewOpeningStockEntryComponent, DmePageSkeletonComponent],
   templateUrl: './opening-stock-entry.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './opening-stock-entry.component.css'],
+  styleUrls: ['./opening-stock-entry.component.css'],
 })
-export class OpeningStockEntryComponent implements OnInit {
+export class OpeningStockEntryComponent implements OnInit, OnDestroy {
   private readonly apiRoot = `${environment.apiUrl}/DMEStock/`;
 
   equipmentTypes: MainEquipmentType[] = [];
+  /** Full dataset for this DME user (loaded once; filter applied locally). */
+  allRows: OpeningStockRow[] = [];
   rows: OpeningStockRow[] = [];
 
   selectedPid = 0;
   loading = false;
   userId = 0;
 
+  showFormModal = false;
+  formEditItemId = 0;
+  /** Bumps so embedded form remounts cleanly each open. */
+  formInstanceKey = 0;
+
+  get hasActiveFilter(): boolean {
+    return this.selectedPid > 0;
+  }
+
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
-    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
     this.userId = this.resolveUserId();
     this.loadEquipmentTypes();
-    this.loadGrid();
+    this.loadAllData();
+  }
+
+  ngOnDestroy(): void {
+    document.body.classList.remove('emis-modal-open');
   }
 
   onEquipmentChange(): void {
-    this.loadGrid();
+    this.applyFilter();
+  }
+
+  clearFilters(): void {
+    this.selectedPid = 0;
+    this.applyFilter();
   }
 
   addNew(): void {
-    void this.router.navigate(['/stock/new-opening-stock-entry']);
+    this.formEditItemId = 0;
+    this.formInstanceKey += 1;
+    this.showFormModal = true;
+    document.body.classList.add('emis-modal-open');
   }
 
   editRow(row: OpeningStockRow): void {
-    void this.router.navigate(['/stock/new-opening-stock-entry'], {
-      queryParams: { existingItemId: row.ExistingItemId, mode: 'Edit' },
-    });
+    this.formEditItemId = row.ExistingItemId;
+    this.formInstanceKey += 1;
+    this.showFormModal = true;
+    document.body.classList.add('emis-modal-open');
   }
 
-  loadGrid(): void {
+  closeFormModal(): void {
+    this.showFormModal = false;
+    document.body.classList.remove('emis-modal-open');
+  }
+
+  onFormSaved(): void {
+    this.closeFormModal();
+    this.loadAllData();
+  }
+
+  /** Always fetches full opening stock for this user; filter is optional client-side. */
+  loadAllData(): void {
     if (!this.userId) {
       this.toastr.warning('Please login again — user id missing.');
       return;
     }
 
     this.loading = true;
-    const pidParam = this.selectedPid > 0 ? `&pid=${this.selectedPid}` : '';
-    this.http
-      .get<OpeningStockRow[]>(`${this.apiRoot}opening-stock?userId=${this.userId}${pidParam}`)
-      .subscribe({
-        next: (res) => {
-          this.rows = this.mapRows(res);
-          this.loading = false;
-        },
-        error: (e) => {
-          this.loading = false;
-          this.rows = [];
-          this.toastr.error(this.apiError(e, 'Could not load opening stock.'));
-        },
-      });
+    this.http.get<OpeningStockRow[]>(`${this.apiRoot}opening-stock?userId=${this.userId}`).subscribe({
+      next: (res) => {
+        this.allRows = this.mapRows(res);
+        this.applyFilter();
+        this.loading = false;
+      },
+      error: (e) => {
+        this.loading = false;
+        this.allRows = [];
+        this.rows = [];
+        this.toastr.error(this.apiError(e, 'Could not load opening stock.'));
+      },
+    });
+  }
+
+  private applyFilter(): void {
+    this.rows =
+      this.selectedPid > 0 ? this.allRows.filter((r) => r.Pid === this.selectedPid) : [...this.allRows];
   }
 
   private loadEquipmentTypes(): void {
     this.http.get<MainEquipmentType[]>(`${this.apiRoot}main-equipment-types`).subscribe({
       next: (res) => {
         this.equipmentTypes = [
-          { Pid: 0, PItemName: '-Select-' },
+          { Pid: 0, PItemName: 'All Equipment Types' },
           ...this.mapTypes(res),
         ];
       },
@@ -121,6 +161,7 @@ export class OpeningStockEntryComponent implements OnInit {
     const arr = Array.isArray(raw) ? raw : [];
     return arr.map((r: Record<string, unknown>) => ({
       ExistingItemId: Number(r['ExistingItemId'] ?? r['existingItemId'] ?? 0),
+      Pid: Number(r['Pid'] ?? r['pid'] ?? 0),
       ItemName: String(r['ItemName'] ?? r['itemName'] ?? ''),
       ItemCode: String(r['ItemCode'] ?? r['itemCode'] ?? ''),
       MakeSerialNo: String(r['MakeSerialNo'] ?? r['makeSerialNo'] ?? ''),

@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../environments/environment';
+import { DmePageSkeletonComponent } from '../shared/dme-page-skeleton/dme-page-skeleton.component';
 
 /** Medical College/Hospital contact details (Master/StoreHome.aspx). */
 export interface ConsigneeInformationViewModel {
@@ -23,7 +24,7 @@ export interface ConsigneeInformationViewModel {
 @Component({
   selector: 'app-consigee-information',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './consigee-information.component.html',
   styleUrls: ['./consigee-information.component.css'],
 })

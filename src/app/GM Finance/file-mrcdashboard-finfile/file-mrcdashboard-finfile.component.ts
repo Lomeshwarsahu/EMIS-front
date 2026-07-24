@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -26,7 +26,7 @@ import { ApiService } from 'src/app/service/api.service';
 import { CollapseModule } from 'src/app/collapse';
 import { NgForm } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatTableExporterModule } from 'mat-table-exporter';
+import { MatTableExporterModule, MatTableExporterDirective } from 'mat-table-exporter';
 import { MaterialModule } from 'src/app/material-module';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -38,8 +38,9 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import { PODetails,PaymentListDetails,GetDashboardGrid } from 'src/app/Model/models';
+import { DmePageSkeletonComponent } from 'src/app/component/DME/shared/dme-page-skeleton/dme-page-skeleton.component';
 
 @Component({
   selector: 'app-file-mrcdashboard-finfile',
@@ -60,6 +61,7 @@ import { PODetails,PaymentListDetails,GetDashboardGrid } from 'src/app/Model/mod
     MatSelectModule,
     MatOptionModule,
     MatTableExporterModule,
+    DmePageSkeletonComponent,
   ],
   templateUrl: './file-mrcdashboard-finfile.component.html',
   styleUrl: './file-mrcdashboard-finfile.component.css',
@@ -99,6 +101,16 @@ export class FileMRCDashboardFINFileComponent {
   dataSource!: MatTableDataSource<GetDashboardGrid>;
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
+  @ViewChild('exporter') exporter!: MatTableExporterDirective;
+
+  reasonList: any[] = [];
+  resolveReasonList: any[] = [];
+  selectedReasonId: any;
+  reasonRemarks: any;
+  selectedSorId: any;
+  reasonPoId: any;
+  resolvePoId: any;
+  loading = false;
   displayedColumns: string[] = [
     'sno',
     'PoNo',
@@ -132,12 +144,13 @@ export class FileMRCDashboardFINFileComponent {
     'EntDt',
     'FinRemarks',
     // 'ExtStatus',
+    'addReason',
+    'resolveReason',
     'Present_File_Action',
     'action',
   ];
  
   constructor(
-    private spinner: NgxSpinnerService,
     private api: ApiService,
     public toastr: ToastrService,
     private fb: FormBuilder,
@@ -179,24 +192,109 @@ export class FileMRCDashboardFINFileComponent {
 
   // https://localhost:7036/api/Reports/GetDiectorate
   GetDiectorate() {
-    this.spinner.show();
+    this.loading = true;
     let directorateId = 5;
     this.api.get(`Reports/GetDiectorate`).subscribe({
       next: (res: any) => {
         this.Diectoratelist = res;
 
         console.log('items', res);
-        this.spinner.hide();
+        this.loading = false;
       },
       error: (err: any) => {
         console.error(err);
-        this.spinner.hide();
+        this.loading = false;
+      },
+    });
+  }
+
+  GetReasons() {
+    this.api.get('GMFI/GetReasons').subscribe({
+      next: (res: any) => {
+        this.reasonList = res;
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
+    });
+  }
+
+  GetResolveReasons(poId: any) {
+    this.api.get(`Payment/GetReasonList?poId=${poId}`).subscribe({
+      next: (res: any) => {
+        this.resolveReasonList = res;
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
+    });
+  }
+
+  openReasonModal(poId: any) {
+    this.reasonPoId = poId;
+    this.selectedReasonId = '';
+    this.reasonRemarks = '';
+    this.GetReasons();
+    document.querySelectorAll('.modal-backdrop').forEach((el) => el.remove());
+    const modalEl = document.getElementById('ReasonModal')!;
+    document.body.appendChild(modalEl);
+    (modalEl as HTMLElement).style.zIndex = '99999';
+    this.SendModal = new bootstrap.Modal(modalEl, { backdrop: false, keyboard: true, focus: true });
+    this.SendModal.show();
+  }
+
+  openResolveModal(poId: any) {
+    this.resolvePoId = poId;
+    this.selectedSorId = '';
+    this.GetResolveReasons(poId);
+    document.querySelectorAll('.modal-backdrop').forEach((el) => el.remove());
+    const modalEl = document.getElementById('ResolveModal')!;
+    document.body.appendChild(modalEl);
+    (modalEl as HTMLElement).style.zIndex = '99999';
+    this.SendModal = new bootstrap.Modal(modalEl, { backdrop: false, keyboard: true, focus: true });
+    this.SendModal.show();
+  }
+
+  saveReason(form: any) {
+    const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+    const payload = {
+      userId: loginData.user_id,
+      reasonId: this.selectedReasonId,
+      poId: this.reasonPoId,
+      remarks: this.reasonRemarks,
+    };
+    this.api.post1('GMFI/AddReason', payload).subscribe({
+      next: (res: any) => {
+        this.toastr.success('Reason added successfully!');
+        form.resetForm();
+        this.SendModal.hide();
+        this.GetDashboardGrid();
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.toastr.error('Failed to add reason.');
+      },
+    });
+  }
+
+  saveResolve(form: any) {
+    const payload = { sorId: this.selectedSorId };
+    this.api.post1('GMFI/ResolveReason', payload).subscribe({
+      next: (res: any) => {
+        this.toastr.success('Reason resolved successfully!');
+        form.resetForm();
+        this.SendModal.hide();
+        this.GetDashboardGrid();
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.toastr.error('Failed to resolve reason.');
       },
     });
   }
   GetPODetails() {
     // debugger
-    this.spinner.show();
+    this.loading = true;
 
     const params = {
       pono: this.poNo || 0,
@@ -216,10 +314,10 @@ export class FileMRCDashboardFINFileComponent {
         this.schemeCode = data.schemeCode;
         this.supplierName = data.supplierName;
         this.podt = this.convertDate(data.podt);
-        this.spinner.hide();
+        this.loading = false;
       },
       error: (err: any) => {
-        this.spinner.hide();
+        this.loading = false;
         console.error(err);
       },
     });
@@ -253,7 +351,7 @@ export class FileMRCDashboardFINFileComponent {
   GetDashboardGrid() {
     debugger;
     try {
-      this.spinner.show();
+      this.loading = true;
 // const params = { poType: 'NP', fitUnfit: 'FP', eqType: '0', authorityId: 5 };
       const params = {
         poType: this.poType,
@@ -276,16 +374,16 @@ export class FileMRCDashboardFINFileComponent {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
           this.cdr.detectChanges();
-          this.spinner.hide();
+          this.loading = false;
         },
         (error: { message: any }) => {
-          this.spinner.hide();
+          this.loading = false;
           console.log('Error fetching data:', JSON.stringify(error.message));
           // alert(`Error fetching data: ${JSON.stringify(error.message)}`);
         },
       );
     } catch (err: any) {
-      this.spinner.hide();
+      this.loading = false;
 
         console.log('Error fetching data:', JSON.stringify(err.message));
       // throw err;
@@ -341,7 +439,7 @@ export class FileMRCDashboardFINFileComponent {
   //
   saveForward(form: any) {
     // debugger;
-    this.spinner.show();
+    this.loading = true;
     const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
 
     const payload = {
@@ -364,14 +462,14 @@ export class FileMRCDashboardFINFileComponent {
 
     this.api.post1('Payment/forward', payload).subscribe({
       next: (res: any) => {
-        this.spinner.hide();
+        this.loading = false;
         this.toastr.success('File Forward Successfully!');
         form.resetForm();
         console.log('Forward Success', res);
       },
 
       error: (err: any) => {
-        this.spinner.hide();
+        this.loading = false;
         console.error(err);
       },
     });

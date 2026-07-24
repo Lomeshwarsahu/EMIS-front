@@ -201,6 +201,8 @@ export class ApiService {
       issueDetailId: number;
       serialNo: string;
       warrantyCardNo: string;
+      mfgDate?: string;
+      expDate?: string;
       supplyQty: number;
     },
   ) {
@@ -324,6 +326,44 @@ export class ApiService {
     );
   }
 
+  deleteSupplierReceiptInstallation(
+    userId: number,
+    body: { poId: number; locationId: number; issueId: number; receiptId: number },
+  ) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/receipt-entry/delete/by-user/${userId}`,
+      body,
+    );
+  }
+
+  saveSupplierReceiptDenied(
+    userId: number,
+    body: {
+      poId: number;
+      locationId: number;
+      issueId: number;
+      deniedStatus: string;
+      deniedQty: number;
+      remarks: string;
+    },
+  ) {
+    return this.http.post<{ message: string; descrepencyId?: number }>(
+      `${this.apiUrll}/supplier/receipt-entry/denied/by-user/${userId}`,
+      body,
+    );
+  }
+
+  uploadSupplierReceiptDeniedFile(userId: number, formData: FormData) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrll}/supplier/receipt-entry/denied/file/by-user/${userId}`,
+      formData,
+    );
+  }
+
+  getSupplierReceiptDeniedFileUrl(userId: number, descrepencyId: number, fileKind: string): string {
+    return `${this.apiUrll}/supplier/receipt-entry/denied/file/by-user/${userId}?descrepencyId=${descrepencyId}&fileKind=${encodeURIComponent(fileKind)}`;
+  }
+
   getSupplierInstallationReport(userId: number, receiptId: number) {
     return this.http.get<Record<string, unknown>>(
       `${this.apiUrll}/supplier/installation-report/by-user/${userId}?receiptId=${receiptId}`,
@@ -414,9 +454,21 @@ export class ApiService {
     );
   }
 
+  getSupplierSanctionReport(userId: number, poId: number, sanctionId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/sanction-report/by-user/${userId}?poId=${poId}&sanctionId=${sanctionId}`,
+    );
+  }
+
   getSupplierBalanceStatus(userId: number, balanceType: string) {
     return this.http.get<Record<string, unknown>[]>(
       `${this.apiUrll}/supplier/balance-status/by-user/${userId}?balanceType=${encodeURIComponent(balanceType)}`,
+    );
+  }
+
+  getSupplierBalanceStatusDrillDown(userId: number, poId: number) {
+    return this.http.get<Record<string, unknown>>(
+      `${this.apiUrll}/supplier/balance-status/drill-down/by-user/${userId}?poId=${poId}`,
     );
   }
   // https://localhost:7036/api/GenerateNasti/Getyear

@@ -8,12 +8,106 @@
   margin: 0;
 }
 
-.extension-card {
-  margin-bottom: 14px;
+.extension-summary-card {
+  margin-bottom: 12px;
 }
 
-.extension-card.disabled-panel {
-  opacity: 0.88;
+.extension-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 12px;
+}
+
+.extension-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 16px 20px;
+  overflow-y: auto;
+}
+
+.extension-modal-card {
+  width: min(960px, 100%);
+  margin: 0;
+  padding: 14px 16px 10px;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #dbe3ef;
+  box-shadow: 0 20px 44px rgba(15, 23, 42, 0.24);
+}
+
+.extension-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.extension-modal-head .section-title {
+  margin: 0;
+  text-align: left;
+  line-height: 1.2;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.cancel-btn {
+  border: 1px solid #f97316;
+  background: #fff7ed;
+  color: #c2410c;
+  border-radius: 999px;
+  min-height: 36px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: #ffedd5;
+}
+
+.cancel-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.extension-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #64748b;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.2;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.extension-close-btn:hover:not(:disabled) {
+  background: transparent;
+  color: #dc2626;
+}
+
+.extension-close-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .extension-form-table .info-row td {
@@ -67,6 +161,15 @@
   font-size: 13px;
 }
 
+:host-context(html[data-theme='dark']) .extension-modal-backdrop {
+  background: rgba(2, 6, 23, 0.62);
+}
+
+:host-context(html[data-theme='dark']) .extension-modal-card {
+  background: #141820;
+  border-color: #262b36;
+}
+
 :host-context(html[data-theme='dark']) .extension-form-table .info-row td {
   background: #0c0e12;
 }
@@ -93,7 +196,34 @@
   color: #94a3b8;
 }
 
+:host-context(html[data-theme='dark']) .cancel-btn {
+  background: rgba(249, 115, 22, 0.14);
+  color: #fdba74;
+  border-color: rgba(249, 115, 22, 0.5);
+}
+
+:host-context(html[data-theme='dark']) .extension-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+}
+
+:host-context(html[data-theme='dark']) .extension-close-btn:hover:not(:disabled) {
+  background: transparent;
+  color: #f87171;
+}
+
 @media (max-width: 767.98px) {
+  .extension-modal-backdrop {
+    align-items: flex-end;
+    padding: 10px;
+  }
+
+  .extension-modal-card {
+    max-height: 88vh;
+    overflow: auto;
+  }
+
   .extension-form-table input[type='text'],
   .extension-form-table input[type='number'],
   .extension-form-table input[type='date'] {

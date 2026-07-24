@@ -53,7 +53,7 @@
 .supplier-login-body {
   display: flex;
   justify-content: center;
-  padding: 28px 12px 40px;
+  padding: 28px 12px 48px;
 }
 
 .login-legacy-wrap {
@@ -62,7 +62,7 @@
 
 .login-legacy-table {
   width: 100%;
-  border: 1px solid #00bcd4;
+  border: 1px solid cyan;
   border-collapse: collapse;
   background: #fff;
   box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
@@ -79,8 +79,8 @@
 
 .heading-cell {
   text-align: center;
-  padding: 18px 16px 14px;
-  background: #f8fafc;
+  padding: 18px 16px 12px;
+  background: #fff;
   border-bottom: 1px solid #e2e8f0;
 }
 
@@ -91,43 +91,115 @@
   padding: 10px 28px;
   font-size: 15px;
   font-weight: 700;
-  margin-bottom: 14px;
-  border-radius: 2px;
+  margin-bottom: 12px;
 }
 
 .manual-links {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
 }
 
 .manual-links a {
   color: #003399;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: large;
+  font-family: 'Times New Roman', Times, serif;
   text-decoration: underline;
 }
 
-.manual-links a:hover {
-  color: #1d4ed8;
+.mode-cell {
+  text-align: center;
+  padding: 12px 10px;
+  border-top: 1px solid #edf2f7;
+}
+
+.mode-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mode-btn {
+  background: #fff;
+  border: 1px solid #4d67a0;
+  color: #4d67a0;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mode-btn:hover {
+  background: #eef2ff;
+}
+
+.mode-btn--active {
+  background: #4d67a0;
+  color: #fff;
+}
+
+.mode-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin: 4px 10px;
+  font-weight: 700;
+  font-size: small;
+  color: #111;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mode-option input {
+  cursor: pointer;
+}
+
+.supplier-login-page--embedded {
+  min-height: 0;
+  background: transparent;
+  font-family: inherit;
+}
+
+.supplier-login-body--embedded {
+  padding: 0;
+}
+
+.login-legacy-wrap--embedded {
+  width: 100%;
+}
+
+.login-legacy-table--embedded {
+  border: none;
+  box-shadow: none;
+}
+
+.heading-cell--embedded {
+  padding-top: 4px;
+  background: transparent;
+}
+
+.heading-cell--embedded .manual-links a {
+  font-size: 0.95rem;
 }
 
 .label-cell {
   width: 42%;
   text-align: center;
   font-weight: 700;
-  font-size: 0.88rem;
-  color: #696969;
-  padding: 14px 10px;
-  background: #fafafa;
+  font-size: small;
+  color: dimgray;
+  padding: 12px 10px;
   border-top: 1px solid #edf2f7;
 }
 
 .field-cell {
   width: 58%;
   text-align: left;
-  padding: 14px 16px;
+  padding: 12px 16px;
   border-top: 1px solid #edf2f7;
 }
 
@@ -136,13 +208,18 @@
   border: 1px solid #94a3b8;
   padding: 8px 10px;
   font-size: 14px;
-  border-radius: 4px;
 }
 
 .legacy-input:focus {
   outline: none;
   border-color: #4d67a0;
   box-shadow: 0 0 0 2px rgba(77, 103, 160, 0.2);
+}
+
+.legacy-input[readonly],
+.legacy-input:disabled {
+  background: #f1f5f9;
+  color: #334155;
 }
 
 .password-wrap {
@@ -158,7 +235,6 @@
   color: #475569;
   width: 36px;
   height: 36px;
-  border-radius: 4px;
   cursor: pointer;
 }
 
@@ -173,7 +249,6 @@
 :host ::ng-deep .supplier-select .ng-select-container {
   min-height: 38px;
   border-color: #94a3b8;
-  border-radius: 4px;
 }
 
 :host ::ng-deep .supplier-select.ng-select-focused .ng-select-container {
@@ -181,8 +256,7 @@
   box-shadow: 0 0 0 2px rgba(77, 103, 160, 0.2);
 }
 
-.actions-cell,
-.back-cell {
+.actions-cell {
   text-align: center;
   padding: 16px;
   border-top: 1px solid #edf2f7;
@@ -192,16 +266,16 @@
   background-color: #4d67a0;
   border: none;
   color: #fff;
-  padding: 10px 28px;
-  font-size: 13px;
+  padding: 10px 24px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
-  min-width: 120px;
-  border-radius: 4px;
+  min-width: 82px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  margin: 4px 2px;
 }
 
 .legacy-btn:hover:not(:disabled) {
@@ -211,6 +285,62 @@
 .legacy-btn:disabled {
   opacity: 0.75;
   cursor: not-allowed;
+}
+
+.legacy-btn-wide {
+  min-width: 200px;
+}
+
+.otp-panel-table {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid cyan;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+}
+
+.otp-panel-table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px 12px;
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+.otp-label {
+  width: 28%;
+  font-weight: 700;
+  color: dimgray;
+  background: #fafafa;
+}
+
+.otp-value {
+  background: #fff;
+}
+
+.otp-alias {
+  width: 125px;
+  font-weight: 700;
+  background: #fff;
+  text-align: left;
+  color: #1e293b;
+}
+
+.otp-msg {
+  text-align: center;
+  font-weight: 700;
+}
+
+.otp-msg.msg-info {
+  color: #0000cd;
+}
+
+.otp-msg.msg-ok {
+  color: #006400;
+}
+
+.otp-msg.msg-err {
+  color: #c71585;
 }
 
 .btn-spinner {
@@ -226,6 +356,11 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.back-row {
+  text-align: center;
+  margin-top: 18px;
 }
 
 .link-back {
@@ -248,23 +383,36 @@
   .login-legacy-table,
   .login-legacy-table tbody,
   .login-legacy-table tr,
-  .login-legacy-table td {
+  .login-legacy-table td,
+  .otp-panel-table,
+  .otp-panel-table tbody,
+  .otp-panel-table tr,
+  .otp-panel-table td {
     display: block;
     width: 100%;
   }
 
   .label-cell,
-  .field-cell {
+  .field-cell,
+  .otp-label,
+  .otp-alias {
     text-align: left;
     width: 100%;
   }
 
-  .label-cell {
-    padding-bottom: 4px;
-    border-bottom: none;
+  .mode-option {
+    display: flex;
+    justify-content: flex-start;
+    margin: 8px 0;
+    white-space: normal;
   }
 
-  .field-cell {
-    padding-top: 0;
+  .mode-btn-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mode-btn {
+    white-space: normal;
   }
 }

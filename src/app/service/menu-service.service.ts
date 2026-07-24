@@ -158,6 +158,15 @@ export class MenuServiceService {
           { label: 'Home', route: '/home' },
           { label: 'Dashboard', route: '/admin-dash' },
           { label: 'Attendance', route: '/attendance-dash' },
+          {
+            label: 'IT Management',
+            route: '',
+            submenu: [
+              { label: 'Add New Screen', route: '/IT/add-sub-menu' },
+              { label: 'Map Screens to Roles', route: '/IT/add-role-in-screen' },
+              { label: 'Manage Menus & Sub-Menus', route: '/IT/delete-menu' },
+            ],
+          },
         ],
       },
     },
@@ -295,6 +304,15 @@ export class MenuServiceService {
             { label: 'Reagent PO Report', route: '/reports/reagent-po' },
           ],
         },
+        {
+          label: 'IT Management',
+          route: '',
+          submenu: [
+            { label: 'Add New Screen', route: '/IT/add-sub-menu' },
+            { label: 'Map Screens to Roles', route: '/IT/add-role-in-screen' },
+            { label: 'Manage Menus & Sub-Menus', route: '/IT/delete-menu' },
+          ],
+        },
       ],
     },
     AU: {
@@ -392,6 +410,13 @@ export class MenuServiceService {
               route: '/reports/tender-item-status',
             },
             { label: 'Reagent PO Report', route: '/reports/reagent-po' },
+          ],
+        },
+        {
+          label: 'File Movements',
+          route: '',
+          submenu: [
+            { label: 'File MRC Dashboard', route: '/FileMRCDashboardFINFile' },
           ],
         },
       ],
@@ -640,7 +665,7 @@ export class MenuServiceService {
               route: '/masters/store-home',
             },
             {
-              label: 'Report-Specification',
+              label: 'Specification Upload',
               route: '/masters/report-specification',
             },
           ],
@@ -712,7 +737,13 @@ export class MenuServiceService {
         {
           label: 'Reports',
           route: '',
-          submenu: [{ label: 'CMC Detail', route: '/reports/cmc-detail' }],
+          submenu: [
+            { label: 'CMC Detail', route: '/reports/cmc-detail' },
+            {
+              label: 'Specification Upload',
+              route: '/reports/eel-specification',
+            },
+          ],
         },
         {
           label: 'Complain',
@@ -1420,6 +1451,11 @@ export class MenuServiceService {
     localStorage.setItem('selectedCategory', category); // Save category to localStorage
   }
 
+  clearSelectedCategory(): void {
+    this.selectedCategory = undefined;
+    localStorage.removeItem('selectedCategory');
+  }
+
   // Get the stored category from localStorage or memory
   getSelectedCategory():
     | 'DrugsConsumables'
@@ -1453,11 +1489,24 @@ export class MenuServiceService {
     const rolesUsingCategories = ['Collector', 'SEC1', 'DHS', 'CME', 'DME1'];
 
     if (rolesUsingCategories.includes(role) && roleMenu.categories) {
-      const selectedCategory = this.getSelectedCategory();
+      let selectedCategory = this.getSelectedCategory();
+      if (!selectedCategory || !roleMenu.categories[selectedCategory]) {
+        const keys = Object.keys(roleMenu.categories) as Array<
+          'DrugsConsumables' | 'EquipmentReagent' | 'Infrastructure' | 'Admin'
+        >;
+        const preferred =
+          (role === 'DME1' || role === 'CME') && keys.includes('EquipmentReagent')
+            ? 'EquipmentReagent'
+            : keys[0];
+        if (preferred) {
+          this.setSelectedCategory(preferred);
+          selectedCategory = preferred;
+        }
+      }
       if (selectedCategory && roleMenu.categories[selectedCategory]) {
         return roleMenu.categories[selectedCategory].map((item) => ({
           ...item,
-          submenu: this.getSubmenu(item.label), // Add submenu dynamically if needed
+          submenu: this.getSubmenu(item.label),
         }));
       }
       return [];

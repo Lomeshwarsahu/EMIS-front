@@ -1,0 +1,68 @@
+<div class="supplier-po-page drill-down-page" id="printableArea">
+  <div class="drill-toolbar no-print">
+    <button type="button" class="back-btn" (click)="back()">Back</button>
+    <button type="button" class="show-btn" (click)="print()" [disabled]="loading || !!loadError">
+      Print
+    </button>
+    <button
+      type="button"
+      class="export-btn"
+      (click)="exportExcel()"
+      [disabled]="loading || !report?.rows?.length">
+      Export
+    </button>
+  </div>
+
+  <h2 class="page-title wide">Pending Receipt / Installation</h2>
+
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="7" />
+
+  <div class="load-error" *ngIf="!loading && loadError">{{ loadError }}</div>
+
+  <ng-container *ngIf="!loading && !loadError && report">
+    <div class="drill-header datagrid">
+      <div class="header-row">
+        <span><strong>Item Name:</strong> {{ report.itemName }}</span>
+        <span><strong>Item Code:</strong> {{ report.itemCode }}</span>
+        <span><strong>Supplier:</strong> {{ report.supplier }}</span>
+      </div>
+      <div class="header-row">
+        <span><strong>PO Number:</strong> {{ report.poNo }}</span>
+        <span><strong>PO Date:</strong> {{ report.poDate }}</span>
+        <span><strong>Print Date:</strong> {{ report.printDate }}</span>
+      </div>
+    </div>
+
+    <div class="datagrid">
+      <div class="table-wrap">
+        <table class="po-grid drill-grid">
+          <thead>
+            <tr>
+              <th class="col-sn">S.No</th>
+              <th>District</th>
+              <th>Consignee</th>
+              <th class="col-qty">PO Qty</th>
+              <th class="col-qty">Dispatch Qty</th>
+              <th class="col-qty">Received Qty</th>
+              <th class="col-qty">Installed Qty</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of report.rows; let i = index" [class.alt-row]="i % 2 === 1">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>{{ row.district }}</td>
+              <td class="wrap-cell">{{ row.consignee }}</td>
+              <td class="text-center">{{ row.poQty }}</td>
+              <td class="text-center">{{ row.dispatchedQty }}</td>
+              <td class="text-center">{{ row.receiptQty }}</td>
+              <td class="text-center">{{ row.installedQty }}</td>
+            </tr>
+            <tr *ngIf="!report.rows.length">
+              <td colspan="7" class="empty-row">No Record found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+</div>

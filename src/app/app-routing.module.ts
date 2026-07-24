@@ -22,7 +22,9 @@ import { SupplierAcceptedReportComponent } from './component/Suppliers/supplier-
 import { SupplierReceiptComplainComponent } from './component/Suppliers/supplier-receipt-complain/supplier-receipt-complain.component';
 import { SupplierEmdDepositComponent } from './component/Suppliers/supplier-emd-deposit/supplier-emd-deposit.component';
 import { SupplierPaymentReportComponent } from './component/Suppliers/supplier-payment-report/supplier-payment-report.component';
+import { SupplierSanctionReportComponent } from './component/Suppliers/supplier-sanction-report/supplier-sanction-report.component';
 import { SupplierPendingReceiptInstallationComponent } from './component/Suppliers/supplier-pending-receipt-installation/supplier-pending-receipt-installation.component';
+import { SupplierPendingInstallDrillDownComponent } from './component/Suppliers/supplier-pending-install-drill-down/supplier-pending-install-drill-down.component';
 import { LogoutComponent } from './component/auth/logout/logout.component';
 import { RouteGuardService } from './service/authentication/route-guard.service';
 import { OtpComponent } from './component/auth/otp/otp.component';
@@ -69,8 +71,13 @@ import { OpeningStockEntryComponent } from './component/DME/stock/opening-stock-
 import { NewOpeningStockEntryComponent } from './component/DME/stock/new-opening-stock-entry/new-opening-stock-entry.component';
 import { PurchaseOrderDashboardComponent } from './component/DME/orders/purchase-order-dashboard/purchase-order-dashboard.component';
 import { PurchaseOrderReceiptsComponent } from './component/DME/orders/purchase-order-receipts/purchase-order-receipts.component';
+import { PoReceiptEntryComponent } from './component/DME/orders/po-receipt-entry/po-receipt-entry.component';
+import { PoInstallationReportComponent } from './component/DME/orders/po-installation-report/po-installation-report.component';
+import { PoPrintComponent } from './component/DME/orders/po-print/po-print.component';
 import { DmeFacHeadsComponent } from './component/DME/indent/dme-fac-heads/dme-fac-heads.component';
 import { ConsolidatedIndentDmeComponent } from './component/DME/indent/consolidated-indent-dme/consolidated-indent-dme.component';
+import { DmeFacAddIndentComponent } from './component/DME/indent/dme-fac-add-indent/dme-fac-add-indent.component';
+import { DmeFacIndentReportComponent } from './component/DME/indent/dme-fac-indent-report/dme-fac-indent-report.component';
 import { CmcDetailComponent } from './component/DME/reports/cmc-detail/cmc-detail.component';
 import { FacilityComplainStoreComponent } from './component/DME/complain/facility-complain-store/facility-complain-store.component';
 import { TenderCoverAComponent } from './component/BME/tender-cover-a/tender-cover-a.component';
@@ -107,6 +114,9 @@ import { TDSdataReportComponent } from './Reports/tdsdata-report/tdsdata-report.
 import { PaymentsCPReport20perComponent } from './Reports/payments-cpreport20per/payments-cpreport20per.component';
 import { FileMRCDashboardFINFileComponent } from './GM Finance/file-mrcdashboard-finfile/file-mrcdashboard-finfile.component';
 import { SanctionComponent } from './GM Finance/sanction/sanction.component';
+import { AddSubMenuComponent } from './component/IT/add-sub-menu/add-sub-menu.component';
+import { AddRoleInScreenComponent } from './component/IT/add-role-in-screen/add-role-in-screen.component';
+import { DeleteMenuComponent } from './component/IT/delete-menu/delete-menu.component';
 import { MasterSupplierDashComponent } from './component/Tender Cell/master-supplier-dash/master-supplier-dash.component';
 import { ConsolidatedIndentCGMSCComponent } from './component/Tender Cell/consolidated-indent-cgmsc/consolidated-indent-cgmsc.component';
 import { TenderCoverAObClaimAfterComponent } from './component/Tender Cell/tender-cover-aob-claim-after/tender-cover-aob-claim-after.component';
@@ -322,14 +332,41 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'reports/sanction-report',
+    component: SupplierSanctionReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
+    path: 'SanctionsRDLC',
+    redirectTo: 'reports/sanction-report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Payment/SanctionsRDLC',
+    redirectTo: 'reports/sanction-report',
+    pathMatch: 'full',
+  },
+  {
     path: 'reports/pending-receipt-installation',
     component: SupplierPendingReceiptInstallationComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
   {
+    path: 'reports/pending-install-drill-down',
+    component: SupplierPendingInstallDrillDownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SUP'] },
+  },
+  {
     path: 'BalanceStatussupplier',
     redirectTo: 'reports/pending-receipt-installation',
+    pathMatch: 'full',
+  },
+  {
+    path: 'PendingInstallDrillDownsupplier',
+    redirectTo: 'reports/pending-install-drill-down',
     pathMatch: 'full',
   },
   { path: 'Registration', component: Registration },
@@ -838,6 +875,24 @@ const routes: Routes = [
     data: { allowedRoles: ['DME'] },
   },
   {
+    path: 'orders/po-receipt-entry',
+    component: PoReceiptEntryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'orders/po-installation-report',
+    component: PoInstallationReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'orders/po-print',
+    component: PoPrintComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'AUPO'] },
+  },
+  {
     path: 'contracts/dashboard',
     component: EMSRCDashbordComponent,
     canActivate: [RouteGuardService],
@@ -892,6 +947,28 @@ const routes: Routes = [
     data: { allowedRoles: ['DME'] },
   },
   {
+    path: 'indents/annual-indent-items',
+    component: DmeFacAddIndentComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'indents/annual-indent-report',
+    component: DmeFacIndentReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'DMEFACADDIndent',
+    redirectTo: 'indents/annual-indent-items',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Indent_ReportDME_MCwise',
+    redirectTo: 'indents/annual-indent-report',
+    pathMatch: 'full',
+  },
+  {
     path: 'indents/from-facilities',
     component: IndentFromFacilitiesComponent,
     canActivate: [RouteGuardService],
@@ -930,6 +1007,12 @@ const routes: Routes = [
   {
     path: 'reports/cmc-detail',
     component: CmcDetailComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'reports/eel-specification',
+    component: ReportSpecificationComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
@@ -983,6 +1066,16 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'report_specification',
+    redirectTo: 'reports/eel-specification',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Itemspecification',
+    redirectTo: 'reports/eel-specification',
+    pathMatch: 'full',
+  },
+  {
     path: 'cme-eel-suggestion',
     redirectTo: 'masters/cme-eel-suggestion',
     pathMatch: 'full',
@@ -1015,6 +1108,16 @@ const routes: Routes = [
   {
     path: 'purchase-order-receipts',
     redirectTo: 'orders/purchase-order-receipts',
+    pathMatch: 'full',
+  },
+  {
+    path: 'FacilityPO_ReceiptDME',
+    redirectTo: 'orders/po-receipt-entry',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Facility_InstallationReportDME',
+    redirectTo: 'orders/po-installation-report',
     pathMatch: 'full',
   },
   {
@@ -1209,9 +1312,31 @@ const routes: Routes = [
     path: 'FileMRCDashboardFINFile',
     component: FileMRCDashboardFINFileComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUGMF'] },
+    data: { allowedRoles: ['AUGMF', 'AU'] },
   },
 //#endregion
+
+  //#region IT Module
+  {
+    path: 'IT/add-sub-menu',
+    component: AddSubMenuComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SEC1', 'AD'] },
+  },
+  {
+    path: 'IT/add-role-in-screen',
+    component: AddRoleInScreenComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SEC1', 'AD'] },
+  },
+  {
+    path: 'IT/delete-menu',
+    component: DeleteMenuComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['SEC1', 'AD'] },
+  },
+  //#endregion
+
   { path: '**', redirectTo: 'login' },
 ];
 

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
@@ -44,6 +45,7 @@ export class SupplierPaymentReportComponent implements OnInit {
   constructor(
     private readonly api: ApiService,
     private readonly toastr: ToastrService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -86,9 +88,19 @@ export class SupplierPaymentReportComponent implements OnInit {
   }
 
   downloadSanction(row: PaymentReportRow): void {
-    this.toastr.info(
-      `Sanction report for PO ${row.poNo}, sanction ${row.sanctionId} — migration pending.`,
-    );
+    if (!row.poId || !row.sanctionId) {
+      this.toastr.warning('PO / sanction details are missing for this row.');
+      return;
+    }
+
+    const urlTree = this.router.createUrlTree(['/reports/sanction-report'], {
+      queryParams: {
+        poId: row.poId,
+        sanctionId: row.sanctionId,
+      },
+    });
+    const path = this.router.serializeUrl(urlTree);
+    window.open(`${window.location.origin}${path}`, '_blank', 'noopener,noreferrer');
   }
 
   exportExcel(): void {

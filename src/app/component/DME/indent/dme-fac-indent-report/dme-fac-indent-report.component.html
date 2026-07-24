@@ -1,0 +1,73 @@
+<div class="indent-report-page">
+  <div class="print-toolbar no-print">
+    <button type="button" class="back-btn" (click)="goBack()">Back</button>
+    <button type="button" class="print-btn" (click)="printReport()" [disabled]="loading || !header">
+      Print
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="empty-block">Loading indent report…</div>
+  <div *ngIf="!loading && loadError" class="empty-block error">{{ loadError }}</div>
+
+  <div *ngIf="!loading && header && !loadError" id="indentReportPrint" class="report-card">
+    <h1 class="report-title">Annual Indent Report</h1>
+
+    <div class="meta-grid">
+      <div><span class="label">MC / MCH</span><span class="value">{{ header.McName || '—' }}</span></div>
+      <div><span class="label">Indent Id</span><span class="value">{{ header.IndentId }}</span></div>
+      <div><span class="label">Indent Number</span><span class="value">{{ header.DispatchNo || '—' }}</span></div>
+      <div><span class="label">Indent Date</span><span class="value">{{ header.IndentDate || '—' }}</span></div>
+      <div><span class="label">AS Letter No</span><span class="value">{{ header.AsLetterNo || '—' }}</span></div>
+      <div><span class="label">AS Letter Date</span><span class="value">{{ header.AsDate || '—' }}</span></div>
+      <div><span class="label">Financial Year</span><span class="value">{{ header.Year || '—' }}</span></div>
+      <div><span class="label">Budget Head</span><span class="value">{{ header.BudgetName || '—' }}</span></div>
+      <div><span class="label">Status</span><span class="value">{{ header.StatusLabel || '—' }}</span></div>
+    </div>
+
+    <h2 class="section-title">List Equipment in Indent</h2>
+    <div class="table-wrap">
+      <table class="report-grid">
+        <thead>
+          <tr>
+            <th class="text-center">S.No</th>
+            <th>Equipment Code</th>
+            <th>Equipment</th>
+            <th>Consignee Name</th>
+            <th class="text-center">Indent Qty</th>
+            <th class="text-center">Indent Value (Approx)</th>
+            <th>RC Status</th>
+            <th>RC Valid With Supplier</th>
+            <th class="text-center">Price Inc GST</th>
+            <th>Tender No</th>
+            <th>Tender Status</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of lines; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>{{ row.ItemCode || '—' }}</td>
+            <td>{{ row.ItemName || '—' }}</td>
+            <td>{{ row.LocationName || '—' }}</td>
+            <td class="text-center">{{ row.IndentQuantity }}</td>
+            <td class="text-center">{{ row.Value }}</td>
+            <td>{{ row.RcStatus || '—' }}</td>
+            <td>{{ row.Supplier || '—' }}</td>
+            <td class="text-center">{{ row.PriceIncGst || '—' }}</td>
+            <td>{{ row.TenderNo || '—' }}</td>
+            <td>{{ row.TenderStatus || '—' }}</td>
+            <td>{{ row.Remarks || '—' }}</td>
+          </tr>
+          <tr *ngIf="!lines.length">
+            <td colspan="12" class="empty-row">No equipment in this indent.</td>
+          </tr>
+          <tr *ngIf="lines.length" class="total-row">
+            <td colspan="5" class="text-right"><strong>Total Value</strong></td>
+            <td class="text-center"><strong>{{ totalValue }}</strong></td>
+            <td colspan="6"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

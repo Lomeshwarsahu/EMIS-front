@@ -1,52 +1,100 @@
-<div class="ems-legacy-page">
-  <div class="header-wrap">
-    <span class="header-bar narrow">Indent Budget Heads</span>
+<div class="dme-heads-page">
+  <div class="datagrid">
+    <div class="table-toolbar">
+      <button type="button" class="show-btn" (click)="load()" [disabled]="loading">
+        {{ loading ? 'Loading…' : 'Refresh' }}
+      </button>
+      <button type="button" class="show-btn accent-btn" (click)="openAddModal()">Add Budget Head</button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="heads-grid emis-full-width-table">
+        <colgroup>
+          <col class="col-sn" />
+          <col class="col-head-no" />
+          <col class="col-head-name" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="text-center">S.No</th>
+            <th>Head No</th>
+            <th>Head Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>{{ row.HeadNo || '—' }}</td>
+            <td>{{ row.HeadName || '—' }}</td>
+          </tr>
+          <tr *ngIf="loading">
+            <td colspan="3" class="empty-row">Loading…</td>
+          </tr>
+          <tr *ngIf="!loading && !rows.length">
+            <td colspan="3" class="empty-row">
+              <div class="empty-state">
+                <p>No budget heads found. Click Add Budget Head to create one.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="form-panel">
-    <table class="panel-table">
-      <tbody>
-        <tr>
-          <td>Head No:</td>
-          <td><input class="legacy-input" [(ngModel)]="headNo" maxlength="500" /></td>
-        </tr>
-        <tr>
-          <td>Head Name:</td>
-          <td><input class="legacy-input" [(ngModel)]="headName" maxlength="500" /></td>
-        </tr>
-        <tr>
-          <td colspan="2" class="filter-center">
-            <button type="button" class="btn-legacy" (click)="save()" [disabled]="saving">
-              {{ saving ? 'Saving…' : 'Save' }}
-            </button>
-            <button type="button" class="btn-legacy btn-secondary" (click)="back()">Back</button>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <table class="legacy-grid">
-              <thead>
-                <tr>
-                  <th>Head No</th>
-                  <th>Head Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let row of rows">
-                  <td>{{ row.HeadNo }}</td>
-                  <td>{{ row.HeadName }}</td>
-                </tr>
-                <tr *ngIf="loading">
-                  <td colspan="2" class="grid-empty">Loading…</td>
-                </tr>
-                <tr *ngIf="!loading && !rows.length">
-                  <td colspan="2" class="grid-empty">No budget heads found.</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="heads-modal-backdrop" *ngIf="showAddModal" (click)="closeAddModal()">
+    <div class="heads-modal-card" (click)="$event.stopPropagation()">
+      <div class="heads-modal-head">
+        <h3 class="section-title">Add Budget Head</h3>
+        <button
+          type="button"
+          class="heads-close-btn"
+          aria-label="Close"
+          title="Close"
+          (click)="closeAddModal()"
+          [disabled]="saving">
+          &times;
+        </button>
+      </div>
+
+      <table class="heads-form-table">
+        <tbody>
+          <tr>
+            <td class="label-col">Head No</td>
+            <td class="value-col">
+              <input
+                type="text"
+                [(ngModel)]="headNo"
+                name="headNo"
+                maxlength="500"
+                placeholder="Enter head no"
+                [disabled]="saving" />
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">Head Name</td>
+            <td class="value-col">
+              <input
+                type="text"
+                [(ngModel)]="headName"
+                name="headName"
+                maxlength="500"
+                placeholder="Enter head name"
+                [disabled]="saving" />
+            </td>
+          </tr>
+          <tr class="form-actions-row">
+            <td colspan="2">
+              <button type="button" class="show-btn" (click)="save()" [disabled]="saving">
+                {{ saving ? 'Saving…' : 'Save' }}
+              </button>
+              <button type="button" class="ghost-btn" (click)="closeAddModal()" [disabled]="saving">
+                Cancel
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

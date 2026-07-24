@@ -1,134 +1,128 @@
-<div class="ems-legacy-page por-receipts-page">
-  <div class="header-wrap">
-    <span class="header-bar wide">Purchase Order Receipt Desk</span>
-  </div>
-
+<div class="dme-orders-page por-page">
   <div class="datagrid">
-    <table class="panel-table">
-      <tbody>
-        <tr>
-          <td align="center" colspan="4">
-            <table class="filter-inner">
-              <tr>
-                <td>Financial Year:</td>
-                <td>
-                  <select class="legacy-select" [(ngModel)]="selectedFinancialYearId">
-                    <option [ngValue]="0">Select Fin Year</option>
-                    <option *ngFor="let y of financialYears" [ngValue]="y.FinancialYearId">{{ y.Year }}</option>
-                  </select>
-                </td>
-                <td>Item Name:</td>
-                <td>
-                  <select class="legacy-select item-select" [(ngModel)]="selectedItemCode">
-                    <option *ngFor="let e of itemOptions" [ngValue]="e.ItemCodeAsPerTender">{{ e.ItemName }}</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="3"></td>
-                <td>
-                  <button type="button" class="btn-legacy" (click)="show()" [disabled]="loading">
-                    {{ loading ? 'Loading…' : 'Show' }}
-                  </button>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="4">
-            <div class="grid-scroll">
-              <table class="legacy-grid main-grid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Financial Year"
+        [(ngModel)]="selectedFinancialYearId"
+        name="selectedFinancialYearId"
+        (ngModelChange)="onFilterChange()"
+        [disabled]="loading"
+        [class.is-placeholder]="selectedFinancialYearId === 0">
+        <option *ngFor="let y of financialYears" [ngValue]="y.FinancialYearId">{{ y.Year }}</option>
+      </select>
+
+      <select
+        aria-label="Item Name"
+        class="item-select"
+        [(ngModel)]="selectedItemCode"
+        name="selectedItemCode"
+        (ngModelChange)="onFilterChange()"
+        [disabled]="loading"
+        [class.is-placeholder]="selectedItemCode === '0'">
+        <option *ngFor="let e of itemOptions" [ngValue]="e.ItemCodeAsPerTender">{{ e.ItemName }}</option>
+      </select>
+
+      <button
+        *ngIf="hasActiveFilter"
+        type="button"
+        class="clear-btn"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="9" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="orders-grid por-grid">
+        <colgroup>
+          <col class="col-sno" />
+          <col class="col-consignee" />
+          <col class="col-po-no" />
+          <col class="col-po-date" />
+          <col class="col-item" />
+          <col class="col-supplier" />
+          <col class="col-qty" />
+          <col class="col-gross" />
+          <col class="col-dispatch" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="text-center">S.No</th>
+            <th>Consignees</th>
+            <th>PO Number</th>
+            <th class="text-center">PO Date</th>
+            <th>Item Name / Code</th>
+            <th>Supplier</th>
+            <th class="text-center">Order Qty</th>
+            <th class="text-right">Gross Value</th>
+            <th>Dispatch / Receipt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
+            <td class="text-center col-sno-cell">{{ i + 1 }}</td>
+            <td class="wrap-cell">{{ row.LocationName || '—' }}</td>
+            <td class="wrap-cell po-no">{{ row.PoNo || '—' }}</td>
+            <td class="text-center">{{ row.PoDate || '—' }}</td>
+            <td class="wrap-cell">
+              {{ row.ItemName || '—' }}
+              <span class="sub-code" *ngIf="row.ItemCode">{{ row.ItemCode }}</span>
+            </td>
+            <td class="wrap-cell">{{ row.SupplierName || '—' }}</td>
+            <td class="text-center qty-po">{{ row.Quantity }}</td>
+            <td class="text-right">{{ formatPrice(row.TotalPrice) }}</td>
+            <td class="nested-cell wrap-cell">
+              <table class="nested-grid" *ngIf="row.Batches.length; else noBatches">
                 <colgroup>
-                  <col class="col-sno" />
-                  <col class="col-consignee" />
-                  <col class="col-po-no" />
-                  <col class="col-po-date" />
-                  <col class="col-item" />
-                  <col class="col-supplier" />
-                  <col class="col-qty" />
-                  <col class="col-gross" />
-                  <col class="col-dispatch" />
+                  <col class="ncol-dispatch" />
+                  <col class="ncol-receipt" />
+                  <col class="ncol-qty" />
+                  <col class="ncol-action" />
                 </colgroup>
                 <thead>
                   <tr>
-                    <th>S.no</th>
-                    <th>Consignees</th>
-                    <th>PO Number</th>
-                    <th>PO Date</th>
-                    <th>Item Name/Code</th>
-                    <th>Supplier</th>
-                    <th>Order Qty</th>
-                    <th>Gross Value</th>
-                    <th>Dispatch/Receipt Details</th>
+                    <th>Dispatch No / Date<br />Tentative Supply</th>
+                    <th>Receipt No / Date</th>
+                    <th class="text-center">Supplied Qty</th>
+                    <th class="text-center">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let row of rows; index as i">
-                    <td class="center">{{ i + 1 }}</td>
-                    <td>{{ row.LocationName }}</td>
-                    <td>{{ row.PoNo }}</td>
-                    <td class="center">{{ row.PoDate }}</td>
-                    <td class="center">
-                      {{ row.ItemName }}<br />
-                      <span class="sub-code">{{ row.ItemCode }}</span>
+                  <tr *ngFor="let batch of row.Batches">
+                    <td class="wrap-cell cell-stack">
+                      <span>{{ batch.DispatchNo || '—' }}</span>
+                      <span class="muted">{{ batch.DispatchDate }}</span>
+                      <span class="muted">{{ batch.TentativeSupplyDate }}</span>
                     </td>
-                    <td class="center">{{ row.SupplierName }}</td>
-                    <td class="center">{{ row.Quantity }}</td>
-                    <td class="right">{{ formatPrice(row.TotalPrice) }}</td>
-                    <td class="nested-cell">
-                      <table class="legacy-grid nested-grid" *ngIf="row.Batches.length; else noBatches">
-                        <thead>
-                          <tr>
-                            <th>DispatchNo/Date<br />Tentative Supply Date</th>
-                            <th>Receipt No<br />Receipt Date</th>
-                            <th>Supplied QTY</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let batch of row.Batches">
-                            <td class="center">
-                              {{ batch.DispatchNo }}<br />
-                              {{ batch.DispatchDate }}<br />
-                              {{ batch.TentativeSupplyDate }}
-                            </td>
-                            <td class="center">
-                              {{ batch.ReceiptNo || '—' }}<br />
-                              {{ batch.ReceiptDate }}
-                            </td>
-                            <td class="center">{{ batch.SuppliedQty }}</td>
-                            <td class="center">
-                              <button
-                                type="button"
-                                class="link-action"
-                                (click)="onReceiptAction(row, batch)"
-                              >
-                                {{ batch.SupplyStatus }}
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <ng-template #noBatches>
-                        <span class="muted">No dispatch/receipt records</span>
-                      </ng-template>
+                    <td class="wrap-cell cell-stack">
+                      <span>{{ batch.ReceiptNo || '—' }}</span>
+                      <span class="muted">{{ batch.ReceiptDate }}</span>
                     </td>
-                  </tr>
-                  <tr *ngIf="loading">
-                    <td colspan="9" class="grid-empty">Loading…</td>
-                  </tr>
-                  <tr *ngIf="!loading && !rows.length">
-                    <td colspan="9" class="grid-empty">
-                      No records found. Select filters and click Show.
+                    <td class="text-center">{{ batch.SuppliedQty }}</td>
+                    <td class="text-center wrap-cell">
+                      <button type="button" class="action-link" (click)="onReceiptAction(row, batch)">
+                        {{ batch.SupplyStatus }}
+                      </button>
                     </td>
                   </tr>
                 </tbody>
               </table>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              <ng-template #noBatches>
+                <span class="muted">No dispatch/receipt records</span>
+              </ng-template>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="9" class="empty-row">
+              <div class="empty-state">
+                <p>No records found.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

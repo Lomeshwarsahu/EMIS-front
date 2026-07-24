@@ -1,89 +1,102 @@
-<div class="ems-legacy-page">
-  <div class="header-wrap">
-    <span class="header-bar">
-      Stock of COVID19 related Equipment in Medical College/Hospital
-    </span>
+<div class="dme-stock-page">
+  <div class="note-bar">
+    Note: Health Facility Stock — (1) Supplied through CGMSC against Purchase Order &amp; (2) Local
+    Purchase / Donation / CSR &amp; GOI Supplied
   </div>
 
   <div class="datagrid">
-    <table class="panel-table">
-      <tbody>
-        <tr>
-          <td class="note-cell" colspan="2">
-            Note: Health Facility Stock 1) Supplied through CGMSC against Purchase Order &amp; 2) Local
-            Purchase/Donation/CSR &amp; GOI Supplied
-          </td>
-        </tr>
-        <tr>
-          <td class="filter-center" colspan="2">
-            <strong>Select Equipment</strong>
-            <select class="legacy-select" [(ngModel)]="selectedPid">
-              <option *ngFor="let t of equipmentTypes" [ngValue]="t.Pid">{{ t.PItemName }}</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td class="filter-center" colspan="2">
-            <div class="radio-group">
-              <label><input type="radio" name="poFilter" value="All" [(ngModel)]="filterType" /> All</label>
-              <label><input type="radio" name="poFilter" value="OR" [(ngModel)]="filterType" /> Only Received</label>
-              <label
-                ><input type="radio" name="poFilter" value="RI" [(ngModel)]="filterType" /> Received &amp;
-                Installed</label
-              >
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="filter-center" colspan="2">
-            <button type="button" class="btn-legacy" (click)="showDetails()" [disabled]="loading">
-              {{ loading ? 'Loading…' : 'Show Details' }}
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <table class="legacy-grid" *ngIf="rows.length || loading">
-              <thead>
-                <tr>
-                  <th>S.no</th>
-                  <th>Equipment</th>
-                  <th>Serial No.</th>
-                  <th>Make</th>
-                  <th>Model</th>
-                  <th>Installation Location</th>
-                  <th>Received Date</th>
-                  <th>Installed Date</th>
-                  <th>Warranty Upto</th>
-                  <th>Supply Source</th>
-                  <th>Remarks</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let row of rows; index as i">
-                  <td class="center">{{ i + 1 }}</td>
-                  <td>{{ row.ItemName }}</td>
-                  <td>{{ row.MakeSerialNo }}</td>
-                  <td>{{ row.Make }}</td>
-                  <td>{{ row.ModelNo }}</td>
-                  <td>{{ row.InstallLocation }}</td>
-                  <td class="center">{{ row.ReceiptDate || '—' }}</td>
-                  <td class="center">{{ row.InstallationDate || '—' }}</td>
-                  <td class="center">{{ row.WarrantyUpto || '—' }}</td>
-                  <td class="center">{{ row.SuppliedFrom }}</td>
-                  <td>{{ row.Remarks }}</td>
-                </tr>
-                <tr *ngIf="loading">
-                  <td colspan="11" class="grid-empty">Loading…</td>
-                </tr>
-                <tr *ngIf="!loading && !rows.length">
-                  <td colspan="11" class="grid-empty">No records found.</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Select Equipment"
+        [(ngModel)]="selectedPid"
+        name="selectedPid"
+        (ngModelChange)="onEquipmentChange()"
+        [class.is-placeholder]="selectedPid === 0">
+        <option *ngFor="let t of equipmentTypes" [ngValue]="t.Pid">{{ t.PItemName }}</option>
+      </select>
+
+      <div class="filter-pills" role="group" aria-label="Stock filter">
+        <button
+          type="button"
+          class="filter-pill"
+          [class.active]="filterType === 'All'"
+          (click)="setFilter('All')"
+          [disabled]="loading">
+          All
+        </button>
+        <button
+          type="button"
+          class="filter-pill"
+          [class.active]="filterType === 'OR'"
+          (click)="setFilter('OR')"
+          [disabled]="loading">
+          Only Received
+        </button>
+        <button
+          type="button"
+          class="filter-pill"
+          [class.active]="filterType === 'RI'"
+          (click)="setFilter('RI')"
+          [disabled]="loading">
+          Received &amp; Installed
+        </button>
+      </div>
+
+      <button
+        *ngIf="hasActiveFilter"
+        type="button"
+        class="clear-btn"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="11" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="stock-grid">
+        <thead>
+          <tr>
+            <th class="text-center">S.No</th>
+            <th>Equipment</th>
+            <th>Serial No.</th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Installation Location</th>
+            <th class="text-center">Received Date</th>
+            <th class="text-center">Installed Date</th>
+            <th class="text-center">Warranty Upto</th>
+            <th>Supply Source</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>
+              {{ row.ItemName || '—' }}
+              <span class="sub-code" *ngIf="row.ItemCode">{{ row.ItemCode }}</span>
+            </td>
+            <td>{{ row.MakeSerialNo || '—' }}</td>
+            <td>{{ row.Make || '—' }}</td>
+            <td>{{ row.ModelNo || '—' }}</td>
+            <td>{{ row.InstallLocation || '—' }}</td>
+            <td class="text-center">{{ row.ReceiptDate || '—' }}</td>
+            <td class="text-center">{{ row.InstallationDate || '—' }}</td>
+            <td class="text-center">{{ row.WarrantyUpto || '—' }}</td>
+            <td>{{ row.SuppliedFrom || '—' }}</td>
+            <td>{{ row.Remarks || '—' }}</td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="11" class="empty-row">
+              <div class="empty-state">
+                <p>No records found.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

@@ -47,6 +47,7 @@ export class SupplierPoApplyExtensionComponent implements OnInit {
   baseEndDate = '';
   canApply = true;
   hasPendingExtension = false;
+  showExtensionForm = false;
 
   extensionDays: number | null = null;
   extensionDate = '';
@@ -100,6 +101,21 @@ export class SupplierPoApplyExtensionComponent implements OnInit {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.selectedFile = input.files?.[0] ?? null;
+  }
+
+  openExtensionForm(): void {
+    if (!this.canApply) {
+      this.toastr.warning('An extension request is already pending for this PO.');
+      return;
+    }
+    this.showExtensionForm = true;
+    document.body.classList.add('emis-modal-open');
+  }
+
+  closeExtensionForm(): void {
+    this.showExtensionForm = false;
+    document.body.classList.remove('emis-modal-open');
+    this.resetForm();
   }
 
   loadPage(): void {
@@ -162,6 +178,8 @@ export class SupplierPoApplyExtensionComponent implements OnInit {
         this.saving = false;
         this.toastr.success(res?.message ?? 'Successfully Saved.');
         this.resetForm();
+        this.showExtensionForm = false;
+        document.body.classList.remove('emis-modal-open');
         this.loadPage();
       },
       error: (err) => {

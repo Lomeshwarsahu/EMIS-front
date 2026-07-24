@@ -1,5 +1,5 @@
-<section class="supplier-login-page">
-  <header class="supplier-header">
+<section class="supplier-login-page" [class.supplier-login-page--embedded]="embedded">
+  <header class="supplier-header" *ngIf="!embedded">
     <div class="header-inner">
       <div class="header-logo left">
         <img src="assets/images/cg-govt.png" alt="Chhattisgarh Government" />
@@ -15,21 +15,63 @@
     </div>
   </header>
 
-  <div class="supplier-login-body">
-    <div class="login-legacy-wrap">
-      <table class="login-legacy-table">
-        <caption class="login-caption"><strong>LOGIN</strong></caption>
+  <div class="supplier-login-body" [class.supplier-login-body--embedded]="embedded">
+    <div class="login-legacy-wrap" [class.login-legacy-wrap--embedded]="embedded">
+      <table class="login-legacy-table" [class.login-legacy-table--embedded]="embedded">
+        <caption class="login-caption" *ngIf="!embedded"><strong>LOGIN</strong></caption>
 
-        <tr>
+        <tr *ngIf="!embedded">
           <td colspan="2" class="heading-cell">
             <span class="legacy-title-bar">Supplier Login</span>
             <div class="manual-links">
               <a href="assets/manuals/EMIS_Supplier_Mannual.pdf" target="_blank" rel="noopener">
-                Download Supplier Manual
+                Download Supplier Mannual
               </a>
               <a href="assets/manuals/Notice_Supplier.pdf" target="_blank" rel="noopener">
-                Notice for Supplier to Receipt &amp; Installation Entry
+                Notice for Supplier to Reciept &amp; Installation Entry
               </a>
+            </div>
+          </td>
+        </tr>
+
+        <tr *ngIf="embedded">
+          <td colspan="2" class="heading-cell heading-cell--embedded">
+            <div class="manual-links">
+              <a href="assets/manuals/EMIS_Supplier_Mannual.pdf" target="_blank" rel="noopener">
+                Download Supplier Mannual
+              </a>
+              <a href="assets/manuals/Notice_Supplier.pdf" target="_blank" rel="noopener">
+                Notice for Supplier to Reciept &amp; Installation Entry
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <!-- First screen: 3 option buttons -->
+        <tr>
+          <td colspan="2" class="mode-cell">
+            <div class="mode-btn-row">
+              <button
+                type="button"
+                class="mode-btn"
+                [class.mode-btn--active]="authMode === 'login'"
+                (click)="setAuthMode('login')">
+                Login in EMS
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                [class.mode-btn--active]="authMode === 'new'"
+                (click)="setAuthMode('new')">
+                New User-ID in EMS
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                [class.mode-btn--active]="authMode === 'reset'"
+                (click)="setAuthMode('reset')">
+                Forgot/Reset Password
+              </button>
             </div>
           </td>
         </tr>
@@ -44,15 +86,16 @@
               bindValue="user_id"
               [(ngModel)]="selectedSupplierId"
               (change)="onSupplierChange()"
-              placeholder="Select Supplier"
+              [placeholder]="selectPlaceholder"
               [searchable]="true"
               [clearable]="true"
-              [loading]="loading && !supplierOptions.length">
+              [appendTo]="'body'"
+              [loading]="listLoading">
             </ng-select>
           </td>
         </tr>
 
-        <tr>
+        <tr *ngIf="isLoginMode">
           <td class="label-cell">Enter Password</td>
           <td class="field-cell">
             <div class="password-wrap">
@@ -72,19 +115,128 @@
 
         <tr>
           <td colspan="2" class="actions-cell">
-            <button type="button" class="legacy-btn" [disabled]="loading" (click)="login()">
+            <button
+              *ngIf="isLoginMode"
+              type="button"
+              class="legacy-btn"
+              [disabled]="loading"
+              (click)="login()">
               <span *ngIf="loading" class="btn-spinner"></span>
               {{ loading ? 'Please wait...' : 'Login' }}
             </button>
-          </td>
-        </tr>
 
-        <tr>
-          <td colspan="2" class="back-cell">
-            <a routerLink="/login" class="link-back">Back to Main Login</a>
+            <button
+              *ngIf="!isLoginMode"
+              type="button"
+              class="legacy-btn legacy-btn-wide"
+              [disabled]="profileLoading"
+              (click)="openPasswordFlow()">
+              <span *ngIf="profileLoading" class="btn-spinner"></span>
+              {{ profileLoading ? 'Please wait...' : actionButtonLabel }}
+            </button>
           </td>
         </tr>
       </table>
+
+      <!-- Full OTP / create / reset flow -->
+      <table *ngIf="showOtpPanel && profile" class="otp-panel-table">
+        <tr>
+          <td class="otp-label">Supplier</td>
+          <td class="otp-value" colspan="2">{{ profile.name }}</td>
+        </tr>
+        <tr>
+          <td class="otp-label">Mobile No</td>
+          <td class="otp-value" colspan="2">{{ profile.maskedMobile }}</td>
+        </tr>
+        <tr>
+          <td class="otp-label">e-Mail</td>
+          <td class="otp-value" colspan="2">{{ profile.email }}</td>
+        </tr>
+        <tr>
+          <td class="otp-label">Enter Userid</td>
+          <td class="otp-value">
+            <input
+              type="text"
+              class="legacy-input"
+              [(ngModel)]="desiredUserId"
+              name="desiredUserId"
+              [readonly]="isResetMode"
+              [disabled]="isResetMode" />
+          </td>
+          <td class="otp-alias">
+            <span *ngIf="isNewMode">@ems.in</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="otp-label"></td>
+          <td class="otp-value" colspan="2">
+            <button
+              type="button"
+              class="legacy-btn"
+              [disabled]="otpSending"
+              (click)="sendOtp()">
+              <span *ngIf="otpSending" class="btn-spinner"></span>
+              {{ otpSending ? 'Sending...' : 'Send OTP' }}
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td class="otp-label">Enter OTP</td>
+          <td class="otp-value" colspan="2">
+            <input
+              type="text"
+              class="legacy-input"
+              [(ngModel)]="otp"
+              name="otp"
+              maxlength="4"
+              inputmode="numeric"
+              (keypress)="digitsOnly($event)" />
+          </td>
+        </tr>
+        <tr>
+          <td class="otp-label">New Password</td>
+          <td class="otp-value" colspan="2">
+            <input
+              type="password"
+              class="legacy-input"
+              [(ngModel)]="newPassword"
+              name="newPassword" />
+          </td>
+        </tr>
+        <tr>
+          <td class="otp-label">Repeat Password</td>
+          <td class="otp-value" colspan="2">
+            <input
+              type="password"
+              class="legacy-input"
+              [(ngModel)]="repeatPassword"
+              name="repeatPassword" />
+          </td>
+        </tr>
+        <tr *ngIf="otpMessage">
+          <td colspan="3" class="otp-msg" [ngClass]="otpMessageTone">{{ otpMessage }}</td>
+        </tr>
+        <tr>
+          <td class="otp-label"></td>
+          <td class="otp-value">
+            <button
+              type="button"
+              class="legacy-btn"
+              [disabled]="otpSubmitting"
+              (click)="submitPassword()">
+              <span *ngIf="otpSubmitting" class="btn-spinner"></span>
+              {{ otpSubmitting ? 'Saving...' : 'Submit' }}
+            </button>
+          </td>
+          <td class="otp-alias">
+            <button type="button" class="legacy-btn" (click)="cancelOtpPanel()">Cancel</button>
+          </td>
+        </tr>
+      </table>
+
+      <div class="back-row" *ngIf="!embedded">
+        <a routerLink="/login" class="link-back">Back to Main Login</a>
+      </div>
     </div>
   </div>
 </section>

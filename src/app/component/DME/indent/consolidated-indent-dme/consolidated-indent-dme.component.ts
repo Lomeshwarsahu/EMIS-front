@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { apiErrorMessage, resolveLoginUserId } from '../../shared/session.util';
@@ -35,9 +36,9 @@ interface FacilityIndentRow {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './consolidated-indent-dme.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './consolidated-indent-dme.component.css'],
+  styleUrls: ['./consolidated-indent-dme.component.css'],
 })
-export class ConsolidatedIndentDmeComponent implements OnInit {
+export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
   private readonly orderApi = `${environment.apiUrl}/DMEOrder/`;
 
   financialYears: FinancialYearOption[] = [];
@@ -51,14 +52,15 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
   showNewModal = false;
   newFinancialYearId = 0;
   newBudgetId = 0;
-  newIndentDate = '';
+  newIndentDateIso = '';
   newAsLetterNo = '';
-  newAsDate = '';
+  newAsDateIso = '';
   saving = false;
 
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -66,6 +68,10 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
     this.loadFinancialYears();
     this.loadBudgetHeads();
     this.show();
+  }
+
+  ngOnDestroy(): void {
+    document.body.classList.remove('emis-modal-open');
   }
 
   show(): void {
@@ -91,16 +97,18 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
   }
 
   openNewIndent(): void {
-    this.newFinancialYearId = this.selectedFinancialYearId || this.financialYears[1]?.FinancialYearId || 0;
+    this.newFinancialYearId = this.selectedFinancialYearId || this.financialYears[0]?.FinancialYearId || 0;
     this.newBudgetId = 0;
-    this.newIndentDate = this.todayDdMmYyyy();
+    this.newIndentDateIso = this.todayIso();
     this.newAsLetterNo = '';
-    this.newAsDate = '';
+    this.newAsDateIso = '';
     this.showNewModal = true;
+    document.body.classList.add('emis-modal-open');
   }
 
   closeNewIndent(): void {
     this.showNewModal = false;
+    document.body.classList.remove('emis-modal-open');
   }
 
   saveNewIndent(): void {
@@ -108,7 +116,7 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
       this.toastr.warning('Select Financial Year and Fund/Budget.');
       return;
     }
-    if (!this.newIndentDate || !this.newAsLetterNo.trim() || !this.newAsDate) {
+    if (!this.newIndentDateIso || !this.newAsLetterNo.trim() || !this.newAsDateIso) {
       this.toastr.warning('Fill Indent Date, AS Letter No and AS Date.');
       return;
     }
@@ -119,14 +127,14 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
         UserId: this.userId,
         BudgetId: this.newBudgetId,
         FinancialYearId: this.newFinancialYearId,
-        IndentDate: this.newIndentDate,
+        IndentDate: this.fromIsoDate(this.newIndentDateIso),
         AsLetterNo: this.newAsLetterNo.trim(),
-        AsDate: this.newAsDate,
+        AsDate: this.fromIsoDate(this.newAsDateIso),
       })
       .subscribe({
         next: (res: { message?: string }) => {
           this.saving = false;
-          this.showNewModal = false;
+          this.closeNewIndent();
           this.toastr.success(res?.message ?? 'Indent created successfully.');
           this.show();
         },
@@ -138,11 +146,19 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
   }
 
   onAddIndent(row: FacilityIndentRow): void {
-    this.toastr.info(`Add indent items for #${row.IndentId} — detail screen coming soon.`);
+    if (this.isCompleted(row.EStatus)) {
+      this.toastr.warning('Indent is completed. Items cannot be added.');
+      return;
+    }
+    this.router.navigate(['/indents/annual-indent-items'], {
+      queryParams: { indentId: row.IndentId },
+    });
   }
 
   onShowIndent(row: FacilityIndentRow): void {
-    this.toastr.info(`Indent report for #${row.IndentId} — coming soon.`);
+    this.router.navigate(['/indents/annual-indent-report'], {
+      queryParams: { indentId: row.IndentId },
+    });
   }
 
   onDownload(row: FacilityIndentRow): void {
@@ -150,7 +166,65 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
       this.toastr.warning('File not uploaded for this indent.');
       return;
     }
-    this.toastr.info('Download requires legacy file path — coming soon.');
+    if (!this.userId) {
+      this.toastr.warning('Please login again — user id missing.');
+      return;
+    }
+
+    this.http
+      .get(`${this.orderApi}facility-indents/${row.IndentId}/download?userId=${this.userId}`, {
+        responseType: 'blob',
+        observe: 'response',
+      })
+      .subscribe({
+        next: (res) => {
+          const blob = res.body;
+          if (!blob || blob.size === 0) {
+            this.toastr.error('File not found.');
+            return;
+          }
+          // API may return JSON error with blob content-type mistaken — check JSON.
+          if (blob.type && blob.type.includes('application/json')) {
+            blob.text().then((t) => {
+              try {
+                const parsed = JSON.parse(t) as { message?: string };
+                this.toastr.error(parsed.message || 'Could not download file.');
+              } catch {
+                this.toastr.error('Could not download file.');
+              }
+            });
+            return;
+          }
+
+          const cd = res.headers.get('content-disposition') || '';
+          const match = /filename\*?=(?:UTF-8''|")?([^\";]+)/i.exec(cd);
+          const fileName = match
+            ? decodeURIComponent(match[1].replace(/"/g, '').trim())
+            : `indent_${row.IndentId}.pdf`;
+
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName;
+          a.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: async (e) => {
+          let msg = 'Could not download file.';
+          const errBlob = e?.error;
+          if (errBlob instanceof Blob) {
+            try {
+              const parsed = JSON.parse(await errBlob.text()) as { message?: string };
+              if (parsed.message) {
+                msg = parsed.message;
+              }
+            } catch {
+              /* keep default */
+            }
+          }
+          this.toastr.error(msg);
+        },
+      });
   }
 
   isCompleted(status: string): boolean {
@@ -177,11 +251,19 @@ export class ConsolidatedIndentDmeComponent implements OnInit {
     });
   }
 
-  private todayDdMmYyyy(): string {
+  private todayIso(): string {
     const d = new Date();
     const dd = String(d.getDate()).padStart(2, '0');
     const mm = String(d.getMonth() + 1).padStart(2, '0');
-    return `${dd}/${mm}/${d.getFullYear()}`;
+    return `${d.getFullYear()}-${mm}-${dd}`;
+  }
+
+  private fromIsoDate(isoDate: string): string {
+    if (!isoDate) {
+      return '';
+    }
+    const [year, month, day] = isoDate.split('-');
+    return `${day}/${month}/${year}`;
   }
 
   private mapYears(raw: unknown): FinancialYearOption[] {

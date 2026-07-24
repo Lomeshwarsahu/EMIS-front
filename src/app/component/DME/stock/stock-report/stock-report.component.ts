@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
+import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 
 interface MainEquipmentType {
   Pid: number;
@@ -28,9 +29,9 @@ interface CovidStockRow {
 @Component({
   selector: 'app-stock-report',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './stock-report.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './stock-report.component.css'],
+  styleUrls: ['./stock-report.component.css'],
 })
 export class StockReportComponent implements OnInit {
   private readonly apiRoot = `${environment.apiUrl}/DMEStock/`;
@@ -43,6 +44,10 @@ export class StockReportComponent implements OnInit {
   loading = false;
   userId = 0;
 
+  get hasActiveFilter(): boolean {
+    return this.selectedPid > 0 || this.filterType !== 'All';
+  }
+
   constructor(
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
@@ -51,9 +56,28 @@ export class StockReportComponent implements OnInit {
   ngOnInit(): void {
     this.userId = this.resolveUserId();
     this.loadEquipmentTypes();
+    this.loadStock();
   }
 
-  showDetails(): void {
+  onEquipmentChange(): void {
+    this.loadStock();
+  }
+
+  setFilter(type: 'All' | 'OR' | 'RI'): void {
+    if (this.filterType === type) {
+      return;
+    }
+    this.filterType = type;
+    this.loadStock();
+  }
+
+  clearFilters(): void {
+    this.selectedPid = 0;
+    this.filterType = 'All';
+    this.loadStock();
+  }
+
+  loadStock(): void {
     if (!this.userId) {
       this.toastr.warning('Please login again — user id missing.');
       return;

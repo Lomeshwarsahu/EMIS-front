@@ -1,74 +1,90 @@
-<div class="ems-legacy-page">
-  <div class="header-wrap">
-    <span class="header-bar medium">CMC Deatil</span>
-  </div>
-
+<div class="dme-cmc-page">
   <div class="datagrid">
-    <table class="panel-table">
-      <tbody>
-        <tr>
-          <td class="export-cell">
-            <button type="button" class="btn-legacy" (click)="exportExcel()">Export</button>
-          </td>
-          <td>
-            Item Name:
-            <select class="legacy-select" style="min-width: 200px" [(ngModel)]="selectedItemCode" (ngModelChange)="onItemChange()">
-              <option *ngFor="let i of itemOptions" [ngValue]="i.ItemCodeAsPerTender">{{ i.ItemName }}</option>
-            </select>
-          </td>
-          <td>
-            Tender No:
-            <select class="legacy-select" style="min-width: 150px" [(ngModel)]="selectedTenderId">
-              <option *ngFor="let t of tenderOptions" [ngValue]="t.TenderId">{{ t.TenderNo }}</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3" class="filter-center">
-            <button type="button" class="btn-legacy" (click)="show()" [disabled]="loading">
-              {{ loading ? 'Loading…' : 'Show' }}
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3">
-            <table class="legacy-grid" style="max-width: 1000px; margin: 0 auto">
-              <thead>
-                <tr>
-                  <th>S.no</th>
-                  <th>Code</th>
-                  <th>Item Name</th>
-                  <th>Tender No</th>
-                  <th class="center">CMC1</th>
-                  <th class="center">CMC2</th>
-                  <th class="center">CMC3</th>
-                  <th class="center">CMC4</th>
-                  <th class="center">CMC5</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let row of rows; index as i">
-                  <td class="center">{{ i + 1 }}</td>
-                  <td>{{ row.ItemCodeAsPerTender }}</td>
-                  <td>{{ row.ItemName }}</td>
-                  <td>{{ row.TenderNo }}</td>
-                  <td class="center">{{ row.Cmc1 }}</td>
-                  <td class="center">{{ row.Cmc2 }}</td>
-                  <td class="center">{{ row.Cmc3 }}</td>
-                  <td class="center">{{ row.Cmc4 }}</td>
-                  <td class="center">{{ row.Cmc5 }}</td>
-                </tr>
-                <tr *ngIf="loading">
-                  <td colspan="9" class="grid-empty">Loading…</td>
-                </tr>
-                <tr *ngIf="!loading && !rows.length">
-                  <td colspan="9" class="grid-empty">No Record found.</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Item Name"
+        [(ngModel)]="selectedItemCode"
+        name="selectedItemCode"
+        (ngModelChange)="onItemChange()"
+        [disabled]="loading"
+        [class.is-placeholder]="selectedItemCode === '0'">
+        <option *ngFor="let i of itemOptions" [ngValue]="i.ItemCodeAsPerTender">{{ i.ItemName }}</option>
+      </select>
+
+      <select
+        aria-label="Tender No"
+        [(ngModel)]="selectedTenderId"
+        name="selectedTenderId"
+        (ngModelChange)="onTenderChange()"
+        [disabled]="!selectedItemCode || selectedItemCode === '0' || tendersLoading || loading"
+        [class.is-placeholder]="selectedTenderId === 0">
+        <option [ngValue]="0">{{ tendersLoading ? 'Loading tenders…' : 'Select Tender' }}</option>
+        <option *ngFor="let t of tenderOptions" [ngValue]="t.TenderId">{{ t.TenderNo }}</option>
+      </select>
+
+      <button
+        *ngIf="hasActiveFilter"
+        type="button"
+        class="clear-btn"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+
+      <button type="button" class="show-btn accent-btn" (click)="exportExcel()" [disabled]="loading || !rows.length">
+        Export
+      </button>
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="9" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="cmc-grid emis-full-width-table">
+        <colgroup>
+          <col class="col-sn" />
+          <col class="col-code" />
+          <col class="col-name" />
+          <col class="col-tender" />
+          <col class="col-cmc" />
+          <col class="col-cmc" />
+          <col class="col-cmc" />
+          <col class="col-cmc" />
+          <col class="col-cmc" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="text-center">S.No</th>
+            <th>Code</th>
+            <th>Item Name</th>
+            <th>Tender No</th>
+            <th class="text-center">CMC1</th>
+            <th class="text-center">CMC2</th>
+            <th class="text-center">CMC3</th>
+            <th class="text-center">CMC4</th>
+            <th class="text-center">CMC5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>{{ row.ItemCodeAsPerTender || '—' }}</td>
+            <td>{{ row.ItemName || '—' }}</td>
+            <td>{{ row.TenderNo || '—' }}</td>
+            <td class="text-center">{{ row.Cmc1 }}</td>
+            <td class="text-center">{{ row.Cmc2 }}</td>
+            <td class="text-center">{{ row.Cmc3 }}</td>
+            <td class="text-center">{{ row.Cmc4 }}</td>
+            <td class="text-center">{{ row.Cmc5 }}</td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="9" class="empty-row">
+              <div class="empty-state">
+                <p>No CMC detail found.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

@@ -14,6 +14,10 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { ApiService } from './service/api.service';
 import { ThemeService } from './service/theme.service';
 import { resolvePageTitle } from './service/page-title.util';
+import {
+  AppNotification,
+  NotificationService,
+} from './service/notification.service';
 
 @Component({
     selector: 'app-root',
@@ -31,6 +35,9 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   menuSearchQuery = '';
   menuSearchFocused = false;
   pageHeading = '';
+  notificationsOpen = false;
+  notifications: AppNotification[] = [];
+  unreadNotificationCount = 0;
   private menuSearchBlurTimer: ReturnType<typeof setTimeout> | null = null;
   deferredPrompt: any;
   showButton = false;
@@ -168,12 +175,38 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private https: HttpClient,
     public readonly themeService: ThemeService,
+    private readonly notificationService: NotificationService,
   ) {
     this.applyDrawerLayout(window.innerWidth <= 991.98, true);
   }
 
   onSidebarCollapsedChange(collapsed: boolean): void {
     this.sidebarCollapsed = collapsed;
+  }
+
+  toggleNotifications(event: MouseEvent): void {
+    event.stopPropagation();
+    this.notificationsOpen = !this.notificationsOpen;
+    this.menuSearchFocused = false;
+  }
+
+  markAllNotificationsRead(): void {
+    this.notificationService.markAllRead();
+  }
+
+  onNotificationClick(item: AppNotification): void {
+    this.notificationService.markRead(item.id);
+    this.notificationsOpen = false;
+    if (item.route) {
+      this.router.navigateByUrl(item.route);
+    }
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    if (this.notificationsOpen) {
+      this.notificationsOpen = false;
+    }
   }
 
   logout() {
@@ -191,6 +224,8 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
       this.toastr.success('Logout Successfully');
       this.router.navigate(['login'])
     }
+    this.role = '';
+    this.menuItems = [];
   }
 
   goBack(): void {
@@ -229,33 +264,34 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     const breakpointChanged = this.isMobile !== isMobile;
     this.isMobile = isMobile;
     this.drawerMode = isMobile ? 'over' : 'side';
+    if (this.isLoginPage) {
+      this.isDrawerOpen = false;
+      return;
+    }
     if (forceOpenState || breakpointChanged) {
       this.isDrawerOpen = !isMobile;
     }
   }
 
   ngOnInit(): void {
+    this.isLoginPage = this.isShellFreeUrl(this.router.url);
+
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.isLoginPage =
-          event.urlAfterRedirects === '/login' ||
-          event.urlAfterRedirects === '/supplier-login' ||
-          event.urlAfterRedirects === '/LoginEmsSup' ||
-          event.urlAfterRedirects === '/otp' ||
-          event.urlAfterRedirects === '/collector-login' ||
-          event.urlAfterRedirects === '/public-view' ||
-          event.urlAfterRedirects === '/GrowthInProcurmentTabPublic' ||
-          event.urlAfterRedirects === '/distributionPublic' ||
-          event.urlAfterRedirects === '/IndentPendingWHdashPublic' ||
-          event.urlAfterRedirects === '/Registration' ||
-          event.urlAfterRedirects.includes('po-supply-dispatch-report') ||
-          event.urlAfterRedirects.includes('po-supply-installation-print') ||
-          event.urlAfterRedirects.includes('po-supply-po-print');
+        const wasShellFree = this.isLoginPage;
+        this.isLoginPage = this.isShellFreeUrl(event.urlAfterRedirects || event.url);
+        if (this.isLoginPage) {
+          this.isDrawerOpen = false;
+        } else if (wasShellFree) {
+          // Print/login shell pages force drawer closed — restore for normal pages.
+          this.applyDrawerLayout(this.isMobile, true);
+        }
 
         this.role = this.basicAuthentication.getRole().roleName;
         this.updateMenu();
         this.updatePageHeading(event.urlAfterRedirects);
         this.closeDrawerOnNavigate();
+        this.notificationsOpen = false;
       }
     });
 
@@ -269,23 +305,64 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
 
     this.isDarkMode = this.themeService.isDark;
 
+    this.notificationService.notifications$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((list) => {
+        this.notifications = list;
+        this.unreadNotificationCount = list.filter((item) => !item.read).length;
+        this.cdr.markForCheck();
+      });
+  }
+
+  /** Login / print / public pages — no sidebar or header (ignore ?query). */
+  private isShellFreeUrl(url: string): boolean {
+    const path = (url || '').split('?')[0].split('#')[0].toLowerCase();
+    const exactShellFree = new Set([
+      '/login',
+      '/supplier-login',
+      '/loginemssup',
+      '/otp',
+      '/collector-login',
+      '/public-view',
+      '/growthinprocurmenttabpublic',
+      '/distributionpublic',
+      '/indentpendingwhdashpublic',
+      '/registration',
+      '/transaction/po-supply-dispatch-report',
+      '/transaction/po-supply-installation-print',
+      '/transaction/po-supply-po-print',
+      '/orders/po-print',
+      '/reports/sanction-report',
+    ]);
+    if (exactShellFree.has(path)) {
+      return true;
+    }
+    // Legacy ASPX-style redirects sometimes land with trailing segments.
+    return (
+      path.endsWith('/po-supply-dispatch-report') ||
+      path.endsWith('/po-supply-installation-print') ||
+      path.endsWith('/po-supply-po-print') ||
+      path.endsWith('/orders/po-print') ||
+      path.endsWith('/sanction-report')
+    );
   }
 
   ngDoCheck(): void {
-    const role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
-    // this.role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
+    const role = this.basicAuthentication.getRole().roleName;
     const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
     this.firstname = loginData?.username || 'User';
     this.roleName = role;
-    // this.firstname = sessionStorage.getItem('firstname');
-    if(this.firstname==='Public'){
-      this.firstname='Public View Of Drugs and Consumables'
+    if (this.firstname === 'Public') {
+      this.firstname = 'Public View Of Drugs and Consumables';
     }
 
-    // this.GetVendorDetailsID(sessionStorage.getItem('facilityid'));
+    // Refresh sidebar when department/role changes without full reload.
+    if (role && role !== this.role) {
+      this.role = role;
+      this.updateMenu();
+    }
 
     this.cdr.detectChanges();
-
   }
 
   GetVendorDetailsID(supplierId: any) {
@@ -310,21 +387,15 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   }
   
   private updateMenu() {
-    
-    // Check if the role has categories or direct items
-    const hasCategories = ['SEC1', 'DHS', 'CME'].includes(this.role);
-    
+    const hasCategories = ['SEC1', 'DHS', 'CME', 'Collector', 'DME1'].includes(this.role);
+
     if (hasCategories) {
-      const category = this.menuService.getSelectedCategory();
-      if (category) {
-        this.menuItems = this.menuService.getMenuItems(this.role);
-      } else {
-        // Handle the case where no category is selected
-        this.menuItems = [];
+      // Ensure a category exists so sidebar is never blank after department switch.
+      if (!this.menuService.getSelectedCategory()) {
+        this.menuService.setSelectedCategory('DrugsConsumables');
       }
+      this.menuItems = this.menuService.getMenuItems(this.role);
     } else {
-      
-      // For roles without categories, fetch items directly
       this.menuItems = this.menuService.getMenuItems(this.role);
     }
     this.expandActiveParentMenu();

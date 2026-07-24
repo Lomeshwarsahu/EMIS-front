@@ -1,0 +1,191 @@
+<div class="it-page">
+  <h2 class="page-title">Manage Menus &amp; Sub-Menus</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Role"
+        [(ngModel)]="selectedRoleId"
+        name="role"
+        (ngModelChange)="onRoleChange()"
+        [disabled]="loading">
+        <option [ngValue]="null">Select Role</option>
+        <option *ngFor="let r of roles" [ngValue]="r.RoleId">{{ r.RoleName }}</option>
+      </select>
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="6" />
+
+    <div class="table-wrap" *ngIf="!loading && menuGrid.length">
+      <table
+        class="it-grid"
+        mat-table
+        [dataSource]="gridDataSource"
+        matSort
+        #gridSort="matSort">
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let row; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="roleName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+          <td mat-cell *matCellDef="let row">{{ row.RoleName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="menuName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Menu</th>
+          <td mat-cell *matCellDef="let row" class="wrap-cell">{{ row.MenuName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="noOfSubMenus">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Sub-Menus</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <span class="status-pill">{{ row.NoOfSubMenus }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="menuAction">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Delete</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <button
+              class="action-btn action-btn--danger"
+              (click)="deleteMenu(row.MenuId)"
+              [disabled]="row.NoOfSubMenus > 0"
+              [title]="row.NoOfSubMenus > 0 ? 'Remove sub-menus first' : 'Delete menu from role'">
+              ×
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="subMenuAction">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Sub-Menus</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <button
+              class="link-btn"
+              (click)="openSubMenuModal(row.MenuId, row.MenuName)">
+              Details
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="renameMenu">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Rename</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <ng-container *ngIf="editMenuId !== row.MenuId">
+              <button class="action-btn" (click)="startRenameMenu(row.MenuId, row.MenuName)" title="Rename">
+                ✎
+              </button>
+            </ng-container>
+            <ng-container *ngIf="editMenuId === row.MenuId">
+              <div class="inline-edit">
+                <input
+                  type="text"
+                  [(ngModel)]="editMenuName"
+                  (keyup.enter)="saveRenameMenu()"
+                  class="inline-input" />
+                <button class="action-btn action-btn--success" (click)="saveRenameMenu()">✓</button>
+                <button class="action-btn" (click)="editMenuId = null">✕</button>
+              </div>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="gridColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: gridColumns;"></tr>
+      </table>
+    </div>
+
+    <div class="empty-row" *ngIf="!loading && selectedRoleId && !menuGrid.length">
+      No menus assigned to this role.
+    </div>
+  </div>
+
+  <!-- Sub-Menu Modal -->
+  <div class="it-modal-backdrop" *ngIf="showModal" (click)="closeModal()"></div>
+  <div class="it-modal-card" *ngIf="showModal" (click)="$event.stopPropagation()">
+    <div class="it-modal-head">
+      <h3 class="section-title">Sub-Menus for: {{ modalMenuName }}</h3>
+      <button
+        type="button"
+        class="it-close-btn"
+        aria-label="Close"
+        title="Close"
+        (click)="closeModal()">
+        &times;
+      </button>
+    </div>
+
+    <div class="it-modal-body">
+      <div class="table-toolbar filters filters--compact">
+        <span class="toolbar-info">{{ subMenusInRole.length }} sub-menu(s) assigned</span>
+        <button
+          type="button"
+          class="show-btn action-btn--danger-solid"
+          (click)="removeSelected()"
+          [disabled]="selectedForRemoval.size === 0">
+          Remove Selected ({{ selectedForRemoval.size }})
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table
+          class="it-grid"
+          mat-table
+          [dataSource]="subMenuDataSource"
+          matSort
+          #subSort="matSort">
+          <ng-container matColumnDef="sno">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+            <td mat-cell *matCellDef="let row; let i = index" class="text-center">{{ i + 1 }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="subMenuName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sub-Menu Name</th>
+            <td mat-cell *matCellDef="let row" class="wrap-cell">{{ row.SubMenuName }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="subMenuLink">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Link</th>
+            <td mat-cell *matCellDef="let row"><code>{{ row.SubMenuLink }}</code></td>
+          </ng-container>
+
+          <ng-container matColumnDef="check">
+            <th mat-header-cell *matHeaderCellDef class="text-center" style="width:48px;">Remove</th>
+            <td mat-cell *matCellDef="let row" class="text-center">
+              <input
+                type="checkbox"
+                [checked]="selectedForRemoval.has(row.SMControlId)"
+                (change)="toggleRemoval(row.SMControlId)" />
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="renameSubMenu">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Rename</th>
+            <td mat-cell *matCellDef="let row" class="text-center">
+              <ng-container *ngIf="editSubMenuId !== row.SubMenuId">
+                <button class="action-btn" (click)="startRenameSubMenu(row.SubMenuId, row.SubMenuName)" title="Rename">
+                  ✎
+                </button>
+              </ng-container>
+              <ng-container *ngIf="editSubMenuId === row.SubMenuId">
+                <div class="inline-edit">
+                  <input
+                    type="text"
+                    [(ngModel)]="editSubMenuName"
+                    (keyup.enter)="saveRenameSubMenu()"
+                    class="inline-input" />
+                  <button class="action-btn action-btn--success" (click)="saveRenameSubMenu()">✓</button>
+                  <button class="action-btn" (click)="editSubMenuId = null">✕</button>
+                </div>
+              </ng-container>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="subMenuColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: subMenuColumns;"></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

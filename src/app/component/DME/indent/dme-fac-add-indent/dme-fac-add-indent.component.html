@@ -1,0 +1,238 @@
+<div class="dme-add-indent-page">
+  <div class="page-toolbar">
+    <button
+      type="button"
+      class="show-btn finalize-btn"
+      *ngIf="header && !header.IsCompleted"
+      (click)="openFinalizeModal()"
+      [disabled]="!cart.length">
+      Finalize &amp; Upload Letter
+    </button>
+    <button type="button" class="back-btn" (click)="goBack()">Back to Annual Indent</button>
+  </div>
+
+  <div *ngIf="loading" class="empty-block">Loading indent…</div>
+  <div *ngIf="!loading && !header" class="empty-block error">Indent not found.</div>
+
+  <ng-container *ngIf="!loading && header">
+    <div class="detail-header-card">
+      <div class="detail-header-grid cols-3">
+        <div class="detail-header-item">
+          <span class="label">MC / MCH</span>
+          <span class="value">{{ header.McName || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Budget Head</span>
+          <span class="value">{{ header.BudgetName || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Financial Year</span>
+          <span class="value">{{ header.Year || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Indent Date</span>
+          <span class="value">{{ header.IndentDate || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">AS Letter No</span>
+          <span class="value">{{ header.AsLetterNo || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">AS Date</span>
+          <span class="value">{{ header.AsDate || '—' }}</span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Status</span>
+          <span class="value">
+            <span class="status-pill" [class.status-done]="header.IsCompleted">{{ header.StatusLabel }}</span>
+          </span>
+        </div>
+        <div class="detail-header-item">
+          <span class="label">Indent Id</span>
+          <span class="value">{{ header.IndentId }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-form-card add-panel" *ngIf="!header.IsCompleted">
+      <h3 class="section-title">Add Indent Item (EEL)</h3>
+      <div class="equip-toolbar">
+        <input
+          type="text"
+          class="search-input"
+          [(ngModel)]="equipmentFilter"
+          name="equipmentFilter"
+          placeholder="Search equipment…" />
+        <select [(ngModel)]="selectedItemId" name="selectedItemId" (ngModelChange)="onEquipmentChange()">
+          <option [ngValue]="0">{{ equipmentLoading ? 'Loading…' : 'Select Equipment' }}</option>
+          <option *ngFor="let eq of filteredEquipment" [ngValue]="eq.ItemId">{{ eq.ItemNameDisplay }}</option>
+        </select>
+        <button type="button" class="show-btn" (click)="showDepartments()" [disabled]="deptLoading || !selectedItemId">
+          {{ deptLoading ? 'Loading…' : 'Show Items' }}
+        </button>
+      </div>
+
+      <div class="table-wrap dept-wrap" *ngIf="departments.length">
+        <table class="indent-grid">
+          <thead>
+            <tr>
+              <th class="text-center">S.No</th>
+              <th>Department</th>
+              <th class="text-center">Current Stock</th>
+              <th class="text-center">Pipeline</th>
+              <th class="text-center">Approx Rate</th>
+              <th class="text-center">Required Qty</th>
+              <th>Remarks</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of departments; let i = index" [class.alt-row]="i % 2 === 1">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>{{ row.LocationName }}</td>
+              <td class="text-center">{{ row.CurrentStock }}</td>
+              <td class="text-center">{{ row.Pipeline }}</td>
+              <td class="text-center">
+                <input type="number" min="0" step="0.01" [(ngModel)]="row.rate" [name]="'rate' + row.LocationId" />
+              </td>
+              <td class="text-center">
+                <input type="number" min="1" step="1" [(ngModel)]="row.qty" [name]="'qty' + row.LocationId" />
+              </td>
+              <td>
+                <input type="text" [(ngModel)]="row.remarks" [name]="'remarks' + row.LocationId" maxlength="200" />
+              </td>
+              <td class="text-center">
+                <button type="button" class="show-btn small" (click)="addLine(row)" [disabled]="row.saving">
+                  {{ row.saving ? 'Saving…' : 'Add' }}
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="detail-form-card cart-panel">
+      <div class="cart-head">
+        <h3 class="section-title">Indent Items</h3>
+        <button
+          type="button"
+          class="cancel-btn"
+          *ngIf="!header.IsCompleted"
+          (click)="deleteSelected()"
+          [disabled]="deleting || !selectedCount">
+          {{ deleting ? 'Deleting…' : 'Delete Selected' }}
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="indent-grid">
+          <thead>
+            <tr>
+              <th class="text-center" *ngIf="!header.IsCompleted">
+                <input
+                  type="checkbox"
+                  (change)="toggleSelectAll($any($event.target).checked)"
+                  [disabled]="!cart.length" />
+              </th>
+              <th class="text-center">S.No</th>
+              <th>Code</th>
+              <th>Equipment</th>
+              <th>Department</th>
+              <th class="text-center">Stock</th>
+              <th class="text-center">Pipeline</th>
+              <th class="text-center">Rate</th>
+              <th class="text-center">Qty</th>
+              <th class="text-center">Value</th>
+              <th>Remarks</th>
+              <th>RC Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of cart; let i = index" [class.alt-row]="i % 2 === 1">
+              <td class="text-center" *ngIf="!header.IsCompleted">
+                <input type="checkbox" [(ngModel)]="row.selected" [name]="'sel' + row.IndentItemId" />
+              </td>
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>{{ row.ItemCode }}</td>
+              <td>{{ row.ItemName }}</td>
+              <td>{{ row.LocationName }}</td>
+              <td class="text-center">{{ row.CurrentStock }}</td>
+              <td class="text-center">{{ row.Pipeline }}</td>
+              <td class="text-center">{{ row.EstimatedCost }}</td>
+              <td class="text-center">{{ row.IndentQuantity }}</td>
+              <td class="text-center">{{ row.Value }}</td>
+              <td>{{ row.Remarks || '—' }}</td>
+              <td>{{ row.RcStatus }}</td>
+            </tr>
+            <tr *ngIf="!cart.length">
+              <td [attr.colspan]="header.IsCompleted ? 11 : 12" class="empty-row">No indent items yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="finalize-backdrop" *ngIf="showFinalizeModal" (click)="closeFinalizeModal()">
+    <div class="finalize-modal" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">
+      <div class="finalize-modal-head">
+        <h3>Send Indent to CME</h3>
+        <button type="button" class="modal-close" (click)="closeFinalizeModal()" [disabled]="finalizeLoading">×</button>
+      </div>
+      <p class="finalize-hint">
+        Print indent report, get seal/signature, enter dispatch details, verify OTP, then upload covering letter (≤2&nbsp;MB)
+        and specification PDF (≤5&nbsp;MB).
+      </p>
+      <div class="finalize-grid">
+        <label>
+          <span>Mobile :-</span>
+          <input type="text" [(ngModel)]="finalizeMobile" name="finalizeMobile" maxlength="15" />
+        </label>
+        <label>
+          <span>Email :-</span>
+          <input type="email" [(ngModel)]="finalizeEmail" name="finalizeEmail" maxlength="100" />
+        </label>
+        <div class="otp-row">
+          <button type="button" class="show-btn" (click)="sendFinalizeOtp()" [disabled]="otpSending || finalizeLoading">
+            {{ otpSending ? 'Sending…' : 'Send OTP' }}
+          </button>
+          <span class="facility-name" *ngIf="finalizeFacilityName">{{ finalizeFacilityName }}</span>
+        </div>
+        <label>
+          <span>Enter OTP :-</span>
+          <input type="text" [(ngModel)]="finalizeOtp" name="finalizeOtp" maxlength="4" inputmode="numeric" />
+        </label>
+        <label>
+          <span>Dispatch No :-</span>
+          <input type="text" [(ngModel)]="finalizeDispatchNo" name="finalizeDispatchNo" maxlength="50" />
+        </label>
+        <label>
+          <span>Dispatch Date :-</span>
+          <input
+            type="text"
+            [(ngModel)]="finalizeDispatchDate"
+            name="finalizeDispatchDate"
+            placeholder="dd/MM/yyyy"
+            maxlength="10" />
+        </label>
+        <label class="file-label">
+          <span>Covering Letter (PDF ≤2 MB) :-</span>
+          <input type="file" accept=".pdf,application/pdf" (change)="onLetterSelected($event)" />
+        </label>
+        <label class="file-label">
+          <span>Specification (PDF ≤5 MB) :-</span>
+          <input type="file" accept=".pdf,application/pdf" (change)="onSpecSelected($event)" />
+        </label>
+      </div>
+      <div class="finalize-actions">
+        <button type="button" class="cancel-btn" (click)="closeFinalizeModal()" [disabled]="finalizeLoading">
+          Close
+        </button>
+        <button type="button" class="show-btn" (click)="submitFinalize()" [disabled]="finalizeLoading">
+          {{ finalizeLoading ? 'Uploading…' : 'Send to CME' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

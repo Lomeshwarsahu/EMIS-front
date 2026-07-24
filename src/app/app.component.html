@@ -89,10 +89,50 @@
             </div>
 
             <div class="header-actions-right">
-              <button type="button" class="header-icon-btn" aria-label="Notifications" title="Notifications">
-                <mat-icon>notifications_none</mat-icon>
-                <span class="notify-dot" aria-hidden="true"></span>
-              </button>
+              <div class="header-notify-wrap" [class.is-open]="notificationsOpen">
+                <button
+                  type="button"
+                  class="header-icon-btn header-notify-btn"
+                  aria-label="Notifications"
+                  title="Notifications"
+                  [attr.aria-expanded]="notificationsOpen"
+                  (click)="toggleNotifications($event)">
+                  <mat-icon>{{ unreadNotificationCount ? 'notifications' : 'notifications_none' }}</mat-icon>
+                  <span class="notify-dot" *ngIf="unreadNotificationCount > 0" aria-hidden="true"></span>
+                  <span class="notify-count" *ngIf="unreadNotificationCount > 0">{{ unreadNotificationCount }}</span>
+                </button>
+
+                <div class="header-notify-panel" *ngIf="notificationsOpen" (click)="$event.stopPropagation()" role="menu">
+                  <div class="notify-panel-head">
+                    <strong>Notifications</strong>
+                    <button
+                      type="button"
+                      class="notify-text-btn"
+                      *ngIf="notifications.length"
+                      (click)="markAllNotificationsRead()">
+                      Mark all read
+                    </button>
+                  </div>
+
+                  <div class="notify-panel-body" *ngIf="notifications.length; else emptyNotifications">
+                    <button
+                      type="button"
+                      class="notify-item-btn"
+                      *ngFor="let item of notifications"
+                      [class.is-unread]="!item.read"
+                      (click)="onNotificationClick(item)"
+                      role="menuitem">
+                      <span class="notify-item-title">{{ item.title }}</span>
+                      <span class="notify-item-message">{{ item.message }}</span>
+                      <span class="notify-item-time">{{ item.createdAt | date: 'dd MMM, hh:mm a' }}</span>
+                    </button>
+                  </div>
+
+                  <ng-template #emptyNotifications>
+                    <p class="notify-empty">No notifications yet.</p>
+                  </ng-template>
+                </div>
+              </div>
 
               <div class="header-user">
                 <span class="header-user-name">{{ firstname || 'User' }}</span>
