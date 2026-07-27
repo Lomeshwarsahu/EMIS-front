@@ -120,6 +120,7 @@ import { DeleteMenuComponent } from './component/IT/delete-menu/delete-menu.comp
 import { MasterSupplierDashComponent } from './component/Tender Cell/master-supplier-dash/master-supplier-dash.component';
 import { ConsolidatedIndentCGMSCComponent } from './component/Tender Cell/consolidated-indent-cgmsc/consolidated-indent-cgmsc.component';
 import { TenderCoverAObClaimAfterComponent } from './component/Tender Cell/tender-cover-aob-claim-after/tender-cover-aob-claim-after.component';
+import { PerformanceCertificateComponent } from './Performance/performance-certificate/performance-certificate.component';
 
 
 const routes: Routes = [
@@ -1313,6 +1314,12 @@ const routes: Routes = [
     component: FileMRCDashboardFINFileComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'AU'] },
+  },
+  {
+    path: 'PerformanceCertificate',
+    component: PerformanceCertificateComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
   },
 //#endregion
 

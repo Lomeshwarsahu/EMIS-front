@@ -634,8 +634,8 @@ export class MenuServiceService {
         {
           label: 'Performance',
           route: '',
-          submenu: [{ label: 'Performance Release Files', route: '/complain/report' },
-            { label: 'Cheque Preparation', route: '/complain/report' },
+          submenu: [{ label: 'Performance Release Files', route: '/PerformanceCertificate' },
+            { label: 'Cheque Preparation', route: '/PaymentsCPReport20per' },
 
           ],
         },

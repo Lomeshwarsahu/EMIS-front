@@ -913,3 +913,78 @@ export interface GetDashboardGrid {
   FinRemarks: string; // Isko 'Remarks' column me show karenge
   FacilityAutId: number;
 }
+
+export interface PerformanceGridItem {
+  sno: number;
+  PoId: number;
+  Pono: string;
+  PoDate: string;
+  POQTY: number;
+  InstQTY: number;
+  LastInstDT1: string;
+  Name: string;
+  TenderNo: string;
+  PRequired: string;
+  PStatus: string;
+  SupplierId: number;
+  Potype: string;
+  ReleaseType: string;
+  ReleaseValue: number;
+  ItemCode: string;
+  ItemName: string;
+  CStatus: string;
+  LimitDT: string;
+  PresentFile: string;
+  FileNo: string;
+  Filedt: string;
+  DownloadPerf: string;
+  TenderId: number;
+  RowColor: string;
+  CanRelease: boolean;
+}
+
+export interface TenderLeavy {
+  TenderId: number;
+  TenderNo: string;
+  TenderDate: string;
+  ReleaseType: string;
+  Performacereq: string;
+  ReleaseValue: number;
+  PerformanceEntryDt: string;
+}
+
+export interface PerformanceHeader {
+  PoId: number;
+  PoDate: string;
+  TenderId: number;
+  PoNo: string;
+  NoOfConsignee: number;
+  POQTY: number;
+  DispatchQty: number;
+  ReceiptQty: number;
+  InsQTY: number;
+  ItemCode: string;
+  ItemName: string;
+  Make: string;
+  Model: string;
+  Percentage: number;
+  BasicRate: number;
+  ReleaseType: string;
+  ReleaseValue: number;
+}
+
+export interface ConsigneeInstallation {
+  SlNo: number;
+  LocationName: string;
+  ConsigneeId: number;
+  POQTY: number;
+  Dis: number;
+  ReceiptQTY: number;
+  Insqty: number;
+  InstallationDate: string;
+}
+
+export interface SendToUser {
+  UserId: number;
+  UserName: string;
+}
