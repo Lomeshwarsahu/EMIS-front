@@ -121,6 +121,13 @@ import { MasterSupplierDashComponent } from './component/Tender Cell/master-supp
 import { ConsolidatedIndentCGMSCComponent } from './component/Tender Cell/consolidated-indent-cgmsc/consolidated-indent-cgmsc.component';
 import { TenderCoverAObClaimAfterComponent } from './component/Tender Cell/tender-cover-aob-claim-after/tender-cover-aob-claim-after.component';
 import { PerformanceCertificateComponent } from './Performance/performance-certificate/performance-certificate.component';
+import { StoreHomeComponent } from './component/Master/store-home/store-home.component';
+import { DhsAddFacilityComponent } from './component/Master/dhs-add-facility/dhs-add-facility.component';
+import { DhsFacilityUsersLocationsComponent } from './component/Master/dhs-facility-users-locations/dhs-facility-users-locations.component';
+import { HealthFacilityDetailsComponent } from './component/Master/health-facility-details/health-facility-details.component';
+import { ItemSpecificationComponent } from './component/Master/item-specification/item-specification.component';
+import { MasFacilityUsersLocationsComponent } from './component/Master/mas-facility-users-locations/mas-facility-users-locations.component';
+import { MasterSupplierAddComponent } from './component/Master/master-supplier-add/master-supplier-add.component';
 
 
 const routes: Routes = [
@@ -1320,6 +1327,51 @@ const routes: Routes = [
     component: PerformanceCertificateComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
+  },
+//#endregion
+
+//#region Master Module
+  {
+    path: 'DHSFacilityUsersLocations',
+    component: DhsFacilityUsersLocationsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'DME'] },
+  },
+  {
+    path: 'DHSAddFacility',
+    component: DhsAddFacilityComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'DME'] },
+  },
+  {
+    path: 'HealthFacilityDetails',
+    component: HealthFacilityDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'DME'] },
+  },
+  {
+    path: 'Itemspecification',
+    component: ItemSpecificationComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'MasFacilityUsersLocations',
+    component: MasFacilityUsersLocationsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUPO'] },
+  },
+  {
+    path: 'MasterSupplierAdd',
+    component: MasterSupplierAddComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO'] },
+  },
+  {
+    path: 'StoreHome',
+    component: StoreHomeComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU'] },
   },
 //#endregion
 

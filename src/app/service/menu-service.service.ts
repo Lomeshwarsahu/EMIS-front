@@ -430,6 +430,7 @@ export class MenuServiceService {
           route: '',
           submenu: [
             { label: 'Health Facility Users', route: '/MasFacilityUsers' },
+            { label: 'Add Facility Location', route: '/MasFacilityUsersLocations' },
             { label: 'Add New Items', route: '/ItemsBME' },
             { label: 'Program Master', route: 'ProgramMaster' },
             // { label: 'Mapping to Main items', route: '/masters/map-items' },
@@ -662,11 +663,15 @@ export class MenuServiceService {
           submenu: [
             {
               label: 'Medical College Contact Details',
-              route: '/masters/store-home',
+              route: '/StoreHome',
+            },
+            {
+              label: 'Health Facility Details',
+              route: '/HealthFacilityDetails',
             },
             {
               label: 'Specification Upload',
-              route: '/masters/report-specification',
+              route: '/Itemspecification',
             },
           ],
         },
@@ -769,6 +774,7 @@ export class MenuServiceService {
           submenu: [
             { label: 'Generation FileNo', route: '/GenerationFileNonasti' },
             { label: 'Suppliers', route: '/MasterSupplierDash'},
+            { label: 'Add Supplier', route: '/MasterSupplierAdd'},
 
           ],
         },
@@ -1028,6 +1034,7 @@ export class MenuServiceService {
         DrugsConsumables: [
           { label: 'Home', route: '/home' },
           { label: 'Dashboard', route: '/dhsdash' },
+          { label: 'Health Facility Users', route: '/DHSFacilityUsersLocations' },
           { label: 'Finance', route: '/finance-dash' },
           { label: 'Health Facilities Coverage', route: '/FacCoverage' },
           { label: 'Warehouse Information', route: '/WarehouseInfo' },

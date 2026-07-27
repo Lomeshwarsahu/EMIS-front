@@ -1,5 +1,4 @@
 <div class="supplier-po-page">
-  <h2 class="page-title narrow">Complain Received Against Equipment</h2>
 
   <div class="datagrid">
     <div class="table-toolbar filters filters--compact">
@@ -76,7 +75,12 @@
             <td class="wrap-cell">{{ row.complaintDetails }}</td>
           </tr>
           <tr *ngIf="!rows.length">
-            <td colspan="12" class="empty-row">No Record found.</td>
+            <td colspan="12" class="empty-row">
+              <div class="empty-state">
+                <div style="font-size: 32px; color: #cbd5e1; margin-bottom: 8px;">&#128532;</div>
+                <p>No complaints found. All clear!</p>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

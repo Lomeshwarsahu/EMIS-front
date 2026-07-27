@@ -988,3 +988,98 @@ export interface SendToUser {
   UserId: number;
   UserName: string;
 }
+
+export interface DistrictDto {
+  DP_DistrictID: number;
+  DBStart_Name_En: string;
+}
+
+export interface FacilityTypeDto {
+  FacilityTypeId: number;
+  FacilityTypeName: string;
+}
+
+export interface DHSFacilityGridDto {
+  FacilityTypeId: number;
+  Authority: number;
+  LocationId: number;
+  LocationName: string;
+  District: string;
+  UserId: number;
+  EmailId: string;
+  StoreNo: string;
+  StoreName: string;
+}
+
+export interface NodleMasterGridDto {
+  DistrictName: string;
+  LocationId: number;
+  LocationName: string;
+  FacilityTypeName: string;
+  UserEmail: string;
+  StoreOfficerMob: string;
+  EmailID: string;
+  UserId: number;
+  NodleId: number;
+  NodleName: string;
+  NodleDesignation: string;
+  NodleMobile: string;
+  NodleEmail: string;
+}
+
+export interface EqpCategoryDto {
+  Eqpcatid: number;
+  Eqpcatname: string;
+}
+
+export interface ItemSpecGridDto {
+  ItemId: number;
+  ItemCodeAsPerTender: string;
+  ItemName: string;
+  Eqpcatname: string;
+  HasFile: boolean;
+  FileName: string;
+}
+
+export interface MedicalCollegeUserDto {
+  UserId: number;
+  UserName: string;
+}
+
+export interface MedFacilityGridDto {
+  FacilityTypeId: number;
+  Authority: number;
+  LocationId: number;
+  LocationName: string;
+  District: string;
+  UserId: number;
+  EmailId: string;
+  StoreNo: string;
+  StoreName: string;
+}
+
+export interface SupplierDetailDto {
+  SupplierId: number;
+  Name: string;
+  ServiceEngineerName: string;
+  ServiceEngineerNumber: string;
+  MobileNo: string;
+  EmailId: string;
+  GSTNo: string;
+  PhNo: string;
+  TinNo: string;
+  Address: string;
+}
+
+export interface StoreHomeDto {
+  UserName: string;
+  Address: string;
+  Address2: string;
+  HODName: string;
+  HODNo: string;
+  EmailID: string;
+  LoginEmail: string;
+  StoreOfficer: string;
+  StoreOfficerMob: string;
+  StoreLandline: string;
+}

@@ -1,0 +1,118 @@
+<div class="it-page">
+  <h2 class="page-title">EEL Equipment Specification Upload</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters--compact">
+      <select
+        aria-label="Category"
+        [(ngModel)]="selectedCategoryId"
+        name="category"
+        [disabled]="loading">
+        <option [ngValue]="0">All Categories</option>
+        <option *ngFor="let c of categories" [ngValue]="c.Eqpcatid">{{ c.Eqpcatname }}</option>
+      </select>
+
+      <input
+        type="text"
+        placeholder="Search by item code or name…"
+        [(ngModel)]="searchText"
+        [disabled]="loading" />
+
+      <button
+        type="button"
+        class="show-btn"
+        (click)="loadGrid()"
+        [disabled]="loading">
+        Show
+      </button>
+
+      <button
+        type="button"
+        class="clear-btn"
+        (click)="selectedCategoryId = 0; searchText = ''; loadGrid()"
+        [disabled]="loading">
+        Clear
+      </button>
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="5" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table
+        class="it-grid"
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        #sort="matSort">
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let row; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="itemCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+          <td mat-cell *matCellDef="let row"><code>{{ row.ItemCodeAsPerTender }}</code></td>
+        </ng-container>
+
+        <ng-container matColumnDef="itemName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+          <td mat-cell *matCellDef="let row" class="wrap-cell">{{ row.ItemName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let row">{{ row.Eqpcatname }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <ng-container *ngIf="editingItemId !== row.ItemId">
+              <button
+                *ngIf="row.HasFile"
+                type="button"
+                class="btn-download"
+                (click)="downloadFile(row.ItemId)">
+                Download
+              </button>
+              <span *ngIf="!row.HasFile" class="not-uploaded">Not Uploaded</span>
+              <button
+                type="button"
+                class="btn-edit"
+                (click)="startEdit(row.ItemId)">
+                Edit
+              </button>
+            </ng-container>
+
+            <ng-container *ngIf="editingItemId === row.ItemId">
+              <input
+                #fileInput
+                type="file"
+                accept=".pdf,application/pdf"
+                class="file-input"
+                (change)="onFileSelected($event, row.ItemId)" />
+              <button
+                type="button"
+                class="btn-upload"
+                (click)="uploadFile(row.ItemId)"
+                [disabled]="!selectedFile">
+                Upload
+              </button>
+              <button
+                type="button"
+                class="btn-cancel"
+                (click)="cancelEdit()">
+                Cancel
+              </button>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <div class="empty-row" *ngIf="!dataSource.data.length">No items found.</div>
+    </div>
+  </div>
+</div>

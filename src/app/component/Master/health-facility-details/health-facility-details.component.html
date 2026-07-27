@@ -1,0 +1,190 @@
+<div class="it-page">
+  <h2 class="page-title">Health Facility Details (Nodal Officers)</h2>
+
+  <div class="datagrid">
+    <!-- Toolbar Filters -->
+    <div class="table-toolbar filters--compact">
+      <input
+        type="text"
+        class="search-input"
+        [(ngModel)]="searchQuery"
+        (input)="onFilterChange()"
+        placeholder="Search facility, nodal officer..."
+        aria-label="Search facilities"
+      />
+
+      <select
+        aria-label="District"
+        [(ngModel)]="selectedDistrict"
+        (change)="onFilterChange()">
+        <option value="ALL">All Districts</option>
+        <option *ngFor="let d of districts" [value]="d">{{ d }}</option>
+      </select>
+
+      <select
+        aria-label="Facility Type"
+        [(ngModel)]="selectedFacilityType"
+        (change)="onFilterChange()">
+        <option value="ALL">All Facility Types</option>
+        <option *ngFor="let ft of facilityTypes" [value]="ft">{{ ft }}</option>
+      </select>
+
+      <select
+        aria-label="Status"
+        [(ngModel)]="selectedStatus"
+        (change)="onFilterChange()">
+        <option value="ALL">All Status</option>
+        <option value="ASSIGNED">Assigned Only</option>
+        <option value="PENDING">Pending Only</option>
+      </select>
+
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters()"
+        (click)="clearFilters()">
+        Clear Filter
+      </button>
+
+      <button
+        type="button"
+        class="show-btn export-btn"
+        (click)="exportCsv()"
+        [disabled]="loading || !dataSource.filteredData.length">
+        Export CSV
+      </button>
+    </div>
+
+    <!-- Skeleton Loading -->
+    <app-dme-page-skeleton
+      *ngIf="loading"
+      type="table"
+      [rows]="6"
+      [cols]="9"
+    />
+
+    <!-- Data Table -->
+    <div class="table-wrap" *ngIf="!loading">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="it-grid"
+        matSort
+        #sort="matSort"
+      >
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let row; let i = index" class="text-center">
+            {{ paginator ? paginator.pageIndex * paginator.pageSize + i + 1 : i + 1 }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="districtName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>District</th>
+          <td mat-cell *matCellDef="let row">{{ row.DistrictName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="locationName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+          <td mat-cell *matCellDef="let row">{{ row.LocationName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="facilityType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Facility Type</th>
+          <td mat-cell *matCellDef="let row">{{ row.FacilityTypeName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="nodleName">
+          <th mat-header-cell *matHeaderCellDef>Nodal Name</th>
+          <td mat-cell *matCellDef="let row" class="editable-cell">
+            <input
+              type="text"
+              [(ngModel)]="row.NodleName"
+              placeholder="Enter name"
+              class="cell-input"
+            />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nodleDesignation">
+          <th mat-header-cell *matHeaderCellDef>Designation</th>
+          <td mat-cell *matCellDef="let row" class="editable-cell">
+            <input
+              type="text"
+              [(ngModel)]="row.NodleDesignation"
+              placeholder="Enter designation"
+              class="cell-input"
+            />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nodleEmail">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let row" class="editable-cell">
+            <input
+              type="email"
+              [(ngModel)]="row.NodleEmail"
+              placeholder="Enter email"
+              class="cell-input"
+            />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nodleMobile">
+          <th mat-header-cell *matHeaderCellDef>Mobile</th>
+          <td mat-cell *matCellDef="let row" class="editable-cell">
+            <input
+              type="text"
+              [(ngModel)]="row.NodleMobile"
+              placeholder="Enter mobile"
+              class="cell-input"
+            />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
+          <td mat-cell *matCellDef="let row" class="text-center action-cell">
+            <button
+              *ngIf="row.NodleId === 0 || !row.NodleId"
+              class="show-btn btn-add"
+              (click)="saveNodle(row)"
+            >
+              Add
+            </button>
+
+            <button
+              *ngIf="row.NodleId > 0"
+              class="show-btn btn-update"
+              (click)="updateNodle(row)"
+            >
+              Update
+            </button>
+
+            <button
+              *ngIf="row.NodleId > 0"
+              class="show-btn btn-delete"
+              (click)="deleteNodle(row.NodleId)"
+            >
+              Delete
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <tr class="empty-row" *matNoDataRow>
+          <td [attr.colspan]="displayedColumns.length">No records found.</td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-paginator
+      [pageSize]="15"
+      [pageSizeOptions]="[10, 15, 25, 50, 100]"
+      showFirstLastButtons
+      aria-label="Select page of health facilities"
+    ></mat-paginator>
+  </div>
+</div>

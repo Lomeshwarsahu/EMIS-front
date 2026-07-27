@@ -1,0 +1,62 @@
+<div class="it-page">
+  <h2 class="page-title">{{ isEditMode ? 'Edit Supplier' : 'Supplier Information' }}</h2>
+
+  <div class="datagrid">
+    <app-dme-page-skeleton *ngIf="loading" type="form" />
+
+    <div class="form-card" *ngIf="!loading">
+      <div class="form-grid">
+        <label class="field">
+          <span class="field-label">Supplier Name <em>*</em></span>
+          <input type="text" [(ngModel)]="formData.Name" maxlength="100" [disabled]="saving" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Contact Person Name <em>*</em></span>
+          <input type="text" [(ngModel)]="formData.ContactPersonName" maxlength="100" [disabled]="saving" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Contact Person Number <em>*</em></span>
+          <input type="text" [(ngModel)]="formData.ContactPersonNumber" maxlength="10" [disabled]="saving" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Mobile Number <em>*</em></span>
+          <input type="text" [(ngModel)]="formData.MobileNo" maxlength="10" [disabled]="saving" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Email ID <em>*</em></span>
+          <input type="email" [(ngModel)]="formData.EmailId" maxlength="50" [disabled]="saving" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">GST No <em>*</em></span>
+          <input type="text" [(ngModel)]="formData.GSTNo" maxlength="15" [disabled]="saving" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Phone No</span>
+          <input type="text" [(ngModel)]="formData.PhNo" maxlength="11" [disabled]="saving" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">TIN No</span>
+          <input type="text" [(ngModel)]="formData.TinNo" maxlength="15" [disabled]="saving" />
+        </label>
+
+        <label class="field full-width">
+          <span class="field-label">Address <em>*</em></span>
+          <input type="text" [(ngModel)]="formData.Address" maxlength="500" [disabled]="saving" />
+        </label>
+      </div>
+
+      <div class="actions-row">
+        <button type="button" class="primary-btn" (click)="save()" [disabled]="saving">
+          {{ saving ? 'Saving...' : (isEditMode ? 'Update Supplier' : 'Save Supplier') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="it-page">
+  <!-- <h2 class="page-title">Medical College Contact Details</h2> -->
+
+  <div class="datagrid">
+    <app-dme-page-skeleton *ngIf="loading"></app-dme-page-skeleton>
+
+    <ng-container *ngIf="!loading">
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">User Name</label>
+            <input type="text" [(ngModel)]="formData.UserName" placeholder="User Name" />
+          </div>
+
+          <div class="field">
+            <label class="field-label">Address</label>
+            <input type="text" [(ngModel)]="formData.Address" placeholder="Address" />
+          </div>
+
+          <div class="field">
+            <label class="field-label">Address 2</label>
+            <input type="text" [(ngModel)]="formData.Address2" placeholder="Address 2" />
+          </div>
+
+          <div class="field">
+            <label class="field-label">HOD Name</label>
+            <input type="text" [(ngModel)]="formData.HODName" placeholder="HOD Name" />
+          </div>
+
+          <div class="field">
+            <label class="field-label">HOD No</label>
+            <input type="text" [(ngModel)]="formData.HODNo" placeholder="HOD No" />
+          </div>
+
+          <div class="field">
+            <label class="field-label">Office Email</label>
+            <input type="email" [(ngModel)]="formData.EmailID" placeholder="Office Email" />
+          </div>
+
+          <div class="field">
+            <label class="field-label">Store Officer Name</label>
+            <input type="text" [(ngModel)]="formData.StoreOfficer" placeholder="Store Officer Name" />
+          </div>
+
+          <div class="field">
+            <label class="field-label">Store Officer Mobile</label>
+            <input type="text" [(ngModel)]="formData.StoreOfficerMob" placeholder="Store Officer Mobile" />
+          </div>
+
+          <div class="field">
+            <label class="field-label">Store Landline</label>
+            <input type="text" [(ngModel)]="formData.StoreLandline" placeholder="Store Landline" />
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button class="primary-btn" [disabled]="saving" (click)="save()">
+          {{ saving ? 'Saving...' : 'Save' }}
+        </button>
+      </div>
+    </ng-container>
+  </div>
+</div>

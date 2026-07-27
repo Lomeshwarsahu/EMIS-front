@@ -50,6 +50,25 @@
   display: none;
 }
 
+.report-info-note {
+  font-size: 11.5px;
+  color: #64748b;
+  background: #f1f5f9;
+  border-left: 3px solid #3b82f6;
+  padding: 4px 10px;
+  border-radius: 4px;
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host-context(html[data-theme='dark']) .report-info-note {
+  background: #1e293b;
+  color: #94a3b8;
+  border-left-color: #6366f1;
+}
+
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -651,6 +670,24 @@ table.filter-panel .label-col {
 
 :host-context(html[data-theme='dark']) .supplier-po-page .empty-row {
   color: #94a3b8 !important;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+:host-context(html[data-theme='dark']) .empty-state p {
+  color: #64748b;
 }
 
 .loading-text {
