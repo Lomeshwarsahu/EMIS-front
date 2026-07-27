@@ -545,7 +545,15 @@ export class MenuServiceService {
             { label: 'Fund Receipt Entry', route: '/BudgentEntry' },
           ],
         },
-            {
+        {
+          label: 'EMD & SD Release',
+          route: '',
+          submenu: [
+            { label: 'EMD Refund Request File Movement', route: '/EMDRefundTenderwise' },
+            { label: 'SD Release Finance', route: '/SDReleaseFInance' },
+          ],
+        },
+        {
           label: 'Reports',
           route: '',
           submenu: [

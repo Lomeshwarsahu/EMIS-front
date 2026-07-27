@@ -1,0 +1,218 @@
+<div class="it-page">
+  <h2 class="page-title">Security Deposit (SD) Release</h2>
+
+  <div class="datagrid">
+    <!-- Filter Toolbar -->
+    <div class="table-toolbar filters--compact">
+      <select
+        aria-label="Select Tender Number"
+        [(ngModel)]="selectedTenderId"
+        (change)="onTenderChange()">
+        <option [ngValue]="0">-Select Tender-</option>
+        <option *ngFor="let t of tenders" [ngValue]="t.tenderId">
+          {{ t.tenderNo }}
+        </option>
+      </select>
+
+      <select
+        aria-label="Select Supplier"
+        [(ngModel)]="selectedSupplierId"
+        (change)="loadGrid()">
+        <option [ngValue]="0">-All Suppliers-</option>
+        <option *ngFor="let s of suppliers" [value]="s.supplierId">
+          {{ s.supplierName }}
+        </option>
+      </select>
+
+      <button
+        type="button"
+        class="show-btn"
+        [disabled]="loading"
+        (click)="loadGrid()">
+        Show Details
+      </button>
+
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters()"
+        (click)="clearFilters()">
+        Clear Filter
+      </button>
+    </div>
+
+    <!-- Skeleton Loading -->
+    <app-dme-page-skeleton
+      *ngIf="loading"
+      type="table"
+      [rows]="6"
+      [cols]="10"
+    />
+
+    <!-- Data Table -->
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="it-grid">
+        <thead>
+          <tr>
+            <th class="text-center col-chk">
+              <input
+                type="checkbox"
+                [(ngModel)]="selectAll"
+                (change)="toggleAll()"
+                aria-label="Select All SD Rows"
+              />
+            </th>
+            <th class="text-center col-sn">S.No</th>
+            <th>Supplier Name</th>
+            <th>Tender No</th>
+            <th>PO No</th>
+            <th class="text-center">PO Date</th>
+            <th class="text-right">SD Amount</th>
+            <th class="text-center">Mode</th>
+            <th class="text-center">SD Issue Date</th>
+            <th class="text-center">SD Maturity Date</th>
+            <th class="text-center">Entry Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.selected-row]="row.selected">
+            <td class="text-center col-chk">
+              <input
+                type="checkbox"
+                [(ngModel)]="row.selected"
+                (change)="onRowSelectChange()"
+                aria-label="Select row"
+              />
+            </td>
+            <td class="text-center col-sn">{{ i + 1 }}</td>
+            <td>{{ row.supplierName }}</td>
+            <td>{{ row.tenderNo }}</td>
+            <td class="font-medium">{{ row.poNo }}</td>
+            <td class="text-center">{{ row.poDate }}</td>
+            <td class="text-right font-bold">₹{{ row.sdAmount | number: '1.2-2' }}</td>
+            <td class="text-center">{{ row.sdType }}</td>
+            <td class="text-center">{{ row.sdIssueDate }}</td>
+            <td class="text-center">{{ row.sdMaturityDate }}</td>
+            <td class="text-center">{{ row.sdEntryDate }}</td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="11" class="empty-row">No Records Found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Action Toolbar Footer -->
+    <div class="action-footer" *ngIf="!loading && rows.length">
+      <span class="selected-count-label" *ngIf="selectedCount > 0">
+        {{ selectedCount }} item(s) selected (Total SD: ₹{{ sumSdAmount | number: '1.2-2' }})
+      </span>
+      <button
+        type="button"
+        class="show-btn btn-add"
+        [disabled]="selectedCount === 0"
+        (click)="openReleasePanel()"
+      >
+        Click to Release
+      </button>
+    </div>
+  </div>
+
+  <!-- SD Release Details Modal Form -->
+  <div class="modal-backdrop" *ngIf="showReleasePanel" (click)="closeReleasePanel()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">SD Release Details</h3>
+        <button type="button" class="close-btn" (click)="closeReleasePanel()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-row">
+          <label class="form-label">Total SD Amount</label>
+          <input type="text" [value]="'₹' + (sumSdAmount | number: '1.2-2')" class="form-input readonly-input" readonly />
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Recovered Amount</label>
+          <input
+            type="number"
+            [(ngModel)]="recoveredAmount"
+            (input)="onRecoveredAmountChange()"
+            min="0"
+            step="0.01"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Release Amount</label>
+          <input
+            type="number"
+            [(ngModel)]="releaseAmount"
+            min="0"
+            step="0.01"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Release Type</label>
+          <div class="radio-options">
+            <label class="radio-label">
+              <input
+                type="radio"
+                name="releaseType"
+                value="Document Form"
+                [(ngModel)]="releaseType"
+              />
+              Document Form
+            </label>
+            <label class="radio-label">
+              <input
+                type="radio"
+                name="releaseType"
+                value="Core Transfer"
+                [(ngModel)]="releaseType"
+              />
+              Core Transfer
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Cheque / Refund Date</label>
+          <input type="date" [(ngModel)]="refundDate" class="form-input" />
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Cheque No / Doc No</label>
+          <input type="text" [(ngModel)]="chequeNo" placeholder="Enter Cheque / Doc No" class="form-input" />
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Remarks</label>
+          <input type="text" [(ngModel)]="remarks" placeholder="Enter Remarks" class="form-input" />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="show-btn btn-add"
+          [disabled]="saving"
+          (click)="saveRelease()"
+        >
+          {{ saving ? 'Releasing...' : 'Save & Release' }}
+        </button>
+        <button
+          type="button"
+          class="show-btn clear-btn"
+          [disabled]="saving"
+          (click)="closeReleasePanel()"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

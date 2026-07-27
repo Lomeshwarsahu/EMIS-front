@@ -114,6 +114,8 @@ import { TDSdataReportComponent } from './Reports/tdsdata-report/tdsdata-report.
 import { PaymentsCPReport20perComponent } from './Reports/payments-cpreport20per/payments-cpreport20per.component';
 import { FileMRCDashboardFINFileComponent } from './GM Finance/file-mrcdashboard-finfile/file-mrcdashboard-finfile.component';
 import { SanctionComponent } from './GM Finance/sanction/sanction.component';
+import { EmdRefundTenderwiseComponent } from './component/Finance/emd-refund-tenderwise/emd-refund-tenderwise.component';
+import { SdReleaseFinanceComponent } from './component/Finance/sd-release-finance/sd-release-finance.component';
 import { AddSubMenuComponent } from './component/IT/add-sub-menu/add-sub-menu.component';
 import { AddRoleInScreenComponent } from './component/IT/add-role-in-screen/add-role-in-screen.component';
 import { DeleteMenuComponent } from './component/IT/delete-menu/delete-menu.component';
@@ -1244,6 +1246,35 @@ const routes: Routes = [
   },
 //#region GM Finance
 // 
+  {
+    path: 'EMDRefundTenderwise',
+    component: EmdRefundTenderwiseComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'CGMSC', 'AD'] },
+  },
+  {
+    path: 'emd-refund/tenderwise',
+    component: EmdRefundTenderwiseComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'CGMSC', 'AD'] },
+  },
+  {
+    path: 'SDReleaseFInance',
+    component: SdReleaseFinanceComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'CGMSC', 'AD'] },
+  },
+  {
+    path: 'SDReleaseFinance',
+    redirectTo: 'SDReleaseFInance',
+    pathMatch: 'full',
+  },
+  {
+    path: 'emd-refund/sd-release-finance',
+    component: SdReleaseFinanceComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'CGMSC', 'AD'] },
+  },
   {
     path: 'EditReceivedAndInstallationDate',
     component: EditReceivedAndInstallationDateComponent,
