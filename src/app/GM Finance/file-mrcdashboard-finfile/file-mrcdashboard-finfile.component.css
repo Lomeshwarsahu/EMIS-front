@@ -65,58 +65,39 @@
   min-height: 0;
 }
 
+/* Toolbar & Filters (Standard EMS Layout) */
 .table-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 8px;
   margin-bottom: 8px;
   flex-shrink: 0;
 }
 
-.filter-group {
+.filter-controls {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 
-.filter-group select {
-  flex: none !important;
-  height: 34px !important;
-  width: 100%;
-}
-
-.filter-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: #64748b;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-
-:host-context(html[data-theme='dark']) .filter-label {
-  color: #94a3b8;
+.export-actions {
+  margin-left: auto;
 }
 
 .filters--compact select {
-  min-width: 200px;
-  max-width: min(360px, 100%);
-  flex: 1 1 200px;
+  min-width: 150px;
   min-height: 34px;
-  padding: 0 12px;
+  padding: 0 14px;
+  font-size: 13px;
   border: 1px solid #cbd5e1;
   border-radius: 999px;
   background: #fff;
-  font-size: 13px;
-  color: #334155;
+  color: inherit;
   outline: none;
   cursor: pointer;
-  transition: border-color 0.15s ease-in-out;
-}
-
-.filters--compact select:focus {
-  border-color: var(--page-accent);
 }
 
 :host-context(html[data-theme='dark']) .filters--compact select {
@@ -127,19 +108,14 @@
 
 .search-input {
   min-height: 34px;
-  padding: 0 12px;
+  padding: 0 14px;
   border: 1px solid #cbd5e1;
   border-radius: 999px;
   background: #fff;
   font-size: 13px;
-  color: #334155;
+  color: inherit;
   outline: none;
-  min-width: 160px;
-  flex: 0 1 200px;
-}
-
-.search-input:focus {
-  border-color: var(--page-accent);
+  min-width: 170px;
 }
 
 :host-context(html[data-theme='dark']) .search-input {
@@ -153,7 +129,7 @@
   align-items: center;
   justify-content: center;
   min-height: 34px;
-  padding: 6px 16px;
+  padding: 0 16px;
   border-radius: 999px;
   font-size: 13px;
   font-weight: 600;
@@ -173,11 +149,37 @@
   cursor: not-allowed;
 }
 
-.accent-btn {
+.btn-excel {
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-excel:hover:not(:disabled) {
+  background: #059669 !important;
+  filter: brightness(0.95);
+}
+
+.show-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-add {
   background: var(--page-accent);
   color: #fff;
 }
 
+.clear-btn {
+  background: #64748b;
+  color: #fff;
+}
+
+/* Table Wrap & Grid */
 .table-wrap {
   flex: 1 1 auto;
   min-height: 0;
@@ -223,7 +225,7 @@
   font-size: 13px;
   color: #334155 !important;
   border-bottom: 1px solid var(--table-row-border) !important;
-  padding: 10px 12px;
+  padding: 8px 12px;
   white-space: nowrap;
   background: var(--table-cell-bg);
 }
@@ -255,11 +257,7 @@
   color: #475569;
 }
 
-.status-pill.status-done {
-  background: #10b981;
-  color: #fff;
-}
-
+.status-pill.status-done,
 .status-pill.status-fit {
   background: #10b981;
   color: #fff;
@@ -274,8 +272,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 28px;
-  padding: 4px 14px;
+  min-height: 26px;
+  padding: 3px 10px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
@@ -295,17 +293,9 @@
   color: #fff;
 }
 
-.pill-btn--accent:hover:not(:disabled) {
-  filter: brightness(0.9);
-}
-
 .pill-btn--warn {
   background: #f59e0b;
   color: #fff;
-}
-
-.pill-btn--warn:hover:not(:disabled) {
-  filter: brightness(0.9);
 }
 
 .pill-btn--ok {
@@ -313,16 +303,12 @@
   color: #fff;
 }
 
-.pill-btn--ok:hover:not(:disabled) {
-  filter: brightness(0.9);
-}
-
 .pill-btn--info {
   background: #6366f1;
   color: #fff;
 }
 
-.pill-btn--info:hover:not(:disabled) {
+.pill-btn:hover:not(:disabled) {
   filter: brightness(0.9);
 }
 
@@ -352,124 +338,114 @@
   font-size: 13px;
 }
 
-/* Modal styles */
-.modal-field-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px 16px;
+/* ==========================================================================
+   MODAL STYLING (Solid non-transparent background, standard EMS layout)
+   ========================================================================== */
+
+::ng-deep .modal-backdrop {
+  z-index: 99990 !important;
+  background-color: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(3px);
 }
 
-.field {
+::ng-deep .modal {
+  z-index: 99999 !important;
+}
+
+::ng-deep .modal-content {
+  background-color: #ffffff !important;
+  color: #334155 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15) !important;
+}
+
+:host-context(html[data-theme='dark']) ::ng-deep .modal-content {
+  background-color: #141820 !important;
+  color: #e2e8f0 !important;
+  border-color: #262b36 !important;
+}
+
+::ng-deep .modal-header {
+  background: var(--table-head-bg) !important;
+  color: var(--table-head-text) !important;
+  border-bottom: none !important;
+  padding: 12px 16px;
+}
+
+::ng-deep .modal-header .modal-title {
+  color: var(--table-head-text) !important;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+::ng-deep .modal-header .btn-close {
+  filter: var(--btn-close-filter, brightness(0) invert(1)) !important;
+  opacity: 0.8;
+}
+
+::ng-deep .modal-body {
+  padding: 16px;
+}
+
+.form-row {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  margin-bottom: 12px;
 }
 
-.field-label {
-  font-size: 12px;
+.form-label {
+  font-size: 0.78rem;
   font-weight: 600;
   color: inherit;
 }
 
-.field-label em {
+.form-label em {
   color: #ef4444;
   font-style: normal;
 }
 
-.field select,
-.field textarea,
-.field input {
-  min-height: 34px;
-  padding: 0 12px;
+.form-input,
+.form-row select,
+.form-row input,
+.form-row textarea {
+  width: 100%;
+  min-height: 32px;
+  padding: 4px 8px;
+  font-size: 13px;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
-  background: #fff;
-  font-size: 13px;
+  background: #ffffff;
   color: inherit;
-  font-family: inherit;
   outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
 }
 
-.field select:focus,
-.field textarea:focus,
-.field input:focus {
-  border-color: var(--page-accent);
-}
-
-:host-context(html[data-theme='dark']) .field select,
-:host-context(html[data-theme='dark']) .field textarea,
-:host-context(html[data-theme='dark']) .field input {
+:host-context(html[data-theme='dark']) .form-input,
+:host-context(html[data-theme='dark']) .form-row select,
+:host-context(html[data-theme='dark']) .form-row input,
+:host-context(html[data-theme='dark']) .form-row textarea {
   background: #0c0e12;
   border-color: #262b36;
   color: #e2e8f0;
 }
 
-.modal-actions {
+.form-input:focus,
+.form-row select:focus,
+.form-row input:focus,
+.form-row textarea:focus {
+  border-color: var(--page-accent);
+}
+
+.modal-footer {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: 8px;
-  margin-top: 12px;
-}
-
-.primary-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 34px;
-  padding: 6px 20px;
-  border-radius: 999px;
-  border: none;
-  background: var(--page-accent);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.primary-btn:hover:not(:disabled) {
-  filter: brightness(0.9);
-}
-
-.primary-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-@media (max-width: 767.98px) {
-  .filters--compact select {
-    width: 100%;
-    max-width: none;
-    flex: 1 1 100%;
-  }
-
-  .search-input {
-    flex: 1 1 100%;
-  }
-}
-
-/* Modals styling for theme consistency */
-::ng-deep .modal-content {
-  background-color: var(--table-cell-bg) !important;
-  color: inherit !important;
-  border: 1px solid var(--table-wrap-border) !important;
-  border-radius: 12px !important;
-}
-
-::ng-deep .modal-header {
-  border-bottom: 1px solid var(--table-row-border) !important;
-  color: inherit !important;
-}
-
-::ng-deep .modal-header .modal-title {
-  color: inherit !important;
-  font-weight: 750 !important;
-}
-
-::ng-deep .modal-body {
-  color: inherit !important;
-}
-
-::ng-deep .btn-close {
-  filter: var(--btn-close-filter) !important;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--table-row-border);
 }

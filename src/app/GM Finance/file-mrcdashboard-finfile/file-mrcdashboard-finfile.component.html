@@ -2,51 +2,49 @@
   <h2 class="page-title">Online Received / Installation Dashboard</h2>
 
   <div class="datagrid">
-    <!-- Filters toolbar -->
-    <div class="table-toolbar filters filters--compact">
-      <label class="filter-group">
-        <span class="filter-label">PO Type</span>
-        <select [(ngModel)]="poType" name="poType">
+    <!-- Filter Toolbar (Standard EMS Layout) -->
+    <div class="table-toolbar filters--compact">
+      <div class="filter-controls">
+        <select aria-label="Select PO Type" [(ngModel)]="poType" name="poType" (change)="GetDashboardGrid()">
           <option value="All">All PO</option>
           <option value="NP">Normal PO</option>
           <option value="CP">Covid PO</option>
         </select>
-      </label>
 
-      <label class="filter-group">
-        <span class="filter-label">Payment</span>
-        <select [(ngModel)]="paymentType" name="paymentType">
-          <option value="All">All</option>
+        <select aria-label="Select Payment Status" [(ngModel)]="paymentType" name="paymentType"
+          (change)="GetDashboardGrid()">
+          <option value="All">All Statuses</option>
           <option value="FP">Fit For Payment</option>
-          <option value="NFP">Not Fit</option>
+          <option value="NFP">Not Fit For Payment</option>
         </select>
-      </label>
 
-      <label class="filter-group">
-        <span class="filter-label">Directorate</span>
-        <ng-select [items]="Diectoratelist" bindLabel="facility_aut_name" bindValue="facility_aut_id" appendTo="body"
-          [(ngModel)]="authorityId" name="selectedDiectorate" placeholder="Select Directorate"
-          (change)="onSelectedDiectorate($event)" [disabled]="loading" style="min-width:200px;max-width:320px;">
-        </ng-select>
-      </label>
+        <select aria-label="Select Directorate" [(ngModel)]="authorityId" name="authorityId"
+          (change)="GetDashboardGrid()">
+          <option [value]="5">DME</option>
+          <option *ngFor="let d of Diectoratelist" [value]="d.facility_aut_id">
+            {{ d.facility_aut_name }}
+          </option>
+        </select>
 
-      <button type="button" class="show-btn accent-btn" (click)="GetDashboardGrid()" [disabled]="loading">
-        {{ loading ? 'Loading…' : 'Show Details' }}
-      </button>
+        <button type="button" class="show-btn clear-btn" *ngIf="hasActiveFilters()" (click)="clearFilters()">
+          Clear Filter
+        </button>
 
-      <input type="text" class="search-input" placeholder="Search…" (keyup)="applyTextFilter($event)" />
+        <input type="text" class="search-input" placeholder="Search…" (keyup)="applyTextFilter($event)" />
+      </div>
 
-      <button type="button" class="show-btn" [matMenuTriggerFor]="exportMenu">Export</button>
-      <mat-menu #exportMenu="matMenu">
-        <button mat-menu-item
-          (click)="exporter.exportTable('xlsx', { fileName: 'FileDashboard', sheet: 'Dashboard' })">Excel</button>
-      </mat-menu>
+      <div class="export-actions">
+        <button type="button" class="show-btn btn-excel"
+          (click)="exporter.exportTable('xlsx', { fileName: 'FileDashboard', sheet: 'Dashboard' })">
+          <i class="bi bi-file-earmark-excel me-1"></i> Export Excel
+        </button>
+      </div>
     </div>
 
-    <!-- Skeleton -->
+    <!-- Skeleton Loading -->
     <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
 
-    <!-- Table -->
+    <!-- Data Table -->
     <div class="table-wrap" *ngIf="!loading">
       <table class="it-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort
         #sort="matSort">
@@ -72,7 +70,7 @@
         </ng-container>
 
         <ng-container matColumnDef="PoDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Date</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">PO Date</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.PoDate }}</td>
         </ng-container>
 
@@ -88,7 +86,7 @@
 
         <ng-container matColumnDef="PoValue">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right">PO Value</th>
-          <td mat-cell *matCellDef="let element" class="text-right">{{ element.PoValue }}</td>
+          <td mat-cell *matCellDef="let element" class="text-right">₹{{ element.PoValue | number }}</td>
         </ng-container>
 
         <ng-container matColumnDef="SupplyQty">
@@ -107,7 +105,7 @@
         </ng-container>
 
         <ng-container matColumnDef="Conditond">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fit Status</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Fit Status</th>
           <td mat-cell *matCellDef="let element" class="text-center">
             <span class="status-pill" [class.status-fit]="element.Conditond === 'Fit For Payment'"
               [class.status-unfit]="element.Conditond === 'Not Fit For Payment'">
@@ -127,7 +125,7 @@
         </ng-container>
 
         <ng-container matColumnDef="LastRDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Receipt</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Last Receipt</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.LastRDate }}</td>
         </ng-container>
 
@@ -137,12 +135,12 @@
         </ng-container>
 
         <ng-container matColumnDef="PoType">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Type</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">PO Type</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.PoType }}</td>
         </ng-container>
 
         <ng-container matColumnDef="FileDt">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>File Date</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">File Date</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.FileDt }}</td>
         </ng-container>
 
@@ -186,12 +184,12 @@
         </ng-container>
 
         <ng-container matColumnDef="ToDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>To Date</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">To Date</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.ToDate }}</td>
         </ng-container>
 
         <ng-container matColumnDef="EntDt">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Entry Date</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Entry Date</th>
           <td mat-cell *matCellDef="let element" class="text-center">{{ element.EntDt }}</td>
         </ng-container>
 
@@ -208,7 +206,9 @@
           <th mat-header-cell *matHeaderCellDef class="text-center">Reason</th>
           <td mat-cell *matCellDef="let element" class="text-center">
             <button class="pill-btn pill-btn--warn" [disabled]="element.ReasonName && element.ReasonName !== ''"
-              (click)="openReasonModal(element.PoId)">Add</button>
+              (click)="openReasonModal(element.PoId)">
+              Add
+            </button>
           </td>
         </ng-container>
 
@@ -217,15 +217,18 @@
           <td mat-cell *matCellDef="let element" class="text-center">
             <button class="pill-btn pill-btn--ok"
               [disabled]="!element.ReasonName || element.ReasonName === '' || element.IsSolved === 'Y'"
-              (click)="openResolveModal(element.PoId)">Resolve</button>
+              (click)="openResolveModal(element.PoId)">
+              Resolve
+            </button>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="Present_File_Action">
           <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
           <td mat-cell *matCellDef="let element" class="text-center">
-            <button class="pill-btn pill-btn--accent"
-              (click)="ONOpenModal(element.PoId, element.FileNo)">Forward</button>
+            <button class="pill-btn pill-btn--accent" (click)="ONOpenModal(element.PoId, element.FileNo)">
+              Forward
+            </button>
           </td>
         </ng-container>
 
@@ -254,43 +257,46 @@
   </div>
 </div>
 
-<!-- Send / Forward Modal -->
-<div class="modal fade" id="SendModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+<!-- Send / Forward File Modal (Standard EMS Modal Structure) -->
+<div class="modal fade" id="SendModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Forward File</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <h5 class="modal-title">Forward Physical File (Nasti)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form #forwardForm="ngForm" (ngSubmit)="saveForward(forwardForm)">
-          <div class="modal-field-grid">
-            <label class="field">
-              <span class="field-label">Send <em>*</em></span>
-              <select [(ngModel)]="Sendoption" name="Send" (change)="Getsendto()" required>
-                <option value="">Select</option>
-                <option value="S">Send</option>
-              </select>
-            </label>
-            <label class="field">
-              <span class="field-label">Send To <em>*</em></span>
-              <select [(ngModel)]="sendTo" name="sendTo" required>
-                <option value="">Select User</option>
-                <option *ngFor="let user of userList" [value]="user.user_id">{{ user.user_name }}</option>
-              </select>
-            </label>
-            <label class="field">
-              <span class="field-label">Remarks <em>*</em></span>
-              <textarea rows="1" placeholder="Enter remarks…" [(ngModel)]="remarks" name="remarks" required></textarea>
-            </label>
-            <label class="field">
-              <span class="field-label">Forward Date <em>*</em></span>
-              <input type="date" [(ngModel)]="forwardDate" name="forwardDate" required />
-            </label>
+          <div class="form-row">
+            <label class="form-label">Send Flag <em>*</em></label>
+            <select [(ngModel)]="Sendoption" name="Send" (change)="Getsendto()" class="form-input" required>
+              <option value="">-- Select Option --</option>
+              <option value="S">Send File</option>
+            </select>
           </div>
-          <div class="modal-actions">
-            <button type="submit" class="primary-btn" [disabled]="forwardForm.invalid">Save</button>
-            <button type="button" class="show-btn" data-bs-dismiss="modal">Cancel</button>
+
+          <div class="form-row">
+            <label class="form-label">Send To Officer <em>*</em></label>
+            <select [(ngModel)]="sendTo" name="sendTo" class="form-input" required [disabled]="!Sendoption">
+              <option value="">-- Select User --</option>
+              <option *ngFor="let user of userList" [value]="user.user_id">{{ user.user_name }}</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Forward Date <em>*</em></label>
+            <input type="date" [(ngModel)]="forwardDate" name="forwardDate" class="form-input" required />
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Remarks <em>*</em></label>
+            <textarea rows="2" placeholder="Enter remarks…" [(ngModel)]="remarks" name="remarks" class="form-input"
+              required></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="show-btn btn-add" [disabled]="forwardForm.invalid">Forward File</button>
+            <button type="button" class="show-btn clear-btn" data-bs-dismiss="modal">Cancel</button>
           </div>
         </form>
       </div>
@@ -298,33 +304,33 @@
   </div>
 </div>
 
-<!-- Reason Modal -->
+<!-- Reason Modal (Standard EMS Modal Structure) -->
 <div class="modal fade" id="ReasonModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add File Holding Reason</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form #reasonForm="ngForm" (ngSubmit)="saveReason(reasonForm)">
-          <div class="modal-field-grid">
-            <label class="field">
-              <span class="field-label">Reason <em>*</em></span>
-              <select [(ngModel)]="selectedReasonId" name="reasonId" required>
-                <option value="">Select Reason</option>
-                <option *ngFor="let r of reasonList" [ngValue]="r.ReasonId">{{ r.ReasonName }}</option>
-              </select>
-            </label>
-            <label class="field">
-              <span class="field-label">Remarks <em>*</em></span>
-              <textarea rows="2" placeholder="Enter remarks…" [(ngModel)]="reasonRemarks" name="reasonRemarks"
-                required></textarea>
-            </label>
+          <div class="form-row">
+            <label class="form-label">Reason Master <em>*</em></label>
+            <select [(ngModel)]="selectedReasonId" name="reasonId" class="form-input" required>
+              <option value="">-- Select Hold Reason --</option>
+              <option *ngFor="let r of reasonList" [value]="r.ReasonId">{{ r.ReasonName }}</option>
+            </select>
           </div>
-          <div class="modal-actions">
-            <button type="submit" class="primary-btn" [disabled]="reasonForm.invalid">Save Reason</button>
-            <button type="button" class="show-btn" data-bs-dismiss="modal">Cancel</button>
+
+          <div class="form-row">
+            <label class="form-label">Remarks <em>*</em></label>
+            <textarea rows="2" placeholder="Enter remarks…" [(ngModel)]="reasonRemarks" name="reasonRemarks"
+              class="form-input" required></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="show-btn btn-add" [disabled]="reasonForm.invalid">Save Reason</button>
+            <button type="button" class="show-btn clear-btn" data-bs-dismiss="modal">Cancel</button>
           </div>
         </form>
       </div>
@@ -332,28 +338,28 @@
   </div>
 </div>
 
-<!-- Resolve Modal -->
+<!-- Resolve Modal (Standard EMS Modal Structure) -->
 <div class="modal fade" id="ResolveModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Resolve Reason</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <h5 class="modal-title">Resolve File Hold Reason</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form #resolveForm="ngForm" (ngSubmit)="saveResolve(resolveForm)">
-          <div class="modal-field-grid">
-            <label class="field">
-              <span class="field-label">Select Reason <em>*</em></span>
-              <select [(ngModel)]="selectedSorId" name="sorId" required>
-                <option value="">Select Reason</option>
-                <option *ngFor="let r of resolveReasonList" [ngValue]="r.SorId">{{ r.ReasonName }} — {{ r.Remarks }}</option>
-              </select>
-            </label>
+          <div class="form-row">
+            <label class="form-label">Active Hold Reason <em>*</em></label>
+            <select [(ngModel)]="selectedSorId" name="sorId" class="form-input" required>
+              <option value="">-- Select Reason to Resolve --</option>
+              <option *ngFor="let r of resolveReasonList" [value]="r.SorId">{{ r.ReasonName }} — {{ r.Remarks }}
+              </option>
+            </select>
           </div>
-          <div class="modal-actions">
-            <button type="submit" class="primary-btn" [disabled]="resolveForm.invalid">Mark as Solved</button>
-            <button type="button" class="show-btn" data-bs-dismiss="modal">Cancel</button>
+
+          <div class="modal-footer">
+            <button type="submit" class="show-btn btn-add" [disabled]="resolveForm.invalid">Mark as Solved</button>
+            <button type="button" class="show-btn clear-btn" data-bs-dismiss="modal">Cancel</button>
           </div>
         </form>
       </div>

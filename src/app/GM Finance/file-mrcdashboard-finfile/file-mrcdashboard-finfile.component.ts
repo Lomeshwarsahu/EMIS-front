@@ -167,6 +167,18 @@ export class FileMRCDashboardFINFileComponent {
     // this.Getyears();
     this.GetDiectorate();
   }
+  hasActiveFilters(): boolean {
+    return this.poType !== 'All' || this.paymentType !== 'All' || this.authorityId != 5;
+  }
+
+  clearFilters(): void {
+    this.poType = 'All';
+    this.paymentType = 'All';
+    this.authorityId = 5;
+    this.dataSource.filter = '';
+    this.GetDashboardGrid();
+  }
+
   search() {
     // debugger;
     if (this.searchMode === 'po') {
@@ -239,7 +251,7 @@ export class FileMRCDashboardFINFileComponent {
     const modalEl = document.getElementById('ReasonModal')!;
     document.body.appendChild(modalEl);
     (modalEl as HTMLElement).style.zIndex = '99999';
-    this.SendModal = new bootstrap.Modal(modalEl, { backdrop: false, keyboard: true, focus: true });
+    this.SendModal = new bootstrap.Modal(modalEl, { backdrop: true, keyboard: true, focus: true });
     this.SendModal.show();
   }
 
@@ -251,23 +263,30 @@ export class FileMRCDashboardFINFileComponent {
     const modalEl = document.getElementById('ResolveModal')!;
     document.body.appendChild(modalEl);
     (modalEl as HTMLElement).style.zIndex = '99999';
-    this.SendModal = new bootstrap.Modal(modalEl, { backdrop: false, keyboard: true, focus: true });
+    this.SendModal = new bootstrap.Modal(modalEl, { backdrop: true, keyboard: true, focus: true });
     this.SendModal.show();
   }
 
   saveReason(form: any) {
+    if (!this.selectedReasonId) {
+      this.toastr.warning('Please select a reason.');
+      return;
+    }
     const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
     const payload = {
-      userId:   loginData.user_id,
-      reasonId: this.selectedReasonId,
-      poNoId:   this.reasonPoId,
-      remarks:  this.reasonRemarks,
+      userId:   loginData.user_id || 0,
+      reasonId: Number(this.selectedReasonId),
+      poNoId:   Number(this.reasonPoId),
+      remarks:  this.reasonRemarks || '',
     };
     this.api.post1('GMFI/AddReason', payload).subscribe({
       next: (res: any) => {
         this.toastr.success('Reason added successfully!');
+        if (this.SendModal) {
+          this.SendModal.hide();
+        }
+        document.querySelectorAll('.modal-backdrop').forEach((el) => el.remove());
         form.resetForm();
-        this.SendModal.hide();
         this.GetDashboardGrid();
       },
       error: (err: any) => {
@@ -278,12 +297,19 @@ export class FileMRCDashboardFINFileComponent {
   }
 
   saveResolve(form: any) {
-    const payload = { sorId: this.selectedSorId };
+    if (!this.selectedSorId) {
+      this.toastr.warning('Please select a reason to resolve.');
+      return;
+    }
+    const payload = { sorId: Number(this.selectedSorId) };
     this.api.post1('GMFI/ResolveReason', payload).subscribe({
       next: (res: any) => {
         this.toastr.success('Reason resolved successfully!');
+        if (this.SendModal) {
+          this.SendModal.hide();
+        }
+        document.querySelectorAll('.modal-backdrop').forEach((el) => el.remove());
         form.resetForm();
-        this.SendModal.hide();
         this.GetDashboardGrid();
       },
       error: (err: any) => {
@@ -413,7 +439,7 @@ export class FileMRCDashboardFINFileComponent {
     (modalEl as HTMLElement).style.zIndex = '99999';
 
     this.SendModal = new bootstrap.Modal(modalEl, {
-      backdrop: false,
+      backdrop: true,
       keyboard: true,
       focus: true,
     });
