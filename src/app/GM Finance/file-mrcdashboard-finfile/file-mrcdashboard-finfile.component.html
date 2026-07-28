@@ -24,10 +24,9 @@
 
       <label class="filter-group">
         <span class="filter-label">Directorate</span>
-        <ng-select [items]="Diectoratelist" bindLabel="facility_aut_name" bindValue="facility_aut_id"
-          appendTo="body" [(ngModel)]="authorityId" name="selectedDiectorate"
-          placeholder="Select Directorate" (change)="onSelectedDiectorate($event)"
-          [disabled]="loading" style="min-width:200px;max-width:320px;">
+        <ng-select [items]="Diectoratelist" bindLabel="facility_aut_name" bindValue="facility_aut_id" appendTo="body"
+          [(ngModel)]="authorityId" name="selectedDiectorate" placeholder="Select Directorate"
+          (change)="onSelectedDiectorate($event)" [disabled]="loading" style="min-width:200px;max-width:320px;">
         </ng-select>
       </label>
 
@@ -49,8 +48,8 @@
 
     <!-- Table -->
     <div class="table-wrap" *ngIf="!loading">
-      <table class="it-grid" mat-table matTableExporter [dataSource]="dataSource"
-        #exporter="matTableExporter" matSort #sort="matSort">
+      <table class="it-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort
+        #sort="matSort">
 
         <ng-container matColumnDef="sno">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">#</th>
@@ -208,8 +207,7 @@
         <ng-container matColumnDef="addReason">
           <th mat-header-cell *matHeaderCellDef class="text-center">Reason</th>
           <td mat-cell *matCellDef="let element" class="text-center">
-            <button class="pill-btn pill-btn--warn"
-              [disabled]="element.ReasonName && element.ReasonName !== ''"
+            <button class="pill-btn pill-btn--warn" [disabled]="element.ReasonName && element.ReasonName !== ''"
               (click)="openReasonModal(element.PoId)">Add</button>
           </td>
         </ng-container>
@@ -226,7 +224,8 @@
         <ng-container matColumnDef="Present_File_Action">
           <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
           <td mat-cell *matCellDef="let element" class="text-center">
-            <button class="pill-btn pill-btn--accent" (click)="ONOpenModal(element.PoId, element.FileNo)">Forward</button>
+            <button class="pill-btn pill-btn--accent"
+              (click)="ONOpenModal(element.PoId, element.FileNo)">Forward</button>
           </td>
         </ng-container>
 
@@ -259,7 +258,8 @@
 <div class="modal fade" id="SendModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-header"><h5 class="modal-title">Forward File</h5>
+      <div class="modal-header">
+        <h5 class="modal-title">Forward File</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -302,7 +302,8 @@
 <div class="modal fade" id="ReasonModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header"><h5 class="modal-title">Add File Holding Reason</h5>
+      <div class="modal-header">
+        <h5 class="modal-title">Add File Holding Reason</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -312,12 +313,13 @@
               <span class="field-label">Reason <em>*</em></span>
               <select [(ngModel)]="selectedReasonId" name="reasonId" required>
                 <option value="">Select Reason</option>
-                <option *ngFor="let r of reasonList" [ngValue]="r.reasonId">{{ r.reasonName }}</option>
+                <option *ngFor="let r of reasonList" [ngValue]="r.ReasonId">{{ r.ReasonName }}</option>
               </select>
             </label>
             <label class="field">
               <span class="field-label">Remarks <em>*</em></span>
-              <textarea rows="2" placeholder="Enter remarks…" [(ngModel)]="reasonRemarks" name="reasonRemarks" required></textarea>
+              <textarea rows="2" placeholder="Enter remarks…" [(ngModel)]="reasonRemarks" name="reasonRemarks"
+                required></textarea>
             </label>
           </div>
           <div class="modal-actions">
@@ -334,7 +336,8 @@
 <div class="modal fade" id="ResolveModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header"><h5 class="modal-title">Resolve Reason</h5>
+      <div class="modal-header">
+        <h5 class="modal-title">Resolve Reason</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -344,7 +347,7 @@
               <span class="field-label">Select Reason <em>*</em></span>
               <select [(ngModel)]="selectedSorId" name="sorId" required>
                 <option value="">Select Reason</option>
-                <option *ngFor="let r of resolveReasonList" [ngValue]="r.sorId">{{ r.reasonName }}</option>
+                <option *ngFor="let r of resolveReasonList" [ngValue]="r.SorId">{{ r.ReasonName }} — {{ r.Remarks }}</option>
               </select>
             </label>
           </div>

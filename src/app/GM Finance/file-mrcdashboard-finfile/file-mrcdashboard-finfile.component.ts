@@ -39,7 +39,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { PODetails,PaymentListDetails,GetDashboardGrid } from 'src/app/Model/models';
+import { PODetails, PaymentListDetails, GetDashboardGrid } from 'src/app/Model/models';
 import { DmePageSkeletonComponent } from 'src/app/component/DME/shared/dme-page-skeleton/dme-page-skeleton.component';
 
 @Component({
@@ -149,7 +149,7 @@ export class FileMRCDashboardFINFileComponent {
     'Present_File_Action',
     'action',
   ];
- 
+
   constructor(
     private api: ApiService,
     public toastr: ToastrService,
@@ -258,10 +258,10 @@ export class FileMRCDashboardFINFileComponent {
   saveReason(form: any) {
     const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
     const payload = {
-      userId: loginData.user_id,
+      userId:   loginData.user_id,
       reasonId: this.selectedReasonId,
-      poId: this.reasonPoId,
-      remarks: this.reasonRemarks,
+      poNoId:   this.reasonPoId,
+      remarks:  this.reasonRemarks,
     };
     this.api.post1('GMFI/AddReason', payload).subscribe({
       next: (res: any) => {
@@ -352,16 +352,16 @@ export class FileMRCDashboardFINFileComponent {
     debugger;
     try {
       this.loading = true;
-// const params = { poType: 'NP', fitUnfit: 'FP', eqType: '0', authorityId: 5 };
+      // const params = { poType: 'NP', fitUnfit: 'FP', eqType: '0', authorityId: 5 };
       const params = {
         poType: this.poType,
         fitUnfit: this.paymentType,
         eqType: this.eqType,
         authorityId: this.authorityId,
 
-     
+
       };
-      this.api.get('GMFI/GetDashboardGrid?',{ params }).subscribe(
+      this.api.get('GMFI/GetDashboardGrid?', { params }).subscribe(
         (res: any) => {
           this.dispatchData = res.map(
             (item: GetDashboardGrid, index: number) => ({
@@ -385,7 +385,7 @@ export class FileMRCDashboardFINFileComponent {
     } catch (err: any) {
       this.loading = false;
 
-        console.log('Error fetching data:', JSON.stringify(err.message));
+      console.log('Error fetching data:', JSON.stringify(err.message));
       // throw err;
     }
   }
@@ -481,13 +481,13 @@ export class FileMRCDashboardFINFileComponent {
     // console.log(Diectorate.year);
   }
 
-ONOpenSanction(opid: any, file: any) {
-  this.router.navigate(['/Sanction'], { 
-    queryParams: { 
-      poId: opid, 
-      fileNo: file 
-    } 
-  });
-}
+  ONOpenSanction(opid: any, file: any) {
+    this.router.navigate(['/Sanction'], {
+      queryParams: {
+        poId: opid,
+        fileNo: file
+      }
+    });
+  }
 
 }
