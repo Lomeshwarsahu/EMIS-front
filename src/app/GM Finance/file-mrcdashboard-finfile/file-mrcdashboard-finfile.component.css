@@ -350,6 +350,17 @@
 
 ::ng-deep .modal {
   z-index: 99999 !important;
+  --page-accent: #f97316;
+  --table-head-bg: #f97316;
+  --table-head-text: #ffffff;
+  --table-row-border: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) ::ng-deep .modal {
+  --page-accent: #6e00b3;
+  --table-head-bg: #6e00b3;
+  --table-head-text: #ffffff;
+  --table-row-border: #262b36;
 }
 
 ::ng-deep .modal-content {
@@ -367,22 +378,22 @@
 }
 
 ::ng-deep .modal-header {
-  background: var(--table-head-bg) !important;
-  color: var(--table-head-text) !important;
+  background: var(--table-head-bg, #f97316) !important;
+  color: var(--table-head-text, #ffffff) !important;
   border-bottom: none !important;
   padding: 12px 16px;
 }
 
 ::ng-deep .modal-header .modal-title {
-  color: var(--table-head-text) !important;
+  color: var(--table-head-text, #ffffff) !important;
   font-size: 1rem;
   font-weight: 700;
   margin: 0;
 }
 
 ::ng-deep .modal-header .btn-close {
-  filter: var(--btn-close-filter, brightness(0) invert(1)) !important;
-  opacity: 0.8;
+  filter: brightness(0) invert(1) !important;
+  opacity: 0.9 !important;
 }
 
 ::ng-deep .modal-body {
@@ -437,7 +448,7 @@
 .form-row select:focus,
 .form-row input:focus,
 .form-row textarea:focus {
-  border-color: var(--page-accent);
+  border-color: var(--page-accent, #f97316);
 }
 
 .modal-footer {
@@ -447,5 +458,17 @@
   gap: 8px;
   margin-top: 16px;
   padding-top: 12px;
-  border-top: 1px solid var(--table-row-border);
+  border-top: 1px solid var(--table-row-border, #e2e8f0);
+}
+
+::ng-deep .modal .btn-add,
+.btn-add {
+  background: var(--page-accent, #f97316) !important;
+  color: #ffffff !important;
+}
+
+::ng-deep .modal .clear-btn,
+.clear-btn {
+  background: #64748b !important;
+  color: #ffffff !important;
 }

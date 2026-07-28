@@ -1,359 +1,168 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { ChangeDetectorRef, ViewChild } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { Component, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import {
-  SupplierBankAccDetail_model,
-  vendorBankDetail_model,
-  UpdateBankDetails_model,
-  UpdateAnnualTurnover_model,
-  GetAnnualTurnoverDetail,
-  BankMandateDetail,
-  MassuppliergstDetails,
-  GstReturnDetails,
-} from 'src/app/Model/VendorRegisDetail';
-import { ApiService } from 'src/app/service/api.service';
-import { CollapseModule } from 'src/app/collapse';
-import { NgForm } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
-import { MatTableExporterModule } from 'mat-table-exporter';
-import { MaterialModule } from 'src/app/material-module';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { MatSortModule, MatSort } from '@angular/material/sort';
+import { DmePageSkeletonComponent } from '../DME/shared/dme-page-skeleton/dme-page-skeleton.component';
+import { ApiService } from '../../service/api.service';
+import { PaymentListDetails } from '../../Model/models';
 import { Router } from '@angular/router';
+
 declare var bootstrap: any;
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MatOptionModule } from '@angular/material/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PODetails,PaymentListDetails } from 'src/app/Model/models';
 
 @Component({
   selector: 'app-file-mrcdashbord',
   standalone: true,
   imports: [
-    NgSelectModule,
     CommonModule,
     FormsModule,
-    CollapseModule,
-    NgbCollapseModule,
-    ReactiveFormsModule,
-    MatTabsModule,
-    MaterialModule,
-    MatSortModule,
-    MatPaginatorModule,
     MatTableModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatTableExporterModule,
+    MatPaginatorModule,
+    MatSortModule,
+    DmePageSkeletonComponent,
   ],
   templateUrl: './file-mrcdashbord.component.html',
-  styleUrl: './file-mrcdashbord.component.css',
+  styleUrls: ['./file-mrcdashbord.component.css'],
 })
 export class FileMRCDashbordComponent {
- 
-poType = 'NP';
-paymentType = 'FP';
-onlyMyDesk = false;
-SendModal:any;
-sendTo:any;
-remarks:any;
-forwardDate:any;
-Sendoption:any;
-userList:any[]=[];
-poID:any;
-FileNo:any;
+  poType = 'CP';
+  paymentType = 'FP';
+  onlyMyDesk = false;
+  loading = false;
 
-  // yearList=[{id:0, 'Year':2012}];
-  yearList: any;
-  searchMode: 'po' | 'outward' = 'po';
-  poNo: any;
-  outwardNo: any;
-  selectedYear: any;
-  
-  // PODetails: PaymentListDetails[] = [];
-  financialyearid: any;
-  fileNo: any;
-  podt: any;
-  schemeCode: any;
-  supplierName: any;
-  dispatchData: PaymentListDetails[] = [];
-  dataSource!: MatTableDataSource<PaymentListDetails>;
-  @ViewChild('paginator') paginator!: MatPaginator;
-  @ViewChild('sort') sort!: MatSort;
-  displayedColumns: string[] = [
-     'sno',
-  'PoNo',
-  'TenderNo',
-  'Supplier',
-  'PoDate',
-  'ItemName',
-  'POQty',
-  'POValue',
-  'SupplyQty',
-  'ReceiptQty',
-  'InstallationQty',
-  'FitUnfit',
-  'PresentFile',
-  'FileNo',
-  'LastRDate',
-  'FacilityAutName',
-  'ItemCode',
-  'PoType',
-  'FileDt',
-  'PresentUserId',
-  'ToUserId',
-  'PenaltyPercent',
-  'ReasonId',
-  'ReasonName',
-  'IsSolved',
-  'SiteStatus',
-  'RowNo',
-  'ToDate',
-  'EntDT',
-  'Remarks',
-  'ExtStatus',
-  'Present_File_Action',
-  'action'
+  dataSource = new MatTableDataSource<PaymentListDetails>([]);
+  displayedColumns = [
+    'sno', 'PoNo', 'PoDate', 'POQty', 'POValue', 'SupplyQty',
+    'ReceiptQty', 'InstallationQty', 'FitUnfit', 'PresentFile',
+    'FileNo', 'LastRDate', 'FacilityAutName', 'Supplier',
+    'ItemName', 'TenderNo', 'action',
+    'Present_File_Action',
   ];
+
+  @ViewChild('sort') sort!: MatSort;
+  @ViewChild('paginator') paginator!: MatPaginator;
+
+  sendModal: any;
+  poID: number | null = null;
+  fileNo: string = '';
+  sendTo: number | null = null;
+  sendOption: string = 'S';
+  remarks: string = '';
+  forwardDate: string = '';
+  userList: any[] = [];
+
   constructor(
-    private spinner: NgxSpinnerService,
-    private api: ApiService,
-    public toastr: ToastrService,
-    private fb: FormBuilder,
-    private cdr: ChangeDetectorRef,
-    private router: Router,
-    private sanitizer: DomSanitizer,
-  ) {
-    this.dataSource = new MatTableDataSource<PaymentListDetails>([]);
-  }
+    private readonly api: ApiService,
+    private readonly toastr: ToastrService,
+    private readonly router: Router,
+  ) {}
 
-  ngOnInit() {
-    // this.GETGetPODetails();
-    // this.Getyears();
-  }
-  search() {
-    debugger;
-    if (this.searchMode === 'po') {
-      if (!this.poNo) {
-        this.toastr.warning('Enter PO Number');
-        return;
-      }
-      // call PO search
-      this.GetPODetails();
-    }
+  loadGrid(): void {
+    this.loading = true;
+    const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+    const userId = loginData.user_id || 0;
 
-    if (this.searchMode === 'outward') {
-      if (!this.outwardNo || !this.selectedYear) {
-        this.toastr.warning('Enter Outward Number and Year');
-        return;
-      }
-      // call outward search
-      this.GetPODetails();
-    }
-  }
-
-  // https://localhost:7036/api/GenerateNasti/Getyear
-
- 
- 
-  GetPODetails() {
-    // debugger
-    this.spinner.show();
-
-    const params = {
-      pono: this.poNo || 0,
-      outwardNo: this.outwardNo || 0,
-      financialYearId: this.financialyearid || 0,
+    const params: any = {
+      Potype: this.poType,
+      FitUnfit: this.paymentType,
+      UserId: this.onlyMyDesk ? userId : 0,
     };
-    this.api.get('GenerateNasti/GetPODetails', { params }).subscribe({
+
+    this.api.get('Payment/GetFitPaymentList', { params }).subscribe({
       next: (res: any) => {
-        console.log('podetailes', res);
-        // this.PODetails = res[0];
-
-        const data = res[0];
-
-        // this.poId = data.ponoid;
-        this.fileNo = data.fileNo;
-        this.poNo = data.poNo;
-        this.schemeCode = data.schemeCode;
-        this.supplierName = data.supplierName;
-        this.podt = this.convertDate(data.podt);
-        this.spinner.hide();
-      },
-      error: (err: any) => {
-        this.spinner.hide();
-        console.error(err);
-      },
-    });
-  }
-  convertDate(dateStr: string) {
-    const parts = dateStr.split('/');
-    return `${parts[2]}-${parts[1]}-${parts[0]}`;
-  }
-  onselectacno(event: any): void {
-    //  debugger
-    const financial_year_id = event.financial_year_id;
-    this.financialyearid = financial_year_id;
-    // if (bankaccountid === 0) {
-    // //  this.GETSupplierBankAccDetail(0,bankaccountid);
-    // // this.GETSupplierBankAccDetail(1836,1139);
-    // // this.bankForm.resetForm();
-
-    // } else {
-    //   // this.GETSupplierBankAccDetail(1836,1139);
-    //   // const selectedUser = this.VendorBankDetail.find(
-    //   //   (user: { bankaccountid: any }) => user.bankaccountid === this.acno
-    //   // );
-    //   // console.log('selectedUser:', selectedUser);
-    // }
-  }
- // https://localhost:7036/api/Payment/GetFitPaymentList?Potype=NP&MyDeskFile=false&FitUnfit=FP&UserId=383
-  // https://localhost:7036/api/Payment/GetFitPaymentList?Potype=NP&MyDeskFile=false&FitUnfit=FP
-  GETGetPODetails() {
-    // debugger
-    try {
-      this.spinner.show();
-
-      const params = {
-        // pono: 'EQP/783/2017-2018',
-        Potype: this.poType,
-        MyDeskFile: this.onlyMyDesk ,
-        FitUnfit: this.paymentType ,
-      };
-      this.api.get('Payment/GetFitPaymentList?', { params }).subscribe(
-        (res: any) => {
-          this.dispatchData = res.map((item: PODetails, index: number) => ({
-            ...item,
-            sno: index + 1,
-          }));
-          console.log('GetPODetails=:', this.dispatchData);
-          this.dataSource.data = this.dispatchData;
-          this.dataSource.paginator = this.paginator;
+        const data = (res || []).map((item: PaymentListDetails, i: number) => ({
+          ...item,
+          sno: i + 1,
+        }));
+        this.dataSource.data = data;
+        setTimeout(() => {
           this.dataSource.sort = this.sort;
-          this.cdr.detectChanges();
-          this.spinner.hide();
-        },
-        (error: { message: any }) => {
-          this.spinner.hide();
-          console.log('Error fetching data:', JSON.stringify(error.message));
-          // alert(`Error fetching data: ${JSON.stringify(error.message)}`);
-        },
-      );
-    } catch (err: any) {
-      this.spinner.hide();
-
-      console.log(err);
-      // throw err;
-    }
-  }
-  applyTextFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-onButtonClick(poid:any){
- this.router.navigate(['/InstallationDetails'], {
-  queryParams: { poId: poid}
-});
-  // InstallationDetails
-// alert(poid)
-// InstallationDetails
-}
-// https://localhost:7036/api/Payment/GetHeaderPO?poId=136
-
-
-
-  ONOpenModal( id:any,FileNo:any): void {
-this.poID=id;
-this.FileNo=FileNo;
-    document.querySelectorAll('.modal-backdrop').forEach((el) => el.remove());
-
-    const modalEl = document.getElementById('SendModal')!;
-    document.body.appendChild(modalEl);
-    (modalEl as HTMLElement).style.zIndex = '99999';
-
-    this.SendModal = new bootstrap.Modal(modalEl, {
-      backdrop: false,
-      keyboard: true,
-      focus: true,
+          this.dataSource.paginator = this.paginator;
+        });
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.toastr.error('Failed to load file movement data.');
+      },
     });
-    this.SendModal.show();
   }
-  // https://localhost:7036/api/Payment/sendto/383?sb=S
-Getsendto(){
-  this.sendTo = "";
-const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
-const userId = loginData.user_id;
-  // const poid = 383;
-  const send = this.Sendoption;
 
-  this.api.get(`Payment/sendto/${userId}?sb=${send}`).subscribe({
-    next:(res:any)=>{
-      this.userList=res;
-    },
-       error:(err:any)=>{
-      console.error(err);
+  onInstallationDownload(poId: number): void {
+    this.router.navigate(['/InstallationDetails'], { queryParams: { poId } });
+  }
+
+  openSendModal(poId: number, fileNo: string): void {
+    this.poID = poId;
+    this.fileNo = fileNo || '';
+    this.sendTo = null;
+    this.sendOption = 'S';
+    this.remarks = '';
+    this.forwardDate = '';
+    this.userList = [];
+
+    this.loadSendToUsers();
+
+    document.querySelectorAll('.modal-backdrop').forEach((el) => el.remove());
+    const modalEl = document.getElementById('sendModal');
+    if (modalEl) {
+      this.sendModal = new bootstrap.Modal(modalEl, { backdrop: false, keyboard: true });
+      this.sendModal.show();
     }
-  });
+  }
 
-}
-// 
-saveForward(form:any){
-// debugger;
- this.spinner.show();
-const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+  loadSendToUsers(): void {
+    const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+    const userId = loginData.user_id || 0;
+    this.api.get(`Payment/sendto/${userId}?sb=${this.sendOption}`).subscribe({
+      next: (res: any) => (this.userList = res || []),
+      error: () => this.toastr.error('Failed to load user list.'),
+    });
+  }
 
-const payload = {
+  onSendOptionChange(): void {
+    this.loadSendToUsers();
+  }
 
-UserId: loginData.user_id,
+  saveForward(): void {
+    if (!this.sendTo) {
+      this.toastr.warning('Select a user to send to.');
+      return;
+    }
+    if (!this.remarks) {
+      this.toastr.warning('Enter remarks.');
+      return;
+    }
+    if (!this.forwardDate) {
+      this.toastr.warning('Select forward date.');
+      return;
+    }
 
-ToUserId: this.sendTo,
+    const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+    const payload = {
+      UserId: loginData.user_id || 0,
+      ToUserId: this.sendTo,
+      PonoId: this.poID,
+      FileId: this.fileNo,
+      Remarks: this.remarks,
+      ForwardDate: this.forwardDate,
+      Flag: this.sendOption,
+    };
 
-PonoId: this.poID,
+    this.api.post1('Payment/forward', payload).subscribe({
+      next: () => {
+        this.toastr.success('File forwarded successfully!');
+        this.sendModal?.hide();
+        this.loadGrid();
+      },
+      error: () => this.toastr.error('Failed to forward file.'),
+    });
+  }
 
-FileId:this.FileNo || "",
-
-Remarks: this.remarks,
-
-ForwardDate: this.forwardDate,
-
-Flag: this.Sendoption
-
-};
-
-console.log("Forward Payload",payload);
-
-this.api.post1('Payment/forward', payload).subscribe({
-
-next:(res:any)=>{
- this.spinner.hide();
- this.toastr.success('File Forward Successfully!');
- form.resetForm();
-console.log("Forward Success",res);
-
-},
-
-error:(err:any)=>{
- this.spinner.hide();
-console.error(err);
-
-}
-
-});
-
-}
+  applyFilter(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = value.trim().toLowerCase();
+  }
 }
