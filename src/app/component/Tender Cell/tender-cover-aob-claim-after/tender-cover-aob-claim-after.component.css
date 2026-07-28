@@ -1,0 +1,10 @@
+.custom-link {
+    cursor: pointer;          /* Fixes the mouse hover pointer issue */
+    color: inherit;           /* Keeps text color consistent, or use your preferred color like #0d6efd */
+    text-decoration: none;    /* Ensures no underline by default */
+}
+
+.custom-link:hover {
+    text-decoration: underline; 
+    color: #1100ff;
+}

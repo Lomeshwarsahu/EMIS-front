@@ -60,6 +60,7 @@ import {
 export class TenderCoverAObClaimAfterComponent {
   //#region  lomesh
   TenderList: any[] = [];
+  ParticipatedItems: any[] = [];
   Eligiblitylist: any[] = [];
   selectedTenderId: any;
   show: boolean = false;
@@ -73,6 +74,10 @@ export class TenderCoverAObClaimAfterComponent {
 
   item_id: any;
 
+  dispatchData1: any[] = [];
+  dataSource1!: MatTableDataSource<any>;
+  @ViewChild('paginator1') paginator1!: MatPaginator;
+  @ViewChild('sort1') sort1!: MatSort;
   dispatchData: TenderSupplierParticipationDtos[] = [];
   dataSource!: MatTableDataSource<TenderSupplierParticipationDtos>;
   @ViewChild('paginator') paginator!: MatPaginator;
@@ -93,6 +98,15 @@ export class TenderCoverAObClaimAfterComponent {
     'ADDItems',
     'Action',
   ];
+  displayedColumns1: string[] = [
+    'sno',
+    'ItemCodeAsPerTender',
+    'ItemName',
+    'uncheck',
+    'remark',
+  ];
+  BName:any
+  chectd_values:any;
   constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
@@ -104,6 +118,9 @@ export class TenderCoverAObClaimAfterComponent {
     private location: Location,
   ) {
     this.dataSource = new MatTableDataSource<TenderSupplierParticipationDtos>(
+      [],
+    );
+    this.dataSource1 = new MatTableDataSource<any>(
       [],
     );
   }
@@ -129,6 +146,66 @@ export class TenderCoverAObClaimAfterComponent {
       },
     });
   }
+  updateTenderItems() {
+    debugger
+    // Map table rows to the API payload structure
+  // Check if any item is unchecked and missing remarks
+  const invalidItem = this.dataSource1.data.find(
+    (element: any) => !element.isChecked && (!element.remarks || element.remarks.trim() === '')
+  );
+
+  if (invalidItem) {
+    this.toastr.warning('Please enter remarks for unselected/not eligible items.');
+    return; // Stop execution, do not call API
+  }
+    const invalidItem1 = this.dataSource1.data.find(
+    (element: any) => (!element.remarks || element.remarks.trim() === '')
+  );
+  if (invalidItem1) {
+    this.toastr.warning('Please enter remarks for unselected/not eligible items.');
+    return; // Stop execution, do not call API
+  }
+    const payload = {
+      Items: this.dataSource1.data.map((element: any) => ({
+        SchStatusDid: element.SchStatusDid,
+        ChildId: element.ChildId,
+        ItemId: element.ItemId,
+        FlagCob: element.FlagCob ?? false,
+        RemarksA: element.remarks || ''
+      }))
+    };
+
+    console.log('API Payload:', payload);
+
+    // Calling your generic post1 method with the endpoint path
+    this.api.post1('Tendercell/UpdateParticipatedItems', payload).subscribe({
+      next: (response: any) => {
+            this.toastr.success(response.status);
+        // console.log('Successfully updated:', response);
+        // Add success notification/alert here if needed
+      },
+      error: (error: any) => {
+        console.error('Error updating items:', error);
+      }
+    });
+  }
+//   updateTenderItems(){
+// // curl -X 'POST' \
+// //   'https://localhost:7036/api/Tendercell/UpdateParticipatedItems' \
+// //   -H 'accept: */*' \
+// //   -H 'Content-Type: application/json' \
+// //   -d '{
+// //   "Items": [
+// //     {
+// //       "SchStatusDid": 417,
+// //       "ChildId": 1427,
+// //       "ItemId": 2521,
+// //       "IsChecked": true,
+// //       "RemarksA": "hello word "
+// //     }
+// //   ]
+// // }'
+//   }
   onTenderChange(values: any) {
     // debugger;
     //  "Tenderid": 680,
@@ -267,25 +344,71 @@ export class TenderCoverAObClaimAfterComponent {
   }
 
   addItemToTender(element: any) {
+this.BName=element.Name;
+
+
     const supplierId = element.SupplierId;
     const tenderId = element.TenderId;
     const SchStatusDid = element.SchStatusDid;
     const SupplierName = element.SupplierName;
-    this.router.navigate(['/TenderCoverAitems'], {
-      queryParams: {
-        sid: supplierId,
-        tid: tenderId,
-        ssdid: SchStatusDid,
-        Sname: SupplierName,
+
+// https://localhost:7036/api/Tendercell/GetParticipatedItems?tenderid=583&schemestatusid=417
+
+    this.api.get(`Tendercell/GetParticipatedItems?tenderid=${tenderId}&schemestatusid=${SchStatusDid}`).subscribe({
+      next: (res: any) => {
+        // this.ParticipatedItems=res;
+         this.dispatchData1 = res.map(
+            (item: any, index: number) => ({
+              ...item,
+              sno: index + 1,
+            }),
+          );
+
+
+
+          // Example when loading/initializing your dataSource1 items:
+
+          console.log('itemwisedetail1=:', this.dispatchData1);
+          this.dataSource1.data = this.dispatchData1;
+
+          this.dataSource1.data = res.map((item: { isChecked: any; remarks: any; }) => ({
+  ...item,
+  isChecked: item.isChecked ?? true, // default checked state
+  remarks: item.remarks || ''        // default empty string
+}));
+          this.dataSource1.paginator = this.paginator1;
+          this.dataSource1.sort = this.sort1;
+          this.cdr.detectChanges();
+          this.spinner.hide();
+     
       },
+      error: (err: any) => console.log('Error:', err),
     });
 
-    // const url = this.router.serializeUrl(
-    //   this.router.createUrlTree(['/CovAItemsEntry'], { queryParams: { sid: supplierId, tid: tenderId,ssdid:SchStatusDid } })
-    // );
+    // this.router.navigate(['/TenderCoverAitems'], {
+    //   queryParams: {
+    //     sid: supplierId,
+    //     tid: tenderId,
+    //     ssdid: SchStatusDid,
+    //     Sname: SupplierName,
+    //   },
+    // });
 
-    // window.open(url, '_blank');
+  
   }
+OpenCoverAitemsReports(element :any) {
+
+  const supplierId = element.SupplierId;
+    const tenderId = element.TenderId;
+    const SchStatusDid = element.SchStatusDid;
+    const SupplierName = element.SupplierName;
+     this.router.navigate(['/CoverAitemsReports'], {
+      queryParams: {sid: supplierId, tid: tenderId,ssdid:SchStatusDid,Sname:SupplierName},
+    });
+  //  this.router.navigate(['/CoverAitemsReports'], {
+  //     queryParams: {tender_no:tender_no},
+  //   });
+}
 
   //#endregion
 }
