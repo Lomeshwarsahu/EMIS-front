@@ -42,145 +42,10 @@
             </table>
         </div>
     </div>
-    <!-- <div class="card shadow border-0 rounded-4 mb-4 border-top border-primary border-4">
-        <div class="card-body p-4 p-lg-5">
-            <div class="d-flex align-items-center mb-4">
-                <div class="bg-primary bg-opacity-10 p-2 rounded-3 me-3">
-                    <i class="bi bi-file-earmark-plus text-primary fs-4"></i>
-                </div>
-                <h5 class="mb-0 fw-bold text-dark">Tender Submission Form</h5>
-            </div>
-            <form #participationForm="ngForm">
-                <div class="row g-4">
-                    <div class="col-12 col-md-6">
-                        <label class="form-label fw-bold small text-muted mb-2">Select Supplier</label>
-                        
-                        <ng-select class="border-2 rounded shadow-none form-control" appendTo="body"
-                            [items]="Supplierlist" bindLabel="name" bindValue="supplier_id"
-                            [(ngModel)]="formData.SupplierId" placeholder="Search & Select Supplier" name="supplier_id"
-                            (change)="onSelectedItem($event)" required>
-                        </ng-select>
-                    </div>
-
-                    <div class="col-12 col-md-6">
-                        <label class="form-label fw-bold small text-muted mb-2">EMD Amount</label>
-                        <input type="number" name="EmdAmount" [(ngModel)]="formData.EmdAmount"
-                            class="form-control border-2 shadow-none" placeholder="Enter EMD" required>
-                    </div>
-
-                    <div class="col-12 col-md-6">
-                        <label class="form-label fw-bold small text-muted mb-2">Tender Progressing Fee</label>
-                        <input type="number" name="TenderProFee" [(ngModel)]="formData.TenderProFee"
-                            class="form-control border-2 shadow-none" placeholder="Enter Fee" required>
-                    </div>
-
-                    <div class="col-12 col-md-6">
-                        <label class="form-label fw-bold small text-muted mb-2">EMD Document Type</label>
-                        <ng-select class="border-2 rounded shadow-none form-control" appendTo="body"
-                            [items]="MASDOCUMENTTYPEList" bindLabel="dtypename" bindValue="dtypeid"
-                            placeholder="Select EMD Document Type" [(ngModel)]="formData.DocTypeId" name="DocTypeId"
-                            (change)="onSelectedItem($event)" required>
-                        </ng-select>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <label class="form-label fw-bold small text-muted mb-2">
-                            Document No (FDR/NEFT/RTGS/DD/SD)
-                        </label>
-                        <input class="form-control form-control-lg fs-6 border-2 shadow-none"
-                            placeholder="Enter Document or UTR No" type="text" name="EmdDocNo"
-                            [(ngModel)]="formData.EmdDocNo" required>
-                        <div class="form-text text-primary-emphasis bg-primary-subtle p-2 rounded-2 mt-2 small">
-                            <i class="bi bi-info-circle-fill me-1"></i>
-                            Note: For multiple UTRs, separate them with ' / '
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <label class="form-label fw-bold small text-muted mb-2">Remarks</label>
-                        <textarea name="Remarks" [(ngModel)]="formData.Remarks"
-                            class="form-control border-2 shadow-none" rows="2" placeholder="Add remarks..."></textarea>
-                    </div>
-
-                    <div class="col-12 border-top pt-4 mt-2 text-center">
-                        <button type="button" class="btn btn-primary px-5 py-2 fw-bold" (click)="saveParticipation()">
-                            Save Supplier
-                        </button>
-                    </div>
-                </div>
-            </form>
-          <form>
-            <div class="row g-4">
-                <div class="col-12 col-md-6">
-                    <label class="form-label fw-bold small text-muted mb-2">
-                        <i class="bi bi-person-check me-1"></i>Select Supplier
-                    </label>
-                     <ng-select class="border-2 rounded shadow-none form-control" appendTo="body"
-                            [items]="Supplierlist" bindLabel="name" bindValue="supplier_id"
-                            placeholder="Search & Select Supplier"  name="supplier_id"
-                            (change)="onSelectedItem($event)" required>
-                        </ng-select>
-                </div>
-                <div class="col-12 col-md-6">
-                    <label class="form-label fw-bold small text-muted mb-2">
-                        <i class="bi bi-currency-rupee me-1"></i>EMD 
-                    </label>
-                    <input type="number" class="form-control form-control-lg fs-6 border-2 shadow-none" 
-                           placeholder="Enter EMD Amount">
-                </div>
-                <div class="col-12 col-md-6">
-                    <label class="form-label fw-bold small text-muted mb-2">
-                        <i class="bi bi-receipt me-1"></i>Tender Progressing Fee
-                    </label>
-                    <input type="text" 
-       name="emdAmountField" 
-       class="form-control form-control-lg fs-6 border-2 shadow-none" 
-       [(ngModel)]="EmdAmount" 
-       placeholder="Enter Fee">
-                </div>
-                <div class="col-12 col-md-6">
-                    <label class="form-label fw-bold small text-muted mb-2">
-                        <i class="bi bi-file-earmark-text me-1"></i>EMD Document Type
-                    </label>
-                   
-                     <ng-select class="border-2 rounded shadow-none form-control" appendTo="body"
-                            [items]="MASDOCUMENTTYPEList" bindLabel="dtypename" bindValue="dtypeid"
-                            placeholder="Select EMD Document Type"  name="dtypeid"
-                            (change)="onSelectedItem($event)" required>
-                        </ng-select>
-                </div>
-                <div class="col-12 col-md-6">
-                    <label class="form-label fw-bold small text-muted mb-2">
-                        <i class="bi bi-hash me-1"></i>Document No (FDR/NEFT/RTGS/DD/SD)
-                    </label>
-                    <input class="form-control form-control-lg fs-6 border-2 shadow-none" 
-                           placeholder="Enter Document or UTR No">
-                    <div class="form-text text-primary-emphasis bg-primary-subtle p-2 rounded-2 mt-2 small">
-                        <i class="bi bi-info-circle-fill me-1"></i>
-                        Note: For multiple UTRs, separate them with ' / '
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <label class="form-label fw-bold small text-muted mb-2">
-                        <i class="bi bi-chat-left-dots me-1"></i>Remarks
-                    </label>
-                    <textarea class="form-control border-2 shadow-none" rows="2" 
-                              placeholder="Add remarks here..."></textarea>
-                </div>
-                <div class="col-12 border-top pt-4 mt-2">
-                    <div class="row justify-content-center">
-                        <div class="col-12 col-md-4 col-lg-3">
-                            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm rounded-3"
-                                (click)="GetItemEligibility()">Save
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form> 
-        </div>
-    </div> -->
-    <div class="card shadow-lg border-0 rounded-4 overflow-hidden" *ngIf="itemsDtails?.length > 0">
+  
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden" *ngIf="itemsDtails?.length > 0" >
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover align-middle mb-0" >
                 <thead class="bg-dark text-white">
                     <tr class="text-center small">
                         <th class="py-3">S.No</th>
@@ -255,7 +120,7 @@
         <!-- Table Body -->
         <div class="table-responsive custom-table-height">
             <table class="table table-hover align-middle mb-0" mat-table matTableExporter [dataSource]="dataSource"
-                #exporter="matTableExporter" matSort #sort="matSort">
+                #exporter="matTableExporter" matSort #sort="matSort" style="width: 100% !important;">
                 <!-- S.No -->
                 <ng-container matColumnDef="sno">
                     <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center py-3"

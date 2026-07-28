@@ -120,6 +120,8 @@ import { DeleteMenuComponent } from './component/IT/delete-menu/delete-menu.comp
 import { MasterSupplierDashComponent } from './component/Tender Cell/master-supplier-dash/master-supplier-dash.component';
 import { ConsolidatedIndentCGMSCComponent } from './component/Tender Cell/consolidated-indent-cgmsc/consolidated-indent-cgmsc.component';
 import { TenderCoverAObClaimAfterComponent } from './component/Tender Cell/tender-cover-aob-claim-after/tender-cover-aob-claim-after.component';
+import { TenderCoverAitemsComponent } from './component/BME/tender-cover-aitems/tender-cover-aitems.component';
+import { CoverAitemsReportsComponent } from './component/BME/cover-aitems-reports/cover-aitems-reports.component';
 
 
 const routes: Routes = [
@@ -371,18 +373,19 @@ const routes: Routes = [
   },
   { path: 'Registration', component: Registration },
   { path: 'otp', component: OtpComponent },
-  // {path:'GenerationFileNonasti',component:GenerationFileNonastiComponent},
-  // {path:'FileMRCDashbord',component:FileMRCDashbordComponent},
+  // {path:'GenerationFileNonasti',component:GenerationFileNonastiComponent},//
+  // {path:'FileMRCDashbord',component:FileMRCDashbordComponent},//
   { path: 'InstallationDetails', component: InstallationDetailsComponent },
-  // {path:'ExtensionHODetail',component:ExtensionHODetailComponent},
+  // {path:'ExtensionHODetail',component:ExtensionHODetailComponent},//
   { path: 'ExtensionHOEntry', component: ExtensionHOEntryComponent },
-  // {path:'ItemWiseDetailPOCell',component:ItemWiseDetailPOCellComponent},
+  // {path:'ItemWiseDetailPOCell',component:ItemWiseDetailPOCellComponent},//
   {
     path: 'ItemWiseDetailPOCellByPOid',
     component: ItemWiseDetailPOCellByPOidComponent,
   },
-  // {path:'IndentPOSummaryDirwise',component:IndentPOSummaryDirwiseComponent},
-  // {path:'DistrictWisePODetail',component:DistrictWisePODetailComponent},
+  // {path:'IndentPOSummaryDirwise',component:IndentPOSummaryDirwiseComponent},//
+  // {path:'DistrictWisePODetail',component:DistrictWisePODetailComponent},//
+  {path:'TenderCoverAitems',component:TenderCoverAitemsComponent},
   {
     path: 'POSummaryDrillDwnQtyPOWise',
     component: POSummaryDrillDwnQtyPOWiseComponent,
@@ -394,6 +397,7 @@ const routes: Routes = [
   { path: 'SupplierGSTentry', component: SupplierGSTentryComponent },
   { path: 'BudgetDetailsProvisional', component: BudgetDetailsProvisionalComponent },
   { path: 'Sanction', component: SanctionComponent },
+  { path: 'CoverAitemsReports', component: CoverAitemsReportsComponent },
 
   {
     path: 'TenderStatusUpdate',

@@ -21,7 +21,7 @@
         </div>
     </div> 
     
-    <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden"  *ngIf="show!">
+    <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden    "  *ngIf="show!">
         <div class="card-header bg-white py-3 border-bottom-0">
             <h6 class="fw-bold text-secondary mb-0">
                 <i class="bi bi-info-circle-fill text-primary me-2"></i>Tender Reference
@@ -117,7 +117,7 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Submitted EMD (In Rs)</th>
                     <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> {{element.SubmittedEMDAMT}} </td>
                 </ng-container>
-                <!-- <ng-container matColumnDef="IsEligibleB">
+                <ng-container matColumnDef="IsEligibleB">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Eligible</th>
                     <td mat-cell *matCellDef="let element" class="fw-medium text-dark">
                       
@@ -129,15 +129,15 @@
                             </option>
                         </select>
                     </td>
-                </ng-container> -->
-                <ng-container matColumnDef="IsEligibleB">
+                </ng-container>
+                <!-- <ng-container matColumnDef="IsEligibleB">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Eligible</th>
                     <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> 
                         <ng-select class="form-control table-input" [items]="Eligiblitylist" bindLabel="Eligiblity" bindValue="id" [(ngModel)]="selectedStatus">
                         </ng-select>
                        
                     </td>
-                </ng-container>
+                </ng-container> -->
                 <ng-container matColumnDef="Remarksclarification">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Final Remarks After Object claim</th>
                     <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> 
@@ -146,15 +146,29 @@
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="PItems">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white text-center">PItems</th>
+    <td mat-cell *matCellDef="let element" class="fw-medium text-center"> 
+        <a (click)="OpenCoverAitemsReports(element)" 
+           class="custom-link" 
+           role="button" 
+           tabindex="0">
+            {{element.PItems}}
+        </a>
+    </td>
+</ng-container>
+                <!-- <ng-container matColumnDef="PItems">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white text-center">PItems</th>
-                    <td mat-cell *matCellDef="let element" class="fw-medium text-center"> {{element.PItems}}
+                    <td mat-cell *matCellDef="let element" class="fw-medium text-center"> 
+                           <a (click)="OpenCoverAitemsReports(element)" class="custom-link text-decoration-none">
+                            {{element.PItems}}
+                        </a>
                      
                     </td>
-                </ng-container>
+                </ng-container> -->
                   <ng-container matColumnDef="ADDItems">
                     <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Add Items </th>
                     <td mat-cell *matCellDef="let element" class="text-center">
-                           <a   (click)="addItemToTender(element)" class="custom-link text-decoration-none">
+                           <a   (click)="addItemToTender(element)" class="custom-link"   role="button"  data-bs-toggle="modal" data-bs-target="#SendModall">
                          Add
                         </a>
                          <!-- <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm"
@@ -167,10 +181,10 @@
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="Action">
-                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Action </th>
+                    <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Bidder Action </th>
                     <td mat-cell *matCellDef="let element" class="text-center">
                         <a  (click)="updateRowStatus(element)" class="custom-link text-decoration-none">
-                         Update
+                         Bidder
                         </a>
                       
                     </td>
@@ -194,3 +208,115 @@
         </div>
     </div> 
 </section>
+
+
+
+
+<div class="modal fade rounded" id="SendModall" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+
+            <!-- Modal Header -->
+            <div class="modal-header bg-success text-white py-3 px-4 border-0">
+                <h5 class="modal-title d-flex align-items-center fs-6 fs-md-5">
+                    <i class="bi bi-plus-circle me-2"></i>Quoted Items: Eligible/Not Eligible Action
+                </h5>
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-3 p-md-4 bg-light">
+                <div class="card shadow-sm border-0 rounded-4 overflow-hidden" *ngIf="show">
+               <!-- Top Title (Centered) -->
+        <h4 class="text-center mb-3 fw-bold text-dark">Quoted Items: Eligible/Not Eligible Action After Final Summary Sheet of COVER A</h4>
+        
+        <!-- Bidder and Tender Ref in One Line -->
+        <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-3 shadow-sm mb-3">
+            <div>
+                <span class="fw-bold text-muted">Bidder:</span> 
+                <span class="text-dark fw-semibold ms-1">{{BName}}</span>
+            </div>
+            <div>
+                <span class="fw-bold text-muted">Tender Ref:</span> 
+                <span class="text-dark fw-semibold ms-1">{{TenderDetails.TenderNo}}</span>
+            </div>
+        </div>
+              
+                    <!-- Table Responsive Container -->
+                    <div class="table-responsive">
+                        <table mat-table matTableExporter [dataSource]="dataSource1" #exporter="matTableExporter" matSort #sort1="matSort" class="table table-hover align-middle mb-0">
+                            
+                            <!-- S.No Column -->
+                            <ng-container matColumnDef="sno">
+                                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center py-3" style="width: 70px;"> S.No </th>
+                                <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold"> 
+                                    {{ (paginator1.pageIndex * paginator1.pageSize) + (i + 1) }} 
+                                </td>
+                            </ng-container>
+
+                            <!-- Code Column -->
+                            <ng-container matColumnDef="ItemCodeAsPerTender">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Code</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
+                                        {{element.ItemCodeAsPerTender}}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- Item Name Column -->
+                            <ng-container matColumnDef="ItemName">
+                                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-start">Quoted Item Name</th>
+                                <td mat-cell *matCellDef="let element" class="text-start text-success fw-bold">
+                                    {{element.ItemName}}
+                                </td>
+                            </ng-container>
+
+                            <!-- Checkbox Column -->
+                            <ng-container matColumnDef="uncheck">
+                                <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center" style="width: 120px;">Eligible Status</th>
+                                <td mat-cell *matCellDef="let element" class="text-center">
+                                    <input type="checkbox" class="form-check-input shadow-none cursor-pointer" [(ngModel)]="element.FlagCob">
+                                </td>
+                            </ng-container>
+
+                            <!-- Remarks Column -->
+                            <ng-container matColumnDef="remark">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Remarks</th>
+                                <td mat-cell *matCellDef="let element"> 
+                                    <textarea rows="1" class="form-control form-control-sm shadow-none" placeholder="Enter remarks..." [(ngModel)]="element.remarks"></textarea>
+                                </td>
+                            </ng-container>
+
+                            <!-- Table Rows -->
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns1" class="sticky-top"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns1;" class="row-hover-effect"></tr>
+
+                            <!-- No Data Row -->
+                            <tr *matNoDataRow>
+                                <td class="text-center py-5 text-muted" colspan="5">
+                                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                    No data found for this tender.
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Action Button Footer inside Card -->
+                    <div class="p-3 bg-white border-top text-end">
+                        <button type="button" class="btn btn-success px-4 shadow-sm" (click)="updateTenderItems()">
+                            <i class="bi bi-save me-1"></i> Update
+                        </button>
+                    </div>
+
+                    <!-- Paginator -->
+                    <div class="bg-light border-top">
+                        <mat-paginator #paginator1 [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons class="bg-transparent"></mat-paginator>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
