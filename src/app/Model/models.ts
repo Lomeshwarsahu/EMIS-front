@@ -913,3 +913,173 @@ export interface GetDashboardGrid {
   FinRemarks: string; // Isko 'Remarks' column me show karenge
   FacilityAutId: number;
 }
+
+export interface PerformanceGridItem {
+  sno: number;
+  PoId: number;
+  Pono: string;
+  PoDate: string;
+  POQTY: number;
+  InstQTY: number;
+  LastInstDT1: string;
+  Name: string;
+  TenderNo: string;
+  PRequired: string;
+  PStatus: string;
+  SupplierId: number;
+  Potype: string;
+  ReleaseType: string;
+  ReleaseValue: number;
+  ItemCode: string;
+  ItemName: string;
+  CStatus: string;
+  LimitDT: string;
+  PresentFile: string;
+  FileNo: string;
+  Filedt: string;
+  DownloadPerf: string;
+  TenderId: number;
+  RowColor: string;
+  CanRelease: boolean;
+}
+
+export interface TenderLeavy {
+  TenderId: number;
+  TenderNo: string;
+  TenderDate: string;
+  ReleaseType: string;
+  Performacereq: string;
+  ReleaseValue: number;
+  PerformanceEntryDt: string;
+}
+
+export interface PerformanceHeader {
+  PoId: number;
+  PoDate: string;
+  TenderId: number;
+  PoNo: string;
+  NoOfConsignee: number;
+  POQTY: number;
+  DispatchQty: number;
+  ReceiptQty: number;
+  InsQTY: number;
+  ItemCode: string;
+  ItemName: string;
+  Make: string;
+  Model: string;
+  Percentage: number;
+  BasicRate: number;
+  ReleaseType: string;
+  ReleaseValue: number;
+}
+
+export interface ConsigneeInstallation {
+  SlNo: number;
+  LocationName: string;
+  ConsigneeId: number;
+  POQTY: number;
+  Dis: number;
+  ReceiptQTY: number;
+  Insqty: number;
+  InstallationDate: string;
+}
+
+export interface SendToUser {
+  UserId: number;
+  UserName: string;
+}
+
+export interface DistrictDto {
+  DP_DistrictID: number;
+  DBStart_Name_En: string;
+}
+
+export interface FacilityTypeDto {
+  FacilityTypeId: number;
+  FacilityTypeName: string;
+}
+
+export interface DHSFacilityGridDto {
+  FacilityTypeId: number;
+  Authority: number;
+  LocationId: number;
+  LocationName: string;
+  District: string;
+  UserId: number;
+  EmailId: string;
+  StoreNo: string;
+  StoreName: string;
+}
+
+export interface NodleMasterGridDto {
+  DistrictName: string;
+  LocationId: number;
+  LocationName: string;
+  FacilityTypeName: string;
+  UserEmail: string;
+  StoreOfficerMob: string;
+  EmailID: string;
+  UserId: number;
+  NodleId: number;
+  NodleName: string;
+  NodleDesignation: string;
+  NodleMobile: string;
+  NodleEmail: string;
+}
+
+export interface EqpCategoryDto {
+  Eqpcatid: number;
+  Eqpcatname: string;
+}
+
+export interface ItemSpecGridDto {
+  ItemId: number;
+  ItemCodeAsPerTender: string;
+  ItemName: string;
+  Eqpcatname: string;
+  HasFile: boolean;
+  FileName: string;
+}
+
+export interface MedicalCollegeUserDto {
+  UserId: number;
+  UserName: string;
+}
+
+export interface MedFacilityGridDto {
+  FacilityTypeId: number;
+  Authority: number;
+  LocationId: number;
+  LocationName: string;
+  District: string;
+  UserId: number;
+  EmailId: string;
+  StoreNo: string;
+  StoreName: string;
+}
+
+export interface SupplierDetailDto {
+  SupplierId: number;
+  Name: string;
+  ServiceEngineerName: string;
+  ServiceEngineerNumber: string;
+  MobileNo: string;
+  EmailId: string;
+  GSTNo: string;
+  PhNo: string;
+  TinNo: string;
+  Address: string;
+}
+
+export interface StoreHomeDto {
+  UserName: string;
+  Address: string;
+  Address2: string;
+  HODName: string;
+  HODNo: string;
+  EmailID: string;
+  LoginEmail: string;
+  StoreOfficer: string;
+  StoreOfficerMob: string;
+  StoreLandline: string;
+}

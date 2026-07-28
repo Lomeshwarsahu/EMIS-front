@@ -1,10 +1,8 @@
 <div class="supplier-po-page">
-  <h2 class="page-title">Paid Report of Purchase Orders</h2>
-
-  <p class="report-note">Data is Based On Entered by CGMSC Finance Department</p>
 
   <div class="datagrid">
-    <div class="table-toolbar filter-panel filters--compact">
+    <div class="table-toolbar filter-panel filters filters--compact">
+      <span class="report-info-note">&#9432; Data is based on entries by CGMSC Finance Department</span>
       <button
         *ngIf="showExport"
         type="button"
@@ -70,7 +68,12 @@
             <td>{{ row.aidNo }}</td>
           </tr>
           <tr *ngIf="!rows.length">
-            <td colspan="11" class="empty-row">No Record found.</td>
+            <td colspan="11" class="empty-row">
+              <div class="empty-state">
+                <div style="font-size: 32px; color: #cbd5e1; margin-bottom: 8px;">&#128179;</div>
+                <p>No payment records found.</p>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

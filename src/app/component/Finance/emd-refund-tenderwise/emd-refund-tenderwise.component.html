@@ -1,0 +1,136 @@
+<div class="it-page">
+  <h2 class="page-title">EMD Refund Request File Movement</h2>
+
+  <div class="datagrid">
+    <!-- Filter Toolbar -->
+    <div class="table-toolbar filters--compact">
+      <select
+        aria-label="Select Supplier"
+        [(ngModel)]="selectedSupplierId"
+        (change)="loadGrid()">
+        <option [ngValue]="0">-All Suppliers-</option>
+        <option *ngFor="let s of suppliers" [ngValue]="s.supplierId">
+          {{ s.supplierName }}
+        </option>
+      </select>
+
+      <select
+        aria-label="Select Tender Number"
+        [(ngModel)]="selectedTenderId"
+        (change)="loadGrid()">
+        <option [ngValue]="0">-Select Tender-</option>
+        <option *ngFor="let t of tenders" [ngValue]="t.tenderId">
+          {{ t.tenderNo }}
+        </option>
+      </select>
+
+      <button
+        type="button"
+        class="show-btn"
+        [disabled]="loading"
+        (click)="loadGrid()">
+        Show Details
+      </button>
+
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters()"
+        (click)="clearFilters()">
+        Clear Filter
+      </button>
+    </div>
+
+    <!-- Skeleton Loading -->
+    <app-dme-page-skeleton
+      *ngIf="loading"
+      type="table"
+      [rows]="6"
+      [cols]="9"
+    />
+
+    <!-- Data Table -->
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="it-grid">
+        <thead>
+          <tr>
+            <th class="text-center col-chk">
+              <input
+                type="checkbox"
+                [(ngModel)]="selectAll"
+                (change)="toggleAll()"
+                aria-label="Select All EMD Files"
+              />
+            </th>
+            <th class="text-center col-sn">S.No</th>
+            <th>Supplier Name</th>
+            <th>Tender No</th>
+            <th class="text-right">Submitted Amount</th>
+            <th class="text-center">Mode</th>
+            <th>EMD Ref No</th>
+            <th class="text-center">Download</th>
+            <th class="text-center">Deposited Date</th>
+            <th class="text-center">Entry Date</th>
+            <th class="text-center">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; let i = index" [class.selected-row]="row.selected">
+            <td class="text-center col-chk">
+              <input
+                type="checkbox"
+                [(ngModel)]="row.selected"
+                (change)="onRowSelectChange()"
+                [disabled]="row.status ? row.status.includes('Approved') : false"
+                aria-label="Select row"
+              />
+            </td>
+            <td class="text-center col-sn">{{ i + 1 }}</td>
+            <td>{{ row.supplierName }}</td>
+            <td>{{ row.tenderNo }}</td>
+            <td class="text-right font-bold">₹{{ row.emdAmt | number: '1.2-2' }}</td>
+            <td class="text-center">{{ row.emdType }}</td>
+            <td>{{ row.emdDocumentNo }}</td>
+            <td class="text-center">
+              <button
+                *ngIf="row.hasFile; else noFile"
+                type="button"
+                class="show-btn btn-download"
+                (click)="downloadFile(row)"
+                title="Download EMD document"
+              >
+                Download
+              </button>
+              <ng-template #noFile>—</ng-template>
+            </td>
+            <td class="text-center">{{ row.emdDepositDate }}</td>
+            <td class="text-center">{{ row.entryDate }}</td>
+            <td class="text-center">
+              <span class="status-badge" [class.is-approved]="row.status?.includes('Approved')">
+                {{ row.status || 'Pending Approval' }}
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="11" class="empty-row">No Records Found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Action Toolbar Footer -->
+    <div class="action-footer" *ngIf="!loading && rows.length">
+      <span class="selected-count-label" *ngIf="selectedCount > 0">
+        {{ selectedCount }} item(s) selected
+      </span>
+      <button
+        type="button"
+        class="show-btn btn-add"
+        [disabled]="selectedCount === 0 || submitting"
+        (click)="approveAndSend()"
+      >
+        {{ submitting ? 'Sending...' : 'Send to GM(T)' }}
+      </button>
+    </div>
+  </div>
+</div>

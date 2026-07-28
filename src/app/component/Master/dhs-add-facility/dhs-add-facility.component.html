@@ -1,0 +1,53 @@
+<div class="it-page">
+  <h2 class="page-title">Add Facility User</h2>
+
+  <div class="datagrid">
+    <div class="header-section">
+      <div class="header-item">
+        <span class="header-label">Location</span>
+        <span class="header-value">{{ locationName || '—' }}</span>
+      </div>
+      <div class="header-item">
+        <span class="header-label">District</span>
+        <span class="header-value">{{ districtName || '—' }}</span>
+      </div>
+      <div class="header-item">
+        <span class="header-label">Facility Type</span>
+        <span class="header-value">{{ facilityTypeName || '—' }}</span>
+      </div>
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="1" [cols]="2" />
+
+    <div class="form-card" *ngIf="!loading">
+      <div class="form-grid">
+        <label class="field">
+          <span class="field-label">Email Address <em>*</em></span>
+          <input
+            type="email"
+            [(ngModel)]="emailId"
+            placeholder="Enter facility user email"
+            [disabled]="saving" />
+          <span class="field-hint">FU type user will be created from this email</span>
+        </label>
+      </div>
+
+      <div class="actions-row">
+        <button
+          type="button"
+          class="back-btn"
+          (click)="goBack()"
+          [disabled]="saving">
+          Back
+        </button>
+        <button
+          type="button"
+          class="primary-btn"
+          (click)="save()"
+          [disabled]="saving">
+          {{ saving ? 'Saving…' : 'Save' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

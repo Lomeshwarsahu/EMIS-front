@@ -1,0 +1,104 @@
+<div class="it-page">
+  <h2 class="page-title">Medical College Facility Locations</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        *ngIf="authorityId === 12"
+        aria-label="Medical College User"
+        [(ngModel)]="selectedMedicalUserId"
+        (ngModelChange)="loadGrid()">
+        <option [ngValue]="0">Select Medical College</option>
+        <option *ngFor="let u of medicalUsers" [ngValue]="u.UserId">{{ u.UserName }}</option>
+      </select>
+
+      <select
+        *ngIf="authorityId !== 12"
+        aria-label="District"
+        [(ngModel)]="selectedDistrictId"
+        (ngModelChange)="loadGrid()">
+        <option [ngValue]="0">Select District</option>
+        <option *ngFor="let d of districts" [ngValue]="d.DP_DistrictID">{{ d.DBStart_Name_En }}</option>
+      </select>
+
+      <button type="button" class="show-btn accent-btn" (click)="loadGrid()" [disabled]="loading">Show</button>
+      <button type="button" class="show-btn" (click)="showForm = !showForm">
+        {{ showForm ? 'Hide Form' : 'Add Location' }}
+      </button>
+    </div>
+
+    <div class="form-card" *ngIf="showForm">
+      <div class="form-grid">
+        <label class="field">
+          <span class="field-label">Location Name <em>*</em></span>
+          <input type="text" [(ngModel)]="formData.LocationName" [disabled]="saving" />
+        </label>
+        <label class="field">
+          <span class="field-label">Address 1 <em>*</em></span>
+          <input type="text" [(ngModel)]="formData.Address1" [disabled]="saving" />
+        </label>
+        <label class="field">
+          <span class="field-label">Address 2</span>
+          <input type="text" [(ngModel)]="formData.Address2" [disabled]="saving" />
+        </label>
+        <label class="field">
+          <span class="field-label">Address 3</span>
+          <input type="text" [(ngModel)]="formData.Address3" [disabled]="saving" />
+        </label>
+        <label class="field">
+          <span class="field-label">Mobile No <em>*</em></span>
+          <input type="text" [(ngModel)]="formData.MobileNo" maxlength="10" [disabled]="saving" />
+        </label>
+        <label class="field">
+          <span class="field-label">Contact Person</span>
+          <input type="text" [(ngModel)]="formData.ContactPerson" [disabled]="saving" />
+        </label>
+        <label class="field">
+          <span class="field-label">Email ID <em>*</em></span>
+          <input type="email" [(ngModel)]="formData.EmailId" [disabled]="saving" />
+        </label>
+      </div>
+      <div class="actions-row">
+        <button type="button" class="primary-btn" (click)="save()" [disabled]="saving">
+          {{ saving ? 'Saving...' : 'Save Location' }}
+        </button>
+      </div>
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="5" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="it-grid" mat-table [dataSource]="dataSource" matSort #sort="matSort">
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let row; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="locationName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Location Name</th>
+          <td mat-cell *matCellDef="let row" class="wrap-cell">{{ row.LocationName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="district">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>District / Medical College</th>
+          <td mat-cell *matCellDef="let row">{{ row.District }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="emailId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+          <td mat-cell *matCellDef="let row">{{ row.EmailId }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="userId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">User ID</th>
+          <td mat-cell *matCellDef="let row" class="text-center">{{ row.UserId || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <div class="empty-row" *ngIf="!dataSource.data.length">No records found. Select a filter and click Show.</div>
+    </div>
+  </div>
+</div>

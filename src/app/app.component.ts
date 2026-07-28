@@ -375,8 +375,8 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
         
         } else {
           console.warn('No vendor details found.');
-          alert('⚠️ Please generate vendor registration number.');
-          this.router.navigate(['generate-registration']);
+          alert('⚠️ Please update your supplier information (vendor registration number missing).');
+          this.router.navigate(['masters/particular-supplier-add']);
 
         }
       },

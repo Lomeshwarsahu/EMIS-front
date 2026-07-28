@@ -1,5 +1,4 @@
 <div class="supplier-po-page">
-  <h2 class="page-title wide">EMD Refund Request Form</h2>
 
   <div class="refund-actions no-print">
     <button
@@ -122,7 +121,12 @@
             </td>
           </tr>
           <tr *ngIf="!rows.length">
-            <td colspan="7" class="empty-row">No Record found.</td>
+            <td colspan="7" class="empty-row">
+              <div class="empty-state">
+                <div style="font-size: 32px; color: #cbd5e1; margin-bottom: 8px;">&#128200;</div>
+                <p>No EMD refund requests submitted yet.</p>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -82,7 +82,12 @@
             </td>
           </tr>
           <tr *ngIf="!rows.length">
-            <td colspan="10" class="empty-row">No records found.</td>
+            <td colspan="10" class="empty-row">
+              <div class="empty-state">
+                <div style="font-size: 32px; color: #cbd5e1; margin-bottom: 8px;">&#128666;</div>
+                <p>No dispatch records found for the selected filters.</p>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

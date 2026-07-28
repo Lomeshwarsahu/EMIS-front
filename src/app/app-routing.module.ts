@@ -114,12 +114,22 @@ import { TDSdataReportComponent } from './Reports/tdsdata-report/tdsdata-report.
 import { PaymentsCPReport20perComponent } from './Reports/payments-cpreport20per/payments-cpreport20per.component';
 import { FileMRCDashboardFINFileComponent } from './GM Finance/file-mrcdashboard-finfile/file-mrcdashboard-finfile.component';
 import { SanctionComponent } from './GM Finance/sanction/sanction.component';
+import { EmdRefundTenderwiseComponent } from './component/Finance/emd-refund-tenderwise/emd-refund-tenderwise.component';
+import { SdReleaseFinanceComponent } from './component/Finance/sd-release-finance/sd-release-finance.component';
 import { AddSubMenuComponent } from './component/IT/add-sub-menu/add-sub-menu.component';
 import { AddRoleInScreenComponent } from './component/IT/add-role-in-screen/add-role-in-screen.component';
 import { DeleteMenuComponent } from './component/IT/delete-menu/delete-menu.component';
 import { MasterSupplierDashComponent } from './component/Tender Cell/master-supplier-dash/master-supplier-dash.component';
 import { ConsolidatedIndentCGMSCComponent } from './component/Tender Cell/consolidated-indent-cgmsc/consolidated-indent-cgmsc.component';
 import { TenderCoverAObClaimAfterComponent } from './component/Tender Cell/tender-cover-aob-claim-after/tender-cover-aob-claim-after.component';
+import { PerformanceCertificateComponent } from './Performance/performance-certificate/performance-certificate.component';
+import { StoreHomeComponent } from './component/Master/store-home/store-home.component';
+import { DhsAddFacilityComponent } from './component/Master/dhs-add-facility/dhs-add-facility.component';
+import { DhsFacilityUsersLocationsComponent } from './component/Master/dhs-facility-users-locations/dhs-facility-users-locations.component';
+import { HealthFacilityDetailsComponent } from './component/Master/health-facility-details/health-facility-details.component';
+import { ItemSpecificationComponent } from './component/Master/item-specification/item-specification.component';
+import { MasFacilityUsersLocationsComponent } from './component/Master/mas-facility-users-locations/mas-facility-users-locations.component';
+import { MasterSupplierAddComponent } from './component/Master/master-supplier-add/master-supplier-add.component';
 import { TenderCoverAitemsComponent } from './component/BME/tender-cover-aitems/tender-cover-aitems.component';
 import { CoverAitemsReportsComponent } from './component/BME/cover-aitems-reports/cover-aitems-reports.component';
 
@@ -1241,6 +1251,35 @@ const routes: Routes = [
 //#region GM Finance
 // 
   {
+    path: 'EMDRefundTenderwise',
+    component: EmdRefundTenderwiseComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'CGMSC', 'AD'] },
+  },
+  {
+    path: 'emd-refund/tenderwise',
+    component: EmdRefundTenderwiseComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'CGMSC', 'AD'] },
+  },
+  {
+    path: 'SDReleaseFInance',
+    component: SdReleaseFinanceComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'CGMSC', 'AD'] },
+  },
+  {
+    path: 'SDReleaseFinance',
+    redirectTo: 'SDReleaseFInance',
+    pathMatch: 'full',
+  },
+  {
+    path: 'emd-refund/sd-release-finance',
+    component: SdReleaseFinanceComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'CGMSC', 'AD'] },
+  },
+  {
     path: 'EditReceivedAndInstallationDate',
     component: EditReceivedAndInstallationDateComponent,
     canActivate: [RouteGuardService],
@@ -1317,6 +1356,57 @@ const routes: Routes = [
     component: FileMRCDashboardFINFileComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'AU'] },
+  },
+  {
+    path: 'PerformanceCertificate',
+    component: PerformanceCertificateComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+//#endregion
+
+//#region Master Module
+  {
+    path: 'DHSFacilityUsersLocations',
+    component: DhsFacilityUsersLocationsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'DME'] },
+  },
+  {
+    path: 'DHSAddFacility',
+    component: DhsAddFacilityComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'DME'] },
+  },
+  {
+    path: 'HealthFacilityDetails',
+    component: HealthFacilityDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'DME'] },
+  },
+  {
+    path: 'Itemspecification',
+    component: ItemSpecificationComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'MasFacilityUsersLocations',
+    component: MasFacilityUsersLocationsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUPO'] },
+  },
+  {
+    path: 'MasterSupplierAdd',
+    component: MasterSupplierAddComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO'] },
+  },
+  {
+    path: 'StoreHome',
+    component: StoreHomeComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU'] },
   },
 //#endregion
 
