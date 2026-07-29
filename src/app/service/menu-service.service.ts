@@ -625,9 +625,20 @@ export class MenuServiceService {
         {
           label: 'File Movements',
           route: '',
-          submenu: [{ label: 'File Movements', route: '/FileMRCDashboardFINFile' }],
+          submenu: [
+            { label: 'File MRC Dashboard', route: '/FileMRCDashboardFINFile' },
+            { label: 'EMD File Approval (Bank Letter)', route: '/EMDFileApprovalBankletter' },
+            { label: 'EMD File Approval (GMF)', route: '/EMDFileApprovalGMF' },
+            { label: 'EMD File Approval (GMF Sanction)', route: '/EMDFileApprovalGMFsanction' },
+            { label: 'Logo Verified HO', route: '/LogoVerifiedHO' },
+            { label: 'Site Not Ready Upload', route: '/SiteNotReadyDocUpload' },
+            { label: 'Invoices By SO', route: '/InvoicesBySO' },
+            { label: 'PO Report', route: '/PoReportNew' },
+            { label: 'Installation Details', route: '/InstallationDetails' },
+            { label: 'PO Details Report', route: '/PODetailsRDLC' },
+            { label: 'Pending Install DrillDown', route: '/PendingInstallDrillDown' },
+          ],
         },
-    
         {
           label: 'Payments',
           route: '',
@@ -815,7 +826,22 @@ export class MenuServiceService {
         {
           label: 'File Movements',
           route: '',
-          submenu: [{ label: 'File MRC Dashboard', route: '/FileMRCDashbord' }],
+          submenu: [
+            { label: 'File MRC Dashboard (DM)', route: '/FileMRCDashbord' },
+            { label: 'File MRC Dashboard (FIN)', route: '/FileMRCDashboardFIN' },
+            { label: 'File MRC Dashboard (GM)', route: '/FileMRCDashboardGM' },
+            { label: 'File MRC Dashboard (IGM)', route: '/FileMRCDashboardIGM' },
+            { label: 'File MRC Dashboard (FIN File)', route: '/FileMRCDashboardFINFile' },
+            { label: 'File MRC Dashboard (FIN File V1)', route: '/FileMRCDashboardFINFile_Ver1' },
+            { label: 'File MRC Dashboard (GM New)', route: '/FileMRCDashboardGMNew' },
+            { label: 'File MRC Dashboard (IGM Mov)', route: '/FileMRCDashboardIGMMov' },
+            { label: 'File MRC Dashboard (IGM Mov Audit)', route: '/FileMRCDashboardIGMMovAudit' },
+            { label: 'File MRC Dashboard (IGM Mov BME)', route: '/FileMRCDashboardIGMMovBME' },
+            { label: 'PO Report New', route: '/PoReportNew' },
+            { label: 'Installation Details', route: '/InstallationDetails' },
+            { label: 'PO Details Report', route: '/PODetailsRDLC' },
+            { label: 'Pending Install DrillDown', route: '/PendingInstallDrillDown' },
+          ],
         },
         // { label: '  Generation FileNo', route: '/GenerationFileNonasti' },
 

@@ -117,6 +117,13 @@ import { SanctionComponent } from './GM Finance/sanction/sanction.component';
 import { EmdRefundTenderwiseComponent } from './component/Finance/emd-refund-tenderwise/emd-refund-tenderwise.component';
 import { SdReleaseFinanceComponent } from './component/Finance/sd-release-finance/sd-release-finance.component';
 import { AddSubMenuComponent } from './component/IT/add-sub-menu/add-sub-menu.component';
+import { EmdFileApprovalComponent } from './component/emd-file-approval/emd-file-approval.component';
+import { LogoVerifiedHoComponent } from './component/logo-verified-ho/logo-verified-ho.component';
+import { SiteNotReadyUploadComponent } from './component/site-not-ready-upload/site-not-ready-upload.component';
+import { InvoicesBySoComponent } from './component/invoices-by-so/invoices-by-so.component';
+import { PoReportNewComponent } from './component/po-report-new/po-report-new.component';
+import { PoDetailsRdlcComponent } from './component/po-details-rdlc/po-details-rdlc.component';
+import { PendingInstallDrilldownComponent } from './component/pending-install-drilldown/pending-install-drilldown.component';
 import { AddRoleInScreenComponent } from './component/IT/add-role-in-screen/add-role-in-screen.component';
 import { DeleteMenuComponent } from './component/IT/delete-menu/delete-menu.component';
 import { MasterSupplierDashComponent } from './component/Tender Cell/master-supplier-dash/master-supplier-dash.component';
@@ -385,7 +392,12 @@ const routes: Routes = [
   { path: 'otp', component: OtpComponent },
   // {path:'GenerationFileNonasti',component:GenerationFileNonastiComponent},//
   // {path:'FileMRCDashbord',component:FileMRCDashbordComponent},//
-  { path: 'InstallationDetails', component: InstallationDetailsComponent },
+  {
+    path: 'InstallationDetails',
+    component: InstallationDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'] },
+  },
   // {path:'ExtensionHODetail',component:ExtensionHODetailComponent},//
   { path: 'ExtensionHOEntry', component: ExtensionHOEntryComponent },
   // {path:'ItemWiseDetailPOCell',component:ItemWiseDetailPOCellComponent},//
@@ -504,7 +516,61 @@ const routes: Routes = [
     path: 'FileMRCDashbord',
     component: FileMRCDashbordComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['TPO'] },
+    data: { allowedRoles: ['TPO'], variant: 'dm' },
+  },
+  {
+    path: 'FileMRCDashboardFIN',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD','FIN'], variant: 'fin' },
+  },
+  {
+    path: 'FileMRCDashboardGM',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['GM','AD'], variant: 'gm' },
+  },
+  {
+    path: 'FileMRCDashboardIGM',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['IGM','AD'], variant: 'igm' },
+  },
+  {
+    path: 'FileMRCDashboardFINFile',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['FIN','AD'], variant: 'fin-file' },
+  },
+  {
+    path: 'FileMRCDashboardFINFile_Ver1',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['FIN','AD'], variant: 'fin-file-v1' },
+  },
+  {
+    path: 'FileMRCDashboardGMNew',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['GM','AD'], variant: 'gm-new' },
+  },
+  {
+    path: 'FileMRCDashboardIGMMov',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['IGM','AD'], variant: 'igm-mov' },
+  },
+  {
+    path: 'FileMRCDashboardIGMMovAudit',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['IGM','AD'], variant: 'igm-mov-audit' },
+  },
+  {
+    path: 'FileMRCDashboardIGMMovBME',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['BME','AD'], variant: 'igm-mov-bme' },
   },
 
   {
@@ -1428,6 +1494,78 @@ const routes: Routes = [
     component: DeleteMenuComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SEC1', 'AD'] },
+  },
+  //#endregion
+
+  //#region File Movement — EMD File Approval (5 variants)
+  {
+    path: 'EMDFileApprovalBME',
+    component: EmdFileApprovalComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['BME','AD'], variant: 'bme' },
+  },
+  {
+    path: 'EMDFileApprovalBankletter',
+    component: EmdFileApprovalComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AD'], variant: 'bankletter' },
+  },
+  {
+    path: 'EMDFileApprovalGMF',
+    component: EmdFileApprovalComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AD'], variant: 'gmf' },
+  },
+  {
+    path: 'EMDFileApprovalGMFsanction',
+    component: EmdFileApprovalComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AD'], variant: 'gmfsanction' },
+  },
+  {
+    path: 'EMDFileApprovalGMT',
+    component: EmdFileApprovalComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUPO','AD'], variant: 'gmt' },
+  },
+  //#endregion
+  //#region File Movement — Others
+  {
+    path: 'LogoVerifiedHO',
+    component: LogoVerifiedHoComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AU','AD'] },
+  },
+  {
+    path: 'SiteNotReadyDocUpload',
+    component: SiteNotReadyUploadComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AU','AD'] },
+  },
+  {
+    path: 'InvoicesBySO',
+    component: InvoicesBySoComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AU','AD'] },
+  },
+  {
+    path: 'PoReportNew',
+    component: PoReportNewComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AU','AD'] },
+  },
+  //#region File Movement — Remaining 2 pages
+  {
+    path: 'PODetailsRDLC',
+    component: PoDetailsRdlcComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','BME','AD'] },
+  },
+  {
+    path: 'PendingInstallDrillDown',
+    component: PendingInstallDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','BME','AD'] },
   },
   //#endregion
 
