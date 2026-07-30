@@ -1,0 +1,92 @@
+<div class="supplier-po-page">
+  <div class="page-header">
+    <button type="button" class="back-btn" (click)="goBack()">Back</button>
+  </div>
+
+  <h2 class="page-title wide">Indent Report — PO Cell</h2>
+
+  <table class="header-grid" *ngIf="headerInfo">
+    <tbody>
+      <tr>
+        <td>Indent Consolidation ID</td><td>{{ indentConsolidationId }}</td>
+        <td>Total Items</td><td>{{ dispatchData.length }}</td>
+        <td></td><td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <input type="text" placeholder="Search..." (keyup)="applyTextFilter($event)" />
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export Excel</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="location">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+          <td mat-cell *matCellDef="let element">{{ element.location || element.location_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="current_stock">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Current Stock</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.current_stock ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="pipeline">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Pipeline</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.pipeline ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.item || element.item_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.qty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="estimated_cost">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Estimated Cost</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.estimated_cost ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplier">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.supplier || element.supplier_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="rate_contract">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Rate Contract</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.rate_contract || element.rc_no || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tender_status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender Status</th>
+          <td mat-cell *matCellDef="let element">{{ element.tender_status || element.status || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && dispatchData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

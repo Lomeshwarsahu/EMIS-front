@@ -1,0 +1,120 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">PO Receipt Summary</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <div class="filter-section">
+        <span class="filter-label">Financial Year</span>
+        <ng-select [(ngModel)]="selectedYear" name="selectedYear" placeholder="Select Year" clearable="true">
+          <ng-option *ngFor="let yr of financialYears" [value]="yr.financial_year_id || yr.id">{{ yr.year }}</ng-option>
+        </ng-select>
+      </div>
+
+      <div class="filter-section">
+        <span class="filter-label">Directorate</span>
+        <ng-select [(ngModel)]="selectedDirectorate" name="selectedDirectorate" placeholder="Select Directorate" clearable="true">
+          <ng-option *ngFor="let dir of directorates" [value]="dir.facility_aut_id || dir.id">{{ dir.facility_aut_name || dir.name }}</ng-option>
+        </ng-select>
+      </div>
+
+      <mat-checkbox [(ngModel)]="exceededCancellationDays">Exceeded Cancellation Days</mat-checkbox>
+      <mat-checkbox [(ngModel)]="showNonReceivedOnly">Show Non Received Only</mat-checkbox>
+
+      <button type="button" class="show-btn" (click)="loadData()">Show</button>
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="15" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tender_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No</th>
+          <td mat-cell *matCellDef="let element">{{ element.tender_no || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO No</th>
+          <td mat-cell *matCellDef="let element">{{ element.po_no || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.po_date || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_code">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+          <td mat-cell *matCellDef="let element">{{ element.item_code || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.item_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplier_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.supplier_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">PO Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.po_qty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supply_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Supply Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.supply_qty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="receipt_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Receipt Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.receipt_qty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="install_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Install Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.install_qty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="cancellation_days">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Cancellation Days</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.cancellation_days ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="received_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Received Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.received_date || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="days_taken_to_receive">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Days Taken to Receive</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.days_taken_to_receive ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="last_date_to_receive">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Date to Receive</th>
+          <td mat-cell *matCellDef="let element">{{ element.last_date_to_receive || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && dispatchData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,138 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">District Wise PO Detail</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <div class="filter-section">
+        <span class="filter-label">Financial Year</span>
+        <ng-select [(ngModel)]="financialYearId" [items]="financialYears" bindValue="financial_year_id" bindLabel="year" placeholder="Select Year" class="filter-select"></ng-select>
+      </div>
+      <div class="filter-section">
+        <span class="filter-label">Directorate</span>
+        <ng-select [(ngModel)]="directorateId" [items]="directorates" bindValue="facility_aut_id" bindLabel="facility_aut_name" placeholder="Select Directorate" class="filter-select"></ng-select>
+      </div>
+      <div class="filter-section">
+        <span class="filter-label">District</span>
+        <ng-select [(ngModel)]="districtId" [items]="districts" bindValue="DP_DistrictID" bindLabel="DBStart_Name_En" placeholder="Select District" class="filter-select"></ng-select>
+      </div>
+      <div class="filter-section">
+        <span class="filter-label">From Date</span>
+        <input type="date" [(ngModel)]="fromDate" class="form-control filter-date" />
+      </div>
+      <div class="filter-section">
+        <span class="filter-label">To Date</span>
+        <input type="date" [(ngModel)]="toDate" class="form-control filter-date" />
+      </div>
+      <button type="button" class="show-btn" (click)="loadData()">Show</button>
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!poData.length">Export Excel</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="18" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="potype">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Type</th>
+          <td mat-cell *matCellDef="let element">{{ element.potype || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tender_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No</th>
+          <td mat-cell *matCellDef="let element">{{ element.tender_no || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO No</th>
+          <td mat-cell *matCellDef="let element">{{ element.po_no || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.po_date || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplier_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.supplier_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_code_as_per_tender">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+          <td mat-cell *matCellDef="let element">{{ element.item_code_as_per_tender || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.item_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="district">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>District</th>
+          <td mat-cell *matCellDef="let element">{{ element.district || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="location_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+          <td mat-cell *matCellDef="let element">{{ element.location_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="basicrate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Basic Rate</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.basicrate ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="percentage">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">%</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.percentage ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalprice">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Total Price</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.totalprice ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">PO Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.po_qty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supply_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Supply Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.supply_qty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="receiptQTY">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Receipt Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.receiptQTY ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="insqty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Install Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.insqty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="eqptype">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Eqp Type</th>
+          <td mat-cell *matCellDef="let element">{{ element.eqptype || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && poData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

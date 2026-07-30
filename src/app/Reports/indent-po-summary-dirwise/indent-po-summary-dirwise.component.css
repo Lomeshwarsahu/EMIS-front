@@ -1,0 +1,18 @@
+.section-block {
+  margin-top: 24px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.section-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+:host-context(html[data-theme='dark']) .section-header h3 {
+  color: #e2e8f0;
+}

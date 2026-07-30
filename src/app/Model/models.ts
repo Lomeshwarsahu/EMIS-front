@@ -217,6 +217,10 @@ export interface ItemWiseFullDTO {
   BalToReceipt: number
   BalToInstall: number
 }
+export interface ItemDTO {
+  item_id: number;
+  item_name: string;
+}
 export interface IndentPOSummaryDirwiseDTO {
     sno:number
   IndentDT: string
@@ -1213,6 +1217,7 @@ export interface BalanceStatusDTO {
   po_no?: string;
   po_date?: string;
   directorate?: string;
+  authority?: string;
   item_code?: string;
   item_name?: string;
   supplier?: string;
@@ -1238,4 +1243,88 @@ export interface OpeningStockDrillDownDTO {
   model?: string;
   make?: string;
   location_name?: string;
+}
+
+export interface POSummaryDetailDTO {
+  sno?: number;
+  PoNo?: string;
+  PoDate?: string;
+  LocationName?: string;
+  Quantity?: number;
+  BasicRate?: number;
+  Percentage?: number;
+  SingleUnitPrice?: number;
+  TotalPOValue?: number;
+  SupplierName?: string;
+  TenderNo?: string;
+  OutwardNo?: string;
+}
+
+export interface POSummaryPOWiseDetailDTO {
+  sno?: number;
+  PoNo?: string;
+  PoDate?: string;
+  ItemName?: string;
+  Quantity?: number;
+  BasicRate?: number;
+  Percentage?: number;
+  TotalPOValue?: number;
+  SupplierName?: string;
+  TenderNo?: string;
+}
+
+export interface POSummaryReagentDetailDTO {
+  sno?: number;
+  ItemName?: string;
+  LocationName?: string;
+  PoDate?: string;
+  Quantity?: number;
+  BasicRate?: number;
+  Percentage?: number;
+  SingleUnitPrice?: number;
+  TotalPOValue?: number;
+  SupplierName?: string;
+  TenderNo?: string;
+  PoNo?: string;
+}
+
+export interface PaymentsCPReportDTO {
+  sno?: number;
+  supplier?: string;
+  no_of_pos?: number;
+  supplier_cheque_amount?: number;
+  admin_charges?: number;
+  total_cheque_amount?: number;
+  cheque_no?: string;
+  budget?: string;
+  cheque_date?: string;
+  bank_letter_date?: string;
+}
+
+export interface POReceiptSummaryDTO {
+  sno?: number;
+  tender_no?: string;
+  po_no?: string;
+  po_date?: string;
+  item_code?: string;
+  item_name?: string;
+  supplier_name?: string;
+  po_qty?: number;
+  supply_qty?: number;
+  receipt_qty?: number;
+  install_qty?: number;
+  cancellation_days?: number;
+  received_date?: string;
+  days_taken_to_receive?: number;
+  last_date_to_receive?: string;
+}
+
+export interface FinancialYearDTO {
+  financial_year_id?: number;
+  year?: string;
+}
+
+export interface DirectorateDTO {
+  facility_aut_id?: number;
+  facility_aut_name?: string;
 }

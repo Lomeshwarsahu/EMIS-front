@@ -1,0 +1,14 @@
+/* Dispatch Detail overrides */
+.detail-row td.detail-cell {
+  padding: 12px 16px !important;
+  background: #f8fafc;
+}
+.detail-section h4 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #059669;
+}
+:host-context(html[data-theme='dark']) .detail-row td.detail-cell {
+  background: #141820;
+}

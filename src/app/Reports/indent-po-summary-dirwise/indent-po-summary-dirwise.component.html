@@ -1,0 +1,201 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Indent PO Summary (Directorate Wise)</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters--compact">
+      <select [(ngModel)]="selectedYear" name="selectedYear" [class.is-placeholder]="!selectedYear">
+        <option [ngValue]="undefined">Select Financial Year</option>
+        <option *ngFor="let y of Yearlist" [ngValue]="y.financial_year_id || y.value">{{ y.year || y.text }}</option>
+      </select>
+
+      <select [(ngModel)]="selectedDirectorate" name="selectedDirectorate" (change)="onDirectorateChange()" [class.is-placeholder]="!selectedDirectorate">
+        <option [ngValue]="undefined">Select Directorate / HOD</option>
+        <option *ngFor="let d of Diectoratelist" [ngValue]="d.facility_aut_id">{{ d.facility_aut_name }}</option>
+      </select>
+
+      <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="displayedColumns.length" />
+
+    <ng-container *ngIf="!loading">
+      <!-- DME Section -->
+      <div class="section-block" id="dmeTable">
+        <div class="section-header">
+          <h3>DME Data</h3>
+          <button type="button" class="export-btn" (click)="exportToExcel('dme')" [disabled]="!dmeData.length">Export Excel</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="po-grid" mat-table matTableExporter [dataSource]="dmeDataSource" #dmeExporter="matTableExporter" matSort #dmeSort="matSort">
+
+            <ng-container matColumnDef="sno">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+              <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="district_med_coll_hosp">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>District / Med Coll / Hosp</th>
+              <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.Indent_Letter_no || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="indent_year">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Indent Year</th>
+              <td mat-cell *matCellDef="let element">{{ element.indent_year || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="indent_letter_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Indent Letter No</th>
+              <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.Indent_Letter_no || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="indent_date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Indent Date</th>
+              <td mat-cell *matCellDef="let element">{{ element.IndentDT || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="po_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>PO No</th>
+              <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.po_no || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="po_date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Date</th>
+              <td mat-cell *matCellDef="let element">{{ element.podate || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="eqp_code">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Eqp Code</th>
+              <td mat-cell *matCellDef="let element">{{ element.item_code_as_per_tender || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="eqp_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Eqp Name</th>
+              <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.item_name || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="eqp_type">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Eqp Type</th>
+              <td mat-cell *matCellDef="let element">{{ element.eqtype || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="indent_qty">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Indent Qty</th>
+              <td mat-cell *matCellDef="let element" class="text-center">{{ element.Indent_Qty ?? '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="po_qty">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">PO Qty</th>
+              <td mat-cell *matCellDef="let element" class="text-center">{{ element.poqty ?? '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="no_of_consignee">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">No of Consignee</th>
+              <td mat-cell *matCellDef="let element" class="text-center">{{ element.no_of_consignee ?? '-' }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found.</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="card-footer p-0" *ngIf="dmeData.length">
+          <mat-paginator #dmePaginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+        </div>
+      </div>
+
+      <!-- DHS Section -->
+      <div class="section-block" id="dhsTable">
+        <div class="section-header">
+          <h3>DHS Data</h3>
+          <button type="button" class="export-btn" (click)="exportToExcel('dhs')" [disabled]="!dhsData.length">Export Excel</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="po-grid" mat-table matTableExporter [dataSource]="dhsDataSource" #dhsExporter="matTableExporter" matSort #dhsSort="matSort">
+
+            <ng-container matColumnDef="sno">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+              <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="district_med_coll_hosp">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>District / Med Coll / Hosp</th>
+              <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.Indent_Letter_no || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="indent_year">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Indent Year</th>
+              <td mat-cell *matCellDef="let element">{{ element.indent_year || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="indent_letter_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Indent Letter No</th>
+              <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.Indent_Letter_no || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="indent_date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Indent Date</th>
+              <td mat-cell *matCellDef="let element">{{ element.IndentDT || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="po_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>PO No</th>
+              <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.po_no || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="po_date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Date</th>
+              <td mat-cell *matCellDef="let element">{{ element.podate || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="eqp_code">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Eqp Code</th>
+              <td mat-cell *matCellDef="let element">{{ element.item_code_as_per_tender || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="eqp_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Eqp Name</th>
+              <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.item_name || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="eqp_type">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Eqp Type</th>
+              <td mat-cell *matCellDef="let element">{{ element.eqtype || '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="indent_qty">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Indent Qty</th>
+              <td mat-cell *matCellDef="let element" class="text-center">{{ element.Indent_Qty ?? '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="po_qty">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">PO Qty</th>
+              <td mat-cell *matCellDef="let element" class="text-center">{{ element.poqty ?? '-' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="no_of_consignee">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">No of Consignee</th>
+              <td mat-cell *matCellDef="let element" class="text-center">{{ element.no_of_consignee ?? '-' }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found.</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="card-footer p-0" *ngIf="dhsData.length">
+          <mat-paginator #dhsPaginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
