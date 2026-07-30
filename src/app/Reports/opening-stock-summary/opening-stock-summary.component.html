@@ -1,0 +1,50 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Opening Stock Summary</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <select [(ngModel)]="selectedDirectorate" name="selectedDirectorate" [class.is-placeholder]="!selectedDirectorate">
+        <option [ngValue]="undefined">Select Directorate</option>
+        <option *ngFor="let d of directoratelist" [ngValue]="d.facility_aut_id">{{ d.facility_aut_name }}</option>
+      </select>
+
+      <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export Excel</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="3" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="user_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>User/District Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.user_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="nos">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Nos</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <button class="link-btn" (click)="openDrillDown(element)">{{ element.nos ?? '-' }}</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && dispatchData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

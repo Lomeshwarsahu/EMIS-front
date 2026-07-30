@@ -1,0 +1,92 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">EMD Deposit Report</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <ng-select
+        [(ngModel)]="selectedSupplierId"
+        name="selectedSupplierId"
+        placeholder="Select Supplier"
+        [clearable]="true"
+        (change)="onSupplierChange()">
+        <ng-option *ngFor="let s of supplierList" [value]="s.supplierId">{{ s.supplierName }}</ng-option>
+      </ng-select>
+
+      <ng-select
+        [(ngModel)]="selectedTenderId"
+        name="selectedTenderId"
+        placeholder="Select Tender No"
+        [clearable]="true">
+        <ng-option *ngFor="let t of tenderList" [value]="t.tenderId">{{ t.tenderNo }}</ng-option>
+      </ng-select>
+
+      <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export Excel</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="9" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">ID</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.id ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplierName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.supplierName || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tenderNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No</th>
+          <td mat-cell *matCellDef="let element">{{ element.tenderNo || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="emdAmount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">EMD Amount</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.emdAmount ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="emdType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">EMD Type</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.emdType || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="documentNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Document No</th>
+          <td mat-cell *matCellDef="let element">{{ element.documentNo || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="depositDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Deposit Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.depositDate || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="entryDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Entry Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.entryDate || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">
+            No records found.
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && dispatchData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

@@ -139,6 +139,27 @@ import { MasFacilityUsersLocationsComponent } from './component/Master/mas-facil
 import { MasterSupplierAddComponent } from './component/Master/master-supplier-add/master-supplier-add.component';
 import { TenderCoverAitemsComponent } from './component/BME/tender-cover-aitems/tender-cover-aitems.component';
 import { CoverAitemsReportsComponent } from './component/BME/cover-aitems-reports/cover-aitems-reports.component';
+  import { IndentPoTenderStatusComponent } from './Reports/indent-po-tender-status/indent-po-tender-status.component';
+import { IndentPoTenderStatusSummaryComponent } from './Reports/indent-po-tender-status-summary/indent-po-tender-status-summary.component';
+import { IndentPoTenderStatusDrilldownComponent } from './Reports/indent-po-tender-status-drilldown/indent-po-tender-status-drilldown.component';
+import { IndentPoTenderSummaryComponent } from './Reports/indent-po-tender-summary/indent-po-tender-summary.component';
+import { IndentPoTenderSummaryDrilldownComponent } from './Reports/indent-po-tender-summary-drilldown/indent-po-tender-summary-drilldown.component';
+import { CmhoPoSummaryComponent } from './Reports/cmho-po-summary/cmho-po-summary.component';
+import { CmhoPoSummaryDrilldownComponent } from './Reports/cmho-po-summary-drilldown/cmho-po-summary-drilldown.component';
+import { PoSummaryDirectorateComponent } from './Reports/po-summary-directorate/po-summary-directorate.component';
+import { PoSummaryDirectorateDrilldownComponent } from './Reports/po-summary-directorate-drilldown/po-summary-directorate-drilldown.component';
+import { PoSummaryConsigneeHoComponent } from './Reports/po-summary-consignee-ho/po-summary-consignee-ho.component';
+import { TenderLiveStatusComponent } from './Reports/tender-live-status/tender-live-status.component';
+import { TenderLiveStatusDrilldownComponent } from './Reports/tender-live-status-drilldown/tender-live-status-drilldown.component';
+import { BalanceStatusDhsComponent } from './Reports/balance-status-dhs/balance-status-dhs.component';
+import { BalanceStatusPocellComponent } from './Reports/balance-status-pocell/balance-status-pocell.component';
+import { OpeningStockSummaryComponent } from './Reports/opening-stock-summary/opening-stock-summary.component';
+import { OpeningStockDrilldownComponent } from './Reports/opening-stock-drilldown/opening-stock-drilldown.component';
+import { PaymentsCpreportIgmComponent } from './Reports/payments-cpreport-igm/payments-cpreport-igm.component';
+import { PopaidReportIgmComponent } from './Reports/popaid-report-igm/popaid-report-igm.component';
+import { EmdDepositeReportComponent } from './Reports/emd-deposite-report/emd-deposite-report.component';
+import { EquipmentTagReportComponent } from './Reports/equipment-tag-report/equipment-tag-report.component';
+import { TenderWisePoDetailsComponent } from './Reports/tender-wise-po-details/tender-wise-po-details.component';
 
 
 const routes: Routes = [
@@ -1162,6 +1183,102 @@ const routes: Routes = [
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
+  {
+    path: 'reports/cmho-po-summary',
+    component: CmhoPoSummaryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/cmho-po-summary-drilldown',
+    component: CmhoPoSummaryDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/po-summary-directorate',
+    component: PoSummaryDirectorateComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/po-summary-directorate-drilldown',
+    component: PoSummaryDirectorateDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/po-summary-consignee-ho',
+    component: PoSummaryConsigneeHoComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/tender-live-status',
+    component: TenderLiveStatusComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/tender-live-status-drilldown',
+    component: TenderLiveStatusDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/balance-status-dhs',
+    component: BalanceStatusDhsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/balance-status-pocell',
+    component: BalanceStatusPocellComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/opening-stock-summary',
+    component: OpeningStockSummaryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/opening-stock-drilldown',
+    component: OpeningStockDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/payments-cpreport-igm',
+    component: PaymentsCpreportIgmComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/popaid-report-igm',
+    component: PopaidReportIgmComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/emd-deposite-report',
+    component: EmdDepositeReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/equipment-tag-report',
+    component: EquipmentTagReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/tender-wise-po-details',
+    component: TenderWisePoDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
 
   // Legacy flat paths → redirects (bookmarks / old links)
   { path: 'store-home', redirectTo: 'masters/store-home', pathMatch: 'full' },
@@ -1597,6 +1714,45 @@ const routes: Routes = [
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','BME','AD'] },
   },
+  //#endregion
+
+  //#region Reports — Indent/PO/Tender Status (5 pages)
+  {
+    path: 'reports/indent-po-tender-status',
+    component: IndentPoTenderStatusComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
+  },
+  {
+    path: 'reports/indent-po-tender-status-summary',
+    component: IndentPoTenderStatusSummaryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
+  },
+  {
+    path: 'reports/indent-po-tender-status-drilldown',
+    component: IndentPoTenderStatusDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
+  },
+  {
+    path: 'reports/indent-po-tender-summary',
+    component: IndentPoTenderSummaryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
+  },
+  {
+    path: 'reports/indent-po-tender-summary-drilldown',
+    component: IndentPoTenderSummaryDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
+  },
+  // Legacy flat path redirects
+  { path: 'IndentPoTenderStatus', redirectTo: 'reports/indent-po-tender-status', pathMatch: 'full' },
+  { path: 'IndentPoTenderStatusSummary', redirectTo: 'reports/indent-po-tender-status-summary', pathMatch: 'full' },
+  { path: 'IndentPOtenderstatusSummaryDrlDwnItems', redirectTo: 'reports/indent-po-tender-status-drilldown', pathMatch: 'full' },
+  { path: 'IndentPOtenderSummary', redirectTo: 'reports/indent-po-tender-summary', pathMatch: 'full' },
+  { path: 'IndentPOtenderSummaryDrlDwnItems', redirectTo: 'reports/indent-po-tender-summary-drilldown', pathMatch: 'full' },
   //#endregion
 
   { path: '**', redirectTo: 'login' },

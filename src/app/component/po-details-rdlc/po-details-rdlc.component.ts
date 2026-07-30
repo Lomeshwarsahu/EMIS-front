@@ -5,7 +5,6 @@ import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
-import { DmePageSkeletonComponent } from '../DME/shared/dme-page-skeleton/dme-page-skeleton.component';
 import { ApiService } from '../../service/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
@@ -13,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-po-details-rdlc',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTableModule, MatPaginatorModule, MatSortModule, MatTabsModule, DmePageSkeletonComponent],
+  imports: [CommonModule, FormsModule, MatTableModule, MatPaginatorModule, MatSortModule, MatTabsModule],
   template: `
 <div class="it-page" style="--page-accent:#059669">
   <h2 class="page-title">PO Details Report</h2>

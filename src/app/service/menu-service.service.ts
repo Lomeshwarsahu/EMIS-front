@@ -293,6 +293,9 @@ export class MenuServiceService {
               route: '/reports/po-wise-payment',
             },
             { label: 'Tenders Status', route: '/reports/tenders-status' },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
             {
               label: 'PO Receipts summary',
               route: '/reports/po-receipts-summary',
@@ -401,6 +404,9 @@ export class MenuServiceService {
               route: '/reports/po-wise-payment',
             },
             { label: 'Tenders Status', route: '/reports/tenders-status' },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
             {
               label: 'PO Receipts summary',
               route: '/reports/po-receipts-summary',
@@ -506,6 +512,9 @@ export class MenuServiceService {
               route: '/reports/po-wise-payment',
             },
             { label: 'Tenders Status', route: '/reports/tenders-status' },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
             {
               label: 'PO Receipts summary',
               route: '/reports/po-receipts-summary',
@@ -559,10 +568,13 @@ export class MenuServiceService {
           submenu: [
             { label: 'Tenders Status', route: 'reports/tenders-status' },
             { label: 'Indent/RC/PO Tender Status', route: '/IndentRCPOTenderStatus' },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
             { label: 'Unpaid PO Details', route: '/UnpaidPOS' },
         
             { label: 'District wise PO Details', route: '/DistrictWisePODetail' },
-           
+            
             { label: 'PO Report Year Wise', route: 'POReportGMF' },
           ],
         },
@@ -767,6 +779,9 @@ export class MenuServiceService {
               label: 'Specification Upload',
               route: '/reports/eel-specification',
             },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
           ],
         },
         {
@@ -821,6 +836,9 @@ export class MenuServiceService {
               label: 'Indent PO Summary Dirwise',
               route: '/IndentPOSummaryDirwise',
             },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
           ],
         },
         {
@@ -1000,6 +1018,9 @@ export class MenuServiceService {
               route: '/reports/po-wise-payment',
             },
             { label: 'Tenders Status', route: '/reports/tenders-status' },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
             {
               label: 'PO Receipts summary',
               route: '/reports/po-receipts-summary',
