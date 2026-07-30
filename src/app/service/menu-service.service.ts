@@ -549,8 +549,8 @@ export class MenuServiceService {
           label: 'EMD & SD Release',
           route: '',
           submenu: [
-            { label: 'EMD Refund Request File Movement', route: '/EMDRefundTenderwise' },
-            { label: 'SD Release Finance', route: '/SDReleaseFInance' },
+            { label: 'EMD Refund Request File Movement', route: '/emd-refund/tenderwise' },
+            { label: 'SD Release Finance', route: '/emd-refund/sd-release-finance' },
           ],
         },
         {

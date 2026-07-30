@@ -396,7 +396,37 @@ const routes: Routes = [
     path: 'InstallationDetails',
     component: InstallationDetailsComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'] },
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'bme' },
+  },
+  {
+    path: 'InstallationDetailsBME',
+    component: InstallationDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'bme' },
+  },
+  {
+    path: 'InstallationDetailsDEO',
+    component: InstallationDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'deo' },
+  },
+  {
+    path: 'InstallationDetailsDEONew',
+    component: InstallationDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'deonew' },
+  },
+  {
+    path: 'InstallationDetailsFINCTRL',
+    component: InstallationDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'finctrl' },
+  },
+  {
+    path: 'InstallationDetailsGMT',
+    component: InstallationDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'gmt' },
   },
   // {path:'ExtensionHODetail',component:ExtensionHODetailComponent},//
   { path: 'ExtensionHOEntry', component: ExtensionHOEntryComponent },

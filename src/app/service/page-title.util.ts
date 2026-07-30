@@ -17,6 +17,8 @@ const EXTRA_ROUTE_TITLES: Record<string, string> = {
   '/reports/pending-install-drill-down': 'Pending Receipt / Installation Detail',
   '/complain/receipt-complain-supplier': 'Complain Received Against Equipment',
   '/emd-refund/emd-deposit': 'EMD Refund Request Form',
+  '/emd-refund/tenderwise': 'EMD Refund Request File Movement',
+  '/emd-refund/sd-release-finance': 'Security Deposit (SD) Release',
   '/contracts/rc-detail-report': 'Rate Contract Detail Report',
   '/indents/from-facilities': 'Indent Received from Directorate/Facilities',
   '/masters/report-specification': 'CME EEL - Specifications Upload',
