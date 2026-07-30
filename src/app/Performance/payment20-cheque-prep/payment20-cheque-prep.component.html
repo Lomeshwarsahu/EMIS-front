@@ -1,0 +1,134 @@
+<div class="it-page">
+  <h2 class="page-title">Payment 20% Cheque Preparation</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <div class="status-filter-group">
+        <label class="radio-inline">
+          <input type="radio" name="statusFilter" [value]="''" [(ngModel)]="statusFilter"
+            (change)="onStatusFilterChange('')" checked /> All
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="statusFilter" value="Incomplete" [(ngModel)]="statusFilter"
+            (change)="onStatusFilterChange('Incomplete')" /> Incomplete
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="statusFilter" value="Complete" [(ngModel)]="statusFilter"
+            (change)="onStatusFilterChange('Complete')" /> Complete
+        </label>
+      </div>
+
+      <button type="button" class="show-btn" (click)="exportToExcel()">Export Excel</button>
+
+      <input type="text" class="search-input" placeholder="Search…" (keyup)="applyTextFilter($event)" />
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="displayedColumns.length" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="it-grid" mat-table matTableExporter [dataSource]="dataSource"
+        #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">#</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="payment_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment No</th>
+          <td mat-cell *matCellDef="let element">{{ element.payment_no }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO No</th>
+          <td mat-cell *matCellDef="let element">{{ element.po_no }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fund">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fund</th>
+          <td mat-cell *matCellDef="let element">{{ element.fund }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="no_of_supplier">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right">No of Supplier</th>
+          <td mat-cell *matCellDef="let element" class="text-right">{{ element.no_of_supplier }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="no_of_pos">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right">No of POs</th>
+          <td mat-cell *matCellDef="let element" class="text-right">{{ element.no_of_pos }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="to_be_released_amt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right">To Be Released Amt</th>
+          <td mat-cell *matCellDef="let element" class="text-right">{{ element.to_be_released_amt }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="withheld_recovered_amt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right">Withheld Recovered Amt</th>
+          <td mat-cell *matCellDef="let element" class="text-right">{{ element.withheld_recovered_amt }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let element">
+            <span class="status-pill"
+              [class.status-ok]="element.status === 'Complete'"
+              [class.status-booked]="element.status === 'Incomplete'">
+              {{ element.status }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cgmsc_account_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>CGMSC Ac No</th>
+          <td mat-cell *matCellDef="let element">{{ element.cgmsc_account_no }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="cheque_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cheque No</th>
+          <td mat-cell *matCellDef="let element">
+            <input type="text" class="edit-input" [(ngModel)]="element.cheque_no" />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cheque_dt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cheque DT</th>
+          <td mat-cell *matCellDef="let element">
+            <input type="text" class="edit-input" [(ngModel)]="element.cheque_dt" />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="paid_on">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Paid On</th>
+          <td mat-cell *matCellDef="let element">
+            <input type="text" class="edit-input" [(ngModel)]="element.paid_on" />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="notesheet">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Notesheet</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <a class="link-action" (click)="showNotesheet(element.payment_id)">View</a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="show_bank_letter">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Bank Letter</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <a class="link-action" (click)="showBankLetter(element.payment_id)">View</a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr *matNoDataRow>
+          <td [attr.colspan]="displayedColumns.length" class="text-center empty-row">No records found.</td>
+        </tr>
+      </table>
+
+      <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

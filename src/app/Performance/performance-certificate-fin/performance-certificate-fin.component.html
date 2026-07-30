@@ -1,0 +1,226 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Performance Certificate — FIN Release (20% Withheld)</h2>
+
+  <!-- Filters -->
+  <div class="filters filters--compact">
+    <label>
+      Release Year
+      <select [(ngModel)]="selectedReleaseYearId">
+        <option [ngValue]="0">Select</option>
+        <option *ngFor="let y of releaseYearList" [ngValue]="y.releaseYearId">{{ y.releaseYearName }}</option>
+      </select>
+    </label>
+    <label>
+      Fund
+      <select [(ngModel)]="selectedFundId">
+        <option [ngValue]="0">Select</option>
+        <option *ngFor="let f of fundList" [ngValue]="f.fundId">{{ f.fundName }}</option>
+      </select>
+    </label>
+    <button class="show-btn" (click)="loadGrid()">Show</button>
+    <button class="show-btn" (click)="goForChequePreparation()">Go For Cheque Preparation</button>
+  </div>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <button type="button" class="show-btn" [matMenuTriggerFor]="exportMenu">Export</button>
+      <mat-menu #exportMenu="matMenu">
+        <button mat-menu-item
+          (click)="exporter.exportTable('xlsx', { fileName: 'FINRelease', sheet: 'Release' })">Excel</button>
+      </mat-menu>
+      <input type="text" class="search-input" placeholder="Search…" (keyup)="applyTextFilter($event)" />
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="it-grid" mat-table matTableExporter [dataSource]="dataSource"
+        #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">#</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fund">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fund</th>
+          <td mat-cell *matCellDef="let element">{{ element.fund }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="check_box">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            <input type="checkbox" (change)="toggleAllSelection($event)" />
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <input type="checkbox" [(ngModel)]="rowSelection[element.po_id]"
+              [checked]="rowSelection[element.po_id]" />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplier_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.supplier_name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="nasti_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nasti No</th>
+          <td mat-cell *matCellDef="let element">{{ element.nasti_no }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO No</th>
+          <td mat-cell *matCellDef="let element">{{ element.po_no }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="installed_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right">Installed Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-right">{{ element.installed_qty }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="last_installed_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Installed Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.last_installed_date }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="cheque_dt">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Cheque DT</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <a class="link-action" (click)="onChequeDtClick(element.po_id)">{{ element.cheque_dt }}</a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="withheld_amt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right">Withheld Amt</th>
+          <td mat-cell *matCellDef="let element" class="text-right">{{ element.withheld_amt }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="recovered_amount">
+          <th mat-header-cell *matHeaderCellDef class="text-right">Recovered Amount</th>
+          <td mat-cell *matCellDef="let element" class="text-right">
+            <input type="number" [(ngModel)]="element.recovered_amount" class="grid-input" />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="to_be_released_amt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right">To Be Released Amt</th>
+          <td mat-cell *matCellDef="let element" class="text-right">{{ element.to_be_released_amt }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="remarks">
+          <th mat-header-cell *matHeaderCellDef>Remarks</th>
+          <td mat-cell *matCellDef="let element">
+            <input type="text" [(ngModel)]="element.remarks" class="grid-input" />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="paid_from">
+          <th mat-header-cell *matHeaderCellDef>Paid From</th>
+          <td mat-cell *matCellDef="let element">{{ element.paid_from }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="paid_to">
+          <th mat-header-cell *matHeaderCellDef>Paid To</th>
+          <td mat-cell *matCellDef="let element">{{ element.paid_to }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <button class="pill-btn pill-btn--accent" (click)="onAddClick(element)">Add</button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="performance_required">
+          <th mat-header-cell *matHeaderCellDef>Perf Required</th>
+          <td mat-cell *matCellDef="let element">{{ element.performance_required }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="to_be_released">
+          <th mat-header-cell *matHeaderCellDef class="text-center">To Be Released</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <a class="link-action" (click)="onToBeReleasedClick(element.po_id)">Link</a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="per_certificate">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Per. Certificate</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <a class="link-action" (click)="onPerCertificateClick(element.po_id)">Download</a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="present_file_to_action">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Present File to Action</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <a class="link-action" (click)="onPresentFileClick(element.po_id)">Forward</a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tender_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No</th>
+          <td mat-cell *matCellDef="let element">{{ element.tender_no }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="complaint_status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Complaint Status</th>
+          <td mat-cell *matCellDef="let element">
+            <span class="status-pill"
+              [class.status-booked]="element.complaint_status === 'Booked'"
+              [class.status-ok]="element.complaint_status !== 'Booked'">
+              {{ element.complaint_status }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+          [style.background]="getRowBg(row)"></tr>
+      </table>
+
+      <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+      <div class="empty-row" *ngIf="!gridData.length">No records found.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Forward File Modal -->
+<div class="modal fade" id="ForwardModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">CGMSC — File Forward</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="hideModal('ForwardModal')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field-grid">
+          <label class="field">
+            <span class="field-label">Send/Back <em>*</em></span>
+            <select [(ngModel)]="sendOption" (change)="onSendOptionChange()">
+              <option value="S">Send</option>
+              <option value="B">Back</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="field-label">Send To <em>*</em></span>
+            <select [(ngModel)]="sendToId">
+              <option [ngValue]="0">Select</option>
+              <option *ngFor="let u of userList" [ngValue]="u.userId">{{ u.userName }}</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="field-label">Remarks <em>*</em></span>
+            <textarea rows="2" [(ngModel)]="forwardRemarks" placeholder="Enter remarks…"></textarea>
+          </label>
+          <label class="field">
+            <span class="field-label">Forward Date <em>*</em></span>
+            <input type="date" [(ngModel)]="forwardDate" />
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="primary-btn" (click)="saveForward()">Send</button>
+        <button class="show-btn" (click)="hideModal('ForwardModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

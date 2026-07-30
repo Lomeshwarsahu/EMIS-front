@@ -130,6 +130,11 @@ import { MasterSupplierDashComponent } from './component/Tender Cell/master-supp
 import { ConsolidatedIndentCGMSCComponent } from './component/Tender Cell/consolidated-indent-cgmsc/consolidated-indent-cgmsc.component';
 import { TenderCoverAObClaimAfterComponent } from './component/Tender Cell/tender-cover-aob-claim-after/tender-cover-aob-claim-after.component';
 import { PerformanceCertificateComponent } from './Performance/performance-certificate/performance-certificate.component';
+import { Performace20ConsigneeComponent } from './Performance/performace20-consignee/performace20-consignee.component';
+import { PerformanceCertificateFinComponent } from './Performance/performance-certificate-fin/performance-certificate-fin.component';
+import { EmisPerf20RdlcComponent } from './Performance/emis-perf20-rdlc/emis-perf20-rdlc.component';
+import { Payment20ChequePrepComponent } from './Performance/payment20-cheque-prep/payment20-cheque-prep.component';
+import { SanctionNotesheetComponent } from './Performance/sanction-notesheet/sanction-notesheet.component';
 import { StoreHomeComponent } from './component/Master/store-home/store-home.component';
 import { DhsAddFacilityComponent } from './component/Master/dhs-add-facility/dhs-add-facility.component';
 import { DhsFacilityUsersLocationsComponent } from './component/Master/dhs-facility-users-locations/dhs-facility-users-locations.component';
@@ -1509,6 +1514,10 @@ const routes: Routes = [
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
 
+  { path: 'EMISPerf20_RDLC', redirectTo: 'performance/emis-perf20-rdlc', pathMatch: 'full' },
+  { path: 'Payment20CheequPrep', redirectTo: 'performance/payment20-cheque-prep', pathMatch: 'full' },
+  { path: 'SanctionNotesheet', redirectTo: 'performance/sanction-notesheet', pathMatch: 'full' },
+
   // Legacy flat paths → redirects (bookmarks / old links)
   { path: 'store-home', redirectTo: 'masters/store-home', pathMatch: 'full' },
   {
@@ -1805,6 +1814,24 @@ const routes: Routes = [
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
+  {
+    path: 'performance/emis-perf20-rdlc',
+    component: EmisPerf20RdlcComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'performance/payment20-cheque-prep',
+    component: Payment20ChequePrepComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'performance/sanction-notesheet',
+    component: SanctionNotesheetComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
 //#endregion
 
 //#region Master Module
@@ -1845,10 +1872,32 @@ const routes: Routes = [
     data: { allowedRoles: ['TPO'] },
   },
   {
-    path: 'StoreHome',
-    component: StoreHomeComponent,
+    path: 'PerformanceCertificate',
+    component: PerformanceCertificateComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['DME', 'FU'] },
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'performance/performace20-consignee',
+    component: Performace20ConsigneeComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'Performace20Consignee',
+    redirectTo: 'performance/performace20-consignee',
+    pathMatch: 'full',
+  },
+  {
+    path: 'performance/performance-certificate-fin',
+    component: PerformanceCertificateFinComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'PerformanceCertificateFIN',
+    redirectTo: 'performance/performance-certificate-fin',
+    pathMatch: 'full',
   },
 //#endregion
 

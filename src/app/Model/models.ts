@@ -993,6 +993,79 @@ export interface SendToUser {
   UserName: string;
 }
 
+export interface Performace20ConsigneeHeader {
+  PoId: number;
+  PoDate: string;
+  PoNo: string;
+  ItemCode: string;
+  ItemName: string;
+  Percentage: number;
+  BasicRate: number;
+  NoOfConsignee: number;
+  Model: string;
+  Make: string;
+  POQTY: number;
+  DispatchQty: number;
+  ReceiptQty: number;
+  InsQTY: number;
+  ReleaseDur: string;
+  ReleaseType: string;
+}
+
+export interface Performace20ConsigneeGridItem {
+  sno: number;
+  location_name: string;
+  po_qty: number;
+  dispatched_qty: number;
+  received_qty: number;
+  installed_qty: number;
+  installation_date: string;
+}
+
+export interface FinReleaseGridItem {
+  sno: number;
+  po_id: number;
+  fund: string;
+  supplier_name: string;
+  nasti_no: string;
+  po_no: string;
+  installed_qty: number;
+  last_installed_date: string;
+  cheque_dt: string;
+  withheld_amt: number;
+  recovered_amount: number;
+  to_be_released_amt: number;
+  remarks: string;
+  paid_from: string;
+  paid_to: string;
+  performance_required: string;
+  tender_no: string;
+  complaint_status: string;
+  isEligible: boolean;
+}
+
+export interface ForwardUser {
+  userId: number;
+  userName: string;
+}
+
+export interface Payment20ChequePrepItem {
+  sno: number;
+  payment_id: number;
+  payment_no: string;
+  po_no: string;
+  fund: string;
+  no_of_supplier: number;
+  no_of_pos: number;
+  to_be_released_amt: number;
+  withheld_recovered_amt: number;
+  status: string;
+  cgmsc_account_no: string;
+  cheque_no: string;
+  cheque_dt: string;
+  paid_on: string;
+}
+
 export interface DistrictDto {
   DP_DistrictID: number;
   DBStart_Name_En: string;
