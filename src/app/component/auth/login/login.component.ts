@@ -688,7 +688,13 @@ localStorage.setItem('loginData', JSON.stringify(updatedRes));
             // this.InsertUserPageViewLog();
 
             if (role === 'FU' || role === 'PRINCIPAL' || role === 'FDA') {
-              this.router.navigate(['/masters/store-home']);
+              if (
+                String(updatedRes?.flagPwdChange ?? res?.flagPwdChange ?? '').toUpperCase() === 'N'
+              ) {
+                this.router.navigate(['/change-password'], { queryParams: { reason: '1' } });
+              } else {
+                this.router.navigate(['/masters/store-home']);
+              }
             } else if (
               role === 'AD' ||
               role === 'AU' ||

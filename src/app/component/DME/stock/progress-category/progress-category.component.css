@@ -1,0 +1,7 @@
+:host {
+  display: block;
+}
+
+.filters--compact select {
+  min-width: 240px;
+}

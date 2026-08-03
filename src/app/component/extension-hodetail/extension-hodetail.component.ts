@@ -39,6 +39,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ActivatedRoute } from '@angular/router';
 import { ExtensionEHODTO } from 'src/app/Model/models';
 
 @Component({
@@ -85,6 +86,7 @@ export class ExtensionHODetailComponent {
   Supplierlist: any[] = [];
   selectedSupplier: number | null = null;
   supplierid: any;
+  onlyExtensionRequests = false;
   constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
@@ -93,11 +95,15 @@ export class ExtensionHODetailComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private sanitizer: DomSanitizer,
+    private route: ActivatedRoute,
   ) {
     this.dataSource = new MatTableDataSource<ExtensionEHODTO>([]);
   }
 
   ngOnInit() {
+    this.route.queryParamMap.subscribe((params) => {
+      this.onlyExtensionRequests = params.get('onlyExtensionRequests') === 'true';
+    });
     // this.GETGetPODetails();
     this.GetSupplierlist();
   }
@@ -125,6 +131,7 @@ export class ExtensionHODetailComponent {
 
       const params = {
         supplierid: this.supplierid || 0,
+        onlyExtensionRequests: this.onlyExtensionRequests ? 'true' : 'false',
       };
       this.api.get('ExtensionEHO/ExtensionEHODetails', { params }).subscribe(
         (res: any) => {

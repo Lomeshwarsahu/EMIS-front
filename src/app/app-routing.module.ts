@@ -80,6 +80,23 @@ import { DmeFacAddIndentComponent } from './component/DME/indent/dme-fac-add-ind
 import { DmeFacIndentReportComponent } from './component/DME/indent/dme-fac-indent-report/dme-fac-indent-report.component';
 import { CmcDetailComponent } from './component/DME/reports/cmc-detail/cmc-detail.component';
 import { FacilityComplainStoreComponent } from './component/DME/complain/facility-complain-store/facility-complain-store.component';
+import { ChangePasswordComponent } from './component/DME/orders/change-password/change-password.component';
+import { ProgressCategoryComponent } from './component/DME/stock/progress-category/progress-category.component';
+import { FacilityReceiptsComponent } from './component/DME/stock/facility-receipts/facility-receipts.component';
+import { NodalInformationComponent } from './component/DME/stock/nodal-information/nodal-information.component';
+import { MasFileNoComponent } from './component/DME/orders/mas-file-no/mas-file-no.component';
+import { NodalProgressComponent } from './component/DME/stock/nodal-progress/nodal-progress.component';
+import { EligibleReportComponent } from './Reports/eligible-report/eligible-report.component';
+import { PoReallocationComponent } from './component/DME/orders/po-reallocation/po-reallocation.component';
+import { PoAmendmentComponent } from './component/DME/orders/po-amendment/po-amendment.component';
+import { WithheldReleaseComponent } from './component/DME/orders/withheld-release/withheld-release.component';
+import { PaymentLetterComponent } from './component/DME/orders/payment-letter/payment-letter.component';
+import { MainEquipmentMappedReportComponent } from './Reports/main-equipment-mapped-report/main-equipment-mapped-report.component';
+import { ComplaintStatusComponent } from './component/DME/complain/complaint-status/complaint-status.component';
+import { ComplaintStatusEditComponent } from './component/DME/complain/complaint-status-edit/complaint-status-edit.component';
+import { ComplaintStatusFacilityComponent } from './component/DME/complain/complaint-status-facility/complaint-status-facility.component';
+import { ComplaintStatusFacilityEditComponent } from './component/DME/complain/complaint-status-facility-edit/complaint-status-facility-edit.component';
+import { ComplainCmhoComponent } from './component/DME/complain/complain-cmho/complain-cmho.component';
 import { TenderCoverAComponent } from './component/BME/tender-cover-a/tender-cover-a.component';
 import { TenderCoverAObClaimComponent } from './tender-cover-aob-claim/tender-cover-aob-claim.component';
 import { TenderItemsPriceGEMComponent } from './component/BME/tender-items-price-gem/tender-items-price-gem.component';
@@ -1030,6 +1047,72 @@ const routes: Routes = [
     data: { allowedRoles: ['DME'] },
   },
   {
+    path: 'stock/progress-category',
+    component: ProgressCategoryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'stock/facility-receipts',
+    component: FacilityReceiptsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'stock/nodal-information',
+    component: NodalInformationComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'orders/mas-file-no',
+    component: MasFileNoComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'orders/po-reallocation',
+    component: PoReallocationComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'orders/po-amendment',
+    component: PoAmendmentComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'orders/withheld-release',
+    component: WithheldReleaseComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'payment-letter',
+    component: PaymentLetterComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'stock/nodal-progress',
+    component: NodalProgressComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'reports/eligible-report',
+    component: EligibleReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/main-equipment-mapped',
+    component: MainEquipmentMappedReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
     path: 'orders/purchase-order-dashboard',
     component: PurchaseOrderDashboardComponent,
     canActivate: [RouteGuardService],
@@ -1136,6 +1219,11 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'rdlDMEAIReport',
+    redirectTo: 'indents/annual-indent-report',
+    pathMatch: 'full',
+  },
+  {
     path: 'indents/from-facilities',
     component: IndentFromFacilitiesComponent,
     canActivate: [RouteGuardService],
@@ -1164,6 +1252,66 @@ const routes: Routes = [
     component: FacilityComplainStoreComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'complain/complaint-status',
+    component: ComplaintStatusComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'complain/complaint-status-edit/:compId',
+    component: ComplaintStatusEditComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'complain/complaint-status-facility',
+    component: ComplaintStatusFacilityComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'complain/complaint-status-facility-edit/:compId',
+    component: ComplaintStatusFacilityEditComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'complain/complain-cmho',
+    component: ComplainCmhoComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'change-password',
+    component: ChangePasswordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AU', 'TPO', 'AUPO', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'ChangePasswordForcefully',
+    redirectTo: 'change-password',
+  },
+  {
+    path: 'ForceChangePWD',
+    redirectTo: 'change-password',
+  },
+  {
+    path: 'complain/status',
+    redirectTo: 'complain/complaint-status',
+  },
+  {
+    path: 'ComplaintStatus',
+    redirectTo: 'complain/complaint-status',
+  },
+  {
+    path: 'ComplaintStatusFacility',
+    redirectTo: 'complain/complaint-status-facility',
+  },
+  {
+    path: 'ComplainCMHO',
+    redirectTo: 'complain/complain-cmho',
   },
   {
     path: 'complain/report',
@@ -1563,6 +1711,86 @@ const routes: Routes = [
   {
     path: 'NewCovidItemDME',
     redirectTo: 'stock/new-opening-stock-entry',
+    pathMatch: 'full',
+  },
+  {
+    path: 'FACStockCMHO',
+    redirectTo: 'stock/covid-stock-report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'FACStockCOVIDItemsMC',
+    redirectTo: 'stock/covid-stock-report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Facility_Home',
+    redirectTo: 'masters/store-home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'FACProgress4Cat',
+    redirectTo: 'stock/progress-category',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Facilityequipmentreceipt',
+    redirectTo: 'stock/facility-receipts',
+    pathMatch: 'full',
+  },
+  {
+    path: 'NodleInformationNew',
+    redirectTo: 'stock/nodal-information',
+    pathMatch: 'full',
+  },
+  {
+    path: 'MasFileNo',
+    redirectTo: 'orders/mas-file-no',
+    pathMatch: 'full',
+  },
+  {
+    path: 'ReportPOEligible',
+    redirectTo: 'reports/eligible-report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'PORealloaction',
+    redirectTo: 'orders/po-reallocation',
+    pathMatch: 'full',
+  },
+  {
+    path: 'EMSPOAmmendment',
+    redirectTo: 'orders/po-amendment',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Payment20Per',
+    redirectTo: 'orders/withheld-release',
+    pathMatch: 'full',
+  },
+  {
+    path: 'PaymentLetter',
+    redirectTo: 'payment-letter',
+    pathMatch: 'full',
+  },
+  {
+    path: 'MainEquipmentMappedReport',
+    redirectTo: 'reports/main-equipment-mapped',
+    pathMatch: 'full',
+  },
+  {
+    path: 'ProgressDetail',
+    redirectTo: 'stock/nodal-progress',
+    pathMatch: 'full',
+  },
+  {
+    path: 'ProgressDetailDME',
+    redirectTo: 'stock/nodal-progress?dme=true',
+    pathMatch: 'full',
+  },
+  {
+    path: 'po_supextapproval',
+    redirectTo: 'ExtensionHODetail?onlyExtensionRequests=true',
     pathMatch: 'full',
   },
   {

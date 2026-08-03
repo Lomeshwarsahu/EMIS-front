@@ -704,6 +704,10 @@ export class MenuServiceService {
               label: 'Specification Upload',
               route: '/Itemspecification',
             },
+            {
+              label: 'Generation of File No/Nasti No',
+              route: '/orders/mas-file-no',
+            },
           ],
         },
         {
@@ -711,6 +715,22 @@ export class MenuServiceService {
           route: '',
           submenu: [
             { label: 'COVID Stock (MC)', route: '/stock/covid-stock-report' },
+            {
+              label: 'Progress Report (Category)',
+              route: '/stock/progress-category',
+            },
+            {
+              label: 'Facility Equipment Receipt (PO Receipt Desk)',
+              route: '/stock/facility-receipts',
+            },
+            {
+              label: 'Nodal Officer Information',
+              route: '/stock/nodal-information',
+            },
+            {
+              label: 'Progress Entry (Nodal)',
+              route: '/stock/nodal-progress',
+            },
             {
               label: 'Opening Stock Reports',
               route: '/stock/opening-stock-entry',
@@ -728,6 +748,18 @@ export class MenuServiceService {
             {
               label: 'Purchase Order Receipts',
               route: '/orders/purchase-order-receipts',
+            },
+            {
+              label: 'PO Reallocation After Approval',
+              route: '/orders/po-reallocation',
+            },
+            {
+              label: 'PO Amendment',
+              route: '/orders/po-amendment',
+            },
+            {
+              label: 'Release Withheld Cheque Preparation',
+              route: '/orders/withheld-release',
             },
           ],
         },
@@ -782,6 +814,11 @@ export class MenuServiceService {
             { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
             { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
             { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
+            { label: 'Eligible Consignee Report', route: '/reports/eligible-report' },
+            {
+              label: 'Main Equipment Mapped Report',
+              route: '/reports/main-equipment-mapped',
+            },
           ],
         },
         {

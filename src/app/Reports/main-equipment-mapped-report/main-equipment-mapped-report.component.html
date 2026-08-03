@@ -1,0 +1,51 @@
+<div class="dme-stock-page">
+  <div class="note-bar">
+    Main Equipment Mapped Report — items mapped to their main equipment type.
+  </div>
+
+  <div class="table-toolbar">
+    <button type="button" class="btn btn--primary" [disabled]="!rows.length" (click)="exportExcel()">
+      Export to Excel
+    </button>
+  </div>
+
+  <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="8" />
+
+  <div class="datagrid" *ngIf="!loading">
+    <div class="table-wrap">
+      <table class="stock-grid">
+        <thead>
+          <tr>
+            <th class="text-center">S.no</th>
+            <th>Main Item Name</th>
+            <th>Item Code</th>
+            <th>Item Name</th>
+            <th class="text-center">Electrical</th>
+            <th class="text-center">Progress Required</th>
+            <th>Serial OR Bulk Entry</th>
+            <th class="text-center">AMC Required</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>{{ row.PItemName || '—' }}</td>
+            <td>{{ row.ItemCode || '—' }}</td>
+            <td>{{ row.ItemName || '—' }}</td>
+            <td class="text-center">{{ row.IsElectrical || '—' }}</td>
+            <td class="text-center">{{ row.ProgReq || '—' }}</td>
+            <td>{{ row.SrOrBulkEntry || '—' }}</td>
+            <td class="text-center">{{ row.AmcReq || '—' }}</td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="8" class="empty-row">
+              <div class="empty-state">
+                <p>No records found.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

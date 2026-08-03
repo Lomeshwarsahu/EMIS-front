@@ -1,0 +1,64 @@
+<div class="ems-legacy-page">
+  <div class="header-wrap">
+    <span class="header-bar narrow">Complaint Status</span>
+  </div>
+
+  <div class="toolbar-row">
+    <label>
+      Status:
+      <select class="legacy-select" [(ngModel)]="status">
+        <option value="Booked">Booked</option>
+        <option value="Closed">Closed</option>
+      </select>
+    </label>
+    <button type="button" class="btn-legacy" (click)="load()" [disabled]="loading">
+      {{ loading ? 'Loading…' : 'Show' }}
+    </button>
+  </div>
+
+  <div class="grid-scroll">
+    <table class="legacy-grid">
+      <thead>
+        <tr>
+          <th>S.no</th>
+          <th>Complain no</th>
+          <th>Item Code</th>
+          <th>Item Name</th>
+          <th>Make No</th>
+          <th>Complain Trouble</th>
+          <th>Complain Date</th>
+          <th>Not Function Date</th>
+          <th>Store Name</th>
+          <th>Department Name</th>
+          <th>Complain Details</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="loaded && rows.length === 0 && !loading">
+        <tr>
+          <td colspan="12" class="grid-empty">No Record found.</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="loaded && rows.length > 0">
+        <tr *ngFor="let row of rows; let i = index">
+          <td class="center">{{ i + 1 }}</td>
+          <td>{{ row.complaintNo }}</td>
+          <td>{{ row.itemCode }}</td>
+          <td>{{ row.itemName }}</td>
+          <td>{{ row.makeNo }}</td>
+          <td>{{ row.complaintsTroubleshoot }}</td>
+          <td>{{ row.complaintDate }}</td>
+          <td>{{ row.notFunctionDate }}</td>
+          <td>{{ row.storeName }}</td>
+          <td>{{ row.locationName }}</td>
+          <td>{{ row.complaintDetails }}</td>
+          <td>
+            <button type="button" class="grid-link" (click)="edit(row)">
+              {{ row.status === 'Closed' ? 'Show' : 'Edit' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

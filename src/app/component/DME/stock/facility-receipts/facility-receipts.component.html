@@ -1,0 +1,130 @@
+<div class="dme-stock-page">
+  <div class="note-bar">
+    Note: PO Receipt Desk — received equipment pending installation tagging. Select a row to view
+    supplier dispatch batches.
+  </div>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Select Financial Year"
+        [(ngModel)]="selectedFinancialYear"
+        name="selectedFinancialYear"
+        (ngModelChange)="onYearChange()"
+        [class.is-placeholder]="selectedFinancialYear === 0">
+        <option *ngFor="let f of financialYears" [ngValue]="f.Key">{{ f.Value }}</option>
+      </select>
+
+      <select
+        aria-label="Select Item"
+        [(ngModel)]="selectedItemCode"
+        name="selectedItemCode"
+        (ngModelChange)="onItemChange()"
+        [class.is-placeholder]="selectedItemCode === '0'">
+        <option *ngFor="let it of itemOptions" [ngValue]="it.ItemCode">{{ it.ItemName }}</option>
+      </select>
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="stock-grid">
+        <thead>
+          <tr>
+            <th class="text-center">S.No</th>
+            <th>PO No.</th>
+            <th class="text-center">PO Date</th>
+            <th>Equipment</th>
+            <th>Model</th>
+            <th>Make No.</th>
+            <th class="text-center">Installed Date</th>
+            <th>Install Location</th>
+            <th class="text-center">Warranty To</th>
+            <th>Supplier</th>
+            <th>Tag Status</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let row of rows; index as i">
+            <tr [class.alt-row]="i % 2 === 1">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>
+                <button type="button" class="link-btn" (click)="toggleBatches(row)">
+                  {{ row.PoNo || '—' }}
+                </button>
+              </td>
+              <td class="text-center">{{ row.PoDate || '—' }}</td>
+              <td>
+                {{ row.ItemName || '—' }}
+                <span class="sub-code" *ngIf="row.ItemCode">{{ row.ItemCode }}</span>
+              </td>
+              <td>{{ row.ModelNo || '—' }}</td>
+              <td>{{ row.MakeNo || '—' }}</td>
+              <td class="text-center">{{ row.InstallationDate || '—' }}</td>
+              <td>{{ row.InstallLocation || '—' }}</td>
+              <td class="text-center">{{ row.WarrantyTo || '—' }}</td>
+              <td>{{ row.SupplierName || '—' }}</td>
+              <td>
+                <select
+                  [(ngModel)]="row.selectedTag"
+                  name="tag_{{ row.ItemDetailId }}"
+                  [disabled]="saving">
+                  <option *ngFor="let o of row.tagOptions" [ngValue]="o.value">{{ o.label }}</option>
+                </select>
+              </td>
+              <td class="text-center">
+                <button
+                  type="button"
+                  class="btn btn--small"
+                  (click)="saveTag(row)"
+                  [disabled]="saving || !row.selectedTag">
+                  Save
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="row.Batches.length">
+              <td colspan="12" class="batch-cell">
+                <table class="stock-grid stock-grid--inner">
+                  <thead>
+                    <tr>
+                      <th>Dispatch No.</th>
+                      <th class="text-center">Dispatch Date</th>
+                      <th class="text-center">Tentative Date</th>
+                      <th>Receipt No.</th>
+                      <th class="text-center">Received Date</th>
+                      <th>Supply Status</th>
+                      <th class="text-center">Qty</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let b of row.Batches; index as j" [class.alt-row]="j % 2 === 1">
+                      <td>{{ b.DispatchNo || '—' }}</td>
+                      <td class="text-center">{{ b.DispatchDate || '—' }}</td>
+                      <td class="text-center">{{ b.TentativeStartDate || '—' }}</td>
+                      <td>{{ b.ReceiptNo || '—' }}</td>
+                      <td class="text-center">{{ b.ReceivedDate || '—' }}</td>
+                      <td>{{ b.SupplyStatus || '—' }}</td>
+                      <td class="text-center">{{ b.Quantity }}</td>
+                    </tr>
+                    <tr *ngIf="!row.Batches.length">
+                      <td colspan="7" class="empty-row">No batches found.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </ng-container>
+          <tr *ngIf="!rows.length">
+            <td colspan="12" class="empty-row">
+              <div class="empty-state">
+                <div style="font-size: 32px; color: #cbd5e1; margin-bottom: 8px;">&#128196;</div>
+                <p>No equipment receipts found for the selected filters.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

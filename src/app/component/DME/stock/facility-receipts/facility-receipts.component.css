@@ -1,0 +1,18 @@
+:host {
+  display: block;
+}
+
+.filters--compact select {
+  min-width: 220px;
+}
+
+.stock-grid--inner {
+  margin: 0;
+  border-left: none;
+  border-right: none;
+}
+
+.batch-cell {
+  background: #f8fafc;
+  padding: 8px 12px;
+}
