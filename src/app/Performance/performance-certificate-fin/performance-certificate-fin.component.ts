@@ -101,8 +101,26 @@ export class PerformanceCertificateFinComponent implements OnInit {
       params: { releaseYearId: this.selectedReleaseYearId, fundId: this.selectedFundId }
     }).subscribe({
       next: (res: any) => {
-        this.gridData = res.map((item: FinReleaseGridItem, i: number) => ({
-          ...item, sno: i + 1,
+        this.gridData = res.map((item: any, i: number) => ({
+          sno: i + 1,
+          po_id: item.PoId ?? item.po_id ?? 0,
+          fund: item.Fund ?? item.fund ?? '',
+          supplier_name: item.SupplierName ?? item.supplier_name ?? '',
+          nasti_no: item.NastiNo ?? item.nasti_no ?? '',
+          po_no: item.PoNo ?? item.po_no ?? '',
+          installed_qty: item.InstalledQty ?? item.installed_qty ?? 0,
+          last_installed_date: item.LastInstalledDate ?? item.last_installed_date ?? '',
+          cheque_dt: item.ChequeDt ?? item.cheque_dt ?? '',
+          withheld_amt: item.WithheldAmt ?? item.withheld_amt ?? 0,
+          recovered_amount: item.RecoveredAmount ?? item.recovered_amount ?? 0,
+          to_be_released_amt: item.ToBeReleasedAmt ?? item.to_be_released_amt ?? 0,
+          remarks: item.Remarks ?? item.remarks ?? '',
+          paid_from: item.PaidFrom ?? item.paid_from ?? '',
+          paid_to: item.PaidTo ?? item.paid_to ?? '',
+          performance_required: item.PerformanceRequired ?? item.performance_required ?? '',
+          tender_no: item.TenderNo ?? item.tender_no ?? '',
+          complaint_status: item.ComplaintStatus ?? item.complaint_status ?? '',
+          isEligible: item.IsEligible ?? item.isEligible ?? false,
         }));
         this.dataSource.data = this.gridData;
         this.dataSource.paginator = this.paginator;

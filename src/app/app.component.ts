@@ -397,26 +397,31 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     if (roleId && !isNaN(roleId)) {
       this.roleMenuService.getSidebarTreeForRole(roleId).subscribe({
         next: (items) => {
+          console.log('[Sidebar Debug] roleId:', roleId, 'items received:', JSON.stringify(items, null, 2));
           if (items && items.length > 0) {
             this.menuItems = items;
           } else {
+            console.log('[Sidebar Debug] No items returned, falling back to static menu');
             this.fallbackStaticMenu();
           }
           this.expandActiveParentMenu();
           this.updatePageHeading(this.router.url);
         },
-        error: () => {
+        error: (err) => {
+          console.error('[Sidebar Debug] API error:', err);
           this.fallbackStaticMenu();
           this.expandActiveParentMenu();
           this.updatePageHeading(this.router.url);
         }
       });
     } else {
+      console.log('[Sidebar Debug] No roleId in session/storage, using static menu. sessionStorage:', sessionStorage.getItem('roleId'), 'localStorage:', localStorage.getItem('roleId'), 'loginData.roleid:', loginData?.roleid);
       this.fallbackStaticMenu();
       this.expandActiveParentMenu();
       this.updatePageHeading(this.router.url);
     }
   }
+
 
   private fallbackStaticMenu() {
     const hasCategories = ['SEC1', 'DHS', 'CME', 'Collector', 'DME1'].includes(this.role);

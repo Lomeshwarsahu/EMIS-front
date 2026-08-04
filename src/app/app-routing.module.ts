@@ -2261,7 +2261,7 @@ const routes: Routes = [
   { path: 'IndentPOtenderSummaryDrlDwnItems', redirectTo: 'reports/indent-po-tender-summary-drilldown', pathMatch: 'full' },
   //#endregion
 
-  { path: '**', redirectTo: 'login' },
+  { path: '**', redirectTo: 'home' },
 ];
 
 @NgModule({

@@ -11,43 +11,41 @@ const ROUTE_MAP: Record<string, string> = {
   '/master/consigeeinformation.aspx': '/masters/consignee-information',
   '/master/reportspecification.aspx': '/masters/report-specification',
   '/master/cmeeelsuggestion.aspx': '/masters/cme-eel-suggestion',
-  '/master/dhsaddfacility.aspx': '/dhs-add-facility',
-  '/master/dhsfacilityuserslocations.aspx': '/dhs-facility-users-locations',
-  '/master/healthfacilitydetails.aspx': '/health-facility-details',
-  '/master/itemspecification.aspx': '/item-specification',
-  '/master/masfacilityuserslocations.aspx': '/mas-facility-users-locations',
-  '/master/mastersupplieradd.aspx': '/master-supplier-add',
+  '/master/dhsaddfacility.aspx': '/masters/dhs-add-facility',
+  '/master/dhsfacilityuserslocations.aspx': '/masters/dhs-facility-users-locations',
+  '/master/healthfacilitydetails.aspx': '/masters/health-facility-details',
+  '/master/itemspecification.aspx': '/masters/item-specification',
+  '/master/masfacilityuserslocations.aspx': '/masters/mas-facility-users-locations',
+  '/master/mastersupplieradd.aspx': '/masters/master-supplier-add',
   '/master/particularsupplieradd.aspx': '/masters/particular-supplier-add',
   '/master/suppliergstentry1.aspx': '/masters/supplier-gst-entry',
 
   // --- 2. Stock Module ---
-  '/stock/facstockcoviditemsmc.aspx': '/FACStockCOVIDItemsMC',
-  '/stock/existingcoviditemsdme.aspx': '/ExistingCovidItemsDME',
-  '/stock/newcoviditemdme.aspx': '/NewCovidItemDME',
-  '/stock/facstockcmho.aspx': '/FACStockCMHO',
-  '/stock/facprogress4cat.aspx': '/FACProgress4Cat',
-  '/stock/facilityequipmentreceipt.aspx': '/Facilityequipmentreceipt',
-  '/stock/nodleinformationnew.aspx': '/NodleInformationNew',
-  '/stock/progressdetail.aspx': '/ProgressDetail',
-  '/stock/progressdetaildme.aspx': '/ProgressDetailDME',
-  '/stock/stockreport.aspx': '/dme/stock-report',
-  '/stock/openingstockentry.aspx': '/dme/opening-stock',
+  '/stock/facstockcoviditemsmc.aspx': '/stock/covid-stock-report',
+  '/stock/existingcoviditemsdme.aspx': '/stock/opening-stock-entry',
+  '/stock/newcoviditemdme.aspx': '/stock/new-opening-stock-entry',
+  '/stock/facstockcmho.aspx': '/stock/covid-stock-report',
+  '/stock/facprogress4cat.aspx': '/stock/progress-category',
+  '/stock/facilityequipmentreceipt.aspx': '/stock/facility-receipts',
+  '/stock/nodleinformationnew.aspx': '/stock/nodal-information',
+  '/stock/progressdetail.aspx': '/stock/nodal-progress',
+  '/stock/progressdetaildme.aspx': '/stock/nodal-progress',
 
   // --- 3. Orders & Transactions Module ---
-  '/order/podashboarddmefac.aspx': '/PODashboardDMEFAC',
-  '/order/facilitypo_supply_editdme.aspx': '/Facilitypo_supply_editDME',
-  '/order/masfileno.aspx': '/MasFileNo',
-  '/order/reportpoeligible.aspx': '/ReportPOEligible',
-  '/order/porealloaction.aspx': '/PORealloaction',
-  '/order/emspoammendment.aspx': '/EMSPOAmmendment',
-  '/order/payment20per.aspx': '/Payment20Per',
-  '/order/paymentletter.aspx': '/PaymentLetter',
-  '/order/poreceiptentry.aspx': '/po-receipt-entry',
-  '/order/facilitypo_supply_receiptdme.aspx': '/Facilitypo_supply_ReceiptDME',
-  '/order/poinstallationreport.aspx': '/po-installation-report',
-  '/order/facility_installationreportdme.aspx': '/Facility_InstallationReportDME',
-  '/order/poprint.aspx': '/po-print',
-  '/order/rdlcporeportdme.aspx': '/rdlcPoReportDME',
+  '/order/podashboarddmefac.aspx': '/orders/purchase-order-dashboard',
+  '/order/facilitypo_supply_editdme.aspx': '/orders/purchase-order-receipts',
+  '/order/masfileno.aspx': '/orders/mas-file-no',
+  '/order/reportpoeligible.aspx': '/reports/eligible-report',
+  '/order/porealloaction.aspx': '/orders/po-reallocation',
+  '/order/emspoammendment.aspx': '/orders/po-amendment',
+  '/order/payment20per.aspx': '/orders/withheld-release',
+  '/order/paymentletter.aspx': '/payment-letter',
+  '/order/poreceiptentry.aspx': '/orders/po-receipt-entry',
+  '/order/facilitypo_supply_receiptdme.aspx': '/orders/po-receipt-entry',
+  '/order/poinstallationreport.aspx': '/orders/po-installation-report',
+  '/order/facility_installationreportdme.aspx': '/orders/po-installation-report',
+  '/order/poprint.aspx': '/orders/po-print',
+  '/order/rdlcporeportdme.aspx': '/orders/po-print',
   '/orders/po-supply.aspx': '/orders/po-supply',
   '/orders/po-supply-sd-detail.aspx': '/orders/po-supply-sd-detail',
   '/orders/po-supply-apply-extension.aspx': '/orders/po-supply-apply-extension',
@@ -62,95 +60,62 @@ const ROUTE_MAP: Record<string, string> = {
   '/transaction/po-supply-po-print.aspx': '/transaction/po-supply-po-print',
 
   // --- 4. Contracts Module ---
-  '/contract/rcdetailreport.aspx': '/RCDetailReport',
+  '/contract/rcdetailreport.aspx': '/contracts/rc-detail-report',
   '/contract/rcdetailreportforsupplier.aspx': '/contracts/rc-detail-report-supplier',
   '/contract/acceptedreoprtsupplier.aspx': '/contracts/accepted-report-supplier',
   '/contracts/rc-detail-report-supplier.aspx': '/contracts/rc-detail-report-supplier',
   '/contracts/accepted-report-supplier.aspx': '/contracts/accepted-report-supplier',
 
   // --- 5. Indents Module ---
-  '/indent/dmefacheads.aspx': '/DMEFACHeads',
-  '/indent/consolidatedindentdme_mc.aspx': '/ConsolidatedIndentDME_MC',
-  '/indent/dmefacaddindent.aspx': '/dme-fac-add-indent',
-  '/indent/dmefacindentreport.aspx': '/dme-fac-indent-report',
+  '/indent/dmefacheads.aspx': '/indents/budget-heads',
+  '/indent/consolidatedindentdme_mc.aspx': '/indents/annual-indent',
+  '/indent/dmefacaddindent.aspx': '/indents/annual-indent-items',
+  '/indent/dmefacindentreport.aspx': '/indents/annual-indent-report',
   '/indent/consolidatedindentpocell.aspx': '/ConsolidatedIndentPOCell',
   '/indent/consolidatedindentdhspo.aspx': '/ConsolidatedIndentDHSPO',
   '/indent/indentwiseitemremarks.aspx': '/IndentWiseItemRemarks',
   '/indent/indenteditdhspo.aspx': '/IndentEditDHSPO',
   '/indent/dhsindentaddbulkconsigneepo.aspx': '/DHSindentAddBulkConsigneePO',
   '/indent/consolidatedindentcgmsc.aspx': '/ConsolidatedIndentCGMSC',
+  '/indent/indentfromfacilities.aspx': '/indents/from-facilities',
+  '/indent/indentrcpotenderstatus.aspx': '/reports/indent-po-tender-status',
 
   // --- 6. Reports Module ---
-  '/reports/cmcdetail.aspx': '/CMCdetail',
-  '/reports/mainequipmentmappedreport.aspx': '/MainEquipmentMappedReport',
-  '/reports/reportpoeligible.aspx': '/ReportPOEligible',
+  '/reports/cmcdetail.aspx': '/reports/cmc-detail',
+  '/reports/mainequipmentmappedreport.aspx': '/reports/main-equipment-mapped',
+  '/reports/reportpoeligible.aspx': '/reports/eligible-report',
   '/reports/indentpotenderstatus.aspx': '/reports/indent-po-tender-status',
   '/reports/indentpotenderstatussummary.aspx': '/reports/indent-po-tender-status-summary',
   '/reports/indentpotendersummary.aspx': '/reports/indent-po-tender-summary',
-  '/reports/cmhoposummary.aspx': '/CmhoPoSummary',
-  '/reports/posummarydirectorate.aspx': '/PoSummaryDirectorate',
-  '/reports/posummaryconsigneeho.aspx': '/PoSummaryConsigneeHo',
-  '/reports/tenderlivestatus.aspx': '/TenderLiveStatus',
-  '/reports/balancestatusdhs.aspx': '/BalanceStatusDhs',
-  '/reports/balancestatuspocell.aspx': '/BalanceStatusPocell',
-  '/reports/openingstocksummary.aspx': '/OpeningStockSummary',
-  '/reports/paymentscpreportigm.aspx': '/PaymentsCpreportIgm',
-  '/reports/popaidreportigm.aspx': '/PopaidReportIgm',
-  '/reports/emddepositereport.aspx': '/EmdDepositeReport',
-  '/reports/equipmenttagreport.aspx': '/EquipmentTagReport',
-  '/reports/tenderwisepodetails.aspx': '/TenderWisePoDetails',
-  '/reports/tenderstatusitemwise.aspx': '/TenderStatusItemWise',
-  '/reports/dispatchdetail.aspx': '/DispatchDetail',
-  '/reports/pendingposupplierwise.aspx': '/PendingPoSupplierWise',
-  '/reports/receiptpendingcmho.aspx': '/ReceiptPendingCmho',
-  '/reports/reportindentpodetails.aspx': '/ReportIndentPoDetails',
-  '/reports/eelsuggestionreport.aspx': '/EelSuggestionReport',
-  '/reports/facstockcoviditemsbme.aspx': '/FacStockCovidItemsBme',
-  '/reports/balancesupplierwise.aspx': '/BalanceSupplierwise',
-  '/reports/indentreportpocell.aspx': '/IndentReportPocell',
-  '/reports/pendinginstalldrilldowndhs.aspx': '/PendingInstallDrilldownDhs',
-  '/reports/pendinginstalldrilldownpocell.aspx': '/PendingInstallDrilldownPocell',
-  '/reports/rdlcdhspending.aspx': '/RdlcDhsPending',
-  '/reports/coveraitemsreports.aspx': '/CoverAItemsReports',
-  '/reports/paymentscpreport.aspx': '/PaymentsCpreport',
-  '/reports/poreceiptsummary.aspx': '/PoReceiptSummary',
+  '/reports/paymentreport.aspx': '/reports/payment-report',
   '/reports/sanctionsrdlc.aspx': '/reports/sanction-report',
   '/reports/balancestatussupplier.aspx': '/reports/pending-receipt-installation',
-  '/reports/itemwisedetail.aspx': '/ItemWiseDetail',
-  '/reports/complainreportbme.aspx': '/ComplainReportBme',
-  '/reports/districtwisepodetail.aspx': '/DistrictWisePoDetail',
-  '/reports/emdrefundreport.aspx': '/EmdRefundReport',
-  '/reports/popaidreport.aspx': '/PoPaidReport',
-  '/reports/paymentreport.aspx': '/reports/payment-report',
-  '/reports/tenderstatus.aspx': '/TenderStatus',
-  '/reports/posummary.aspx': '/PoSummary',
+  '/reports/posummary.aspx': '/reports/po-summary',
 
   // --- 7. Complain Module ---
-  '/complain/facilitycomplainstore.aspx': '/FacilityComplainStore',
-  '/complain/complaintstatus.aspx': '/ComplaintStatus',
-  '/complain/complaintstatusedit.aspx': '/ComplaintStatusEdit',
-  '/complain/complaintstatusfacility.aspx': '/ComplaintStatusFacility',
-  '/complain/complaintstatusfacilityedit.aspx': '/ComplaintStatusFacilityEdit',
-  '/complain/complaincmho.aspx': '/ComplainCmho',
+  '/complain/facilitycomplainstore.aspx': '/complain/facility-store',
+  '/complain/complaintstatus.aspx': '/complain/complaint-status',
+  '/complain/complaintstatusfacility.aspx': '/complain/complaint-status-facility',
+  '/complain/complaincmho.aspx': '/complain/complain-cmho',
   '/complain/receiptcomplainsupplier.aspx': '/complain/receipt-complain-supplier',
 
   // --- 8. BME & Tender Cell Module ---
-  '/bme/masttersupplierdash.aspx': '/MastterSupplierDash',
+  '/bme/masttersupplierdash.aspx': '/MasterSupplierDash',
   '/bme/itemsbme.aspx': '/ItemsBME',
-  '/bme/mapitemseithtype.aspx': '/MapitemsEithType',
-  '/bme/mapitemswithtypeupdate.aspx': '/MapitemswithTypeUpdate',
-  '/bme/mapitemswithmainitemtyperepo.aspx': '/MapitemswithMainitemTypeRepo',
-  '/bme/emsrcdashbord.aspx': '/EMSRCDashbord',
-  '/bme/emsnewrc.aspx': '/EMSNEWRC',
-  '/bme/planatenderd.aspx': '/PlanaTenderD',
-  '/bme/tenderstatusupdate.aspx': '/TenderStatusUpdate',
-  '/bme/addrtenderitems.aspx': '/AddRTenderItems',
+  '/bme/mapitemseithtype.aspx': '/masters/map-items',
+  '/bme/mapitemswithtypeupdate.aspx': '/masters/map-items-update',
+  '/bme/mapitemswithmainitemtyperepo.aspx': '/masters/map-items-report',
+  '/bme/emsrcdashbord.aspx': '/contracts/dashboard',
+  '/bme/emsnewrc.aspx': '/contracts/new-rc',
+  '/bme/planatenderd.aspx': '/tender/plan',
+  '/bme/tenderstatusupdate.aspx': '/tender/evaluation',
+  '/bme/addrtenderitems.aspx': '/tender/claim-object',
   '/bme/tendercovera.aspx': '/TenderCoverA',
   '/bme/tendercoveraobclaim.aspx': '/TenderCoverAObClaim',
   '/bme/tenderitemspricegem.aspx': '/TenderItemsPriceGEM',
   '/bme/tenderdetailspriceentrygem.aspx': '/TenderDetailsPriceEntryGEM',
   '/bme/tendercoveraitems.aspx': '/TenderCoverAitems',
-  '/bme/coveraitemsreports.aspx': '/CoverAitemsReports',
+  '/bme/coveraitemsreports.aspx': '/reports/cover-a-items-reports',
 
   // --- 9. PO Cell Module ---
   '/pocell/masfacilityusers.aspx': '/MasFacilityUsers',
@@ -168,7 +133,7 @@ const ROUTE_MAP: Record<string, string> = {
 
   // --- 10. GM Finance Module ---
   '/gmfinance/editreceivedandinstallationdate.aspx': '/EditReceivedAndInstallationDate',
-  '/gmfinance/suppliers.aspx': '/Suppliers',
+  '/gmfinance/suppliers.aspx': '/masters/supplier',
   '/gmfinance/supplierbankaccounts.aspx': '/SupplierBankAccounts',
   '/gmfinance/suppliergstentry.aspx': '/SupplierGSTentry',
   '/gmfinance/cgmscbankaccounts.aspx': '/CgmscBankAccounts',
@@ -178,14 +143,18 @@ const ROUTE_MAP: Record<string, string> = {
   '/gmfinance/budgetdetailsprovisional.aspx': '/BudgetDetailsProvisional',
   '/gmfinance/filemrcdashboardfinfile.aspx': '/FileMRCDashboardFINFile',
   '/gmfinance/sanction.aspx': '/Sanction',
+  '/gmfinance/popaidreport.aspx': '/reports/po-paid-report',
+  '/gmfinance/chequewisepaymentreport.aspx': '/finance/cheque-wise-payment',
+  '/gmfinance/facilityauthpovaluepocell.aspx': '/finance/year-wise-po-abstract',
+  '/gmfinance/fpopaidreport.aspx': '/finance/po-wise-payment',
 
   // --- 11. Performance Module ---
   '/performance/performancecertificate.aspx': '/PerformanceCertificate',
-  '/performance/performace20consignee.aspx': '/Performace20Consignee',
-  '/performance/performancecertificatefin.aspx': '/PerformanceCertificateFin',
-  '/performance/emisperf20rdlc.aspx': '/EMISPerf20_RDLC',
-  '/performance/payment20chequeprep.aspx': '/Payment20CheequPrep',
-  '/performance/sanctionnotesheet.aspx': '/SanctionNotesheet',
+  '/performance/performace20consignee.aspx': '/performance/performace20-consignee',
+  '/performance/performancecertificatefin.aspx': '/performance/performance-certificate-fin',
+  '/performance/emisperf20rdlc.aspx': '/performance/emis-perf20-rdlc',
+  '/performance/payment20chequeprep.aspx': '/performance/payment20-cheque-prep',
+  '/performance/sanctionnotesheet.aspx': '/performance/sanction-notesheet',
 
   // --- 12. File Movement Module ---
   '/filemovement/generationfilenonasti.aspx': '/GenerationFileNonasti',
@@ -207,10 +176,14 @@ const ROUTE_MAP: Record<string, string> = {
 };
 
 
+
 function mapLegacyRoute(route: string): string {
   if (!route) return '';
   const raw = route.trim();
-  const lower = raw.toLowerCase();
+
+  // Separate path from query string & hash (e.g. "/Stock/FACProgress4Cat.aspx?type=1" -> "/Stock/FACProgress4Cat.aspx")
+  const pathOnly = raw.split('?')[0].split('#')[0].trim();
+  const lower = pathOnly.toLowerCase();
 
   // 1. Direct match in override map
   if (ROUTE_MAP[lower]) {
@@ -219,14 +192,13 @@ function mapLegacyRoute(route: string): string {
 
   // 2. If it's already a clean Angular route (doesn't contain .aspx)
   if (!lower.includes('.aspx')) {
-    return raw.startsWith('/') ? raw : '/' + raw;
+    return pathOnly.startsWith('/') ? pathOnly : '/' + pathOnly;
   }
 
-  // 3. Remove .aspx extension and leading slashes
-  let clean = raw.replace(/\.aspx$/i, '');
-  clean = clean.replace(/^~?\//, '');
+  // 3. Remove .aspx extension and leading slashes/tilde
+  let clean = pathOnly.replace(/\.aspx$/i, '').replace(/^~?\//, '');
 
-  // 4. Check clean route lower in override map
+  // 4. Check clean route in override map
   const cleanLower = '/' + clean.toLowerCase();
   if (ROUTE_MAP[cleanLower]) {
     return ROUTE_MAP[cleanLower];
@@ -238,6 +210,7 @@ function mapLegacyRoute(route: string): string {
 
   return '/' + pageName;
 }
+
 
 
 

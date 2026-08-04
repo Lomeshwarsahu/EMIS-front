@@ -7,14 +7,14 @@
       Release Year
       <select [(ngModel)]="selectedReleaseYearId">
         <option [ngValue]="0">Select</option>
-        <option *ngFor="let y of releaseYearList" [ngValue]="y.releaseYearId">{{ y.releaseYearName }}</option>
+        <option *ngFor="let y of releaseYearList" [ngValue]="y.ReleaseYearId || y.releaseYearId">{{ y.ReleaseYearName || y.releaseYearName }}</option>
       </select>
     </label>
     <label>
       Fund
       <select [(ngModel)]="selectedFundId">
         <option [ngValue]="0">Select</option>
-        <option *ngFor="let f of fundList" [ngValue]="f.fundId">{{ f.fundName }}</option>
+        <option *ngFor="let f of fundList" [ngValue]="f.FundId || f.fundId">{{ f.FundName || f.fundName }}</option>
       </select>
     </label>
     <button class="show-btn" (click)="loadGrid()">Show</button>
