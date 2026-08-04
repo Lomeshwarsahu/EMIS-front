@@ -2016,19 +2016,25 @@ const routes: Routes = [
     path: 'InvoiceDetail',
     component: InvoiceDetailComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUGMF'] },
+    data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AUPO', 'AU'] },
   },
   {
     path: 'TDSdataReport',
     component: TDSdataReportComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUGMF'] },
+    data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AUPO', 'AU'] },
   },
   {
     path: 'PaymentsCPReport20per',
     component: PaymentsCPReport20perComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUGMF'] },
+    data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AUPO', 'AU'] },
+  },
+  {
+    path: 'reports/payments-cpreport20per',
+    component: PaymentsCPReport20perComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AUPO', 'AU'] },
   },
   {
     path: 'FileMRCDashboardFINFile',
