@@ -291,7 +291,9 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
         }
 
         this.role = this.basicAuthentication.getRole().roleName;
-        this.updateMenu();
+        if (!this.menuItems || this.menuItems.length === 0) {
+          this.updateMenu();
+        }
         this.updatePageHeading(event.urlAfterRedirects);
         this.closeDrawerOnNavigate();
         this.notificationsOpen = false;
@@ -362,6 +364,7 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     // Refresh sidebar when department/role changes without full reload.
     if (role && role !== this.role) {
       this.role = role;
+      this.roleMenuService.clearSidebarCache();
       this.updateMenu();
     }
 

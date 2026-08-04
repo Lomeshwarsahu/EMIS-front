@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 const ROUTE_MAP: Record<string, string> = {
@@ -503,8 +503,13 @@ export interface RemoveSubMenuRoleRequest {
 @Injectable({ providedIn: 'root' })
 export class RoleMenuService {
   private readonly api = `${environment.apiUrl}/IT`;
+  private sidebarTreeCache = new Map<number, Observable<any>>();
 
   constructor(private readonly http: HttpClient) {}
+
+  clearSidebarCache(): void {
+    this.sidebarTreeCache.clear();
+  }
 
   getRoles(): Observable<RoleDto[]> {
     return this.http.get<RoleDto[]>(`${this.api}/roles`);
@@ -569,7 +574,11 @@ export class RoleMenuService {
   }
 
   getSidebarTreeForRole(roleId: number): Observable<{ label: string; route: string; submenu?: { label: string; route: string }[] }[]> {
-    return this.http.get<any[]>(`${this.api}/sidebar-tree/${roleId}`).pipe(
+    if (this.sidebarTreeCache.has(roleId)) {
+      return this.sidebarTreeCache.get(roleId)!;
+    }
+
+    const request$ = this.http.get<any[]>(`${this.api}/sidebar-tree/${roleId}`).pipe(
       map((rawItems) => {
         if (!Array.isArray(rawItems)) return [];
         return rawItems
@@ -594,8 +603,12 @@ export class RoleMenuService {
             };
           })
           .filter((item) => !!item.label && (!!item.route || (item.submenu && item.submenu.length > 0)));
-      })
+      }),
+      shareReplay(1)
     );
+
+    this.sidebarTreeCache.set(roleId, request$);
+    return request$;
   }
 }
 
