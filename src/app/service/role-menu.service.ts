@@ -259,6 +259,7 @@ const ROUTE_MAP: Record<string, string> = {
   '/reports/balancesupplierwise.aspx': '/reports/balance-supplierwise',
   '/reports/balancestatuspocell.aspx': '/reports/balance-status-pocell',
   '/reports/popaidreport.aspx': '/reports/po-paid-report',
+  '/reports/fpopaidreport.aspx': '/finance/po-wise-payment',
   '/reports/eel_suggestionreport.aspx': '/masters/cme-eel-suggestion',
   '/reports/pendingposupwise.aspx': '/reports/pending-po-supplier-wise',
   '/reports/porecdsummary.aspx': '/reports/po-receipt-summary',
