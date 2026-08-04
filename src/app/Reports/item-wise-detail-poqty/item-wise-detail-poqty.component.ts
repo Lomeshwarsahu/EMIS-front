@@ -79,14 +79,11 @@ export class ItemWiseDetailPOQtyComponent {
 
   ngOnInit() {
     const params = this.route.snapshot.queryParams;
-    const finYrId = params['finYrId'];
-    const itemCode = params['itemCode'];
-    const POid = params['POid'];
-    if (finYrId && itemCode && POid) {
-      this.loadData(itemCode, finYrId, POid);
-    } else {
-      this.toastr.error('Missing required query parameters.');
-    }
+    const finYrId = params['finYrId'] ? Number(params['finYrId']) : 0;
+    const itemCode = params['itemCode'] || '0';
+    const POid = params['POid'] ? Number(params['POid']) : 0;
+
+    this.loadData(itemCode, finYrId, POid);
   }
 
   loadData(itemCode: string, financialYearId: number, poId: number) {
