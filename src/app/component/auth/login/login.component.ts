@@ -374,8 +374,9 @@ approle:any;
   }
   onStatusChangeDHS() {
     if (this.selectedStatusDHS == '0') {
+      this.getallusers('6');
     } else if (this.selectedStatusDHS == '1') {
-    } else {
+      this.getallusers('5');
     }
   }
   onStatusChangesup() {
