@@ -143,9 +143,33 @@ Match legacy `FacilityPO_Receipt1_SUP.aspx`:
 
 ---
 
+## Pill Filters & Rounded Table Design System
+
+### Pill Filter Bar (`.pill-filter-bar`)
+
+Modern top filter bar with floating pill controls aligned to the right:
+
+- **Dropdowns / Inputs**: White pill controls with `border-radius: 9999px`, 40px height, subtle border.
+  - Light mode: `#ffffff` bg, `#1e293b` text, `#cbd5e1` border.
+  - Dark mode: `#1e293b` bg, `#f8fafc` text, `#334155` border.
+- **Show Data Button (`.btn-show-data`, `.btn-pill-primary`)**:
+  - Solid vibrant orange background (`#f97316`), white text, bold, `border-radius: 9999px`. Hover: `#ea580c`.
+- **Export Excel Button (`.btn-export-excel`, `.btn-pill-success`)**:
+  - Solid soft green background (`#5bbd86`), white text, bold, `border-radius: 9999px`. Hover: `#44a870`.
+
+### Rounded Orange Table Header (`.pill-table-card`, `table.table-orange-header`)
+
+- **Header Card**: Soft rounded top corners (`border-radius: 18px`).
+- **Header Cells (`th`)**: Solid vibrant orange background (`#f97316` Light mode, `#ea580c` Dark mode), white bold uppercase text (`S.NO`, `USER NAME`, `NO OF ITEMS`, etc.).
+- **Top Corners**: 1st `th` has `border-top-left-radius: 16px`, last `th` has `border-top-right-radius: 16px`.
+- **Row Hover**: Soft warm tint `#fff7ed` in Light mode, subtle orange highlight `rgba(249, 115, 22, 0.15)` in Dark mode.
+
+---
+
 ## Filters
 
 ### Radio filter row (receipt desk, reports)
+
 
 ```html
 <div class="radio-group">

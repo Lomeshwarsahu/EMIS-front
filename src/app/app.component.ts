@@ -7,6 +7,8 @@ import { HardcodedAuthenticationService } from './service/authentication/hardcod
 import { ToastrService } from 'ngx-toastr';
 import { MenuServiceService } from './service/menu-service.service';
 import { BasicAuthenticationService } from './service/authentication/basic-authentication.service';
+import { RoleMenuService } from './service/role-menu.service';
+
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
@@ -176,6 +178,7 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     private https: HttpClient,
     public readonly themeService: ThemeService,
     private readonly notificationService: NotificationService,
+    private readonly roleMenuService: RoleMenuService,
   ) {
     this.applyDrawerLayout(window.innerWidth <= 991.98, true);
   }
@@ -387,6 +390,35 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   }
   
   private updateMenu() {
+    const rawRoleId = sessionStorage.getItem('roleId') || localStorage.getItem('roleId');
+    const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+    const roleId = rawRoleId ? parseInt(rawRoleId, 10) : (loginData?.roleid ? parseInt(loginData.roleid, 10) : null);
+
+    if (roleId && !isNaN(roleId)) {
+      this.roleMenuService.getSidebarTreeForRole(roleId).subscribe({
+        next: (items) => {
+          if (items && items.length > 0) {
+            this.menuItems = items;
+          } else {
+            this.fallbackStaticMenu();
+          }
+          this.expandActiveParentMenu();
+          this.updatePageHeading(this.router.url);
+        },
+        error: () => {
+          this.fallbackStaticMenu();
+          this.expandActiveParentMenu();
+          this.updatePageHeading(this.router.url);
+        }
+      });
+    } else {
+      this.fallbackStaticMenu();
+      this.expandActiveParentMenu();
+      this.updatePageHeading(this.router.url);
+    }
+  }
+
+  private fallbackStaticMenu() {
     const hasCategories = ['SEC1', 'DHS', 'CME', 'Collector', 'DME1'].includes(this.role);
 
     if (hasCategories) {
@@ -398,9 +430,8 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     } else {
       this.menuItems = this.menuService.getMenuItems(this.role);
     }
-    this.expandActiveParentMenu();
-    this.updatePageHeading(this.router.url);
   }
+
 
   private updatePageHeading(url: string): void {
     const path = url.split('?')[0].split('#')[0];

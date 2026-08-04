@@ -1,7 +1,48 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+
+const ROUTE_MAP: Record<string, string> = {
+  '/master/storehome.aspx': '/masters/store-home',
+  '/stock/facstockcoviditemsmc.aspx': '/dme/stock-report',
+  '/stock/existingcoviditemsdme.aspx': '/dme/opening-stock',
+  '/order/podashboarddmefac.aspx': '/dme/po-dashboard',
+  '/order/facilitypo_supply_editdme.aspx': '/dme/po-receipts',
+  '/contract/rcdetailreport.aspx': '/Rcdetail',
+  '/indent/dmefacheads.aspx': '/dme/budget-head',
+  '/indent/consolidatedindentdme_mc.aspx': '/dme/add-indent',
+  '/reports/cmcdetail.aspx': '/dme/cmc-details',
+  '/complain/facilitycomplainstore.aspx': '/dme/register-complain',
+  '/complain/complaintstatus.aspx': '/dme/complain-status',
+  '/it/addsubmenu.aspx': '/IT/add-sub-menu',
+  '/it/addroleinscreen.aspx': '/IT/add-role-in-screen',
+  '/it/deletemenu.aspx': '/IT/delete-menu',
+};
+
+function mapLegacyRoute(route: string): string {
+  if (!route) return '';
+  const raw = route.trim();
+  const lower = raw.toLowerCase();
+
+  if (ROUTE_MAP[lower]) {
+    return ROUTE_MAP[lower];
+  }
+
+  // Remove .aspx extension
+  let clean = raw.replace(/\.aspx$/i, '');
+  // Remove leading ~/ or /
+  clean = clean.replace(/^~?\//, '');
+
+  // Extract page name (e.g. "Stock/FACStockCOVIDItemsMC" -> "FACStockCOVIDItemsMC")
+  const parts = clean.split('/');
+  const pageName = parts[parts.length - 1];
+
+  return '/' + pageName;
+}
+
+
 
 export interface RoleDto {
   RoleId: number;
@@ -138,4 +179,34 @@ export class RoleMenuService {
   removeSubMenusFromRole(roleId: number, items: RemoveSubMenuRoleRequest[]): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(`${this.api}/roles/${roleId}/remove-submenus`, items);
   }
+
+  getSidebarTreeForRole(roleId: number): Observable<{ label: string; route: string; submenu?: { label: string; route: string }[] }[]> {
+    return this.http.get<any[]>(`${this.api}/sidebar-tree/${roleId}`).pipe(
+      map((rawItems) => {
+        if (!Array.isArray(rawItems)) return [];
+        return rawItems
+          .map((item) => {
+            const label = item.label || item.Label || '';
+            const rawRoute = item.route || item.Route || '';
+            const rawSubmenu = item.submenu || item.Submenu || [];
+
+            const submenu = Array.isArray(rawSubmenu)
+              ? rawSubmenu.map((sub: any) => ({
+                  label: sub.label || sub.Label || '',
+                  route: mapLegacyRoute(sub.route || sub.Route || ''),
+                }))
+              : undefined;
+
+            return {
+              label,
+              route: mapLegacyRoute(rawRoute),
+              submenu: submenu && submenu.length > 0 ? submenu : undefined,
+            };
+          })
+          .filter((item) => !!item.label && (!!item.route || (item.submenu && item.submenu.length > 0)));
+      })
+    );
+  }
 }
+
+
