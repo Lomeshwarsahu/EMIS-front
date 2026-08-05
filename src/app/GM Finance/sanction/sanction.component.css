@@ -1,0 +1,404 @@
+.sanction-page {
+  max-width: 1280px;
+}
+
+/* ---------- Page heading ---------- */
+.page-heading .page-title {
+  font-size: 1.45rem;
+  color: #1e293b;
+}
+
+.status-badge {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.8rem;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.loading-wrap .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.3em;
+}
+
+/* ---------- Section cards ---------- */
+.section-card {
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border-bottom: 1px solid #eef2f7;
+  padding: 0.85rem 1.25rem;
+}
+
+.section-header h5 {
+  font-weight: 700;
+  color: #334155;
+  font-size: 1rem;
+  position: relative;
+  padding-left: 12px;
+}
+
+.section-header h5::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 2px;
+  width: 4px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #f97316, #ea580c);
+}
+
+.count-badge {
+  background: #fff7ed;
+  color: #c2410c;
+  font-weight: 600;
+}
+
+/* ---------- PO details grid ---------- */
+.details-grid .detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0.55rem 1rem;
+  border-left: 3px solid #fde9d8;
+}
+
+.details-grid dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.details-grid dd {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* ---------- Chips ---------- */
+.chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.chip-ok {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.chip-warn {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.chip-info {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+/* ---------- Form ---------- */
+.form-label {
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.section-card .form-control {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  color: #1e293b;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.section-card .form-control:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+}
+
+.gst-check .form-check-input {
+  width: 1.15em;
+  height: 1.15em;
+  margin-top: 0.15em;
+}
+
+.gst-check .form-check-input:checked {
+  background-color: #f97316;
+  border-color: #f97316;
+}
+
+.gst-check .form-check-label {
+  font-weight: 500;
+  font-size: 0.86rem;
+  color: #475569;
+}
+
+/* ng-select styling */
+:host ::ng-deep .budget-select .ng-select-container {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 10px !important;
+  min-height: 45px !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+  background: #fff !important;
+  color: #1e293b !important;
+  font-size: 0.92rem !important;
+}
+
+:host ::ng-deep .budget-select .ng-select-container,
+:host ::ng-deep .budget-select .ng-select-container .ng-value-container,
+:host ::ng-deep .budget-select .ng-select-container .ng-placeholder,
+:host ::ng-deep .budget-select .ng-select-container .ng-value-label {
+  align-items: center;
+}
+
+:host ::ng-deep .budget-select .ng-select-container .ng-placeholder {
+  color: #94a3b8 !important;
+  padding-left: 4px;
+}
+
+:host ::ng-deep .budget-select .ng-select-container .ng-value-label {
+  padding: 0 6px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+:host ::ng-deep .budget-select .ng-select-container .ng-arrow-wrapper .ng-arrow {
+  border-width: 5px;
+  border-top-color: #94a3b8;
+}
+
+:host ::ng-deep .budget-select.ng-select-focused .ng-select-container {
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18) !important;
+}
+
+/* dropdown panel */
+:host ::ng-deep .budget-select .ng-dropdown-panel {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18);
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+:host ::ng-deep .budget-select .ng-dropdown-panel .ng-dropdown-header {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+:host ::ng-deep .budget-select .ng-dropdown-panel .ng-dropdown-header input {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+:host ::ng-deep .budget-select .ng-dropdown-panel .ng-option {
+  padding: 9px 12px;
+  font-size: 0.88rem;
+  color: #334155;
+}
+
+:host ::ng-deep .budget-select .ng-dropdown-panel .ng-option.ng-option-marked {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+:host ::ng-deep .budget-select .ng-dropdown-panel .ng-option.ng-option-selected {
+  background: #fff1e6;
+  color: #c2410c;
+  font-weight: 600;
+}
+
+.budget-option {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.32);
+  transition: filter 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.btn-save:hover:not(:disabled) {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.4);
+}
+
+.btn-save:disabled {
+  opacity: 0.6;
+}
+
+/* ---------- Table ---------- */
+.section-card .table-responsive {
+  max-height: 480px;
+  border-radius: 0 0 16px 16px;
+}
+
+.sanction-table {
+  min-width: 1360px;
+}
+
+.sanction-table td.mat-mdc-cell,
+.sanction-table th.mat-mdc-header-cell {
+  white-space: nowrap;
+  padding: 12px 14px !important;
+}
+
+/* Right-align numeric columns */
+.sanction-table th:nth-child(5),
+.sanction-table th:nth-child(6),
+.sanction-table th:nth-child(7),
+.sanction-table th:nth-child(8),
+.sanction-table th:nth-child(10),
+.sanction-table th:nth-child(11),
+.sanction-table th:nth-child(12),
+.sanction-table th:nth-child(13),
+.sanction-table th:nth-child(15),
+.sanction-table th:nth-child(16),
+.sanction-table td:nth-child(5),
+.sanction-table td:nth-child(6),
+.sanction-table td:nth-child(7),
+.sanction-table td:nth-child(8),
+.sanction-table td:nth-child(10),
+.sanction-table td:nth-child(11),
+.sanction-table td:nth-child(12),
+.sanction-table td:nth-child(13),
+.sanction-table td:nth-child(15),
+.sanction-table td:nth-child(16) {
+  text-align: right;
+}
+
+.sanction-table td.mat-mdc-cell.sno-col,
+.sanction-table th.mat-mdc-header-cell.sno-col,
+.sanction-table td.mat-mdc-cell.sel-col,
+.sanction-table th.mat-mdc-header-cell.sel-col {
+  text-align: center;
+}
+
+/* Selection checkboxes */
+.sanction-table .form-check-input {
+  cursor: pointer;
+  width: 1.05em;
+  height: 1.05em;
+}
+
+.sanction-table .form-check-input:checked {
+  background-color: #f97316;
+  border-color: #f97316;
+}
+
+/* Soft zebra for readability when a row has no explicit color */
+.sanction-table tr.mat-mdc-row:nth-child(even) {
+  background-color: #fcfcfd;
+}
+
+:host-context(html[data-theme='dark']) .sanction-table tr.mat-mdc-row:nth-child(even) {
+  background-color: #182234;
+}
+
+/* Sticky header surface so cells don't show through */
+.sanction-table thead tr.mat-mdc-header-row {
+  z-index: 2;
+}
+
+.select-all-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* ---------- Dark theme ---------- */
+:host-context(html[data-theme='dark']) .page-heading .page-title {
+  color: #f1f5f9;
+}
+
+:host-context(html[data-theme='dark']) .section-card {
+  background: #1e293b;
+}
+
+:host-context(html[data-theme='dark']) .section-header {
+  background: #182234;
+  border-bottom-color: #334155;
+}
+
+:host-context(html[data-theme='dark']) .section-header h5 {
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .count-badge {
+  background: rgba(249, 115, 22, 0.15);
+  color: #fb923c;
+}
+
+:host-context(html[data-theme='dark']) .details-grid .detail-item {
+  border-left-color: #7c2d12;
+}
+
+:host-context(html[data-theme='dark']) .details-grid dt {
+  color: #94a3b8;
+}
+
+:host-context(html[data-theme='dark']) .details-grid dd {
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .form-label {
+  color: #cbd5e1;
+}
+
+:host-context(html[data-theme='dark']) .section-card .form-control {
+  background-color: #0f172a;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .section-card .form-control:focus {
+  border-color: #fb923c;
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.2);
+}
+
+:host-context(html[data-theme='dark']) .gst-check .form-check-label {
+  color: #cbd5e1;
+}
+
+:host-context(html[data-theme='dark']) ::ng-deep .budget-select .ng-select-container {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+:host-context(html[data-theme='dark']) ::ng-deep .budget-select.ng-select-focused .ng-select-container {
+  border-color: #fb923c !important;
+}
