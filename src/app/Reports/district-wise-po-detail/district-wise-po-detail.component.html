@@ -4,24 +4,33 @@
   <div class="datagrid">
     <div class="table-toolbar filters">
       <div class="filter-section">
-        <span class="filter-label">Financial Year</span>
-        <ng-select [(ngModel)]="financialYearId" [items]="financialYears" bindValue="financial_year_id" bindLabel="year" placeholder="Select Year" class="filter-select"></ng-select>
+        <label class="filter-label" for="fyFilter">Financial Year</label>
+        <select id="fyFilter" [(ngModel)]="financialYearId">
+          <option [ngValue]="0">Select Year</option>
+          <option *ngFor="let yr of financialYears" [ngValue]="yr.financial_year_id">{{ yr.year }}</option>
+        </select>
       </div>
       <div class="filter-section">
-        <span class="filter-label">Directorate</span>
-        <ng-select [(ngModel)]="directorateId" [items]="directorates" bindValue="facility_aut_id" bindLabel="facility_aut_name" placeholder="Select Directorate" class="filter-select"></ng-select>
+        <label class="filter-label" for="dirFilter">Directorate</label>
+        <select id="dirFilter" [(ngModel)]="directorateId">
+          <option [ngValue]="0">Select Directorate</option>
+          <option *ngFor="let dir of directorates" [ngValue]="dir.facility_aut_id">{{ dir.facility_aut_name }}</option>
+        </select>
       </div>
       <div class="filter-section">
-        <span class="filter-label">District</span>
-        <ng-select [(ngModel)]="districtId" [items]="districts" bindValue="DP_DistrictID" bindLabel="DBStart_Name_En" placeholder="Select District" class="filter-select"></ng-select>
+        <label class="filter-label" for="distFilter">District</label>
+        <select id="distFilter" class="po-select" [(ngModel)]="districtId">
+          <option [ngValue]="0">Select District</option>
+          <option *ngFor="let d of districts" [ngValue]="d.DP_DistrictID">{{ d.DBStart_Name_En }}</option>
+        </select>
       </div>
       <div class="filter-section">
-        <span class="filter-label">From Date</span>
-        <input type="date" [(ngModel)]="fromDate" class="form-control filter-date" />
+        <label class="filter-label">From Date</label>
+        <input type="date" [(ngModel)]="fromDate" class="filter-date" />
       </div>
       <div class="filter-section">
-        <span class="filter-label">To Date</span>
-        <input type="date" [(ngModel)]="toDate" class="form-control filter-date" />
+        <label class="filter-label">To Date</label>
+        <input type="date" [(ngModel)]="toDate" class="filter-date" />
       </div>
       <button type="button" class="show-btn" (click)="loadData()">Show</button>
       <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!poData.length">Export Excel</button>
@@ -74,7 +83,7 @@
 
         <ng-container matColumnDef="district">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>District</th>
-          <td mat-cell *matCellDef="let element">{{ element.district || '-' }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.DBStart_Name_En || '-' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="location_name">

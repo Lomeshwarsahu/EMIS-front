@@ -1,7 +1,7 @@
 .filter-section {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .filter-label {
@@ -9,10 +9,6 @@
   font-size: 12px;
   white-space: nowrap;
   color: #334155;
-}
-
-.filter-select {
-  width: 160px;
 }
 
 .filter-date {

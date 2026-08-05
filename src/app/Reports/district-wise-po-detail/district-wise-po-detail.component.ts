@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastrService } from 'ngx-toastr';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/service/api.service';
@@ -23,7 +22,7 @@ interface DistrictWisePoRow {
   supplier_name: string;
   item_code_as_per_tender: string;
   item_name: string;
-  district: string;
+  DBStart_Name_En: string;
   location_name: string;
   basicrate: number;
   percentage: number;
@@ -57,7 +56,6 @@ interface District {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NgSelectModule,
     MaterialModule,
     MatSortModule,
     MatPaginatorModule,
@@ -125,12 +123,24 @@ export class DistrictWisePoDetailComponent {
   }
 
   loadData() {
-    if (!this.financialYearId || !this.directorateId || !this.districtId || !this.fromDate || !this.toDate) {
-      this.toastr.warning('Please select all filters.');
+    if (this.fromDate && !this.toDate) {
+      this.toastr.warning('Please select both From and To dates (or leave both empty).');
+      return;
+    }
+    if (!this.fromDate && this.toDate) {
+      this.toastr.warning('Please select both From and To dates (or leave both empty).');
       return;
     }
     this.loading = true;
-    const url = `Reports/GetDistrictWiseDetails?districtId=${this.districtId}&directorateId=${this.directorateId}&financialYearId=${this.financialYearId}&fromDate=${this.fromDate}&toDate=${this.toDate}`;
+    const params = new URLSearchParams();
+    if (this.financialYearId) params.set('financialYearId', String(this.financialYearId));
+    if (this.directorateId) params.set('directorateId', String(this.directorateId));
+    if (this.districtId) params.set('districtId', String(this.districtId));
+    if (this.fromDate && this.toDate) {
+      params.set('fromDate', this.fromDate);
+      params.set('toDate', this.toDate);
+    }
+    const url = `Reports/GetDistrictWiseDetails?${params.toString()}`;
     this.api.get(url).subscribe({
       next: (res: any) => {
         this.poData = (res || []).map(
