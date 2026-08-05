@@ -414,7 +414,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'reports/payment-report',
+    path: 'reports/supplier-payment-report',
     component: SupplierPaymentReportComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
@@ -432,12 +432,12 @@ const routes: Routes = [
   },
   {
     path: 'SanctionsRDLC',
-    redirectTo: 'reports/sanction-report',
+    redirectTo: 'reports/sanctions-rdlc',
     pathMatch: 'full',
   },
   {
     path: 'Payment/SanctionsRDLC',
-    redirectTo: 'reports/sanction-report',
+    redirectTo: 'reports/sanctions-rdlc',
     pathMatch: 'full',
   },
   {

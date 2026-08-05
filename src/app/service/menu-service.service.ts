@@ -1505,7 +1505,7 @@ export class MenuServiceService {
         { label: 'Reports', route: '', submenu: [
             {
               label: 'Payment Report',
-              route: '/reports/payment-report',
+              route: '/reports/supplier-payment-report',
             },
             {
               label: 'Pending Receipt / Installation',
