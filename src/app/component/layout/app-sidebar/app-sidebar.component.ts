@@ -99,7 +99,7 @@ export class AppSidebarComponent {
   }
 
   onNavHover(item: AppSidebarMenuItem, event?: MouseEvent): void {
-    debugger;
+    // debugger;
     if (!this.collapsed) {
       return;
     }
