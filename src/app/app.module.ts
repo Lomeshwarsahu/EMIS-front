@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material-module';
 import { FormsModule } from '@angular/forms';
 import {  ReactiveFormsModule } from '@angular/forms';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {MatTabsModule} from '@angular/material/tabs';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { MatTableExporterModule } from 'mat-table-exporter';
@@ -29,7 +28,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { Registration } from './component/auth/registration/registration';
 import { AppSidebarComponent } from './component/layout/app-sidebar/app-sidebar.component';
-
+import { provideHttpClient, withInterceptors,withInterceptorsFromDi } from '@angular/common/http';
+import { authInterceptor } from './service/authentication/authInterceptor';
 @NgModule({ declarations: [
         AppComponent,
         Registration,
@@ -63,7 +63,12 @@ import { AppSidebarComponent } from './component/layout/app-sidebar/app-sidebar.
     })
   
 ], providers: [DatePipe, 
-      { provide: APP_BASE_HREF, useValue: '/EMIS/' }, provideHttpClient(withInterceptorsFromDi())] })
+      { provide: APP_BASE_HREF, useValue: '/EMIS/' },
+         provideHttpClient(withInterceptors([authInterceptor])),
+      provideHttpClient(withInterceptorsFromDi()),
+
+   
+    ] })
 export class AppModule {
   constructor(library: FaIconLibrary) {
     library.addIconPacks(fas);
