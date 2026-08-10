@@ -1,0 +1,100 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Complain Report</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <div class="filter-section">
+        <span class="filter-label">Status</span>
+        <mat-radio-group [(ngModel)]="statusFilter" (change)="loadData()">
+          <mat-radio-button value="">All</mat-radio-button>
+          <mat-radio-button value="Booked">Booked</mat-radio-button>
+          <mat-radio-button value="Closed">Closed</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!complainData.length">Export Excel</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="13" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="complaint_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Complaint No</th>
+          <td mat-cell *matCellDef="let element">{{ element.complaint_no || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_code_as_per_tender">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+          <td mat-cell *matCellDef="let element">{{ element.item_code_as_per_tender || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.item_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="serial_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Serial No</th>
+          <td mat-cell *matCellDef="let element">{{ element.serial_no || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="complaint_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Complaint Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.complaint_date || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="not_function_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Not Function Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.not_function_date || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="district">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>District</th>
+          <td mat-cell *matCellDef="let element">{{ element.district || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="department_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Department Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.department_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="complaint_details">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Complaint Details</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.complaint_details || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplier">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.supplier || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.email_id || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="mobile_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Mobile No</th>
+          <td mat-cell *matCellDef="let element">{{ element.mobile_no || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && complainData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

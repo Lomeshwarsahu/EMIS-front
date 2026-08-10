@@ -1,0 +1,20 @@
+.filter-section {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-label {
+  font-weight: 600;
+  font-size: 12px;
+  white-space: nowrap;
+  color: #334155;
+}
+
+.filter-date {
+  width: 140px;
+}
+
+:host-context(html[data-theme='dark']) .filter-label {
+  color: #e2e8f0;
+}

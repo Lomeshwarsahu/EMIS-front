@@ -1,0 +1,102 @@
+:host {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.dme-stock-page {
+  padding: 16px;
+}
+
+.note-bar {
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  color: #1e40af;
+  font-size: 13px;
+}
+
+.table-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.datagrid {
+  background: #fff;
+  border: 1px solid var(--border-color, #dde3ea);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.stock-grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.stock-grid th,
+.stock-grid td {
+  border: 1px solid var(--border-color, #dde3ea);
+  padding: 7px 9px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.stock-grid th {
+  background: #f1f5f9;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.stock-grid .alt-row td {
+  background: #f8fafc;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.empty-row td {
+  padding: 0;
+}
+
+.empty-state {
+  padding: 28px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.empty-state p {
+  margin: 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: #2563eb;
+  color: #fff;
+}

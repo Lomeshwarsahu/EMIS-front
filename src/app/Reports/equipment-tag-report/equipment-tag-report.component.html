@@ -1,0 +1,94 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Equipment Tag Report</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <mat-radio-group [(ngModel)]="poType" name="poType">
+        <mat-radio-button value="All">All</mat-radio-button>
+        <mat-radio-button value="NP">NP</mat-radio-button>
+        <mat-radio-button value="CP">CP</mat-radio-button>
+      </mat-radio-group>
+
+      <input type="date" [(ngModel)]="fromDate" name="fromDate" placeholder="From Date" />
+      <input type="date" [(ngModel)]="toDate" name="toDate" placeholder="To Date" />
+
+      <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export Excel</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="11" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="district">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>District</th>
+          <td mat-cell *matCellDef="let element">{{ element.district || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="location">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+          <td mat-cell *matCellDef="let element">{{ element.location || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="itemName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.itemName || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="itemCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+          <td mat-cell *matCellDef="let element">{{ element.itemCode || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="make">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Make</th>
+          <td mat-cell *matCellDef="let element">{{ element.make || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="modelNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Model No</th>
+          <td mat-cell *matCellDef="let element">{{ element.modelNo || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="receiptDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Receipt Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.receiptDate || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="installationDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Installation Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.installationDate || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="warrantyUpto">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Warranty Upto</th>
+          <td mat-cell *matCellDef="let element">{{ element.warrantyUpto || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="serialNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Serial No</th>
+          <td mat-cell *matCellDef="let element">{{ element.serialNo || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">
+            No records found.
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && dispatchData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,133 @@
+<div class="dme-stock-page">
+  <div class="note-bar">
+    Purchase Order Amendment — update dispatch / sanction details, upload the amendment
+    Nasti/Letter in PDF format and select the amendment type.
+  </div>
+
+  <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="8" />
+
+  <div class="datagrid" *ngIf="!loading && header">
+    <div class="po-summary">
+      <div class="po-summary__item">
+        <span class="po-summary__label">PO No</span>
+        <span class="po-summary__value">{{ header.PoNo || '—' }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">Item</span>
+        <span class="po-summary__value">{{ header.ItemName }} <span class="sub-code">{{ header.ItemCode }}</span></span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">Tender / Scheme</span>
+        <span class="po-summary__value">{{ header.SchemeName || '—' }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">Financial Year</span>
+        <span class="po-summary__value">{{ header.AccYear || '—' }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">PO Date</span>
+        <span class="po-summary__value">{{ header.PoDate || '—' }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">SO Date</span>
+        <span class="po-summary__value">{{ header.SoIssueDt || '—' }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">Dispatch No</span>
+        <span class="po-summary__value">{{ header.OutwardNo || '—' }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">Supplier</span>
+        <span class="po-summary__value">{{ header.SupplierName || '—' }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">PO Qty</span>
+        <span class="po-summary__value">{{ header.TotalPoQty }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">PO Value</span>
+        <span class="po-summary__value">{{ header.PoValue }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">Basic Rate</span>
+        <span class="po-summary__value">{{ header.BasicRate }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">GST (%)</span>
+        <span class="po-summary__value">{{ header.GstPercent }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">Final Rate</span>
+        <span class="po-summary__value">{{ header.FinalRate }}</span>
+      </div>
+    </div>
+
+    <div class="amend-form">
+      <div class="amend-form__row">
+        <label for="sanctionNo">Nasti / Letter No</label>
+        <input id="sanctionNo" type="text" [(ngModel)]="dispatchNo" name="dispatchNo" maxlength="30" placeholder="Enter Nasti/Letter No" />
+      </div>
+      <div class="amend-form__row">
+        <label for="amendDate">Sanction / Amendment Date</label>
+        <input id="amendDate" type="date" [(ngModel)]="amendDate" name="amendDate" />
+      </div>
+      <div class="amend-form__row">
+        <label for="remarks">Remarks (Max 500)</label>
+        <textarea id="remarks" [(ngModel)]="remarks" name="remarks" maxlength="500" rows="3" placeholder="Enter remarks"></textarea>
+      </div>
+      <div class="amend-form__row">
+        <label for="fileUpload1">Upload Amendment Nasti / Letter</label>
+        <input id="fileUpload1" type="file" accept=".pdf" (change)="onFileSelected($event)" />
+      </div>
+      <div class="amend-form__row">
+        <label for="ddlAmendmenttype">Select Amendment Type</label>
+        <select id="ddlAmendmenttype" [(ngModel)]="amendTypeId" name="amendTypeId">
+          <option [ngValue]="0">-- Select --</option>
+          <option *ngFor="let t of types" [ngValue]="t.AmendId">{{ t.AmenmentType }}</option>
+        </select>
+      </div>
+      <div class="amend-form__row">
+        <label>PO Reprint Required</label>
+        <div class="radio-row">
+          <label><input type="radio" [value]="'Y'" name="isReprintReq" [(ngModel)]="isReprintReq" /> Yes</label>
+          <label><input type="radio" [value]="'N'" name="isReprintReq" [(ngModel)]="isReprintReq" /> No</label>
+        </div>
+      </div>
+      <div class="amend-form__row">
+        <button type="button" class="btn btn--primary" [disabled]="saving || !canSave()" (click)="save()">
+          {{ saving ? 'Saving...' : 'Save' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="history-section" *ngIf="history.length">
+      <h3>Amendment History</h3>
+      <div class="table-wrap">
+        <table class="stock-grid">
+          <thead>
+            <tr>
+              <th class="text-center">S.no</th>
+              <th>PO Number</th>
+              <th class="text-center">Amendment Date</th>
+              <th>Nasti/Letter No</th>
+              <th>Remark</th>
+              <th class="text-center">Download</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of history; index as i" [class.alt-row]="i % 2 === 1">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>{{ row.PoNo || '—' }}</td>
+              <td class="text-center">{{ row.AmendDate || '—' }}</td>
+              <td>{{ row.NastiLetterNo || '—' }}</td>
+              <td>{{ row.Remark || '—' }}</td>
+              <td class="text-center">
+                <a href="{{ downloadUrl }}{{ row.PoAmmdId }}" target="_blank" rel="noopener">Download File</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

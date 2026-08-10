@@ -213,34 +213,67 @@ export class AppSidebarComponent {
   subMenuIcon(label: string, parentLabel: string): string {
     const key = label.trim().toLowerCase();
     const parentKey = parentLabel.trim().toLowerCase();
-    if (parentKey === 'masters' || parentKey.startsWith('master')) {
-      if (key.includes('gst')) return 'receipt_long';
-      if (key.includes('supplier')) return 'person';
-      return 'badge';
-    }
-    if (parentKey === 'orders' || parentKey.startsWith('order')) {
-      return 'shopping_bag';
-    }
-    if (parentKey === 'transaction' || parentKey.includes('transaction')) {
-      if (key.includes('dispatch')) return 'local_shipping';
-      if (key.includes('receipt') || key.includes('installation')) return 'fact_check';
-      return 'sync_alt';
-    }
-    if (parentKey === 'contracts' || parentKey.startsWith('contract')) {
-      if (key.includes('accepted') || key.includes('price')) return 'price_check';
-      return 'description';
-    }
+
+    // 1. Masters
+    if (key.includes('consignee') || key.includes('contact')) return 'contact_mail';
+    if (key.includes('gst')) return 'receipt_long';
+    if (key.includes('supplier')) return 'badge';
+    if (key.includes('store') || key.includes('home')) return 'store';
+    if (key.includes('specification')) return 'settings_applications';
+    if (key.includes('suggestion')) return 'rate_review';
+
+    // 2. Stock
+    if (key.includes('opening stock') || key.includes('opening-stock')) return 'input';
+    if (key.includes('stock report') || key.includes('stock-report')) return 'query_stats';
+    if (key.includes('receipts') || key.includes('received')) return 'fact_check';
+    if (key.includes('progress category') || key.includes('category')) return 'category';
+    if (key.includes('nodal') || key.includes('nodle')) return 'info';
+
+    // 3. Orders & Transactions
+    if (key.includes('po dashboard') || key.includes('dashboard')) return 'dashboard';
+    if (key.includes('receipts') || key.includes('receipt')) return 'inventory';
+    if (key.includes('entry') || key.includes('add')) return 'add_circle';
+    if (key.includes('installation') || key.includes('install')) return 'build';
+    if (key.includes('reallocation') || key.includes('realloaction')) return 'swap_horiz';
+    if (key.includes('amendment') || key.includes('ammendment')) return 'edit_note';
+    if (key.includes('withheld') || key.includes('release')) return 'money_off';
+    if (key.includes('payment letter') || key.includes('letter')) return 'email';
     if (key.includes('print')) return 'print';
-    if (key.includes('status')) return 'pending_actions';
-    if (key.includes('planning')) return 'event_note';
-    if (key.includes('stock')) return 'inventory';
+    if (key.includes('sd') || key.includes('security deposit')) return 'folder_shared';
+    if (key.includes('dispatch') || key.includes('supply')) return 'local_shipping';
+
+    // 4. Contracts
+    if (key.includes('rc detail') || key.includes('contract')) return 'receipt';
+    if (key.includes('accepted')) return 'check_circle';
+
+    // 5. Indents
+    if (key.includes('budget') || key.includes('heads')) return 'account_balance';
+    if (key.includes('annual') || key.includes('consolidated')) return 'calendar_month';
+    if (key.includes('items')) return 'list_alt';
+    if (key.includes('report') && parentKey.includes('indent')) return 'summarize';
+
+    // 6. Reports & Finance
+    if (key.includes('cmc')) return 'build_circle';
+    if (key.includes('sanction')) return 'verified_user';
+    if (key.includes('refund') || key.includes('emd')) return 'history';
+    if (key.includes('paid') || key.includes('cheque')) return 'payments';
+    if (key.includes('abstract') || key.includes('summary')) return 'analytics';
+
+    // 7. Complaint
+    if (key.includes('complain') || key.includes('complaint')) return 'report_problem';
+    if (key.includes('status')) return 'hourglass_empty';
+
+    // 8. File Movement
+    if (key.includes('generation') || key.includes('create')) return 'create_new_folder';
+    if (key.includes('file') || key.includes('mrc')) return 'folder';
+
+    // 9. Legacy Oracle & QC Fallbacks
     if (key.includes('expiry')) return 'hourglass_bottom';
     if (key.includes('pipeline')) return 'timeline';
     if (key.includes('analysis') || key.includes('abc')) return 'insights';
     if (key.includes('qc')) return 'science';
-    if (key.includes('facility') || key.includes('information')) return 'apartment';
-    if (parentKey.includes('oracle')) return 'query_stats';
-    if (parentKey.includes('report')) return 'bar_chart';
+    if (key.includes('facility') || key.includes('info')) return 'apartment';
+
     return 'subdirectory_arrow_right';
   }
 

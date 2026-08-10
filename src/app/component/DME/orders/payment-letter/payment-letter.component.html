@@ -1,0 +1,98 @@
+<div class="letter-page">
+  <div class="print-toolbar no-print">
+    <button type="button" class="btn btn--primary" (click)="print()">Print</button>
+    <button type="button" class="btn btn--ghost" (click)="goBack()">Back</button>
+  </div>
+
+  <div class="letter" *ngIf="data">
+    <div class="letter-header">
+      <div class="letter-header__org">
+        <div class="letter-header__logo">CGMSC</div>
+        <div>
+          <div class="letter-header__title">Office of</div>
+          <div class="letter-header__sub">Chhattisgarh Medical Services Corporation, Ltd</div>
+          <div class="letter-header__addr">
+            1st &amp; 2nd Floor, Commercial Complex, North West Corner Sector 27, Atal Nagar Raipur Chhattisgarh
+          </div>
+          <div class="letter-header__email">Email: finance.cgmsc@gov.in</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="letter-meta">
+      <div class="letter-meta__item">
+        <span class="letter-meta__label">Letter No:</span> ....................
+      </div>
+      <div class="letter-meta__item">
+        <span class="letter-meta__label">Letter Date:</span> {{ today() }}
+      </div>
+    </div>
+
+    <div class="letter-to">
+      <div>To,</div>
+      <div>The Branch Manager</div>
+      <div class="letter-to__bank">
+        {{ data.BankInfo[0]?.Bankname || '—' }}, {{ data.BankInfo[0]?.Branch || '—' }}
+      </div>
+    </div>
+
+    <div class="letter-subject">
+      Sub: Yourself for RTGS for E-Transfer
+    </div>
+
+    <div class="letter-body">
+      The following payment is to be made through E-Transfer in respective accounts, hence a cheque no:
+      {{ data.BankInfo[0]?.Aidno || '—' }} Dated: .................... In favour of yourself for RTGS of Rs.
+      {{ data.TotalAmount }} (In Words Rs {{ data.Words }}) is put up for E-transfer from CGMSCL Account No.
+      {{ data.BankInfo[0]?.Accountno || '—' }}. Details are mentioned below:
+    </div>
+
+    <table class="letter-table">
+      <thead>
+        <tr>
+          <th class="text-center">S.No</th>
+          <th>Name of Account Holders</th>
+          <th>Account No</th>
+          <th>IFSC</th>
+          <th>Bank &amp; Branch</th>
+          <th class="text-right">Actual amount to be transferred</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data.BankLetter; index as i" [class.alt-row]="i % 2 === 1">
+          <td class="text-center">{{ i + 1 }}</td>
+          <td>{{ row.Accountname || '—' }}</td>
+          <td>{{ row.Accountno || '—' }}</td>
+          <td>{{ row.Ifsccode || '—' }}</td>
+          <td>{{ row.Bankname }}<ng-container *ngIf="row.Branch">, {{ row.Branch }}</ng-container></td>
+          <td class="text-right">{{ row.AmountPaid }}</td>
+        </tr>
+        <tr class="letter-table__total">
+          <td colspan="5" class="text-right">Total</td>
+          <td class="text-right">{{ data.TotalAmount }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="letter-enclosure">
+      Enclosed: (Cheque no: {{ data.BankInfo[0]?.Aidno || '—' }}, Dated: .................... , Rs. {{ data.TotalAmount }})
+    </div>
+
+    <div class="letter-sign">
+      <div class="letter-sign__block">
+        <div>CGMSC, Ltd, Raipur (CG)</div>
+        <div>General Manager (F)</div>
+      </div>
+      <div class="letter-sign__block">
+        <div>I/C General Manager (E)</div>
+        <div>CGMSC, Ltd, Raipur (CG)</div>
+      </div>
+    </div>
+
+    <div class="letter-footer">system generated bank letter from EMIS</div>
+  </div>
+
+  <div class="empty-state" *ngIf="!loading && !data">
+    <p>No letter data available for this payment.</p>
+  </div>
+</div>

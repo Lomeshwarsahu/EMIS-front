@@ -130,7 +130,7 @@ formatDate(date: any) {
         // fromDate: this.Fromdt,
         // toDate: this.Todt,
       };
-      this.api.get('Contract/FinanceRep/PaymentUnionReport?', { params }).subscribe(
+      this.api.get('Contract/FinanceRep/PaymentUnionReport', { params }).subscribe(
         (res: any) => {
           this.dispatchData = res.map(
             (item: PaymentPOWiseDTO, index: number) => ({

@@ -1,0 +1,122 @@
+<div class="supplier-po-page">
+  <div class="page-toolbar">
+    <button type="button" class="back-btn" (click)="close()">Close</button>
+  </div>
+
+  <h2 class="page-title wide">Performace20 — Consignee Details</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <button type="button" class="show-btn" [matMenuTriggerFor]="exportMenu">Export</button>
+      <mat-menu #exportMenu="matMenu">
+        <button mat-menu-item
+          (click)="exporter.exportTable('xlsx', { fileName: 'Performace20Consignee', sheet: 'Consignee' })">Excel</button>
+      </mat-menu>
+      <input type="text" class="search-input" placeholder="Search…" (keyup)="applyTextFilter($event)" />
+    </div>
+
+    <!-- Header Section -->
+    <table class="header-grid">
+      <tr>
+        <td>Item Code</td><td>{{ headerData.ItemCode }}</td>
+        <td>Item Name</td><td>{{ headerData.ItemName }}</td>
+      </tr>
+      <tr>
+        <td>Tax (%)</td><td>{{ headerData.Percentage }}</td>
+        <td>PO No</td><td>{{ headerData.PoNo }}</td>
+      </tr>
+      <tr>
+        <td>PO Date</td><td>{{ headerData.PoDate }}</td>
+        <td>Basic Rate</td><td>{{ headerData.BasicRate }}</td>
+      </tr>
+      <tr>
+        <td>No of Consignee</td><td>{{ headerData.NoOfConsignee }}</td>
+        <td>Model No</td><td>{{ headerData.Model }}</td>
+      </tr>
+      <tr>
+        <td>Make</td><td>{{ headerData.Make }}</td>
+        <td>PO Qty</td><td>{{ headerData.POQTY }}</td>
+      </tr>
+      <tr>
+        <td>Dispatch Qty</td><td>{{ headerData.DispatchQty }}</td>
+        <td>Receipt Qty</td><td>{{ headerData.ReceiptQty }}</td>
+      </tr>
+      <tr>
+        <td>Installed Qty</td><td>{{ headerData.InsQTY }}</td>
+        <td>Release Duration</td><td>{{ headerData.ReleaseDur }}</td>
+      </tr>
+      <tr>
+        <td>Release Type</td><td>{{ headerData.ReleaseType }}</td>
+        <td></td><td></td>
+      </tr>
+    </table>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="7" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="it-grid" mat-table matTableExporter [dataSource]="dataSource"
+        #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">#</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="location_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+          <td mat-cell *matCellDef="let element">{{ element.location_name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right">PO Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-right">{{ element.po_qty }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dispatched_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right">Dispatched Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-right">{{ element.dispatched_qty }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="received_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right">Received Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-right">{{ element.received_qty }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="installed_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right">Installed Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-right">{{ element.installed_qty }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="installation_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Installation Date</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.installation_date }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+      <div class="empty-row" *ngIf="!gridData.length">No consignee records found.</div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-bar">
+      <label class="field">
+        <span class="field-label">Performance Certificate Type</span>
+        <select [(ngModel)]="perfCertType">
+          <option value="Select">Select</option>
+          <option value="Received From All Consignee">Received From All Consignee</option>
+          <option value="Generated Through EMIS">Generated Through EMIS</option>
+          <option value="Partial">Partial</option>
+        </select>
+      </label>
+      <label class="field check-field">
+        <input type="checkbox" [(ngModel)]="perfIAgree" />
+        <span>I certify that all performance reports are verified</span>
+      </label>
+      <button class="show-btn" (click)="upload()">Upload</button>
+      <a class="link-action" (click)="downloadPdf()">Download Performance Certificate</a>
+    </div>
+  </div>
+</div>
