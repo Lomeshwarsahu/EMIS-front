@@ -17,7 +17,7 @@ const EXTRA_ROUTE_TITLES: Record<string, string> = {
   '/emd-refund/emd-deposit': 'EMD Refund Request Form',
   '/contracts/rc-detail-report-supplier': 'Rate Contract Detail Report',
   '/contracts/accepted-report-supplier': 'Price Accepted By CGMSC',
-  '/orders/po-supply-sd-detail': 'Security Deposit Detail',
+  '/orders/po-supply-sd-detail': 'Security Deposit Detail', 
   '/orders/po-supply-apply-extension': 'Apply For Extension',
   '/transaction/po-supply-dispatch-edit': 'Dispatch Equipment Desk',
   '/transaction/po-supply-dispatch-entry': 'Dispatch Entry of Equipments',
