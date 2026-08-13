@@ -1,0 +1,110 @@
+<div class="dme-stock-page">
+  <div class="note-bar">Generation of File No/Nasti No</div>
+
+  <div class="datagrid">
+    <div class="form-grid">
+      <div class="field">
+        <label for="poNo">Type PO No (After Last /)</label>
+        <input id="poNo" type="text" class="form-input" [(ngModel)]="poNo" name="poNo" />
+      </div>
+      <div class="field or-label">
+        <span>OR</span>
+      </div>
+      <div class="field">
+        <label for="outwardNo">Search by Outward No</label>
+        <input
+          id="outwardNo"
+          type="text"
+          class="form-input"
+          [(ngModel)]="outwardNo"
+          name="outwardNo" />
+      </div>
+      <div class="field">
+        <label for="selYear">Select Year</label>
+        <select
+          id="selYear"
+          [(ngModel)]="selectedFinancialYear"
+          name="selectedFinancialYear"
+          [class.is-placeholder]="selectedFinancialYear === 0">
+          <option *ngFor="let f of financialYears" [ngValue]="f.Key">{{ f.Value }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-toolbar toolbar--row" *ngIf="selected">
+      <div class="form-grid form-grid--inline">
+        <div class="field">
+          <label for="fileNo">File No</label>
+          <input id="fileNo" type="text" class="form-input" [(ngModel)]="fileNo" name="fileNo" />
+        </div>
+        <div class="field">
+          <label for="fileDt">File Creation Date</label>
+          <input id="fileDt" type="date" class="form-input" [(ngModel)]="fileDt" name="fileDt" />
+        </div>
+        <div class="field">
+          <button
+            type="button"
+            class="btn btn--small btn--primary"
+            (click)="save()"
+            [disabled]="saving">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-toolbar toolbar--row" *ngIf="selected">
+      <div class="detail-grid">
+        <div><strong>PO No:</strong> {{ selected.PoNo }}</div>
+        <div><strong>PO Date:</strong> {{ selected.PoDate }}</div>
+        <div><strong>Tender Ref:</strong> {{ selected.SchemeCode }}</div>
+        <div><strong>Supplier Name:</strong> {{ selected.SupplierName }}</div>
+        <div><strong>Item Code:</strong> {{ selected.ItemCode }}</div>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn--small btn--primary"
+      (click)="search()"
+      [disabled]="searching">
+      Show File No
+    </button>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="7" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="stock-grid">
+        <thead>
+          <tr>
+            <th class="text-center">S.No</th>
+            <th>PO No</th>
+            <th class="text-center">PO Date</th>
+            <th>Code</th>
+            <th>Supplier</th>
+            <th>File No</th>
+            <th class="text-center">File Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>{{ row.PoNo || '—' }}</td>
+            <td class="text-center">{{ row.PoDate || '—' }}</td>
+            <td>{{ row.ItemCode || '—' }}</td>
+            <td>{{ row.SupplierName || '—' }}</td>
+            <td>{{ row.FileNo || '—' }}</td>
+            <td class="text-center">{{ row.FileDt || '—' }}</td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="7" class="empty-row">
+              <div class="empty-state">
+                <p>No generated file numbers found.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

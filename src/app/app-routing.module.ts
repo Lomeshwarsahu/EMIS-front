@@ -80,6 +80,23 @@ import { DmeFacAddIndentComponent } from './component/DME/indent/dme-fac-add-ind
 import { DmeFacIndentReportComponent } from './component/DME/indent/dme-fac-indent-report/dme-fac-indent-report.component';
 import { CmcDetailComponent } from './component/DME/reports/cmc-detail/cmc-detail.component';
 import { FacilityComplainStoreComponent } from './component/DME/complain/facility-complain-store/facility-complain-store.component';
+import { ChangePasswordComponent } from './component/DME/orders/change-password/change-password.component';
+import { ProgressCategoryComponent } from './component/DME/stock/progress-category/progress-category.component';
+import { FacilityReceiptsComponent } from './component/DME/stock/facility-receipts/facility-receipts.component';
+import { NodalInformationComponent } from './component/DME/stock/nodal-information/nodal-information.component';
+import { MasFileNoComponent } from './component/DME/orders/mas-file-no/mas-file-no.component';
+import { NodalProgressComponent } from './component/DME/stock/nodal-progress/nodal-progress.component';
+import { EligibleReportComponent } from './Reports/eligible-report/eligible-report.component';
+import { PoReallocationComponent } from './component/DME/orders/po-reallocation/po-reallocation.component';
+import { PoAmendmentComponent } from './component/DME/orders/po-amendment/po-amendment.component';
+import { WithheldReleaseComponent } from './component/DME/orders/withheld-release/withheld-release.component';
+import { PaymentLetterComponent } from './component/DME/orders/payment-letter/payment-letter.component';
+import { MainEquipmentMappedReportComponent } from './Reports/main-equipment-mapped-report/main-equipment-mapped-report.component';
+import { ComplaintStatusComponent } from './component/DME/complain/complaint-status/complaint-status.component';
+import { ComplaintStatusEditComponent } from './component/DME/complain/complaint-status-edit/complaint-status-edit.component';
+import { ComplaintStatusFacilityComponent } from './component/DME/complain/complaint-status-facility/complaint-status-facility.component';
+import { ComplaintStatusFacilityEditComponent } from './component/DME/complain/complaint-status-facility-edit/complaint-status-facility-edit.component';
+import { ComplainCmhoComponent } from './component/DME/complain/complain-cmho/complain-cmho.component';
 import { TenderCoverAComponent } from './component/BME/tender-cover-a/tender-cover-a.component';
 import { TenderCoverAObClaimComponent } from './tender-cover-aob-claim/tender-cover-aob-claim.component';
 import { TenderItemsPriceGEMComponent } from './component/BME/tender-items-price-gem/tender-items-price-gem.component';
@@ -117,12 +134,24 @@ import { SanctionComponent } from './GM Finance/sanction/sanction.component';
 import { EmdRefundTenderwiseComponent } from './component/Finance/emd-refund-tenderwise/emd-refund-tenderwise.component';
 import { SdReleaseFinanceComponent } from './component/Finance/sd-release-finance/sd-release-finance.component';
 import { AddSubMenuComponent } from './component/IT/add-sub-menu/add-sub-menu.component';
+import { EmdFileApprovalComponent } from './component/emd-file-approval/emd-file-approval.component';
+import { LogoVerifiedHoComponent } from './component/logo-verified-ho/logo-verified-ho.component';
+import { SiteNotReadyUploadComponent } from './component/site-not-ready-upload/site-not-ready-upload.component';
+import { InvoicesBySoComponent } from './component/invoices-by-so/invoices-by-so.component';
+import { PoReportNewComponent } from './component/po-report-new/po-report-new.component';
+import { PoDetailsRdlcComponent } from './component/po-details-rdlc/po-details-rdlc.component';
+import { PendingInstallDrilldownComponent } from './component/pending-install-drilldown/pending-install-drilldown.component';
 import { AddRoleInScreenComponent } from './component/IT/add-role-in-screen/add-role-in-screen.component';
 import { DeleteMenuComponent } from './component/IT/delete-menu/delete-menu.component';
 import { MasterSupplierDashComponent } from './component/Tender Cell/master-supplier-dash/master-supplier-dash.component';
 import { ConsolidatedIndentCGMSCComponent } from './component/Tender Cell/consolidated-indent-cgmsc/consolidated-indent-cgmsc.component';
 import { TenderCoverAObClaimAfterComponent } from './component/Tender Cell/tender-cover-aob-claim-after/tender-cover-aob-claim-after.component';
 import { PerformanceCertificateComponent } from './Performance/performance-certificate/performance-certificate.component';
+import { Performace20ConsigneeComponent } from './Performance/performace20-consignee/performace20-consignee.component';
+import { PerformanceCertificateFinComponent } from './Performance/performance-certificate-fin/performance-certificate-fin.component';
+import { EmisPerf20RdlcComponent } from './Performance/emis-perf20-rdlc/emis-perf20-rdlc.component';
+import { Payment20ChequePrepComponent } from './Performance/payment20-cheque-prep/payment20-cheque-prep.component';
+import { SanctionNotesheetComponent } from './Performance/sanction-notesheet/sanction-notesheet.component';
 import { StoreHomeComponent } from './component/Master/store-home/store-home.component';
 import { DhsAddFacilityComponent } from './component/Master/dhs-add-facility/dhs-add-facility.component';
 import { DhsFacilityUsersLocationsComponent } from './component/Master/dhs-facility-users-locations/dhs-facility-users-locations.component';
@@ -132,7 +161,59 @@ import { MasFacilityUsersLocationsComponent } from './component/Master/mas-facil
 import { MasterSupplierAddComponent } from './component/Master/master-supplier-add/master-supplier-add.component';
 import { TenderCoverAitemsComponent } from './component/BME/tender-cover-aitems/tender-cover-aitems.component';
 import { CoverAitemsReportsComponent } from './component/BME/cover-aitems-reports/cover-aitems-reports.component';
-
+  import { IndentPoTenderStatusComponent } from './Reports/indent-po-tender-status/indent-po-tender-status.component';
+import { IndentPoTenderStatusSummaryComponent } from './Reports/indent-po-tender-status-summary/indent-po-tender-status-summary.component';
+import { IndentPoTenderStatusDrilldownComponent } from './Reports/indent-po-tender-status-drilldown/indent-po-tender-status-drilldown.component';
+import { IndentPoTenderSummaryComponent } from './Reports/indent-po-tender-summary/indent-po-tender-summary.component';
+import { IndentPoTenderSummaryDrilldownComponent } from './Reports/indent-po-tender-summary-drilldown/indent-po-tender-summary-drilldown.component';
+import { CmhoPoSummaryComponent } from './Reports/cmho-po-summary/cmho-po-summary.component';
+import { CmhoPoSummaryDrilldownComponent } from './Reports/cmho-po-summary-drilldown/cmho-po-summary-drilldown.component';
+import { PoSummaryDirectorateComponent } from './Reports/po-summary-directorate/po-summary-directorate.component';
+import { PoSummaryDirectorateDrilldownComponent } from './Reports/po-summary-directorate-drilldown/po-summary-directorate-drilldown.component';
+import { PoSummaryConsigneeHoComponent } from './Reports/po-summary-consignee-ho/po-summary-consignee-ho.component';
+import { TenderLiveStatusComponent } from './Reports/tender-live-status/tender-live-status.component';
+import { TenderLiveStatusDrilldownComponent } from './Reports/tender-live-status-drilldown/tender-live-status-drilldown.component';
+import { BalanceStatusDhsComponent } from './Reports/balance-status-dhs/balance-status-dhs.component';
+import { BalanceStatusPocellComponent } from './Reports/balance-status-pocell/balance-status-pocell.component';
+import { OpeningStockSummaryComponent } from './Reports/opening-stock-summary/opening-stock-summary.component';
+import { OpeningStockDrilldownComponent } from './Reports/opening-stock-drilldown/opening-stock-drilldown.component';
+import { PaymentsCpreportIgmComponent } from './Reports/payments-cpreport-igm/payments-cpreport-igm.component';
+import { PopaidReportIgmComponent } from './Reports/popaid-report-igm/popaid-report-igm.component';
+import { EmdDepositeReportComponent } from './Reports/emd-deposite-report/emd-deposite-report.component';
+import { EquipmentTagReportComponent } from './Reports/equipment-tag-report/equipment-tag-report.component';
+import { TenderWisePoDetailsComponent } from './Reports/tender-wise-po-details/tender-wise-po-details.component';
+import { TenderStatusItemWiseComponent } from './Reports/tender-status-item-wise/tender-status-item-wise.component';
+import { DispatchDetailComponent } from './Reports/dispatch-detail/dispatch-detail.component';
+import { PendingPoSupplierWiseComponent } from './Reports/pending-po-supplier-wise/pending-po-supplier-wise.component';
+import { ReceiptPendingCmhoComponent } from './Reports/receipt-pending-cmho/receipt-pending-cmho.component';
+import { ReportIndentPoDetailsComponent } from './Reports/report-indent-po-details/report-indent-po-details.component';
+import { EelSuggestionReportComponent } from './Reports/eel-suggestion-report/eel-suggestion-report.component';
+import { FacStockCovidItemsBmeComponent } from './Reports/fac-stock-covid-items-bme/fac-stock-covid-items-bme.component';
+import { BalanceSupplierwiseComponent } from './Reports/balance-supplierwise/balance-supplierwise.component';
+import { IndentReportPocellComponent } from './Reports/indent-report-pocell/indent-report-pocell.component';
+import { PendingInstallDrilldownDhsComponent } from './Reports/pending-install-drilldown-dhs/pending-install-drilldown-dhs.component';
+import { PendingInstallDrilldownPocellComponent } from './Reports/pending-install-drilldown-pocell/pending-install-drilldown-pocell.component';
+import { RdlcDhsPendingComponent } from './Reports/rdlc-dhs-pending/rdlc-dhs-pending.component';
+import { CoverAItemsReportsComponent } from './Reports/cover-a-items-reports/cover-a-items-reports.component';
+import { PaymentsCpreportComponent } from './Reports/payments-cpreport/payments-cpreport.component';
+import { PoReceiptSummaryComponent } from './Reports/po-receipt-summary/po-receipt-summary.component';
+import { SanctionsRdlcComponent } from './Reports/sanctions-rdlc/sanctions-rdlc.component';
+import { BalanceStatusSupplierComponent } from './Reports/balance-status-supplier/balance-status-supplier.component';
+import { ItemWiseDetailComponent } from './Reports/item-wise-detail/item-wise-detail.component';
+import { ItemWiseDetailPOCellComponent as ReportsItemWiseDetailPOCellComponent } from './Reports/item-wise-detail-pocell/item-wise-detail-pocell.component';
+import { ItemWiseDetailPOQtyComponent } from './Reports/item-wise-detail-poqty/item-wise-detail-poqty.component';
+import { ItemWiseDetailPOQtyPOCellComponent } from './Reports/item-wise-detail-poqty-pocell/item-wise-detail-poqty-pocell.component';
+import { ComplainReportBmeComponent } from './Reports/complain-report-bme/complain-report-bme.component';
+import { DistrictWisePoDetailComponent } from './Reports/district-wise-po-detail/district-wise-po-detail.component';
+import { EmdRefundReportComponent } from './Reports/emd-refund-report/emd-refund-report.component';
+import { PoPaidReportComponent } from './Reports/po-paid-report/po-paid-report.component';
+import { PaymentReportComponent } from './Reports/payment-report/payment-report.component';
+import { TenderStatusComponent } from './Reports/tender-status/tender-status.component';
+import { PoSummaryComponent } from './Reports/po-summary/po-summary.component';
+import { PoSummaryDrilldownQtyComponent } from './Reports/po-summary-drilldown-qty/po-summary-drilldown-qty.component';
+import { PoSummaryDrilldownQtyPowiseComponent } from './Reports/po-summary-drilldown-qty-powise/po-summary-drilldown-qty-powise.component';
+import { PoSummaryDrilldownQtyReagentComponent } from './Reports/po-summary-drilldown-qty-reagent/po-summary-drilldown-qty-reagent.component';
+import { IndentPoSummaryDirwiseComponent } from './Reports/indent-po-summary-dirwise/indent-po-summary-dirwise.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -333,7 +414,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'reports/payment-report',
+    path: 'reports/supplier-payment-report',
     component: SupplierPaymentReportComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
@@ -351,12 +432,12 @@ const routes: Routes = [
   },
   {
     path: 'SanctionsRDLC',
-    redirectTo: 'reports/sanction-report',
+    redirectTo: 'reports/sanctions-rdlc',
     pathMatch: 'full',
   },
   {
     path: 'Payment/SanctionsRDLC',
-    redirectTo: 'reports/sanction-report',
+    redirectTo: 'reports/sanctions-rdlc',
     pathMatch: 'full',
   },
   {
@@ -385,7 +466,42 @@ const routes: Routes = [
   { path: 'otp', component: OtpComponent },
   // {path:'GenerationFileNonasti',component:GenerationFileNonastiComponent},//
   // {path:'FileMRCDashbord',component:FileMRCDashbordComponent},//
-  { path: 'InstallationDetails', component: InstallationDetailsComponent },
+  {
+    path: 'InstallationDetails',
+    component: InstallationDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'bme' },
+  },
+  {
+    path: 'InstallationDetailsBME',
+    component: InstallationDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'bme' },
+  },
+  {
+    path: 'InstallationDetailsDEO',
+    component: InstallationDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'deo' },
+  },
+  {
+    path: 'InstallationDetailsDEONew',
+    component: InstallationDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'deonew' },
+  },
+  {
+    path: 'InstallationDetailsFINCTRL',
+    component: InstallationDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'finctrl' },
+  },
+  {
+    path: 'InstallationDetailsGMT',
+    component: InstallationDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'gmt' },
+  },
   // {path:'ExtensionHODetail',component:ExtensionHODetailComponent},//
   { path: 'ExtensionHOEntry', component: ExtensionHOEntryComponent },
   // {path:'ItemWiseDetailPOCell',component:ItemWiseDetailPOCellComponent},//
@@ -504,7 +620,61 @@ const routes: Routes = [
     path: 'FileMRCDashbord',
     component: FileMRCDashbordComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['TPO'] },
+    data: { allowedRoles: ['TPO'], variant: 'dm' },
+  },
+  {
+    path: 'FileMRCDashboardFIN',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD','FIN'], variant: 'fin' },
+  },
+  {
+    path: 'FileMRCDashboardGM',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['GM','AD'], variant: 'gm' },
+  },
+  {
+    path: 'FileMRCDashboardIGM',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['IGM','AD'], variant: 'igm' },
+  },
+  {
+    path: 'FileMRCDashboardFINFile',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['FIN','AD'], variant: 'fin-file' },
+  },
+  {
+    path: 'FileMRCDashboardFINFile_Ver1',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['FIN','AD'], variant: 'fin-file-v1' },
+  },
+  {
+    path: 'FileMRCDashboardGMNew',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['GM','AD'], variant: 'gm-new' },
+  },
+  {
+    path: 'FileMRCDashboardIGMMov',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['IGM','AD'], variant: 'igm-mov' },
+  },
+  {
+    path: 'FileMRCDashboardIGMMovAudit',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['IGM','AD'], variant: 'igm-mov-audit' },
+  },
+  {
+    path: 'FileMRCDashboardIGMMovBME',
+    component: FileMRCDashbordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['BME','AD'], variant: 'igm-mov-bme' },
   },
 
   {
@@ -877,6 +1047,72 @@ const routes: Routes = [
     data: { allowedRoles: ['DME'] },
   },
   {
+    path: 'stock/progress-category',
+    component: ProgressCategoryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'stock/facility-receipts',
+    component: FacilityReceiptsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'stock/nodal-information',
+    component: NodalInformationComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME'] },
+  },
+  {
+    path: 'orders/mas-file-no',
+    component: MasFileNoComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'orders/po-reallocation',
+    component: PoReallocationComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'orders/po-amendment',
+    component: PoAmendmentComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'orders/withheld-release',
+    component: WithheldReleaseComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'payment-letter',
+    component: PaymentLetterComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'stock/nodal-progress',
+    component: NodalProgressComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'reports/eligible-report',
+    component: EligibleReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/main-equipment-mapped',
+    component: MainEquipmentMappedReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
     path: 'orders/purchase-order-dashboard',
     component: PurchaseOrderDashboardComponent,
     canActivate: [RouteGuardService],
@@ -983,6 +1219,11 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'rdlDMEAIReport',
+    redirectTo: 'indents/annual-indent-report',
+    pathMatch: 'full',
+  },
+  {
     path: 'indents/from-facilities',
     component: IndentFromFacilitiesComponent,
     canActivate: [RouteGuardService],
@@ -1011,6 +1252,66 @@ const routes: Routes = [
     component: FacilityComplainStoreComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'complain/complaint-status',
+    component: ComplaintStatusComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'complain/complaint-status-edit/:compId',
+    component: ComplaintStatusEditComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'complain/complaint-status-facility',
+    component: ComplaintStatusFacilityComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'complain/complaint-status-facility-edit/:compId',
+    component: ComplaintStatusFacilityEditComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'complain/complain-cmho',
+    component: ComplainCmhoComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'change-password',
+    component: ChangePasswordComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AU', 'TPO', 'AUPO', 'FU', 'PRINCIPAL', 'FDA'] },
+  },
+  {
+    path: 'ChangePasswordForcefully',
+    redirectTo: 'change-password',
+  },
+  {
+    path: 'ForceChangePWD',
+    redirectTo: 'change-password',
+  },
+  {
+    path: 'complain/status',
+    redirectTo: 'complain/complaint-status',
+  },
+  {
+    path: 'ComplaintStatus',
+    redirectTo: 'complain/complaint-status',
+  },
+  {
+    path: 'ComplaintStatusFacility',
+    redirectTo: 'complain/complaint-status-facility',
+  },
+  {
+    path: 'ComplainCMHO',
+    redirectTo: 'complain/complain-cmho',
   },
   {
     path: 'complain/report',
@@ -1066,6 +1367,304 @@ const routes: Routes = [
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
+  {
+    path: 'reports/cmho-po-summary',
+    component: CmhoPoSummaryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/cmho-po-summary-drilldown',
+    component: CmhoPoSummaryDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/po-summary-directorate',
+    component: PoSummaryDirectorateComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/po-summary-directorate-drilldown',
+    component: PoSummaryDirectorateDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/po-summary-consignee-ho',
+    component: PoSummaryConsigneeHoComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/tender-live-status',
+    component: TenderLiveStatusComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/tender-live-status-drilldown',
+    component: TenderLiveStatusDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/balance-status-dhs',
+    component: BalanceStatusDhsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/balance-status-pocell',
+    component: BalanceStatusPocellComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/opening-stock-summary',
+    component: OpeningStockSummaryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/opening-stock-drilldown',
+    component: OpeningStockDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/payments-cpreport-igm',
+    component: PaymentsCpreportIgmComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/popaid-report-igm',
+    component: PopaidReportIgmComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/emd-deposite-report',
+    component: EmdDepositeReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/equipment-tag-report',
+    component: EquipmentTagReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/tender-wise-po-details',
+    component: TenderWisePoDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/tender-status-item-wise',
+    component: TenderStatusItemWiseComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/dispatch-detail',
+    component: DispatchDetailComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/pending-po-supplier-wise',
+    component: PendingPoSupplierWiseComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/receipt-pending-cmho',
+    component: ReceiptPendingCmhoComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/report-indent-po-details',
+    component: ReportIndentPoDetailsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/eel-suggestion-report',
+    component: EelSuggestionReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/fac-stock-covid-items-bme',
+    component: FacStockCovidItemsBmeComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/balance-supplierwise',
+    component: BalanceSupplierwiseComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/indent-report-pocell',
+    component: IndentReportPocellComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/pending-install-drilldown-dhs',
+    component: PendingInstallDrilldownDhsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/pending-install-drilldown-pocell',
+    component: PendingInstallDrilldownPocellComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/rdlc-dhs-pending',
+    component: RdlcDhsPendingComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/cover-a-items-reports',
+    component: CoverAItemsReportsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/item-wise-detail',
+    component: ItemWiseDetailComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/item-wise-detail-pocell',
+    component: ReportsItemWiseDetailPOCellComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/item-wise-detail-poqty',
+    component: ItemWiseDetailPOQtyComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/item-wise-detail-poqty-pocell',
+    component: ItemWiseDetailPOQtyPOCellComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/complain-report-bme',
+    component: ComplainReportBmeComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/district-wise-po-detail',
+    component: DistrictWisePoDetailComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/emd-refund-report',
+    component: EmdRefundReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/po-paid-report',
+    component: PoPaidReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/payment-report',
+    component: PaymentReportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/tender-status',
+    component: TenderStatusComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/po-summary',
+    component: PoSummaryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/po-summary-drilldown-qty',
+    component: PoSummaryDrilldownQtyComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/po-summary-drilldown-qty-powise',
+    component: PoSummaryDrilldownQtyPowiseComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/po-summary-drilldown-qty-reagent',
+    component: PoSummaryDrilldownQtyReagentComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/indent-po-summary-dirwise',
+    component: IndentPoSummaryDirwiseComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/cover-a-items-reports',
+    component: CoverAItemsReportsComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/payments-cpreport',
+    component: PaymentsCpreportComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/po-receipt-summary',
+    component: PoReceiptSummaryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/sanctions-rdlc',
+    component: SanctionsRdlcComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'reports/balance-status-supplier',
+    component: BalanceStatusSupplierComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+
+  { path: 'EMISPerf20_RDLC', redirectTo: 'performance/emis-perf20-rdlc', pathMatch: 'full' },
+  { path: 'Payment20CheequPrep', redirectTo: 'performance/payment20-cheque-prep', pathMatch: 'full' },
+  { path: 'SanctionNotesheet', redirectTo: 'performance/sanction-notesheet', pathMatch: 'full' },
 
   // Legacy flat paths → redirects (bookmarks / old links)
   { path: 'store-home', redirectTo: 'masters/store-home', pathMatch: 'full' },
@@ -1112,6 +1711,86 @@ const routes: Routes = [
   {
     path: 'NewCovidItemDME',
     redirectTo: 'stock/new-opening-stock-entry',
+    pathMatch: 'full',
+  },
+  {
+    path: 'FACStockCMHO',
+    redirectTo: 'stock/covid-stock-report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'FACStockCOVIDItemsMC',
+    redirectTo: 'stock/covid-stock-report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Facility_Home',
+    redirectTo: 'masters/store-home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'FACProgress4Cat',
+    redirectTo: 'stock/progress-category',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Facilityequipmentreceipt',
+    redirectTo: 'stock/facility-receipts',
+    pathMatch: 'full',
+  },
+  {
+    path: 'NodleInformationNew',
+    redirectTo: 'stock/nodal-information',
+    pathMatch: 'full',
+  },
+  {
+    path: 'MasFileNo',
+    redirectTo: 'orders/mas-file-no',
+    pathMatch: 'full',
+  },
+  {
+    path: 'ReportPOEligible',
+    redirectTo: 'reports/eligible-report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'PORealloaction',
+    redirectTo: 'orders/po-reallocation',
+    pathMatch: 'full',
+  },
+  {
+    path: 'EMSPOAmmendment',
+    redirectTo: 'orders/po-amendment',
+    pathMatch: 'full',
+  },
+  {
+    path: 'Payment20Per',
+    redirectTo: 'orders/withheld-release',
+    pathMatch: 'full',
+  },
+  {
+    path: 'PaymentLetter',
+    redirectTo: 'payment-letter',
+    pathMatch: 'full',
+  },
+  {
+    path: 'MainEquipmentMappedReport',
+    redirectTo: 'reports/main-equipment-mapped',
+    pathMatch: 'full',
+  },
+  {
+    path: 'ProgressDetail',
+    redirectTo: 'stock/nodal-progress',
+    pathMatch: 'full',
+  },
+  {
+    path: 'ProgressDetailDME',
+    redirectTo: 'stock/nodal-progress?dme=true',
+    pathMatch: 'full',
+  },
+  {
+    path: 'po_supextapproval',
+    redirectTo: 'ExtensionHODetail?onlyExtensionRequests=true',
     pathMatch: 'full',
   },
   {
@@ -1337,19 +2016,25 @@ const routes: Routes = [
     path: 'InvoiceDetail',
     component: InvoiceDetailComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUGMF'] },
+    data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AUPO', 'AU'] },
   },
   {
     path: 'TDSdataReport',
     component: TDSdataReportComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUGMF'] },
+    data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AUPO', 'AU'] },
   },
   {
     path: 'PaymentsCPReport20per',
     component: PaymentsCPReport20perComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUGMF'] },
+    data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AUPO', 'AU'] },
+  },
+  {
+    path: 'reports/payments-cpreport20per',
+    component: PaymentsCPReport20perComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AUPO', 'AU'] },
   },
   {
     path: 'FileMRCDashboardFINFile',
@@ -1362,6 +2047,24 @@ const routes: Routes = [
     component: PerformanceCertificateComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'performance/emis-perf20-rdlc',
+    component: EmisPerf20RdlcComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'performance/payment20-cheque-prep',
+    component: Payment20ChequePrepComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'performance/sanction-notesheet',
+    component: SanctionNotesheetComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
 //#endregion
 
@@ -1403,10 +2106,32 @@ const routes: Routes = [
     data: { allowedRoles: ['TPO'] },
   },
   {
-    path: 'StoreHome',
-    component: StoreHomeComponent,
+    path: 'PerformanceCertificate',
+    component: PerformanceCertificateComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['DME', 'FU'] },
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'performance/performace20-consignee',
+    component: Performace20ConsigneeComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'Performace20Consignee',
+    redirectTo: 'performance/performace20-consignee',
+    pathMatch: 'full',
+  },
+  {
+    path: 'performance/performance-certificate-fin',
+    component: PerformanceCertificateFinComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+  },
+  {
+    path: 'PerformanceCertificateFIN',
+    redirectTo: 'performance/performance-certificate-fin',
+    pathMatch: 'full',
   },
 //#endregion
 
@@ -1431,7 +2156,118 @@ const routes: Routes = [
   },
   //#endregion
 
-  { path: '**', redirectTo: 'login' },
+  //#region File Movement — EMD File Approval (5 variants)
+  {
+    path: 'EMDFileApprovalBME',
+    component: EmdFileApprovalComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['BME','AD'], variant: 'bme' },
+  },
+  {
+    path: 'EMDFileApprovalBankletter',
+    component: EmdFileApprovalComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AD'], variant: 'bankletter' },
+  },
+  {
+    path: 'EMDFileApprovalGMF',
+    component: EmdFileApprovalComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AD'], variant: 'gmf' },
+  },
+  {
+    path: 'EMDFileApprovalGMFsanction',
+    component: EmdFileApprovalComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AD'], variant: 'gmfsanction' },
+  },
+  {
+    path: 'EMDFileApprovalGMT',
+    component: EmdFileApprovalComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUPO','AD'], variant: 'gmt' },
+  },
+  //#endregion
+  //#region File Movement — Others
+  {
+    path: 'LogoVerifiedHO',
+    component: LogoVerifiedHoComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AU','AD'] },
+  },
+  {
+    path: 'SiteNotReadyDocUpload',
+    component: SiteNotReadyUploadComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AU','AD'] },
+  },
+  {
+    path: 'InvoicesBySO',
+    component: InvoicesBySoComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AU','AD'] },
+  },
+  {
+    path: 'PoReportNew',
+    component: PoReportNewComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF','AU','AD'] },
+  },
+  //#region File Movement — Remaining 2 pages
+  {
+    path: 'PODetailsRDLC',
+    component: PoDetailsRdlcComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','BME','AD'] },
+  },
+  {
+    path: 'PendingInstallDrillDown',
+    component: PendingInstallDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','BME','AD'] },
+  },
+  //#endregion
+
+  //#region Reports — Indent/PO/Tender Status (5 pages)
+  {
+    path: 'reports/indent-po-tender-status',
+    component: IndentPoTenderStatusComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
+  },
+  {
+    path: 'reports/indent-po-tender-status-summary',
+    component: IndentPoTenderStatusSummaryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
+  },
+  {
+    path: 'reports/indent-po-tender-status-drilldown',
+    component: IndentPoTenderStatusDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
+  },
+  {
+    path: 'reports/indent-po-tender-summary',
+    component: IndentPoTenderSummaryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
+  },
+  {
+    path: 'reports/indent-po-tender-summary-drilldown',
+    component: IndentPoTenderSummaryDrilldownComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
+  },
+  // Legacy flat path redirects
+  { path: 'IndentPoTenderStatus', redirectTo: 'reports/indent-po-tender-status', pathMatch: 'full' },
+  { path: 'IndentPoTenderStatusSummary', redirectTo: 'reports/indent-po-tender-status-summary', pathMatch: 'full' },
+  { path: 'IndentPOtenderstatusSummaryDrlDwnItems', redirectTo: 'reports/indent-po-tender-status-drilldown', pathMatch: 'full' },
+  { path: 'IndentPOtenderSummary', redirectTo: 'reports/indent-po-tender-summary', pathMatch: 'full' },
+  { path: 'IndentPOtenderSummaryDrlDwnItems', redirectTo: 'reports/indent-po-tender-summary-drilldown', pathMatch: 'full' },
+  //#endregion
+
+  { path: '**', redirectTo: 'home' },
 ];
 
 @NgModule({

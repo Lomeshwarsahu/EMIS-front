@@ -1,0 +1,170 @@
+<div class="dme-stock-page">
+  <div class="note-bar">
+    Purchase Order Reallocation After Approval — select rows that are yet to be received,
+    choose a new consignee location and upload the approval notesheet/letter in PDF format.
+  </div>
+
+  <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="8" />
+
+  <div class="datagrid" *ngIf="!loading && header">
+    <div class="po-summary">
+      <div class="po-summary__item">
+        <span class="po-summary__label">PO No</span>
+        <span class="po-summary__value">{{ header.PoNo || '—' }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">PO Date</span>
+        <span class="po-summary__value">{{ header.PoDate || '—' }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">Supplier</span>
+        <span class="po-summary__value">{{ header.SupplierName || '—' }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">Item</span>
+        <span class="po-summary__value">{{ header.ItemName }} <span class="sub-code">{{ header.ItemCode }}</span></span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">Total PO Qty</span>
+        <span class="po-summary__value">{{ header.TotalPoQty }}</span>
+      </div>
+      <div class="po-summary__item">
+        <span class="po-summary__label">Directorate</span>
+        <span class="po-summary__value">{{ header.DirectorateName || '—' }}</span>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="stock-grid">
+        <thead>
+          <tr>
+            <th class="text-center">SL. No</th>
+            <th class="text-center">
+              <input
+                type="checkbox"
+                aria-label="Select all reallocatable rows"
+                [checked]="allRowsChecked()"
+                (change)="toggleAll()" />
+            </th>
+            <th>Consignee in PO</th>
+            <th class="text-center">PO QTY For Consignee</th>
+            <th>Dispatch Consignee by Supplier</th>
+            <th>Receipt Consignee</th>
+            <th>District</th>
+            <th>Consignee</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let row of rows; index as i"
+            [class.alt-row]="i % 2 === 1"
+            [class.row-blocked]="!row.CanReallocate">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td class="text-center">
+              <input type="checkbox" aria-label="Select row" [disabled]="!row.CanReallocate" [(ngModel)]="row.checked" />
+            </td>
+            <td>{{ row.LocationName || '—' }}</td>
+            <td class="text-center">{{ row.Quantity }}</td>
+            <td>{{ row.DLocation || '—' }}</td>
+            <td>{{ row.RLocation || '—' }}</td>
+            <td>
+              <select
+                aria-label="District"
+                [(ngModel)]="row.selectedDistrict"
+                name="district-{{ row.PoItemId }}"
+                (ngModelChange)="onDistrictChange(row)"
+                [disabled]="!row.CanReallocate">
+                <option [ngValue]="0">Select</option>
+                <option *ngFor="let d of districts" [ngValue]="d.DistrictId">{{ d.DistrictName }}</option>
+              </select>
+            </td>
+            <td>
+              <select
+                aria-label="Consignee"
+                [(ngModel)]="row.selectedLocation"
+                name="location-{{ row.PoItemId }}"
+                [disabled]="!row.CanReallocate">
+                <option [ngValue]="0">Select</option>
+                <option
+                  *ngFor="let loc of locationsByDistrict.get(row.ConsigneeId) || []"
+                  [ngValue]="loc.LocationId">
+                  {{ loc.LocationName }}
+                </option>
+              </select>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="8" class="empty-row">
+              <div class="empty-state">
+                <p>No consignee rows found for this PO.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="realloc-form">
+      <div class="realloc-form__row">
+        <label for="remark">Remarks</label>
+        <input
+          id="remark"
+          type="text"
+          [(ngModel)]="remark"
+          name="remark"
+          maxlength="50"
+          placeholder="Enter remarks (max 50)" />
+      </div>
+      <div class="realloc-form__row">
+        <label for="fileUpload1">Upload Approval Copy</label>
+        <input id="fileUpload1" type="file" accept=".pdf" (change)="onFileSelected($event)" />
+      </div>
+      <div class="realloc-form__row">
+        <button
+          type="button"
+          class="btn btn--primary"
+          [disabled]="saving || !canSave()"
+          (click)="save()">
+          {{ saving ? 'Saving...' : 'Reallocate' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="history-section" *ngIf="history.length">
+      <h3>Reallocation History</h3>
+      <div class="table-wrap">
+        <table class="stock-grid">
+          <thead>
+            <tr>
+              <th class="text-center">S.no</th>
+              <th>PO No</th>
+              <th>Old Location</th>
+              <th>Updated Location</th>
+              <th>Remarks</th>
+              <th class="text-center">Entry Date</th>
+              <th class="text-center">Download Approval</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of history; index as i" [class.alt-row]="i % 2 === 1">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>{{ row.PoNo || '—' }}</td>
+              <td>{{ row.OldLocation || '—' }}</td>
+              <td>{{ row.NewLocation || '—' }}</td>
+              <td>{{ row.Remark || '—' }}</td>
+              <td class="text-center">{{ row.EntryDate || '—' }}</td>
+              <td class="text-center">
+                <a
+                  href="{{ downloadUrl }}{{ row.ExtensionId }}"
+                  target="_blank"
+                  rel="noopener">
+                  Download File
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

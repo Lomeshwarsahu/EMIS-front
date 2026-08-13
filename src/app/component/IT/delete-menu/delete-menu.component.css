@@ -89,6 +89,11 @@
   transition: border-color 0.15s ease-in-out;
 }
 
+.filters--compact select option {
+  background: #ffffff;
+  color: #0f172a;
+}
+
 .filters--compact select:focus {
   border-color: var(--page-accent);
 }
@@ -97,6 +102,11 @@
   background: #0c0e12;
   border-color: #262b36;
   color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .filters--compact select option {
+  background: #1e293b;
+  color: #f8fafc;
 }
 
 .show-btn {

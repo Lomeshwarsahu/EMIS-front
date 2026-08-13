@@ -19,7 +19,7 @@
         [(ngModel)]="selectedSupplierId"
         (change)="loadGrid()">
         <option [ngValue]="0">-All Suppliers-</option>
-        <option *ngFor="let s of suppliers" [value]="s.supplierId">
+        <option *ngFor="let s of suppliers" [ngValue]="s.supplierId">
           {{ s.supplierName }}
         </option>
       </select>

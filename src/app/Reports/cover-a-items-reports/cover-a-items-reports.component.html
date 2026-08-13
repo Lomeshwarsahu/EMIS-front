@@ -1,0 +1,78 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Cover A Items Report</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <select [(ngModel)]="selectedYear" name="selectedYear" [class.is-placeholder]="!selectedYear">
+        <option [ngValue]="undefined">Select Year</option>
+        <option *ngFor="let y of Yearlist" [ngValue]="y.financial_year_id">{{ y.year }}</option>
+      </select>
+
+      <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export Excel</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="9" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tender_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No</th>
+          <td mat-cell *matCellDef="let element">{{ element.tender_no || element.TenderNo || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_code">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+          <td mat-cell *matCellDef="let element">{{ element.item_code || element.ItemCode || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.item_name || element.ItemName || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Quantity</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.quantity ?? element.Qty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="rate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Rate</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.rate ?? element.BasicRate ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Amount</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.amount ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplier_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.supplier_name || element.SupplierName || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="scheme_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Scheme</th>
+          <td mat-cell *matCellDef="let element">{{ element.scheme_name || element.SchemeName || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && dispatchData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Payment Report</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <div class="filter-section">
+        <span class="filter-label">PO Type</span>
+        <mat-radio-group [(ngModel)]="poType">
+          <mat-radio-button value="All">All</mat-radio-button>
+          <mat-radio-button value="NP">Normal</mat-radio-button>
+          <mat-radio-button value="CP">Covid</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <button type="button" class="show-btn" (click)="loadData()">Show</button>
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!paymentData.length">Export Excel</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO No</th>
+          <td mat-cell *matCellDef="let element">{{ element.po_no || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.po_date || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplier">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.supplier || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="gross_amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Gross Amount</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.gross_amount ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="total_deduction">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Total Deduction</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.total_deduction ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="total_addition">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Total Addition</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.total_addition ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="cheque_amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Cheque Amount</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.cheque_amount ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="cheque_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cheque Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.cheque_date || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="cheque_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cheque No</th>
+          <td mat-cell *matCellDef="let element">{{ element.cheque_no || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && paymentData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

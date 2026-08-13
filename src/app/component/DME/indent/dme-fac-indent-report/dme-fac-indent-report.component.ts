@@ -64,7 +64,7 @@ export class DmeFacIndentReportComponent implements OnInit {
     }
 
     this.route.queryParamMap.subscribe((params) => {
-      const indentId = Number(params.get('indentId') || params.get('ICID') || 0);
+      const indentId = Number(params.get('indentId') || params.get('ICID') || params.get('IndentID') || 0);
       if (!indentId) {
         this.loadError = 'Indent id is required.';
         return;

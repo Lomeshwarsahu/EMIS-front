@@ -74,14 +74,24 @@
   border: 1px solid #cbd5e1;
   border-radius: 6px;
   background: #fff;
-  color: inherit;
+  color: #334155;
   outline: none;
+}
+
+.filters--compact select option {
+  background: #ffffff;
+  color: #0f172a;
 }
 
 :host-context(html[data-theme='dark']) .filters--compact select {
   background: #0c0e12;
   border-color: #262b36;
   color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .filters--compact select option {
+  background: #1e293b;
+  color: #f8fafc;
 }
 
 .table-wrap {

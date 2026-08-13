@@ -1,0 +1,128 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Tender Wise PO Details</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <ng-select
+        [(ngModel)]="selectedTenderId"
+        name="selectedTenderId"
+        placeholder="Select Tender"
+        [clearable]="true">
+        <ng-option *ngFor="let t of tenderList" [value]="t.tenderId">{{ t.tenderNo }}</ng-option>
+      </ng-select>
+
+      <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export Excel</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="18" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="directorate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Directorate</th>
+          <td mat-cell *matCellDef="let element">{{ element.directorate || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplierName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.supplierName || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tenderNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No</th>
+          <td mat-cell *matCellDef="let element">{{ element.tenderNo || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tenderDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.tenderDate || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="poNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO No</th>
+          <td mat-cell *matCellDef="let element">{{ element.poNo || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="poDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.poDate || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="contractDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.contractDate || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="contractEndDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract End Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.contractEndDate || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="poQty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">PO Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.poQty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplyQty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Supply Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.supplyQty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="receiptQty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Receipt Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.receiptQty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="installQty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Install Qty</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.installQty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="basicRate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Basic Rate</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.basicRate ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="percentage">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Percentage</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.percentage ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="unitPrice">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Unit Price</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.unitPrice ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="itemCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+          <td mat-cell *matCellDef="let element">{{ element.itemCode || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="itemName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.itemName || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">
+            No records found.
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && dispatchData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

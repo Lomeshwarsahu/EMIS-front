@@ -1,0 +1,99 @@
+<div class="report-page">
+  <div class="report-header">
+    <h2>Eligible Consignee for Purchase-Order</h2>
+  </div>
+
+  <div class="filters-row">
+    <select
+      aria-label="Select Financial Year"
+      [(ngModel)]="selectedYear"
+      name="selectedYear"
+      [class.is-placeholder]="selectedYear === 0">
+      <option *ngFor="let f of financialYears" [ngValue]="f.Key">{{ f.Value }}</option>
+    </select>
+    <select
+      aria-label="Select Directorate"
+      [(ngModel)]="selectedDirectorate"
+      name="selectedDirectorate"
+      [class.is-placeholder]="selectedDirectorate === 0">
+      <option *ngFor="let d of directorates" [ngValue]="d.Key">{{ d.Value }}</option>
+    </select>
+    <select
+      aria-label="Select Item"
+      [(ngModel)]="selectedItem"
+      name="selectedItem"
+      [class.is-placeholder]="selectedItem === '0'">
+      <option *ngFor="let it of items" [ngValue]="it.ItemCode">{{ it.ItemName }}</option>
+    </select>
+    <button type="button" class="btn btn--small btn--primary" (click)="showDetail()">
+      Show Details
+    </button>
+    <button type="button" class="btn btn--small" (click)="showSummary()">
+      Show Summary (Directorate wise)
+    </button>
+  </div>
+
+  <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="8" />
+
+  <div class="table-wrap" *ngIf="!loading && view === 'summary'">
+    <table class="report-grid">
+      <thead>
+        <tr>
+          <th class="text-center">S.No</th>
+          <th>Directorate</th>
+          <th class="text-center">No of Consignees</th>
+          <th class="text-center">No of Items</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of summaryRows; index as i" [class.alt-row]="i % 2 === 1">
+          <td class="text-center">{{ i + 1 }}</td>
+          <td>{{ row.FacilityAutCode || '—' }}</td>
+          <td class="text-center">{{ row.NoofConsinee }}</td>
+          <td class="text-center">{{ row.NoofItems }}</td>
+        </tr>
+        <tr *ngIf="!summaryRows.length">
+          <td colspan="4" class="empty-row">No summary records found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading && view === 'detail'">
+    <table class="report-grid">
+      <thead>
+        <tr>
+          <th class="text-center">S.No</th>
+          <th>Consignee</th>
+          <th>Indent No.</th>
+          <th>Item Code</th>
+          <th>Item Name</th>
+          <th>Description</th>
+          <th class="text-center">Indent Qty</th>
+          <th class="text-center">PO Qty</th>
+          <th class="text-center">Balance PO</th>
+          <th class="text-center">Rate</th>
+          <th>Tender No</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of detailRows; index as i" [class.alt-row]="i % 2 === 1">
+          <td class="text-center">{{ i + 1 }}</td>
+          <td>{{ row.UserName || '—' }}</td>
+          <td>{{ row.IndentConNo || '—' }}</td>
+          <td>{{ row.ItemCode || '—' }}</td>
+          <td>{{ row.ItemName || '—' }}</td>
+          <td>{{ row.Description || '—' }}</td>
+          <td class="text-center">{{ row.IndentQty }}</td>
+          <td class="text-center">{{ row.PoQty }}</td>
+          <td class="text-center">{{ row.BalancePo }}</td>
+          <td class="text-center">{{ row.BasicRate }}</td>
+          <td>{{ row.TenderNo || '—' }}</td>
+        </tr>
+        <tr *ngIf="!detailRows.length">
+          <td colspan="11" class="empty-row">No eligible consignees found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

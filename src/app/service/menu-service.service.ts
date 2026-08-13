@@ -293,6 +293,9 @@ export class MenuServiceService {
               route: '/reports/po-wise-payment',
             },
             { label: 'Tenders Status', route: '/reports/tenders-status' },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
             {
               label: 'PO Receipts summary',
               route: '/reports/po-receipts-summary',
@@ -401,6 +404,9 @@ export class MenuServiceService {
               route: '/reports/po-wise-payment',
             },
             { label: 'Tenders Status', route: '/reports/tenders-status' },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
             {
               label: 'PO Receipts summary',
               route: '/reports/po-receipts-summary',
@@ -506,6 +512,9 @@ export class MenuServiceService {
               route: '/reports/po-wise-payment',
             },
             { label: 'Tenders Status', route: '/reports/tenders-status' },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
             {
               label: 'PO Receipts summary',
               route: '/reports/po-receipts-summary',
@@ -549,8 +558,8 @@ export class MenuServiceService {
           label: 'EMD & SD Release',
           route: '',
           submenu: [
-            { label: 'EMD Refund Request File Movement', route: '/EMDRefundTenderwise' },
-            { label: 'SD Release Finance', route: '/SDReleaseFInance' },
+            { label: 'EMD Refund Request File Movement', route: '/emd-refund/tenderwise' },
+            { label: 'SD Release Finance', route: '/emd-refund/sd-release-finance' },
           ],
         },
         {
@@ -559,10 +568,13 @@ export class MenuServiceService {
           submenu: [
             { label: 'Tenders Status', route: 'reports/tenders-status' },
             { label: 'Indent/RC/PO Tender Status', route: '/IndentRCPOTenderStatus' },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
             { label: 'Unpaid PO Details', route: '/UnpaidPOS' },
         
             { label: 'District wise PO Details', route: '/DistrictWisePODetail' },
-           
+            
             { label: 'PO Report Year Wise', route: 'POReportGMF' },
           ],
         },
@@ -625,9 +637,20 @@ export class MenuServiceService {
         {
           label: 'File Movements',
           route: '',
-          submenu: [{ label: 'File Movements', route: '/FileMRCDashboardFINFile' }],
+          submenu: [
+            { label: 'File MRC Dashboard', route: '/FileMRCDashboardFINFile' },
+            { label: 'EMD File Approval (Bank Letter)', route: '/EMDFileApprovalBankletter' },
+            { label: 'EMD File Approval (GMF)', route: '/EMDFileApprovalGMF' },
+            { label: 'EMD File Approval (GMF Sanction)', route: '/EMDFileApprovalGMFsanction' },
+            { label: 'Logo Verified HO', route: '/LogoVerifiedHO' },
+            { label: 'Site Not Ready Upload', route: '/SiteNotReadyDocUpload' },
+            { label: 'Invoices By SO', route: '/InvoicesBySO' },
+            { label: 'PO Report', route: '/PoReportNew' },
+            { label: 'Installation Details', route: '/InstallationDetails' },
+            { label: 'PO Details Report', route: '/PODetailsRDLC' },
+            { label: 'Pending Install DrillDown', route: '/PendingInstallDrillDown' },
+          ],
         },
-    
         {
           label: 'Payments',
           route: '',
@@ -681,6 +704,10 @@ export class MenuServiceService {
               label: 'Specification Upload',
               route: '/Itemspecification',
             },
+            {
+              label: 'Generation of File No/Nasti No',
+              route: '/orders/mas-file-no',
+            },
           ],
         },
         {
@@ -688,6 +715,22 @@ export class MenuServiceService {
           route: '',
           submenu: [
             { label: 'COVID Stock (MC)', route: '/stock/covid-stock-report' },
+            {
+              label: 'Progress Report (Category)',
+              route: '/stock/progress-category',
+            },
+            {
+              label: 'Facility Equipment Receipt (PO Receipt Desk)',
+              route: '/stock/facility-receipts',
+            },
+            {
+              label: 'Nodal Officer Information',
+              route: '/stock/nodal-information',
+            },
+            {
+              label: 'Progress Entry (Nodal)',
+              route: '/stock/nodal-progress',
+            },
             {
               label: 'Opening Stock Reports',
               route: '/stock/opening-stock-entry',
@@ -705,6 +748,18 @@ export class MenuServiceService {
             {
               label: 'Purchase Order Receipts',
               route: '/orders/purchase-order-receipts',
+            },
+            {
+              label: 'PO Reallocation After Approval',
+              route: '/orders/po-reallocation',
+            },
+            {
+              label: 'PO Amendment',
+              route: '/orders/po-amendment',
+            },
+            {
+              label: 'Release Withheld Cheque Preparation',
+              route: '/orders/withheld-release',
             },
           ],
         },
@@ -755,6 +810,14 @@ export class MenuServiceService {
             {
               label: 'Specification Upload',
               route: '/reports/eel-specification',
+            },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
+            { label: 'Eligible Consignee Report', route: '/reports/eligible-report' },
+            {
+              label: 'Main Equipment Mapped Report',
+              route: '/reports/main-equipment-mapped',
             },
           ],
         },
@@ -810,12 +873,30 @@ export class MenuServiceService {
               label: 'Indent PO Summary Dirwise',
               route: '/IndentPOSummaryDirwise',
             },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
           ],
         },
         {
           label: 'File Movements',
           route: '',
-          submenu: [{ label: 'File MRC Dashboard', route: '/FileMRCDashbord' }],
+          submenu: [
+            { label: 'File MRC Dashboard (DM)', route: '/FileMRCDashbord' },
+            { label: 'File MRC Dashboard (FIN)', route: '/FileMRCDashboardFIN' },
+            { label: 'File MRC Dashboard (GM)', route: '/FileMRCDashboardGM' },
+            { label: 'File MRC Dashboard (IGM)', route: '/FileMRCDashboardIGM' },
+            { label: 'File MRC Dashboard (FIN File)', route: '/FileMRCDashboardFINFile' },
+            { label: 'File MRC Dashboard (FIN File V1)', route: '/FileMRCDashboardFINFile_Ver1' },
+            { label: 'File MRC Dashboard (GM New)', route: '/FileMRCDashboardGMNew' },
+            { label: 'File MRC Dashboard (IGM Mov)', route: '/FileMRCDashboardIGMMov' },
+            { label: 'File MRC Dashboard (IGM Mov Audit)', route: '/FileMRCDashboardIGMMovAudit' },
+            { label: 'File MRC Dashboard (IGM Mov BME)', route: '/FileMRCDashboardIGMMovBME' },
+            { label: 'PO Report New', route: '/PoReportNew' },
+            { label: 'Installation Details', route: '/InstallationDetails' },
+            { label: 'PO Details Report', route: '/PODetailsRDLC' },
+            { label: 'Pending Install DrillDown', route: '/PendingInstallDrillDown' },
+          ],
         },
         // { label: '  Generation FileNo', route: '/GenerationFileNonasti' },
 
@@ -974,6 +1055,9 @@ export class MenuServiceService {
               route: '/reports/po-wise-payment',
             },
             { label: 'Tenders Status', route: '/reports/tenders-status' },
+            { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
+            { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
+            { label: 'Indent/PO/Tender Summary', route: '/reports/indent-po-tender-summary' },
             {
               label: 'PO Receipts summary',
               route: '/reports/po-receipts-summary',
@@ -1421,7 +1505,7 @@ export class MenuServiceService {
         { label: 'Reports', route: '', submenu: [
             {
               label: 'Payment Report',
-              route: '/reports/payment-report',
+              route: '/reports/supplier-payment-report',
             },
             {
               label: 'Pending Receipt / Installation',

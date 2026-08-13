@@ -1,0 +1,95 @@
+<div class="dme-stock-page">
+  <div class="note-bar">
+    Nodal Officer Information for Maintenance of COVID19 Related Equipment
+  </div>
+
+  <div class="datagrid">
+    <div class="table-toolbar toolbar--row">
+      <button type="button" class="btn btn--small" (click)="addRow()" [disabled]="saving">
+        + Add Entry
+      </button>
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="8" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="stock-grid">
+        <thead>
+          <tr>
+            <th class="text-center">S.No</th>
+            <th>Facility Name</th>
+            <th class="text-center">District</th>
+            <th>Nodal Officer Name</th>
+            <th>Designation</th>
+            <th>Email-ID</th>
+            <th>Mobile No</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>
+              {{ row.LocationName || '—' }}
+              <span class="sub-code" *ngIf="row.FacilityTypeName">{{ row.FacilityTypeName }}</span>
+            </td>
+            <td class="text-center">{{ row.DistrictName || '—' }}</td>
+            <td>
+              <ng-container *ngIf="row.isNew">
+                <input type="text" class="form-input" [(ngModel)]="row.Name" placeholder="Name" />
+              </ng-container>
+              <ng-container *ngIf="!row.isNew">{{ row.Name || '—' }}</ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="row.isNew">
+                <input
+                  type="text"
+                  class="form-input"
+                  [(ngModel)]="row.Designation"
+                  placeholder="Designation" />
+              </ng-container>
+              <ng-container *ngIf="!row.isNew">{{ row.Designation || '—' }}</ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="row.isNew">
+                <input type="email" class="form-input" [(ngModel)]="row.EmailId" placeholder="Email" />
+              </ng-container>
+              <ng-container *ngIf="!row.isNew">{{ row.EmailId || '—' }}</ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="row.isNew">
+                <input type="text" class="form-input" [(ngModel)]="row.MobileNo" placeholder="Mobile" />
+              </ng-container>
+              <ng-container *ngIf="!row.isNew">{{ row.MobileNo || '—' }}</ng-container>
+            </td>
+            <td class="text-center">
+              <button
+                *ngIf="row.isNew"
+                type="button"
+                class="btn btn--small btn--primary"
+                (click)="saveNew(row)"
+                [disabled]="saving">
+                Save
+              </button>
+              <button
+                *ngIf="!row.isNew"
+                type="button"
+                class="btn btn--small btn--danger"
+                (click)="deleteRow(row)"
+                [disabled]="saving">
+                Delete
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length && !loading">
+            <td colspan="8" class="empty-row">
+              <div class="empty-state">
+                <p>No nodal officer information found.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
