@@ -737,8 +737,28 @@
                           [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePassword()">
                         </i>
                       </div>
-                      <button type="button" class="btn btn-primary text-white w-100 supplier-action-btn"
-                        [disabled]="!supplierUserId || !pwd.trim() || supplierAuthBusy" (click)="handleSupplierLogin()">
+                       <div class="mb-3">
+                      <label for="captcha" class="form-label">CAPTCHA</label>
+                      <div class="d-flex align-items-center">
+                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
+                          }}</span>
+                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
+                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                        </button>
+                      </div>
+                    
+                    <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
+                      placeholder="Enter CAPTCHA" required>
+                    
+                    <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched)" class="text-danger">
+                      OTP/CAPTCHA is Required.
+                    </div>
+                    </div>
+                      <button
+                        type="button"
+                        class="btn btn-primary text-white w-100 supplier-action-btn"
+                        [disabled]="!supplierUserId || !pwd.trim() || supplierAuthBusy"
+                        (click)="handleSupplierLogin()">
                         {{ supplierAuthBusy ? 'Please wait...' : 'Login' }}
                       </button>
                     </ng-container>
