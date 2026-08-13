@@ -174,7 +174,28 @@
                         OTP is required.
                       </div>
                     </div>
-
+                     <div class="mb-3">
+                      <label for="captcha" class="form-label">CAPTCHA</label>
+                      <div class="d-flex align-items-center">
+                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
+                          }}</span>
+                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
+                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                        </button>
+                      </div>
+                    <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
+                      placeholder="Enter CAPTCHA" required>
+                    
+                    <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched)" class="text-danger">
+                      OTP/CAPTCHA is Required.
+                    </div>
+                      <!-- <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
+                        placeholder="Enter CAPTCHA" required>
+                    
+                      <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched)" class="text-danger">
+                        OTP/CAPTCHA is Required.
+                      </div> -->
+                    </div>
                     <button type="submit" class="btn btn-successs btn-primary text-white w-100 mb-3"
                       [disabled]="adminLoginForm.invalid">Login</button>
                   </form>
@@ -221,6 +242,23 @@
                       <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
                         Password is required.
                       </div>
+                    </div>
+                        <div class="mb-3">
+                      <label for="captcha" class="form-label">CAPTCHA</label>
+                      <div class="d-flex align-items-center">
+                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
+                          }}</span>
+                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
+                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                        </button>
+                      </div>
+                    
+                    <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
+                      placeholder="Enter CAPTCHA" required>
+                    
+                    <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched)" class="text-danger">
+                      OTP/CAPTCHA is Required.
+                    </div>
                     </div>
 
                     <button type="submit" class="btn btn-successs btn-primary text-white w-100"
@@ -306,6 +344,23 @@
                           Password is required.
                         </div>
                       </div>
+                    <div class="mb-3">
+                      <label for="captcha" class="form-label">CAPTCHA</label>
+                      <div class="d-flex align-items-center">
+                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
+                          }}</span>
+                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
+                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                        </button>
+                      </div>
+                    
+                      <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
+                        placeholder="Enter CAPTCHA" required>
+                    
+                      <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched)" class="text-danger">
+                        OTP/CAPTCHA is Required.
+                      </div>
+                    </div>
 
                       <button type="submit" class="btn btn-successs btn-primary tex-white w-100"
                         [disabled]="cgmsclForm.invalid">Login</button>
@@ -344,7 +399,23 @@
                           Password is required.
                         </div>
                       </div>
-
+                      <div class="mb-3">
+                      <label for="captcha" class="form-label">CAPTCHA</label>
+                      <div class="d-flex align-items-center">
+                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
+                          }}</span>
+                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
+                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                        </button>
+                      </div>
+                    
+                    <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
+                      placeholder="Enter CAPTCHA" required>
+                    
+                    <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched)" class="text-danger">
+                      OTP/CAPTCHA is Required.
+                    </div>
+                    </div>
                       <button type="submit" class="btn btn-successs btn-primary tex-white w-100"
                         [disabled]="cgmsclForm.invalid">Login</button>
                     </ng-container>
@@ -381,7 +452,24 @@
                           Password is required.
                         </div>
                       </div>
-
+                       <div class="mb-3">
+                      <label for="captcha" class="form-label">CAPTCHA</label>
+                      <div class="d-flex align-items-center">
+                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
+                          }}</span>
+                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
+                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                        </button>
+                      </div>
+                    
+                      <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
+                        placeholder="Enter CAPTCHA" required>
+                    
+                      <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched)" class="text-danger">
+                        OTP/CAPTCHA is Required.
+                      </div>
+                    </div>
+                      
                       <button type="submit" class="btn btn-successs btn-primary tex-white w-100"
                         [disabled]="cgmsclForm.invalid">Login</button>
                     </ng-container>
@@ -425,7 +513,23 @@
                         Password is required.
                       </div>
                     </div>
-
+                     <div class="mb-3">
+                      <label for="captcha" class="form-label">CAPTCHA</label>
+                      <div class="d-flex align-items-center">
+                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
+                          }}</span>
+                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
+                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                        </button>
+                      </div>
+                    
+                            <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
+                      placeholder="Enter CAPTCHA" required>
+                    
+                    <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched)" class="text-danger">
+                      OTP/CAPTCHA is Required.
+                    </div>
+                    </div>
                     <button type="submit" class="btn btn-successs btn-primary text-white w-100 mb-3"
                       [disabled]="dmeLoginForm.invalid">Login</button>
                   </form>
@@ -488,7 +592,23 @@
                           Password is required.
                         </div>
                       </div>
-
+                        <div class="mb-3">
+                      <label for="captcha" class="form-label">CAPTCHA</label>
+                      <div class="d-flex align-items-center">
+                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
+                          }}</span>
+                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
+                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                        </button>
+                      </div>
+                    
+                      <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
+                        placeholder="Enter CAPTCHA" required>
+                    
+                      <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched)" class="text-danger">
+                        OTP/CAPTCHA is Required.
+                      </div>
+                    </div>
                       <button type="submit" class="btn btn-successs btn-primary tex-white w-100"
                         [disabled]="cgmsclForm.invalid">Login</button>
                     </ng-container>
@@ -541,7 +661,23 @@
                           Password is required.
                         </div>
                       </div>
-
+                       <div class="mb-3">
+                      <label for="captcha" class="form-label">CAPTCHA</label>
+                      <div class="d-flex align-items-center">
+                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
+                          }}</span>
+                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
+                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                        </button>
+                      </div>
+                    
+                      <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
+                        placeholder="Enter CAPTCHA" required>
+                    
+                      <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched)" class="text-danger">
+                        OTP/CAPTCHA is Required.
+                      </div>
+                    </div>
                       <button type="submit" class="btn btn-successs btn-primary tex-white w-100"
                         [disabled]="cgmsclForm.invalid">Login</button>
                     </ng-container>
@@ -624,6 +760,23 @@
                           (click)="togglePassword()">
                         </i>
                       </div>
+                       <div class="mb-3">
+                      <label for="captcha" class="form-label">CAPTCHA</label>
+                      <div class="d-flex align-items-center">
+                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
+                          }}</span>
+                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
+                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                        </button>
+                      </div>
+                    
+                    <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
+                      placeholder="Enter CAPTCHA" required>
+                    
+                    <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched)" class="text-danger">
+                      OTP/CAPTCHA is Required.
+                    </div>
+                    </div>
                       <button
                         type="button"
                         class="btn btn-primary text-white w-100 supplier-action-btn"
@@ -632,8 +785,25 @@
                         {{ supplierAuthBusy ? 'Please wait...' : 'Login' }}
                       </button>
                     </ng-container>
-
+                  
                     <ng-container *ngIf="supplierAuthMode !== 'login'">
+                       <div class="mb-3">
+                      <label for="captcha" class="form-label">CAPTCHA</label>
+                      <div class="d-flex align-items-center">
+                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
+                          }}</span>
+                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
+                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                        </button>
+                      </div>
+                    
+                    <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
+                      placeholder="Enter CAPTCHA" required>
+                    
+                    <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched)" class="text-danger">
+                      OTP/CAPTCHA is Required.
+                    </div>
+                    </div>
                       <button
                         type="button"
                         class="btn btn-primary text-white w-100 supplier-action-btn"
@@ -646,7 +816,7 @@
                             : 'Action: Forgot & Reset User' }}
                       </button>
                     </ng-container>
-
+                    
                     <div class="supplier-otp-panel" *ngIf="supplierShowOtp && supplierProfile">
                       <div class="supplier-otp-title">OTP Verification</div>
                       <div class="supplier-otp-meta">
@@ -714,8 +884,9 @@
                           name="supplierRepeatPassword"
                           placeholder="Repeat Password" />
                       </div>
-
+                   
                       <p class="supplier-otp-msg" *ngIf="supplierOtpMessage">{{ supplierOtpMessage }}</p>
+
 
                       <div class="supplier-otp-actions">
                         <button
