@@ -138,6 +138,7 @@ export class SanctionComponent implements OnInit {
 
   fetchPoDetails(poId: number) {
 <<<<<<< HEAD
+<<<<<<< HEAD
     this.api.get(`GMFI/GetPoItemDetails/${poId}`).subscribe({
       next: (data: any) => {
 =======
@@ -158,6 +159,8 @@ export class SanctionComponent implements OnInit {
         if (Array.isArray(data)) { this.poDetails = data[0]; } 
         else { this.poDetails = data; }
 =======
+=======
+>>>>>>> 4e17229 (refactor: streamline API calls in sanction component and update post method in api service)
     this.api.get(`GMFI/GetPoItemDetails/${poId}`).subscribe({
       next: (data: any) => {
         if (Array.isArray(data)) {
@@ -165,7 +168,6 @@ export class SanctionComponent implements OnInit {
         } else {
           this.poDetails = data || null;
         }
->>>>>>> 9fa5357 (refactor: remove unused HttpClient and finalize imports in sanction component)
         this.isLoading = false;
         if (this.poDetails) {
           this.GetSanctionIdIfExist(this.poDetails, poId);
@@ -180,6 +182,7 @@ export class SanctionComponent implements OnInit {
   }
 
   fetchPoDetails1(poId: number) {
+<<<<<<< HEAD
 <<<<<<< HEAD
     this.api.get(`GMFI/GetPoPenaltyDetails/${poId}`).subscribe({
       next: (data: any) => {
@@ -201,6 +204,8 @@ export class SanctionComponent implements OnInit {
         if (Array.isArray(data)) { this.penaltyData = data[0]; } 
         else { this.penaltyData = data; }
 =======
+=======
+>>>>>>> 4e17229 (refactor: streamline API calls in sanction component and update post method in api service)
     this.api.get(`GMFI/GetPoPenaltyDetails/${poId}`).subscribe({
       next: (data: any) => {
         if (Array.isArray(data)) {
@@ -212,7 +217,6 @@ export class SanctionComponent implements OnInit {
       },
       error: (error: any) => {
         console.error('Error fetching PO penalty details:', error);
->>>>>>> 9fa5357 (refactor: remove unused HttpClient and finalize imports in sanction component)
       }
     });
   }

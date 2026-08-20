@@ -124,6 +124,9 @@ const VARIANT_MAP: Record<string, VariantConfig> = {
   styleUrls: ['./file-mrcdashbord.component.css'],
 })
 export class FileMRCDashbordComponent {
+  variant: string = 'dm';
+  config: VariantConfig = VARIANT_MAP['dm'];
+
   poType = 'All';
   paymentType = 'All';
   onlyMyDesk = false;
