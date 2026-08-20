@@ -137,30 +137,6 @@ export class SanctionComponent implements OnInit {
   }
 
   fetchPoDetails(poId: number) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    this.api.get(`GMFI/GetPoItemDetails/${poId}`).subscribe({
-      next: (data: any) => {
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> 636375c (deemand relese)
-    // const apiUrl = `https://localhost:7036/api/GMFI/GetPoItemDetails/${poId}`;
-    // const apiUrl = `http://103.51.8.80/emsapi/api/GMFI/GetPoItemDetails/${poId}`;
-    const apiUrl = `https://cgmsc.gov.in/emsapi/api/GMFI/GetPoItemDetails/${poId}`;
-    this.http.get<any>(apiUrl).subscribe({
-      next: (data:any) => {
-<<<<<<< HEAD
-
-=======
->>>>>>> 636375c (deemand relese)
->>>>>>> 614678a (deemand relese)
-        if (Array.isArray(data)) { this.poDetails = data[0]; } 
-        else { this.poDetails = data; }
-=======
-=======
->>>>>>> 4e17229 (refactor: streamline API calls in sanction component and update post method in api service)
     this.api.get(`GMFI/GetPoItemDetails/${poId}`).subscribe({
       next: (data: any) => {
         if (Array.isArray(data)) {
@@ -182,30 +158,6 @@ export class SanctionComponent implements OnInit {
   }
 
   fetchPoDetails1(poId: number) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    this.api.get(`GMFI/GetPoPenaltyDetails/${poId}`).subscribe({
-      next: (data: any) => {
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> 636375c (deemand relese)
-    // const apiUrl = `https://localhost:7036/api/GMFI/GetPoPenaltyDetails/${poId}`;
-    // const apiUrl = `http://103.51.8.80/emsapi/api/GMFI/GetPoPenaltyDetails/${poId}`;
-    const apiUrl = `https://cgmsc.gov.in/emsapi/api/GMFI/GetPoPenaltyDetails/${poId}`;
-    this.http.get<any>(apiUrl).subscribe({
-      next: (data) => {
-<<<<<<< HEAD
-
-=======
->>>>>>> 636375c (deemand relese)
->>>>>>> 614678a (deemand relese)
-        if (Array.isArray(data)) { this.penaltyData = data[0]; } 
-        else { this.penaltyData = data; }
-=======
-=======
->>>>>>> 4e17229 (refactor: streamline API calls in sanction component and update post method in api service)
     this.api.get(`GMFI/GetPoPenaltyDetails/${poId}`).subscribe({
       next: (data: any) => {
         if (Array.isArray(data)) {
