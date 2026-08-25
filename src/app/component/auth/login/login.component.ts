@@ -1,20 +1,15 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { HardcodedAuthenticationService } from 'src/app/service/authentication/hardcoded-authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { BasicAuthenticationService } from 'src/app/service/authentication/basic-authentication.service';
 import { ApiService } from 'src/app/service/api.service';
-import Swal from 'sweetalert2';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
-import { InsertUserLoginLogmodal } from 'src/app/Model/DashLoginDDL';
 import { CommonModule, Location } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
@@ -22,10 +17,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { RouterModule } from '@angular/router';
 import { persistSupplierUserId } from '../../Suppliers/supplier-user.util';
 import { MenuServiceService } from 'src/app/service/menu-service.service';
-import { json } from 'stream/consumers';
-declare var bootstrap: any;
+
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [
     CommonModule,
     MatIconModule,
@@ -37,11 +32,8 @@ declare var bootstrap: any;
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit, AfterViewInit {
-  onButtonClick(arg0: string) {
-    throw new Error('Method not implemented.');
-  }
-captcha: string = '';
-captchaValue: string = '';
+  captcha: string = '';
+  captchaValue: string = '';
 
   adminDropdownList: any = [];
   cgmsclDropdownList: any = [];
@@ -59,19 +51,44 @@ captchaValue: string = '';
   roleid: any;
   rolename: any;
   firstname: any;
-  
+
   errorMessage = 'Invalid Credential';
   invalidLogin = false;
-approle:any;
+  approle: any;
 
+  selectedStatus: string = '0';
+  selectedStatusDHS: string = '0';
+  selectedStatussup: string = '0';
+  currentTab: string = 'ADMIN';
 
+  supplierUserId: number | null = null;
+  supplierLoginEmail = '';
+  supplierAuthMode: 'login' | 'new' | 'reset' = 'login';
+  supplierAuthOptions: Array<{ user_id: number; user_name: string; e_mail_id: string }> = [];
+  supplierAuthBusy = false;
+  supplierShowOtp = false;
+  supplierOtpSending = false;
+  supplierOtpSubmitting = false;
+  supplierProfile: {
+    supplierId: number;
+    name: string;
+    maskedMobile: string;
+    email: string;
+    userEmail: string;
+  } | null = null;
+  supplierDesiredUserId = '';
+  supplierOtp = '';
+  supplierNewPassword = '';
+  supplierRepeatPassword = '';
+  supplierOtpMessage = '';
+  userdatas: any = [];
+  EMAIL: any = '';
 
   constructor(
     public loginService: BasicAuthenticationService,
     public http: HttpClient,
     private dialog: MatDialog,
     private api: ApiService,
-    private spinner: NgxSpinnerService,
     private location: Location,
     private toastr: ToastrService,
     private router: Router,
@@ -79,21 +96,64 @@ approle:any;
     private menuService: MenuServiceService,
   ) {}
 
-  days: any = 0;
+  ngOnInit(): void {
+    this.selectedStatus = '0';
+    this.selectedStatusDHS = '0';
+    this.currentTab = 'ADMIN';
+    this.getallusers('1'); // Default Administrator
+    this.generateCaptcha();
+  }
 
-  ngOnInit() {
-    this.getallusers('6');
-    this.loadSupplierAuthOptions();
-         this.generateCaptcha();
+  ngAfterViewInit(): void {}
+
+  onTabClick(tab: string): void {
+    this.currentTab = tab;
+    this.emailid = null;
+    this.id = null;
+    this.pwd = '';
+    this.captchaValue = '';
+    this.generateCaptcha();
+
+    if (tab === 'ADMIN') {
+      this.selectedStatus = this.selectedStatus || '0';
+      const apiId = this.selectedStatus === '0' ? '1' : this.selectedStatus === '1' ? '2' : '3';
+      this.getallusers(apiId);
+    } else if (tab === 'DME') {
+      this.getallusers('4');
+    } else if (tab === 'DHS') {
+      this.selectedStatusDHS = this.selectedStatusDHS || '0';
+      if (this.selectedStatusDHS === '1') {
+        this.getallusers('5');
+      } else {
+        this.userdatas = [];
+      }
+    } else if (tab === 'SUPPLIER') {
+      this.setSupplierAuthMode(this.supplierAuthMode || 'login');
+    }
+  }
+
+  get supplierSelectPlaceholder(): string {
+    if (this.supplierAuthMode === 'new') {
+      return 'Select Supplier for New User-ID';
+    }
+    return this.supplierAuthMode === 'reset' ? 'Select User Supplier' : 'Select Supplier User';
+  }
+
+  getallusers(id: any): void {
+    this.api.getUsers(id).subscribe({
+      next: (res) => {
+        this.userdatas = Array.isArray(res) ? res : [];
+      },
+      error: () => {
+        this.userdatas = [];
+      },
+    });
   }
 
   onUserChange(event: Event): void {
-    // const emailid = (event.target as HTMLSelectElement).value; // Get the selected email ID
     const selectedUser = this.adminDropdownList.find(
       (user: { emailid: string }) => user.emailid === this.emailid,
-    ); // Find the user object in the list
-
-    console.log('Selected User:', selectedUser); // Log the selected user object properly
+    );
 
     if (selectedUser) {
       this.siMobile = selectedUser.siMobile || null;
@@ -108,50 +168,38 @@ approle:any;
       sessionStorage.setItem('userid', this.userid);
       sessionStorage.setItem('authenticatedUser', this.emailid);
       sessionStorage.setItem('siMobile', this.siMobile);
-
-      // Log individual values to ensure they are being set correctly
-      console.log('siMobile:', this.siMobile);
-      console.log('userid:', this.userid);
-      console.log('roleid:', this.roleid);
-      console.log('rolename:', this.rolename);
-      console.log('firstname:', this.firstname);
-    } else {
-      console.error('Selected user not found in the list.');
     }
   }
 
-  onUserChangeCgmscl(event: Event): void {
-    // const emailid = (event.target as HTMLSelectElement).value; // Get the selected email ID
-    const selectedUser = this.cgmsclDropdownList.find(
-      (user: { emailid: string }) => user.emailid === this.emailid,
-    ); // Find the user object in the list
-
-    // console.log('Selected User:', selectedUser); // Log the selected user object properly
+  onUserChangeCgmscl(event: any): void {
+    const selectedId = typeof event === 'object' && event !== null ? event.user_id : event;
+    const selectedUser = this.userdatas?.find(
+      (user: any) => user.user_id === selectedId || user.user_id === this.emailid,
+    );
 
     if (selectedUser) {
       this.siMobile = selectedUser.siMobile || null;
-      this.userid = selectedUser.userid || null;
+      this.userid = selectedUser.user_id || null;
       this.roleid = selectedUser.roleid || null;
-      this.rolename = selectedUser.rolename || null;
-
-      this.setRole(this.rolename);
-
-      sessionStorage.setItem('roleId', this.roleid);
-      sessionStorage.setItem('userid', this.userid);
-      sessionStorage.setItem('siMobile', this.siMobile);
-    } else {
-      console.error('Selected user not found in the list.');
+      this.rolename = selectedUser.user_type || selectedUser.rolename || null;
+      this.firstname = selectedUser.user_name || null;
+      this.EMAIL = '';
+      if (this.rolename) {
+        this.setRole(this.rolename);
+      }
+      if (this.roleid) sessionStorage.setItem('roleId', this.roleid);
+      if (this.userid) sessionStorage.setItem('userid', this.userid);
+      if (this.siMobile) sessionStorage.setItem('siMobile', this.siMobile);
     }
   }
 
-  setRole(approle: string) {
+  setRole(approle: string): void {
     const menuRole = this.resolveMenuRole(approle);
     this.approle = menuRole;
     localStorage.setItem('roleName', menuRole);
     this.loginService.setRole(menuRole);
   }
 
-  /** Map API user_type / dropdown role to menu-service keys. */
   private resolveMenuRole(rawRole: string | null | undefined): string {
     const role = (rawRole || '').trim();
     if (!role) {
@@ -173,11 +221,8 @@ approle:any;
     return aliases[upper] || aliases[role] || role;
   }
 
-  Manualssliddesk(URL: any) {
+  Manualssliddesk(URL: any): void {
     if (URL) {
-      // Remove '~' from the start of the URL
-      // const cleanedUrl = 'https://cgmsc.gov.in/' + URL.replace(/^~\//, '');
-      // console.log('Opening:', URL);
       window.open(URL, '_blank');
     } else {
       alert(
@@ -186,11 +231,9 @@ approle:any;
     }
   }
 
-  ngAfterViewInit(): void {}
-
   togglePassword(): void {
     this.isPasswordVisible = !this.isPasswordVisible;
-    const ids = ['pwd', 'dmePwdInput'];
+    const ids = ['pwd', 'dmePwdInput', 'dhs_pwd_input', 'dhs_pwd_cmho'];
     for (const id of ids) {
       const el = document.getElementById(id) as HTMLInputElement | null;
       if (el) {
@@ -199,16 +242,14 @@ approle:any;
     }
   }
 
-  // Shared error handler
-  handleLoginFailure() {
+  handleLoginFailure(): void {
     this.invalidLogin = true;
     this.toastr.error('Login Failed', 'Invalid Credentials');
     this.errorMessage = 'Invalid Credentials';
+    this.generateCaptcha();
+    this.captchaValue = '';
   }
 
-  /**
-   * DME Medical College dropdown: ng-select passes bindValue (user_id number), not { user_id }.
-   */
   onUserChangeInfrastructure(selected: unknown): void {
     const selectedId =
       typeof selected === 'number'
@@ -255,7 +296,6 @@ approle:any;
     );
     sessionStorage.setItem('divisionID', String(selectedUser.user_id));
 
-    // Prefer email from GET /Auth/4 list (includes e_mail_id); otherwise fetch.
     if (selectedUser.e_mail_id) {
       this.emailid = selectedUser.e_mail_id;
       this.EMAIL = 'EMAIL';
@@ -264,58 +304,19 @@ approle:any;
     }
   }
 
-  //#region  by lomesh
-  selectedStatus: any;
-  selectedStatusDHS: any;
-  selectedStatussup: any = '0';
-  supplierUserId: number | null = null;
-  supplierLoginEmail = '';
-  /** login | new | reset — SUPPLIER tab (LoginEmsSUP flow) */
-  supplierAuthMode: 'login' | 'new' | 'reset' = 'login';
-  supplierAuthOptions: Array<{ user_id: number; user_name: string; e_mail_id: string }> = [];
-  supplierAuthBusy = false;
-  supplierShowOtp = false;
-  supplierOtpSending = false;
-  supplierOtpSubmitting = false;
-  supplierProfile: {
-    supplierId: number;
-    name: string;
-    maskedMobile: string;
-    email: string;
-    userEmail: string;
-  } | null = null;
-  supplierDesiredUserId = '';
-  supplierOtp = '';
-  supplierNewPassword = '';
-  supplierRepeatPassword = '';
-  supplierOtpMessage = '';
-  userdatas: any;
-  EMAIL: any;
-
-  get supplierSelectPlaceholder(): string {
-    if (this.supplierAuthMode === 'new') {
-      return 'Select Supplier for New Userid';
-    }
-    return this.supplierAuthMode === 'reset' ? 'Select User' : 'Select Supplier';
-  }
-
-  getallusers(id: any) {
-    this.api.getUsers(id).subscribe((res) => {
-      this.userdatas = Array.isArray(res) ? res : [];
-    });
-  }
-
   setSupplierAuthMode(mode: 'login' | 'new' | 'reset'): void {
     this.supplierAuthMode = mode;
     this.supplierUserId = null;
     this.supplierLoginEmail = '';
     this.pwd = '';
+    this.captchaValue = '';
     this.cancelSupplierOtp();
     this.loadSupplierAuthOptions();
+    this.generateCaptcha();
   }
 
   generateCaptcha(): void {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
     this.captcha = Array.from({ length: 6 }, () =>
       characters.charAt(Math.floor(Math.random() * characters.length))
     ).join('');
@@ -353,10 +354,8 @@ approle:any;
       },
     });
   }
-  // https://localhost:7036/api/Auth/GetUserEmail/5
 
-  GetUserEmail(userid: any) {
-    // debugger;
+  GetUserEmail(userid: any): void {
     const uid = Number(userid);
     this.api.GetUserEmail(uid).subscribe({
       next: (res) => {
@@ -365,7 +364,6 @@ approle:any;
         } else if (res?.UserName) {
           this.emailid = res.UserName;
         } else {
-          // Auth/login accepts CAST(user_id AS VARCHAR) as username
           this.emailid = String(uid);
         }
         this.EMAIL = 'EMAIL';
@@ -376,23 +374,27 @@ approle:any;
       },
     });
   }
-  onStatusChange() {
-    if (this.selectedStatus == '0') {
-    } else if (this.selectedStatus == '1') {
-    } else {
-    }
+
+  onStatusChangeAdmin(status: string): void {
+    this.selectedStatus = status;
+    this.emailid = null;
+    this.pwd = '';
+    this.captchaValue = '';
+    this.generateCaptcha();
+    const apiId = status === '0' ? '1' : status === '1' ? '2' : '3';
+    this.getallusers(apiId);
   }
-  onStatusChangeDHS() {
-    if (this.selectedStatusDHS == '0') {
-      this.getallusers('6');
-    } else if (this.selectedStatusDHS == '1') {
+
+  onStatusChangeDHS(status: string): void {
+    this.selectedStatusDHS = status;
+    this.emailid = null;
+    this.pwd = '';
+    this.captchaValue = '';
+    this.generateCaptcha();
+    if (status === '1') {
       this.getallusers('5');
-    }
-  }
-  onStatusChangesup() {
-    if (this.selectedStatussup == '0') {
-    } else if (this.selectedStatussup == '1') {
     } else {
+      this.userdatas = [];
     }
   }
 
@@ -514,7 +516,7 @@ approle:any;
         next: (res) => {
           this.supplierOtpSubmitting = false;
           this.toastr.success(
-            res?.message ?? 'Your have Succesully Generated/Reset Password,Please Login in EMIS',
+            res?.message ?? 'You have successfully generated/reset password. Please login in EMIS.',
           );
           this.setSupplierAuthMode('login');
         },
@@ -554,12 +556,19 @@ approle:any;
   }
 
   handleSupplierLogin(): void {
+    if (!this.captchaValue || this.captchaValue.trim().toLowerCase() !== this.captcha.trim().toLowerCase()) {
+      this.toastr.error('Incorrect CAPTCHA. Please try again.');
+      this.generateCaptcha();
+      this.captchaValue = '';
+      return;
+    }
+
     if (!this.supplierUserId) {
       this.toastr.warning('Please select supplier.');
       return;
     }
 
-    if (!this.pwd.trim()) {
+    if (!this.pwd?.trim()) {
       this.toastr.error('Password is required.');
       return;
     }
@@ -598,11 +607,11 @@ approle:any;
               this.toastr.success('Login successful');
               this.router.navigate(['/welcome']);
             } else {
-              this.toastr.error('Login failed');
+              this.handleLoginFailure();
             }
           },
           error: (err) => {
-            this.toastr.error(err?.error?.message ?? 'Invalid credentials', 'Login Failed');
+            this.handleLoginFailure();
           },
         });
     };
@@ -629,17 +638,16 @@ approle:any;
     });
   }
 
-  async handleCgmsclLogin1() {
-   
-if (this.captchaValue !== this.captcha) {
-  this.toastr.error('Incorrect CAPTCHA. Please try again.');
-  this.generateCaptcha(); 
-  this.captchaValue = ''; 
-  return;
-}
+  async handleCgmsclLogin1(): Promise<void> {
+    if (!this.captchaValue || this.captchaValue.trim().toLowerCase() !== this.captcha.trim().toLowerCase()) {
+      this.toastr.error('Incorrect CAPTCHA. Please try again.');
+      this.generateCaptcha();
+      this.captchaValue = '';
+      return;
+    }
 
-
-    if (!this.emailid || !this.pwd) {
+    const userIdToSubmit = this.emailid ?? this.id;
+    if (!userIdToSubmit || !this.pwd?.trim()) {
       this.toastr.error('User and Password required');
       return;
     }
@@ -649,38 +657,29 @@ if (this.captchaValue !== this.captcha) {
     this.loginService.logout();
     this.menuService.clearSelectedCategory();
 
-    const user_id = this.emailid.toString().trim();
-    this.pwd = (this.pwd ?? '').trim();
+    const user_id = userIdToSubmit.toString().trim();
+    const password = (this.pwd ?? '').trim();
+    const emailFlag = this.EMAIL || '';
 
     this.loginService
-      .executeAuthenticationService1(user_id, this.pwd, this.EMAIL)
+      .executeAuthenticationService1(user_id, password, emailFlag)
       .subscribe({
         next: (res: any) => {
-          // console.log('res:', res);
-          // localStorage.setItem('loginData', JSON.stringify(res));
           console.log('res:', res);
 
-// 1. Response ki ek shallow copy bana lo taaki original data directly mutate na ho
-let updatedRes = { ...res };
+          let updatedRes = { ...res };
 
-// 2. Check karo agar username 'PO-Cell' hai
-if (updatedRes.username === 'PO-Cell') {
-  // user_type ko badal kar 'AUPO' kar do
-  updatedRes.user_type = 'AUPO'; 
-}
+          if (updatedRes.username === 'PO-Cell') {
+            updatedRes.user_type = 'AUPO';
+          }
+          if (updatedRes.username === 'GM Finance') {
+            updatedRes.user_type = 'AUGMF';
+          }
+          if (updatedRes.username === 'Tender-Cell') {
+            updatedRes.user_type = 'TPOT';
+          }
 
-if (updatedRes.username === 'GM Finance') {
-
-  updatedRes.user_type = 'AUGMF'; 
-}
-if (updatedRes.username === 'Tender-Cell') {
-
-  updatedRes.user_type = 'TPOT'; 
-}
-
-// 3. Ab modified ya normal (else ki zarurat nahi padegi kyuki condition match nahi hui toh purana hi rahega) 
-// response ko localStorage mein set kar do
-localStorage.setItem('loginData', JSON.stringify(updatedRes));
+          localStorage.setItem('loginData', JSON.stringify(updatedRes));
 
           if (
             res?.message === 'Login Successful' ||
@@ -693,16 +692,12 @@ localStorage.setItem('loginData', JSON.stringify(updatedRes));
               sessionStorage.setItem('token', res.token);
             }
 
-            // Persist user id for supplier APIs (session + localStorage)
             persistSupplierUserId(
               updatedRes?.user_id ?? updatedRes?.User_Id ?? updatedRes?.userId ?? updatedRes?.UserId,
             );
 
             const role = String(updatedRes?.user_type ?? res?.user_type ?? '').toUpperCase();
-            console.log('User Role:', role);
             this.setRole(updatedRes?.user_type ?? res?.user_type ?? role);
-
-            // this.InsertUserPageViewLog();
 
             if (role === 'FU' || role === 'PRINCIPAL' || role === 'FDA') {
               if (
@@ -741,16 +736,15 @@ localStorage.setItem('loginData', JSON.stringify(updatedRes));
             this.handleLoginFailure();
           }
         },
-
         error: (e: any) => {
           console.log('error=', e);
           const msg = e?.error?.message ?? 'Invalid Credentials';
           this.toastr.error(msg, 'Login Failed');
           this.invalidLogin = true;
           this.errorMessage = msg;
+          this.generateCaptcha();
+          this.captchaValue = '';
         },
       });
   }
-
-  //#endregion
 }
