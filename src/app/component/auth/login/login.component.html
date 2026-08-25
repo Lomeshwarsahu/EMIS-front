@@ -315,9 +315,9 @@
                           #emailidField="ngModel" [placeholder]="!emailid ? 'Choose CGMSCL User' : ''"
                           [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
                         </ng-select> -->
-                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
-                            [placeholder]="!emailid ? 'Choose CGMSCL User' : ''" [searchable]="true" [clearable]="true"
+                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="id"
+                            (ngModelChange)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
+                            [placeholder]="!id ? 'Choose CGMSCL User' : ''" [searchable]="true" [clearable]="true"
                             [appendTo]="'body'" required class="form-control">
                           </ng-select>
                         </div>
@@ -369,9 +369,9 @@
                           <span class="input-group-text bg-light">
                             <i class="fas fa-user"></i>
                           </span>
-                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
-                            [placeholder]="!emailid ? 'Select Directorate' : ''" [searchable]="true" [clearable]="true"
+                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="id"
+                            (ngModelChange)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
+                            [placeholder]="!id ? 'Select Directorate' : ''" [searchable]="true" [clearable]="true"
                             [appendTo]="'body'" required class="form-control">
                           </ng-select>
                         </div>
@@ -422,9 +422,9 @@
                           <span class="input-group-text bg-light">
                             <i class="fas fa-user"></i>
                           </span>
-                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
-                            [placeholder]="!emailid ? 'Choose User' : ''" [searchable]="true" [clearable]="true"
+                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="id"
+                            (ngModelChange)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
+                            [placeholder]="!id ? 'Choose User' : ''" [searchable]="true" [clearable]="true"
                             [appendTo]="'body'" required class="form-control">
                           </ng-select>
                         </div>
@@ -616,9 +616,9 @@
                           <span class="input-group-text bg-light">
                             <i class="fas fa-user"></i>
                           </span>
-                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="dhs_facility_user"
-                            [placeholder]="!emailid ? 'Select Health Facility / User' : ''" [searchable]="true"
+                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="id"
+                            (ngModelChange)="onUserChangeCgmscl($event)" name="dhs_facility_user"
+                            [placeholder]="!id ? 'Select Health Facility / User' : ''" [searchable]="true"
                             [clearable]="true" [appendTo]="'body'" required class="form-control">
                           </ng-select>
                         </div>
@@ -644,9 +644,9 @@
                           <span class="input-group-text bg-light">
                             <i class="fas fa-user"></i>
                           </span>
-                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="dhs_select_user"
-                            [placeholder]="!emailid ? 'Select Directorate / User' : ''" [searchable]="true"
+                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="id"
+                            (ngModelChange)="onUserChangeCgmscl($event)" name="dhs_select_user"
+                            [placeholder]="!id ? 'Select Directorate / User' : ''" [searchable]="true"
                             [clearable]="true" [appendTo]="'body'" required class="form-control">
                           </ng-select>
                         </div>

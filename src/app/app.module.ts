@@ -1,4 +1,4 @@
-import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppRoutingModule } from './app-routing.module';
@@ -6,8 +6,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material-module';
 import { FormsModule } from '@angular/forms';
-import {  ReactiveFormsModule } from '@angular/forms';
-import {MatTabsModule} from '@angular/material/tabs';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatTabsModule } from '@angular/material/tabs';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -20,7 +20,7 @@ import { LogoutComponent } from './component/auth/logout/logout.component';
 import { ToastrModule } from 'ngx-toastr';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
-import {APP_BASE_HREF} from '@angular/common';
+import { APP_BASE_HREF } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
 import { GoogleMapsModule } from '@angular/google-maps';
@@ -28,16 +28,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { Registration } from './component/auth/registration/registration';
 import { AppSidebarComponent } from './component/layout/app-sidebar/app-sidebar.component';
-import { provideHttpClient, withInterceptors,withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { authInterceptor } from './service/authentication/authInterceptor';
-@NgModule({ declarations: [
-        AppComponent,
-        Registration,
-        LogoutComponent,
-    ],
-    bootstrap: [AppComponent], 
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [
+@NgModule({
+  declarations: [
+    AppComponent,
+    Registration,
+    LogoutComponent,
+  ],
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
     NgSelectModule,
     NgbCollapseModule,
     CommonModule,
@@ -75,10 +76,11 @@ import { authInterceptor } from './service/authentication/authInterceptor';
          provideHttpClient(withInterceptors([authInterceptor])),
       provideHttpClient(withInterceptorsFromDi()),
 
-   
-    ] })
+
+  ]
+})
 export class AppModule {
   constructor(library: FaIconLibrary) {
     library.addIconPacks(fas);
   }
- }
+}

@@ -82,9 +82,10 @@ approle:any;
   days: any = 0;
 
   ngOnInit() {
-    this.getallusers('6');
+    this.selectedStatus = '0';
+    this.getallusers('1');
     this.loadSupplierAuthOptions();
-         this.generateCaptcha();
+    this.generateCaptcha();
   }
 
   onUserChange(event: Event): void {
@@ -120,27 +121,58 @@ approle:any;
     }
   }
 
-  onUserChangeCgmscl(event: Event): void {
-    // const emailid = (event.target as HTMLSelectElement).value; // Get the selected email ID
-    const selectedUser = this.cgmsclDropdownList.find(
-      (user: { emailid: string }) => user.emailid === this.emailid,
-    ); // Find the user object in the list
+  onUserChangeCgmscl(selected: unknown): void {
+    const selectedId =
+      typeof selected === 'number'
+        ? selected
+        : typeof selected === 'string' && selected !== ''
+          ? Number(selected)
+          : selected &&
+              typeof selected === 'object' &&
+              'user_id' in (selected as object)
+            ? Number((selected as { user_id: number }).user_id)
+            : this.id != null
+              ? Number(this.id)
+              : NaN;
 
-    // console.log('Selected User:', selectedUser); // Log the selected user object properly
+    if (!Number.isFinite(selectedId) || selectedId <= 0) {
+      this.emailid = '';
+      this.EMAIL = '';
+      return;
+    }
+
+    const selectedUser = this.userdatas?.find(
+      (user: any) => Number(user.user_id) === selectedId,
+    );
 
     if (selectedUser) {
-      this.siMobile = selectedUser.siMobile || null;
-      this.userid = selectedUser.userid || null;
-      this.roleid = selectedUser.roleid || null;
-      this.rolename = selectedUser.rolename || null;
+      this.id = selectedUser.user_id;
+      this.siMobile = selectedUser.mobile ?? selectedUser.siMobile ?? null;
+      this.rolename = selectedUser.role ?? selectedUser.user_type ?? selectedUser.rolename ?? '';
+      this.firstname =
+        selectedUser.desig ??
+        selectedUser.user_name ??
+        selectedUser.firstname ??
+        '';
 
-      this.setRole(this.rolename);
+      if (this.rolename) {
+        this.setRole(this.rolename);
+      }
+      sessionStorage.setItem('firstname', this.firstname);
+      if (selectedUser.roleid) {
+        sessionStorage.setItem('roleId', selectedUser.roleid);
+      }
+      sessionStorage.setItem('userid', String(selectedUser.user_id));
 
-      sessionStorage.setItem('roleId', this.roleid);
-      sessionStorage.setItem('userid', this.userid);
-      sessionStorage.setItem('siMobile', this.siMobile);
+      if (selectedUser.e_mail_id) {
+        this.emailid = selectedUser.e_mail_id;
+        this.EMAIL = 'EMAIL';
+        sessionStorage.setItem('authenticatedUser', this.emailid);
+      } else {
+        this.GetUserEmail(selectedId);
+      }
     } else {
-      console.error('Selected user not found in the list.');
+      this.GetUserEmail(selectedId);
     }
   }
 
@@ -300,6 +332,9 @@ approle:any;
   }
 
   getallusers(id: any) {
+    this.id = null;
+    this.emailid = '';
+    this.EMAIL = '';
     this.api.getUsers(id).subscribe((res) => {
       this.userdatas = Array.isArray(res) ? res : [];
     });
