@@ -391,13 +391,20 @@
                     <!-- Health Facility -->
                     <ng-container *ngIf="selectedStatusDHS == '0'">
                       <div class="mb-3">
-                        <label for="dhs_user_id" class="form-label">User DHS/AYUSH</label>
+                        <label for="dhs_facility_user" class="form-label">User Health Facility</label>
                         <div class="input-group">
-                          <input type="text" class="form-control" id="dhs_user_id" name="dhs_user_id" [(ngModel)]="emailid"
-                            #dhsUserField="ngModel" placeholder="Enter Health Facility User ID" required>
+                          <span class="input-group-text bg-light">
+                            <i class="fas fa-user"></i>
+                          </span>
+                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
+                            (change)="onUserChangeCgmscl($event)" name="dhs_facility_user" #dhsFacilityField="ngModel"
+                            [placeholder]="!emailid ? 'Choose Health Facility User' : ''" [searchable]="true"
+                            [clearable]="true" [appendTo]="'body'" required class="form-control">
+                          </ng-select>
                         </div>
-                        <div *ngIf="dhsUserField.invalid && (dhsUserField.dirty || dhsUserField.touched)" class="text-danger">
-                          User ID is required.
+                        <div *ngIf="dhsFacilityField.invalid && (dhsFacilityField.dirty || dhsFacilityField.touched)"
+                          class="text-danger">
+                          Please select a User.
                         </div>
                       </div>
                       <div class="mb-3 position-relative">

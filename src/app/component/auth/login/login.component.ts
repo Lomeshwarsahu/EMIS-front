@@ -122,11 +122,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
       this.getallusers('4');
     } else if (tab === 'DHS') {
       this.selectedStatusDHS = this.selectedStatusDHS || '0';
-      if (this.selectedStatusDHS === '1') {
-        this.getallusers('5');
-      } else {
-        this.userdatas = [];
-      }
+      const apiId = this.selectedStatusDHS === '0' ? '2' : '5';
+      this.getallusers(apiId);
     } else if (tab === 'SUPPLIER') {
       this.setSupplierAuthMode(this.supplierAuthMode || 'login');
     }
@@ -391,11 +388,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.pwd = '';
     this.captchaValue = '';
     this.generateCaptcha();
-    if (status === '1') {
-      this.getallusers('5');
-    } else {
-      this.userdatas = [];
-    }
+    const apiId = status === '0' ? '2' : '5';
+    this.getallusers(apiId);
   }
 
   onSupplierTabSelect(): void {
