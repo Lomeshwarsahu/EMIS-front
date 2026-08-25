@@ -167,18 +167,20 @@
                           Please select a User.
                         </div>
                       </div>
-                      <div class="mb-3 position-relative">
+                      <div class="mb-3">
                         <label for="pwd" class="form-label">Password</label>
-
-                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                          [(ngModel)]="pwd" #pwdField="ngModel" placeholder="Enter Password" required>
-
-                        <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                          (click)="togglePassword()">
-                        </i>
-
+                        <div class="position-relative">
+                          <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                            [(ngModel)]="pwd" (input)="invalidLogin = false" #pwdField="ngModel" placeholder="Enter Password" required>
+                          <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                            (click)="togglePassword()">
+                          </i>
+                        </div>
                         <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
                           Password is required.
+                        </div>
+                        <div *ngIf="invalidLogin && !pwdField.invalid" class="text-danger small mt-1">
+                          {{ errorMessage }}
                         </div>
                       </div>
                       <div class="mb-3">
@@ -191,8 +193,8 @@
                         </div>
                         <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
                           placeholder="Enter CAPTCHA" required autocomplete="off">
-                        <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched)" class="text-danger">
-                          OTP/CAPTCHA is Required.
+                        <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched) && !invalidLogin" class="text-danger small mt-1">
+                          CAPTCHA is Required.
                         </div>
                       </div>
 
@@ -220,18 +222,20 @@
                         </div>
                       </div>
 
-                      <div class="mb-3 position-relative">
+                      <div class="mb-3">
                         <label for="pwd" class="form-label">Password</label>
-
-                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                          [(ngModel)]="pwd" #pwdField="ngModel" placeholder="Enter Password" required>
-
-                        <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                          (click)="togglePassword()">
-                        </i>
-
+                        <div class="position-relative">
+                          <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                            [(ngModel)]="pwd" (input)="invalidLogin = false" #pwdField="ngModel" placeholder="Enter Password" required>
+                          <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                            (click)="togglePassword()">
+                          </i>
+                        </div>
                         <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
                           Password is required.
+                        </div>
+                        <div *ngIf="invalidLogin && !pwdField.invalid" class="text-danger small mt-1">
+                          {{ errorMessage }}
                         </div>
                       </div>
                       <div class="mb-3">
@@ -244,8 +248,8 @@
                         </div>
                         <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
                           placeholder="Enter CAPTCHA" required autocomplete="off">
-                        <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched)" class="text-danger">
-                          OTP/CAPTCHA is Required.
+                        <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched) && !invalidLogin" class="text-danger small mt-1">
+                          CAPTCHA is Required.
                         </div>
                       </div>
                       <button type="submit" class="btn btn-successs btn-primary text-white w-100"
@@ -272,18 +276,20 @@
                         </div>
                       </div>
 
-                      <div class="mb-3 position-relative">
+                      <div class="mb-3">
                         <label for="pwd" class="form-label">Password</label>
-
-                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                          [(ngModel)]="pwd" #pwdField="ngModel" placeholder="Enter Password" required>
-
-                        <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                          (click)="togglePassword()">
-                        </i>
-
+                        <div class="position-relative">
+                          <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                            [(ngModel)]="pwd" (input)="invalidLogin = false" #pwdField="ngModel" placeholder="Enter Password" required>
+                          <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                            (click)="togglePassword()">
+                          </i>
+                        </div>
                         <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
                           Password is required.
+                        </div>
+                        <div *ngIf="invalidLogin && !pwdField.invalid" class="text-danger small mt-1">
+                          {{ errorMessage }}
                         </div>
                       </div>
                       <div class="mb-3">
@@ -296,8 +302,8 @@
                         </div>
                         <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
                           placeholder="Enter CAPTCHA" required autocomplete="off">
-                        <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched)" class="text-danger">
-                          OTP/CAPTCHA is Required.
+                        <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched) && !invalidLogin" class="text-danger small mt-1">
+                          CAPTCHA is Required.
                         </div>
                       </div>
                       
@@ -328,19 +334,21 @@
                         Please select a Medical College / Hospital.
                       </div>
                     </div>
-                    <div class="mb-3 position-relative">
+                    <div class="mb-3">
                       <label for="dmePwdInput" class="form-label">Password</label>
-
-                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="dmePwdInput"
-                        name="dmePwd" [(ngModel)]="pwd" placeholder="Enter Password" required #dmePwdField="ngModel">
-
-                      <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                        (click)="togglePassword()">
-                      </i>
-
+                      <div class="position-relative">
+                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="dmePwdInput"
+                          name="dmePwd" [(ngModel)]="pwd" (input)="invalidLogin = false" placeholder="Enter Password" required #dmePwdField="ngModel">
+                        <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                          (click)="togglePassword()">
+                        </i>
+                      </div>
                       <div *ngIf="dmePwdField.invalid && (dmePwdField.dirty || dmePwdField.touched)"
                         class="text-danger mt-1">
                         Password is required.
+                      </div>
+                      <div *ngIf="invalidLogin && !dmePwdField.invalid" class="text-danger small mt-1">
+                        {{ errorMessage }}
                       </div>
                     </div>
                     <div class="mb-3">
@@ -353,8 +361,8 @@
                       </div>
                       <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
                         placeholder="Enter CAPTCHA" required autocomplete="off">
-                      <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched)" class="text-danger">
-                        OTP/CAPTCHA is Required.
+                      <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched) && !invalidLogin" class="text-danger small mt-1">
+                        CAPTCHA is Required.
                       </div>
                     </div>
                     <button type="submit" class="btn btn-successs btn-primary text-white w-100 mb-3"
@@ -407,18 +415,20 @@
                           Please select a User.
                         </div>
                       </div>
-                      <div class="mb-3 position-relative">
+                      <div class="mb-3">
                         <label for="pwd" class="form-label">Password</label>
-
-                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                          [(ngModel)]="pwd" #pwdField="ngModel" placeholder="Enter Password" required>
-
-                        <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                          (click)="togglePassword()">
-                        </i>
-
+                        <div class="position-relative">
+                          <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                            [(ngModel)]="pwd" (input)="invalidLogin = false" #pwdField="ngModel" placeholder="Enter Password" required>
+                          <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                            (click)="togglePassword()">
+                          </i>
+                        </div>
                         <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
                           Password is required.
+                        </div>
+                        <div *ngIf="invalidLogin && !pwdField.invalid" class="text-danger small mt-1">
+                          {{ errorMessage }}
                         </div>
                       </div>
                       <div class="mb-3">
@@ -431,8 +441,8 @@
                         </div>
                         <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
                           placeholder="Enter CAPTCHA" required autocomplete="off">
-                        <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched)" class="text-danger">
-                          OTP/CAPTCHA is Required.
+                        <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched) && !invalidLogin" class="text-danger small mt-1">
+                          CAPTCHA is Required.
                         </div>
                       </div>
                       <button type="submit" class="btn btn-successs btn-primary text-white w-100"
@@ -448,19 +458,31 @@
                             <i class="fas fa-user"></i>
                           </span>
                           <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="dhs_select_user"
+                            (change)="onUserChangeCgmscl($event)" name="dhs_select_user" #dhsCmhoField="ngModel"
                             [placeholder]="!emailid ? 'Select CMHO-Store User' : ''" [searchable]="true"
                             [clearable]="true" [appendTo]="'body'" required class="form-control">
                           </ng-select>
                         </div>
+                        <div *ngIf="dhsCmhoField.invalid && (dhsCmhoField.dirty || dhsCmhoField.touched)"
+                          class="text-danger">
+                          Please select a User.
+                        </div>
                       </div>
 
-                      <div class="mb-3 position-relative">
+                      <div class="mb-3">
                         <label for="dhs_pwd_cmho" class="form-label">Password</label>
-                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="dhs_pwd_cmho"
-                          name="dhs_pwd_cmho" [(ngModel)]="pwd" placeholder="Enter Password" required>
-                        <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                          (click)="togglePassword()"></i>
+                        <div class="position-relative">
+                          <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="dhs_pwd_cmho"
+                            name="dhs_pwd_cmho" [(ngModel)]="pwd" (input)="invalidLogin = false" #dhsPwdCmhoField="ngModel" placeholder="Enter Password" required>
+                          <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                            (click)="togglePassword()"></i>
+                        </div>
+                        <div *ngIf="dhsPwdCmhoField.invalid && (dhsPwdCmhoField.dirty || dhsPwdCmhoField.touched)" class="text-danger">
+                          Password is required.
+                        </div>
+                        <div *ngIf="invalidLogin && !dhsPwdCmhoField.invalid" class="text-danger small mt-1">
+                          {{ errorMessage }}
+                        </div>
                       </div>
 
                       <div class="mb-3">
@@ -473,8 +495,8 @@
                         </div>
                         <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
                           placeholder="Enter CAPTCHA" required autocomplete="off">
-                        <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched)" class="text-danger">
-                          OTP/CAPTCHA is Required.
+                        <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched) && !invalidLogin" class="text-danger small mt-1">
+                          CAPTCHA is Required.
                         </div>
                       </div>
                       <button type="submit" class="btn btn-successs btn-primary text-white w-100"
@@ -527,11 +549,16 @@
                     <ng-container *ngIf="supplierAuthMode === 'login'">
                       <div class="supplier-field supplier-field--password">
                         <label class="form-label">Password</label>
-                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" name="supplierPwd"
-                          [(ngModel)]="pwd" placeholder="Enter Password" (keyup.enter)="handleSupplierLogin()" />
-                        <i class="fa toggle-eye supplier-toggle-eye"
-                          [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePassword()">
-                        </i>
+                        <div class="position-relative">
+                          <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" name="supplierPwd"
+                            [(ngModel)]="pwd" (input)="invalidLogin = false" placeholder="Enter Password" (keyup.enter)="handleSupplierLogin()" />
+                          <i class="fa toggle-eye supplier-toggle-eye"
+                            [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePassword()">
+                          </i>
+                        </div>
+                        <div *ngIf="invalidLogin" class="text-danger small mt-1">
+                          {{ errorMessage }}
+                        </div>
                       </div>
                       <div class="mb-3">
                         <label for="captcha" class="form-label">CAPTCHA</label>
@@ -543,8 +570,8 @@
                         </div>
                         <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
                           placeholder="Enter CAPTCHA" required autocomplete="off">
-                        <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched)" class="text-danger">
-                          OTP/CAPTCHA is Required.
+                        <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched) && !invalidLogin" class="text-danger small mt-1">
+                          CAPTCHA is Required.
                         </div>
                       </div>
                       <button

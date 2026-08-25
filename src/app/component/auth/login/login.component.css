@@ -661,12 +661,13 @@ body {
 
 .toggle-eye {
   position: absolute;
-  right: 10px;
-  top: 71%;
+  right: 12px;
+  top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
   color: #6c757d;
   font-size: 17px;
+  z-index: 5;
 }
 
 .toggle-eye:hover {

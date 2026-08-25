@@ -3,13 +3,11 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import Swal from 'sweetalert2';
+
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   
-  // 1. LocalStorage Token get 
-//   const token = localStorage.getItem('token');
   const token = sessionStorage.getItem('token');
-// console.log('token=',token)
   let clonedRequest = req;
 
   if (token) {
@@ -19,12 +17,20 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
     });
   }
-return next(clonedRequest).pipe(
+
+  const urlLower = req.url.toLowerCase();
+  const isAuthRequest =
+    urlLower.includes('/auth/login') ||
+    urlLower.includes('/auth/login1') ||
+    urlLower.includes('/supplierauth') ||
+    urlLower.includes('/api/login') ||
+    urlLower.endsWith('/login');
+
+  return next(clonedRequest).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401) {
-        
+      if (error.status === 401 && !isAuthRequest) {
+        sessionStorage.clear();
         localStorage.clear(); 
-        
         
         Swal.fire({
           icon: 'warning',
@@ -43,15 +49,3 @@ return next(clonedRequest).pipe(
     })
   );
 };
-//   return next(clonedRequest).pipe(
-      
-//       catchError((error: HttpErrorResponse) => {
-//       if (error.status === 401) {
-//         localStorage.clear(); 
-//         alert('Session expired. Please login again.');
-//         router.navigate(['/login']);
-//       }
-//       return throwError(() => error);
-//     })
-//   );
-// };
