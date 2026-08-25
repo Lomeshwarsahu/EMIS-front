@@ -71,7 +71,7 @@ import { authInterceptor } from './service/authentication/authInterceptor';
       toastClass: 'ngx-toastr emis-toast',
     }),
 ], providers: [DatePipe, 
-      { provide: APP_BASE_HREF, useValue: '/EMIS/' },
+      { provide: APP_BASE_HREF, useValue: '/EMSA/' },
          provideHttpClient(withInterceptors([authInterceptor])),
       provideHttpClient(withInterceptorsFromDi()),
 
