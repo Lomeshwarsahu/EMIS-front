@@ -1,340 +1,306 @@
-<section class="container-fluid py-4">
-    <div class="row justify-content-center mb-4">
-        <div class="col-12 text-center">
-            <h2 class="fw-bold text-primary mb-1">Sanction Calculation</h2>
-            <p class="text-secondary">Review the basic project details below</p>
+<section class="sanction-page container-fluid py-4">
+
+    <!-- ============ PAGE HEADER ============ -->
+    <div class="page-heading mb-3">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div>
+                <h2 class="page-title fw-bold mb-1">Sanction Generation</h2>
+                <p class="text-muted mb-0">Review PO details, verify penalties and prepare the sanction.</p>
+            </div>
+            <span class="badge rounded-pill py-2 px-3 status-badge" *ngIf="poDetails">
+                PO No: {{ poDetails.PoNo }} · {{ poDetails.SchemeName }}
+            </span>
         </div>
     </div>
-    <div class="container-fluid p-2">
-            <div *ngIf="isLoading" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <p class="mt-2 text-muted">Fetching PO Details...</p>
-            </div>
-            
-            <div *ngIf="!isLoading && poDetails" class="card shadow">
-                <div class="card-body">
-            
-                    <div class="row border border-darki rounded-3 mb-0 mt-0">
-                        <div class="col-12 col-md-6 border p-2 d-flex">
-                            <strong>Tender :</strong>
-                            <span class="ml-2"> {{ poDetails.SchemeName }} (ID: {{ poDetails.TenderId }})</span>
-                        </div>
-                        <div class="col-12 col-md-6 border p-2 d-flex">
-                            <strong>Directorate for Which PO Given:</strong>
-                            <span class="ml-2"> {{ poDetails.FacilityAutName }}</span>
-                        </div>
-                        <div class="col-12 col-md-12 border p-2 d-flex">
-                            <strong>Item :</strong>
-                            <span class="ml-2"> {{ poDetails.ItemName }} <small class="text-muted">({{ poDetails.ItemCode }})</small></span>
-                        </div>
-                        <div class="col-12 col-md-3 border p-2 d-flex">
-                            <strong>Fin Year:</strong>
-                            <span class="ml-2">{{ poDetails.AccYear }}</span>
-                        </div>
-                        <div class="col-12 col-md-3 border p-2 d-flex">
-                            <strong>PO Date:</strong>
-                            <span class="ml-2">{{ poDetails.PoDate }}</span>
-                        </div>
-                        <div class="col-12 col-md-3 border p-2 d-flex">
-                            <strong>Log Charges:</strong>
-                            <span class="ml-2">{{penaltyData?.LogoCharges}}</span>
-                        </div>
-                        <div class="col-12 col-md-3 border p-2 d-flex">
-                            <strong>Penalty(Days/Week):</strong>
-                            <span class="ml-2">{{penaltyData?.PenaltyType}}</span>
-                        </div>
-            
-                        <div class="col-12 col-md-3 border p-2 d-flex">
-                            <strong>Supply Order Number:</strong>
-                            <span class="ml-2"> {{ poDetails.PoNo }}</span>
-                        </div>
-                        <div class="col-12 col-md-3 border p-2 d-flex">
-                            <strong>PO QTY:</strong>
-                            <span class="ml-2">{{ poDetails.PoQty }}</span>
-                        </div>
-                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
-                            <strong>Logo Charges Upper Limit:</strong>
-                            <span class="ml-2">{{penaltyData?.LogoChargesUpper}}</span>
-                        </div>
-                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
-                            <strong>Normal Days Allowed:</strong>
-                            <span class="ml-2">{{penaltyData?.TrancheDays}} Days</span>
-                        </div>
-                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
-                            <strong>Supplier:</strong>
-                            <span class="ml-2">{{ poDetails.SupplierName }}</span>
-                        </div>
-            
-                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
-                            <strong>Basic Rate:</strong><span class="ml-2"> {{ poDetails.BasicRate | number:'1.2-2' }}</span>
-                        </div>
-                        <div class="col-12 col-md-3 border p-2 d-flex">
-                            <strong>GST:</strong>
-                            <span class="ml-2">{{ poDetails.PercentValue }}%</span>
-                        </div>
-                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
-                            <strong>LD Penalty:</strong><span class="ml-2">{{penaltyData?.PenaltyPercent}}</span>
-                        </div>
-            
-                        <div class="col-12 col-md-3 border p-2 d-flex flex-row">
-                            <strong>PO Value (Rs):</strong>
-                            <span class="ml-2"> {{ poDetails.PoValue | number:'1.2-2' }}</span>
-                        </div>
-            
-                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
-                            <strong>Final Rate:</strong>
-                            <span class="ml-2"> {{ poDetails.FinalRate | number:'1.2-2' }}</span>
-                        </div>
-            
-                        <div class="col-12 col-md-3 border p-2 d-flex flex-row">
-                            <strong>Penalty Approval:</strong>
-                            <span class="ml-2" *ngIf="penaltyData?.IsLdPenalty == '0' ">Not Specify</span>
-                            <span class="ml-2" *ngIf="penaltyData?.IsLdPenalty == 'Y' ">Granted with Penalty</span>
-                            <span class="ml-2" *ngIf="penaltyData?.IsLdPenalty == 'N' ">Granted without Penalty </span>
-                        </div>
-                        <div class="col-12 col-md-3 border p-2 d-flex">
-                            <strong>Max Days Allowed:</strong>
-                            <span class="ml-2">{{penaltyData?.CancellationDays}}Days</span>
-                        </div>
-                        <div class="col-12 col-md-3 border p-2 d-flex flex-row">
-                            <strong>Dispatched GST:</strong>
-                            <span class="ml-2">{{poDetails.InvoiceGst}}</span>
-                        </div>
-            
-                        <div class="col-6 col-md-3 border p-2 d-flex flex-row">
-                            <strong>Extension Granted upto:</strong>
-                            <span class="ml-2">
-                                {{ penaltyData?.ExtendedDate === '01-01-1900' ? 'Not Specify' : penaltyData?.ExtendedDate }}
-                            </span>
-                        </div>
-            
-                        <div class="col-12 col-md-3 border p-2 d-flex flex-row">
-                            <strong>Penalty After Max Days/Unexecuted:</strong>
-                            <span class="ml-2">{{penaltyData?.CancellationPercentage}}</span>
-                        </div>
-                        <div class="col-12 col-md-3 border p-2 d-flex">
-                            <!-- <strong>DivisionId:</strong> -->
-                        </div>
-                        <div class="col-12 col-md-3 border p-2 d-flex">
-                            <strong class="text-primary">Show Payment recommendation</strong>
-                        </div>
-                        <div class="col-12 col-md-3 border p-2 d-flex">
-                            <!-- <strong>DivisionId:</strong> -->
-                        </div>
-                        <div class="col-12 col-md-3 border p-2 d-flex">
-                            <strong class="text-primary">Show Extension Approval</strong>
-                        </div>
-                    </div>
 
-                    <!-- INPUT FORM SECTION -->
-                    <div class="row border border-darki rounded-3 mb-0 mt-1">
-            
-                        <div class="col-12 col-md-4 border p-2 d-flex align-items-center">
-                            <strong class="me-2">Sanction No :</strong>
-                            <div class="flex-grow-1">
-                                <input type="text" class="form-control shadow-sm border-primary w-100" [(ngModel)]="sanctionNo" name="sanctionnumber" />
-                            </div>
-                        </div>
-            
-                        <div class="col-12 col-md-4 border p-2 d-flex align-items-center">
-                            <strong class="me-2">Sanction Preparation Date:</strong>
-                            <div class="flex-grow-1">
-                                <input type="date" class="form-control shadow-sm border-primary w-100" [(ngModel)]="sanctionDate" name="sanctionDate" />
-                            </div>
-                        </div>
-            
-                        <div class="col-12 col-md-4 border p-2 d-flex align-items-center">
-                            <strong class="me-2">Budget No:</strong>
-                            <div class="flex-grow-1">
-                                <ng-select [items]="BudgetDropdownList" bindLabel="BudgetName" bindValue="BudgetId" 
-                                    placeholder="-- Choose Target Budget --" [(ngModel)]="BudgetId" appendTo="body"
-                                    class="rounded shadow-sm bg-white form-control border-primary w-100" [clearable]="false" 
-                                    (change)="onDirectorateSelectedChange()" name="BudgetId">
-                                </ng-select>
-                            </div>
-                        </div>
-            
-                        <div class="col-12 col-md-4 border p-2 d-flex align-items-center">
-                            <strong class="me-2">GST No in CGMSC Record:</strong>
-                            <div class="flex-grow-1">
-                                <input type="text" class="form-control shadow-sm border-primary w-100" [(ngModel)]="poDetails.InvoiceGst" name="InvoiceGst" />
-                            </div>
-                        </div>
-            
-                        <div class="col-12 col-md-4 border p-2 d-flex align-items-center">
-                            <strong class="me-2">HSN Code:</strong>
-                            <div class="flex-grow-1">
-                                <input type="text" class="form-control shadow-sm border-primary w-100" [(ngModel)]="poDetails.HsnCode" name="HsnCode" />
-                            </div>
-                        </div>
-            
-                        <div class="col-12 col-md-4 border p-2 d-flex align-items-center">
-                            <strong class="me-2">GST NO Checked from invoice & its Fine with CGMSC GST Record:</strong>
-                            <div class="flex-shrink-0">
-                                <input type="checkbox" class="form-check-input shadow-sm border-primary m-0"
-                                    style="width: 1.5em; height: 1.5em;" [(ngModel)]="isGstOverrideChecked" name="isGstOverrideChecked" />
-                            </div>
-                        </div>
-            
-                        <div class="col-12 col-md-6 border p-2 d-flex align-items-center">
-                            <strong class="me-2">Remarks:</strong>
-                            <div class="flex-grow-1">
-                                <textarea class="form-control shadow-sm border-primary w-100" rows="1" [(ngModel)]="remarks" name="remarks"></textarea>
-                            </div>
-                        </div>
-            
-                        <div class="col-12 col-md-6 border p-2 d-flex align-items-center justify-content-end">
-                            <button type="button" class="btn btn-primary shadow-sm px-4" (click)="saveSanctionData()">Save</button>
-                        </div>
-            
-                    </div>
-                </div>
-                
-                <div *ngIf="!isLoading && !poDetails" class="alert alert-danger mt-3" role="alert">
-                    Failed to load PO details or data not found.
-                </div>
-
-
-                
-            </div>
-
-               <!-- ============================================== -->
-            <!-- MATERIAL TABLE IMPLEMENTATION                  -->
-            <!-- ============================================== -->
-            <div class="card shadow mt-4" *ngIf="dataSource && dataSource.data.length > 0">
-                <div class="card-header bg-dark text-white">
-                    <h5 class="mb-0">Invoice Details & Penalties</h5>
-                </div>
-                <div class="card-body p-0 overflow-auto">
-                    <table mat-table [dataSource]="dataSource" class="w-100 table-bordered">
-
-                        <!-- S.No Column -->
-                        <ng-container matColumnDef="sno">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> S.No </th>
-                            <td mat-cell *matCellDef="let element; let i = index" class="text-center"> {{ i + 1 }} </td>
-                        </ng-container>
-  <!-- 'sno', 'LocationName', 'InvoiceNo', 'InvoiceDate', 'OrderedQty', 'InvoiceAbsQty', 
-    'OldInvoiceValue', 'invoiceValue50', 'receivedDate', 'daysTaken', 'ldDays', 
-    'penaltyPer', 'penaltyAmt', 'logoAttached', 'logoChargesPer', 'logoPenaltyAmt', 'status', 'check' -->
-                        <!-- Consignee Column -->
-                        <ng-container matColumnDef="LocationName">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Consignee </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.LocationName}} </td>
-                        </ng-container>
-
-                        <!-- Invoice No Column -->
-                        <ng-container matColumnDef="InvoiceNo">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Invoice No </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.InvoiceNo}} </td>
-                        </ng-container>
-
-                        <!-- Invoice Date Column -->
-                        <ng-container matColumnDef="InvoiceDate">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Invoice Date </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.InvoiceDate | date:'dd-MM-yyyy'}} </td>
-                        </ng-container>
-
-                        <!-- Ordered Qty Column -->
-                        <ng-container matColumnDef="OrderedQty">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Ordered Qty </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.OrderedQty}} </td>
-                        </ng-container>
-
-                        <!-- Invoice Qty Column -->
-                        <ng-container matColumnDef="InvoiceAbsQty">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Invoice Qty </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.InvoiceAbsQty}} </td>
-                        </ng-container>
-
-                        <!-- Verified Invoice Value Column -->
-                        <ng-container matColumnDef="OldInvoiceValue">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Verified Invoice Value </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.OldInvoiceValue}} </td>
-                        </ng-container>
-
-                        <!-- Invoice Value 50% Column -->
-                        <ng-container matColumnDef="invoiceValue50">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Invoice Value 50% </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.GROSSAMOUNT50}} </td>
-                        </ng-container>
-
-                        <!-- Received Date Column -->
-                        <ng-container matColumnDef="receivedDate">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Received Date </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.recieved_date | date:'dd-MM-yyyy'}} </td>
-                        </ng-container>
-
-                        <!-- Days Taken Column -->
-                        <ng-container matColumnDef="daysTaken">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Days Taken <br> from Supply </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.daystaken}} </td>
-                        </ng-container>
-
-                        <!-- LD Days Column -->
-                        <ng-container matColumnDef="ldDays">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> LD Days </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.lblpDays}} </td>
-                        </ng-container>
-
-                        <!-- Penalty % Column -->
-                        <ng-container matColumnDef="penaltyPer">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Penalty % </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.lblpper}} </td>
-                        </ng-container>
-
-                        <!-- Penalty Amount Column -->
-                        <ng-container matColumnDef="penaltyAmt">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Penalty Amount </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.lblPenaltyAmt}} </td>
-                        </ng-container>
-
-                        <!-- Logo Attached Column -->
-                        <ng-container matColumnDef="logoAttached">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Logo Attached ? </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.Logo}} </td>
-                        </ng-container>
-
-                        <!-- Logo Charges % Column -->
-                        <ng-container matColumnDef="logoChargesPer">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Logo Charges % </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.lblLogoChargesPer}} </td>
-                        </ng-container>
-
-                        <!-- Logo Penalty Amount Column -->
-                        <ng-container matColumnDef="logoPenaltyAmt">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Logo Penalty Amount </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.lbllogPenaltyAmt}} </td>
-                        </ng-container>
-
-                        <!-- Status Column -->
-                        <ng-container matColumnDef="status">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white"> Status </th>
-                            <td mat-cell *matCellDef="let element" class="text-center"> {{element.pstatus}} </td>
-                        </ng-container>
-
-                        <!-- Checkbox Column -->
-                        <ng-container matColumnDef="check">
-                            <th mat-header-cell *matHeaderCellDef class="text-center bg-primary text-white">
-                                <div class="d-flex flex-column align-items-center">
-                                    <span style="font-size:12px;">All</span>
-                                    <input type="checkbox" (change)="masterToggle()" [checked]="isAllSelected()" />
-                                </div>
-                            </th>
-                            <td mat-cell *matCellDef="let element" class="text-center">
-                                <input type="checkbox" [(ngModel)]="element.isSelected" />
-                            </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <!-- ROW COLOR LOGIC IS APPLIED HERE -->
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngStyle]="{'background-color': row.rowColor}"></tr>
-                    </table>
-                </div>
-            </div>
-
-         
-
+    <div *ngIf="isLoading" class="loading-wrap text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3 text-muted mb-0">Fetching PO details...</p>
     </div>
+
+    <div *ngIf="!isLoading && !poDetails" class="alert alert-danger shadow-sm" role="alert">
+        Failed to load PO details or data not found.
+    </div>
+
+    <!-- ============ PO DETAILS ============ -->
+    <div *ngIf="!isLoading && poDetails" class="card section-card shadow-sm mb-4">
+        <div class="card-header section-header">
+            <h5 class="mb-0">PO Details</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row details-grid mb-0">
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Tender</dt>
+                    <dd>{{ poDetails.SchemeName }} <span class="text-muted">(ID: {{ poDetails.TenderId }})</span></dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Directorate</dt>
+                    <dd>{{ poDetails.FacilityAutName }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Item</dt>
+                    <dd>{{ poDetails.ItemName }} <span class="text-muted">({{ poDetails.ItemCode }})</span></dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Financial Year</dt>
+                    <dd>{{ poDetails.AccYear }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>PO Date</dt>
+                    <dd>{{ poDetails.PoDate }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Supply Order No</dt>
+                    <dd>{{ poDetails.PoNo }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Supplier</dt>
+                    <dd>{{ poDetails.SupplierName }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>PO Qty</dt>
+                    <dd>{{ poDetails.PoQty }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Basic Rate</dt>
+                    <dd>{{ poDetails.BasicRate | number:'1.2-2' }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>GST</dt>
+                    <dd>{{ poDetails.PercentValue }}%</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Final Rate</dt>
+                    <dd>{{ poDetails.FinalRate | number:'1.2-2' }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>PO Value (Rs)</dt>
+                    <dd class="fw-semibold">{{ poDetails.PoValue | number:'1.2-2' }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Logo Charges</dt>
+                    <dd>{{ penaltyData?.LogoCharges }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Logo Charges Upper Limit</dt>
+                    <dd>{{ penaltyData?.LogoChargesUpper }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Normal Days Allowed</dt>
+                    <dd>{{ penaltyData?.TrancheDays }} Days</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>LD Penalty</dt>
+                    <dd>{{ penaltyData?.PenaltyPercent }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Penalty (Days/Week)</dt>
+                    <dd>{{ penaltyData?.PenaltyType }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Max Days Allowed</dt>
+                    <dd>{{ penaltyData?.CancellationDays }} Days</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Penalty After Max Days / Unexecuted</dt>
+                    <dd>{{ penaltyData?.CancellationPercentage }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Penalty Approval</dt>
+                    <dd>
+                        <span class="chip" *ngIf="penaltyData?.IsLdPenalty == '0'">Not Specify</span>
+                        <span class="chip chip-warn" *ngIf="penaltyData?.IsLdPenalty == 'Y'">Granted with Penalty</span>
+                        <span class="chip chip-ok" *ngIf="penaltyData?.IsLdPenalty == 'N'">Granted without Penalty</span>
+                    </dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Extension Granted Upto</dt>
+                    <dd>{{ penaltyData?.ExtendedDate === '01-01-1900' ? 'Not Specify' : penaltyData?.ExtendedDate }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Dispatched GST</dt>
+                    <dd>{{ poDetails.InvoiceGst }}</dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Show Payment Recommendation</dt>
+                    <dd><span class="chip chip-info">Payment Recommendation</span></dd>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4 detail-item">
+                    <dt>Show Extension Approval</dt>
+                    <dd><span class="chip chip-info">Extension Approval</span></dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <!-- ============ SANCTION DETAILS FORM ============ -->
+    <div *ngIf="!isLoading && poDetails" class="card section-card shadow-sm mb-4">
+        <div class="card-header section-header">
+            <h5 class="mb-0">Sanction Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-12 col-md-6 col-xl-4">
+                    <label class="form-label" for="sanctionNo">Sanction No</label>
+                    <input id="sanctionNo" type="text" class="form-control form-control-lg" [(ngModel)]="sanctionNo" name="sanctionnumber" placeholder="Enter sanction no" />
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <label class="form-label" for="sanctionDate">Sanction Preparation Date</label>
+                    <input id="sanctionDate" type="date" class="form-control form-control-lg" [(ngModel)]="sanctionDate" name="sanctionDate" />
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <label class="form-label" for="budgetId">Budget No</label>
+                    <ng-select [items]="BudgetDropdownList" bindLabel="BudgetName" bindValue="BudgetId"
+                        placeholder="-- Choose Target Budget --" [(ngModel)]="BudgetId"
+                        class="budget-select" [clearable]="false" [virtualScroll]="false"
+                        (change)="onDirectorateSelectedChange()" name="BudgetId">
+                        <ng-template ng-option-tmp let-item="item">
+                            <span class="budget-option">{{ item.BudgetName }}</span>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <label class="form-label" for="invoiceGst">GST No in CGMSC Record</label>
+                    <input id="invoiceGst" type="text" class="form-control form-control-lg" [(ngModel)]="poDetails.InvoiceGst" name="InvoiceGst" />
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <label class="form-label" for="hsnCode">HSN Code</label>
+                    <input id="hsnCode" type="text" class="form-control form-control-lg" [(ngModel)]="poDetails.HsnCode" name="HsnCode" />
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <label class="form-label d-block">GST Check</label>
+                    <div class="form-check gst-check">
+                        <input class="form-check-input" type="checkbox" [(ngModel)]="isGstOverrideChecked" name="isGstOverrideChecked" id="gstCheck" />
+                        <label class="form-check-label" for="gstCheck">GST No checked from invoice &amp; it is fine with CGMSC GST record</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="remarks">Remarks</label>
+                    <textarea id="remarks" class="form-control" rows="2" [(ngModel)]="remarks" name="remarks"></textarea>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+                <button type="button" class="btn btn-primary btn-save px-5" (click)="saveSanctionData()">
+                    <i class="bi bi-check2-circle me-2"></i>Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ INVOICE DETAILS & PENALTIES ============ -->
+    <div class="card section-card shadow-sm" *ngIf="dataSource && dataSource.data.length > 0">
+        <div class="card-header section-header">
+            <h5 class="mb-0">Invoice Details &amp; Penalties</h5>
+            <span class="badge rounded-pill count-badge">{{ dataSource.data.length }} invoice(s)</span>
+        </div>
+        <div class="card-body p-0 table-responsive">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 sanction-table w-100">
+
+                <ng-container matColumnDef="sno">
+                    <th mat-header-cell *matHeaderCellDef class="text-center sno-col"> S.No </th>
+                    <td mat-cell *matCellDef="let element; let i = index" class="text-center sno-col"> {{ i + 1 }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="LocationName">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Consignee </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.LocationName }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="InvoiceNo">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Invoice No </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.InvoiceNo }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="InvoiceDate">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Invoice Date </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.InvoiceDate | date:'dd-MM-yyyy' }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="OrderedQty">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Ordered Qty </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.OrderedQty }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="InvoiceAbsQty">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Invoice Qty </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.InvoiceAbsQty }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="OldInvoiceValue">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Verified Invoice Value </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.OldInvoiceValue }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="invoiceValue50">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Invoice Value 50% </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.GROSSAMOUNT50 }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="receivedDate">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Received Date </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.recieved_date | date:'dd-MM-yyyy' }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="daysTaken">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Days Taken from Supply </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.daystaken }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ldDays">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> LD Days </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.lblpDays }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="penaltyPer">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Penalty % </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.lblpper }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="penaltyAmt">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Penalty Amount </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.lblPenaltyAmt }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="logoAttached">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Logo Attached? </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.Logo }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="logoChargesPer">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Logo Charges % </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.lblLogoChargesPer }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="logoPenaltyAmt">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Logo Penalty Amount </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.lbllogPenaltyAmt }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Status </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.pstatus }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="check">
+                    <th mat-header-cell *matHeaderCellDef class="text-center sel-col">
+                        <div class="d-flex flex-column align-items-center">
+                            <span class="select-all-label">All</span>
+                            <input type="checkbox" class="form-check-input" (change)="masterToggle()" [checked]="isAllSelected()" />
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="text-center sel-col">
+                        <input type="checkbox" class="form-check-input" [(ngModel)]="element.isSelected" />
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngStyle]="{'background-color': row.rowColor}"></tr>
+
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="empty-row text-center py-4" [attr.colspan]="displayedColumns.length">No invoice records found.</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
 </section>

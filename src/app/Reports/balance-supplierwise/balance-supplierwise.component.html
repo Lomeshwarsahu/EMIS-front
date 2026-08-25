@@ -1,0 +1,60 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Balance Supplierwise</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <input type="text" placeholder="Search..." (keyup)="applyTextFilter($event)" />
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export Excel</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="6" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplier_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">
+            <button type="button" class="link-btn" (click)="navigateToSupplier(element)">{{ element.supplier_name || '-' }}</button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nos_of_pending_po">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Nos of Pending PO</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.nos_of_pending_po ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplier_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.supplier_id || element.supplierId || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+          <td mat-cell *matCellDef="let element">{{ element.email || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="mobile">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Mobile</th>
+          <td mat-cell *matCellDef="let element">{{ element.mobile || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1" (dblclick)="navigateToSupplier(row)" style="cursor:pointer"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && dispatchData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+.download-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #0066cc;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 11px;
+}

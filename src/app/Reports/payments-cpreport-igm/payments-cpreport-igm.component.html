@@ -1,0 +1,104 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Payments CP Report IGM</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <mat-radio-group [(ngModel)]="poType" name="poType">
+        <mat-radio-button value="All">All</mat-radio-button>
+        <mat-radio-button value="NP">NP</mat-radio-button>
+        <mat-radio-button value="CP">CP</mat-radio-button>
+      </mat-radio-group>
+
+      <input type="date" [(ngModel)]="fromDate" name="fromDate" placeholder="From Date" />
+      <input type="date" [(ngModel)]="toDate" name="toDate" placeholder="To Date" />
+
+      <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export Excel</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="13" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplierName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.supplierName || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="countNos">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Count Nos</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.countNos ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="chequeAmount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Cheque Amount</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.chequeAmount ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="adminCharges">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Admin Charges</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.adminCharges ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="aidNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>AID No</th>
+          <td mat-cell *matCellDef="let element">{{ element.aidNo || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="chequeDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cheque Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.chequeDate || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="paidOn">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Paid On</th>
+          <td mat-cell *matCellDef="let element">{{ element.paidOn || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="paymentId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.paymentId || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="budgetName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Budget Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.budgetName || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalCheque">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Total Cheque</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.totalCheque ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="mobile">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Mobile</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.mobile || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+          <td mat-cell *matCellDef="let element">{{ element.email || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">
+            No records found.
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && dispatchData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

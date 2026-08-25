@@ -1,0 +1,108 @@
+<div class="ems-legacy-page">
+  <button type="button" class="back-link" (click)="back()">Back</button>
+
+  <div class="header-wrap">
+    <span class="header-bar narrow">Change Complaint Status</span>
+  </div>
+
+  <div *ngIf="loading" class="grid-empty">Loading complaint…</div>
+
+  <div *ngIf="!loading && detail" class="datagrid">
+    <table class="panel-table">
+      <tbody>
+        <tr>
+          <td><strong>Equipment</strong></td>
+          <td>{{ detail.itemName }}</td>
+          <td><strong>Complain Date</strong></td>
+          <td>{{ detail.complaintDate }}</td>
+          <td><strong>Equipment Not Functioning Since</strong></td>
+          <td>{{ detail.notFunctionDate }}</td>
+        </tr>
+        <tr>
+          <td><strong>Problems</strong></td>
+          <td>{{ detail.complaintsTroubleshoot }}</td>
+          <td><strong>Equipment/Serial No/Department</strong></td>
+          <td>{{ detail.locationName }}</td>
+          <td><strong>Supplier Name</strong></td>
+          <td>{{ detail.supplierName }}</td>
+        </tr>
+        <tr>
+          <td><strong>Supplier Contact</strong></td>
+          <td>{{ detail.supplierMobile }}</td>
+          <td><strong>Supplier Email</strong></td>
+          <td>{{ detail.supplierEmail }}</td>
+          <td><strong>Warranty Valid Date</strong></td>
+          <td>{{ detail.warrantyValidDate || '—' }}</td>
+        </tr>
+        <tr>
+          <td><strong>Serial No</strong></td>
+          <td>{{ detail.serialNo || detail.makeNo }}</td>
+          <td><strong>Complain Summary</strong></td>
+          <td colspan="2">{{ detail.complaintDetails }}</td>
+          <td><strong>Complain No</strong> {{ detail.complaintNo }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="panel-table">
+      <tbody>
+        <tr>
+          <td><strong>Complain Close Date</strong></td>
+          <td>
+            <input type="date" class="legacy-input" [(ngModel)]="closeDateIso" [disabled]="viewOnly || saving" />
+          </td>
+          <td><strong>Status</strong></td>
+          <td>
+            <select class="legacy-select" [(ngModel)]="status" [disabled]="viewOnly || saving">
+              <option value="Booked">Booked</option>
+              <option value="Closed">Closed</option>
+            </select>
+          </td>
+          <td><strong>Supplier Service Date</strong></td>
+          <td>
+            <input type="date" class="legacy-input" [(ngModel)]="supplierServiceDateIso" [disabled]="viewOnly || saving" />
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Corrective Action Taken</strong></td>
+          <td>
+            <select class="legacy-select" [(ngModel)]="correctiveActionTaken" (ngModelChange)="onCorrectiveChange()" [disabled]="viewOnly || saving">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </td>
+          <td><strong>Preventive Action</strong></td>
+          <td>
+            <textarea class="legacy-textarea" [(ngModel)]="preventiveAction" [disabled]="viewOnly || saving || correctiveActionTaken !== 'Yes'"></textarea>
+          </td>
+          <td><strong>Changed Parts</strong></td>
+          <td>
+            <select class="legacy-select" [(ngModel)]="changedParts" (ngModelChange)="onChangedPartsChange()" [disabled]="viewOnly || saving">
+              <option value="Changed">Changed</option>
+              <option value="NotChanged">NotChanged</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>No of Parts replaced</strong></td>
+          <td>
+            <input
+              type="number"
+              min="0"
+              class="legacy-input"
+              [(ngModel)]="partsReplaced"
+              [disabled]="viewOnly || saving || changedParts === 'NotChanged'" />
+          </td>
+        </tr>
+        <tr *ngIf="!viewOnly">
+          <td colspan="6" class="center">
+            <button type="button" class="btn-legacy" (click)="submit()" [disabled]="saving">
+              {{ saving ? 'Saving…' : 'Submit' }}
+            </button>
+            <button type="button" class="btn-legacy btn-secondary" (click)="back()" [disabled]="saving">Back</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

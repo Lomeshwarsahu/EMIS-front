@@ -217,6 +217,10 @@ export interface ItemWiseFullDTO {
   BalToReceipt: number
   BalToInstall: number
 }
+export interface ItemDTO {
+  item_id: number;
+  item_name: string;
+}
 export interface IndentPOSummaryDirwiseDTO {
     sno:number
   IndentDT: string
@@ -989,6 +993,79 @@ export interface SendToUser {
   UserName: string;
 }
 
+export interface Performace20ConsigneeHeader {
+  PoId: number;
+  PoDate: string;
+  PoNo: string;
+  ItemCode: string;
+  ItemName: string;
+  Percentage: number;
+  BasicRate: number;
+  NoOfConsignee: number;
+  Model: string;
+  Make: string;
+  POQTY: number;
+  DispatchQty: number;
+  ReceiptQty: number;
+  InsQTY: number;
+  ReleaseDur: string;
+  ReleaseType: string;
+}
+
+export interface Performace20ConsigneeGridItem {
+  sno: number;
+  location_name: string;
+  po_qty: number;
+  dispatched_qty: number;
+  received_qty: number;
+  installed_qty: number;
+  installation_date: string;
+}
+
+export interface FinReleaseGridItem {
+  sno: number;
+  po_id: number;
+  fund: string;
+  supplier_name: string;
+  nasti_no: string;
+  po_no: string;
+  installed_qty: number;
+  last_installed_date: string;
+  cheque_dt: string;
+  withheld_amt: number;
+  recovered_amount: number;
+  to_be_released_amt: number;
+  remarks: string;
+  paid_from: string;
+  paid_to: string;
+  performance_required: string;
+  tender_no: string;
+  complaint_status: string;
+  isEligible: boolean;
+}
+
+export interface ForwardUser {
+  userId: number;
+  userName: string;
+}
+
+export interface Payment20ChequePrepItem {
+  sno: number;
+  payment_id: number;
+  payment_no: string;
+  po_no: string;
+  fund: string;
+  no_of_supplier: number;
+  no_of_pos: number;
+  to_be_released_amt: number;
+  withheld_recovered_amt: number;
+  status: string;
+  cgmsc_account_no: string;
+  cheque_no: string;
+  cheque_dt: string;
+  paid_on: string;
+}
+
 export interface DistrictDto {
   DP_DistrictID: number;
   DBStart_Name_En: string;
@@ -1082,4 +1159,245 @@ export interface StoreHomeDto {
   StoreOfficer: string;
   StoreOfficerMob: string;
   StoreLandline: string;
+}
+
+export interface IndentPoTenderStatusDTO {
+  user_id?: number;
+  user_name?: string;
+  year?: string;
+  consolidated_date?: string;
+  indent_con_no?: string;
+  description?: string;
+  item_code_as_per_tender?: string;
+  item_name?: string;
+  facility_aut_code?: string;
+  location_name?: string;
+  indentQTY?: number;
+  POYear?: string;
+  po_date?: string;
+  po_no?: string;
+  POQTY?: number;
+  POValueWithTax?: number;
+  BalancePO?: number;
+  facility_id?: number;
+  supplier_name?: string;
+  tender_no?: string;
+  basic_rate?: number;
+  percentage?: number;
+  facility_aut_id?: number;
+  item_id?: number;
+  dispatchQTY?: number;
+  installedQTY?: number;
+}
+
+export interface IndentPoTenderStatusSummaryDTO {
+  Indent_Year?: string;
+  indent_consolidation_id?: number;
+  user_id?: number;
+  facility_aut_id?: number;
+  user_name?: string;
+  year?: string;
+  description?: string;
+  consolidated_date?: string;
+  totalIndentitems?: number;
+  indentqty?: number;
+  poqty?: number;
+  BalancePO?: number;
+}
+
+export interface IndentPoTenderStatusDrillDownDTO {
+  user_id?: number;
+  user_name?: string;
+  year?: string;
+  consolidated_date?: string;
+  indent_con_no?: string;
+  description?: string;
+  item_code_as_per_tender?: string;
+  item_name?: string;
+  facility_aut_code?: string;
+  location_name?: string;
+  indentQTY?: number;
+  POYear?: string;
+  po_date?: string;
+  po_no?: string;
+  POQTY?: number;
+  POValueWithTax?: number;
+  BalancePO?: number;
+  facility_id?: number;
+  supplier_name?: string;
+  basic_rate?: number;
+  percentage?: number;
+  facility_aut_id?: number;
+  item_id?: number;
+  dispatchQTY?: number;
+  installedQTY?: number;
+  remarks?: string;
+  contract_end_date?: string;
+  tenderDT?: string;
+  tender_no_drill?: string;
+  finalstatus?: string;
+}
+
+export interface IndentPoTenderSummaryDTO {
+  user_name?: string;
+  user_id?: number;
+  noscountItem?: number;
+  NoofEqIndent?: number;
+  NoofEqPO?: number;
+  NoofEqBal?: number;
+  netvalue?: number;
+  grossvalue?: number;
+  NoEQLivInTender?: number;
+}
+
+export interface IndentPoTenderSummaryDrillDownDTO {
+  item_id?: number;
+  user_id?: number;
+  user_name?: string;
+  year?: string;
+  item_code_as_per_tender?: string;
+  item_name?: string;
+  nosdistinctnoscount?: number;
+  indentQTY?: number;
+  POQTY?: number;
+  BalancePO?: number;
+  basic_rate?: number;
+  netvalue?: number;
+  grossvalue?: number;
+  tenderstatus?: string;
+}
+
+export interface TenderLiveStatusDTO {
+  nos_of_tender?: number;
+  cover_status?: string;
+  items?: number;
+}
+
+export interface TenderLiveStatusDrillDownDTO {
+  tender_no?: string;
+  tender_date?: string;
+  tender_description?: string;
+  cover_status?: string;
+  item_code?: string;
+  item_name?: string;
+}
+
+export interface BalanceStatusDTO {
+  po_id?: number;
+  tender_no?: string;
+  year?: string;
+  outward_no?: string;
+  po_no?: string;
+  po_date?: string;
+  directorate?: string;
+  authority?: string;
+  item_code?: string;
+  item_name?: string;
+  supplier?: string;
+  po_qty?: number;
+  supply_qty?: number;
+  receipt_qty?: number;
+  install_qty?: number;
+  po_type?: string;
+  balance_qty?: number;
+}
+
+export interface OpeningStockSummaryDTO {
+  user_id?: number;
+  user_name?: string;
+  nos?: number;
+}
+
+export interface OpeningStockDrillDownDTO {
+  item_id?: number;
+  item_name?: string;
+  item_code?: string;
+  make_no?: string;
+  model?: string;
+  make?: string;
+  location_name?: string;
+}
+
+export interface POSummaryDetailDTO {
+  sno?: number;
+  PoNo?: string;
+  PoDate?: string;
+  LocationName?: string;
+  Quantity?: number;
+  BasicRate?: number;
+  Percentage?: number;
+  SingleUnitPrice?: number;
+  TotalPOValue?: number;
+  SupplierName?: string;
+  TenderNo?: string;
+  OutwardNo?: string;
+}
+
+export interface POSummaryPOWiseDetailDTO {
+  sno?: number;
+  PoNo?: string;
+  PoDate?: string;
+  ItemName?: string;
+  Quantity?: number;
+  BasicRate?: number;
+  Percentage?: number;
+  TotalPOValue?: number;
+  SupplierName?: string;
+  TenderNo?: string;
+}
+
+export interface POSummaryReagentDetailDTO {
+  sno?: number;
+  ItemName?: string;
+  LocationName?: string;
+  PoDate?: string;
+  Quantity?: number;
+  BasicRate?: number;
+  Percentage?: number;
+  SingleUnitPrice?: number;
+  TotalPOValue?: number;
+  SupplierName?: string;
+  TenderNo?: string;
+  PoNo?: string;
+}
+
+export interface PaymentsCPReportDTO {
+  sno?: number;
+  supplier?: string;
+  no_of_pos?: number;
+  supplier_cheque_amount?: number;
+  admin_charges?: number;
+  total_cheque_amount?: number;
+  cheque_no?: string;
+  budget?: string;
+  cheque_date?: string;
+  bank_letter_date?: string;
+}
+
+export interface POReceiptSummaryDTO {
+  sno?: number;
+  tender_no?: string;
+  po_no?: string;
+  po_date?: string;
+  item_code?: string;
+  item_name?: string;
+  supplier_name?: string;
+  po_qty?: number;
+  supply_qty?: number;
+  receipt_qty?: number;
+  install_qty?: number;
+  cancellation_days?: number;
+  received_date?: string;
+  days_taken_to_receive?: number;
+  last_date_to_receive?: string;
+}
+
+export interface FinancialYearDTO {
+  financial_year_id?: number;
+  year?: string;
+}
+
+export interface DirectorateDTO {
+  facility_aut_id?: number;
+  facility_aut_name?: string;
 }

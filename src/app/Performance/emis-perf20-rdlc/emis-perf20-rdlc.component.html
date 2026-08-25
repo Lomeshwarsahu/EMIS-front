@@ -1,0 +1,19 @@
+<div class="it-page">
+  <h2 class="page-title">EMIS Perf20 RDLC Report — PDF Download</h2>
+
+  <app-supplier-page-skeleton *ngIf="loading" type="lines" [rows]="4" />
+
+  <div class="perf20-card" *ngIf="!loading">
+    <div class="info-row">
+      <span class="info-label">PONOID:</span>
+      <span class="info-value">{{ poNoId || '—' }}</span>
+    </div>
+
+    <div class="action-row">
+      <button class="primary-btn" (click)="downloadPdf()" [disabled]="!poNoId || downloading">
+        {{ downloading ? 'Downloading…' : 'Download PDF' }}
+      </button>
+      <button class="show-btn" (click)="goBack()">Back</button>
+    </div>
+  </div>
+</div>

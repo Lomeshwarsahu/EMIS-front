@@ -818,3 +818,240 @@ html[data-theme='dark'] #toast-container > .toast-error.emis-toast {
     width: min(260px, calc(100vw - 20px));
   }
 }
+
+/* ==========================================================================
+   EMIS Modern Pill Filter & Rounded Orange Table Header System
+   Supports both Light Mode (html[data-theme='light']) and Dark Mode (html[data-theme='dark'])
+   ========================================================================== */
+
+/* 1. Pill Filter Bar Container */
+.pill-filter-bar,
+.filter-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 10px 16px;
+  border-radius: 9999px;
+  background-color: rgba(241, 245, 249, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+html[data-theme='dark'] .pill-filter-bar,
+html[data-theme='dark'] .filter-pill-row {
+  background-color: rgba(30, 41, 59, 0.8);
+}
+
+/* 2. Pill Form Controls (Inputs, Selects) */
+.pill-input,
+.pill-select,
+.pill-filter-bar .form-control,
+.pill-filter-bar select,
+.pill-filter-bar input[type='text'],
+.pill-filter-bar input[type='search'],
+.pill-filter-bar .ng-select .ng-select-container {
+  height: 40px !important;
+  min-height: 40px !important;
+  border-radius: 9999px !important;
+  border: 1px solid #cbd5e1 !important;
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  padding: 0 18px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  outline: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.2s ease !important;
+}
+
+html[data-theme='dark'] .pill-input,
+html[data-theme='dark'] .pill-select,
+html[data-theme='dark'] .pill-filter-bar .form-control,
+html[data-theme='dark'] .pill-filter-bar select,
+html[data-theme='dark'] .pill-filter-bar input[type='text'],
+html[data-theme='dark'] .pill-filter-bar input[type='search'],
+html[data-theme='dark'] .pill-filter-bar .ng-select .ng-select-container {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+.pill-input:focus,
+.pill-select:focus,
+.pill-filter-bar .form-control:focus,
+.pill-filter-bar input:focus {
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2) !important;
+}
+
+/* 3. Pill Action Buttons */
+.pill-btn,
+.btn-pill-primary,
+.btn-pill-success,
+.btn-show-data,
+.btn-export-excel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 24px;
+  border-radius: 9999px !important;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+/* Vibrant Orange Show Data Button */
+.btn-pill-primary,
+.btn-show-data {
+  background-color: #f97316 !important;
+  color: #ffffff !important;
+}
+
+.btn-pill-primary:hover,
+.btn-show-data:hover {
+  background-color: #ea580c !important;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Soft Green Export Excel Button */
+.btn-pill-success,
+.btn-export-excel {
+  background-color: #5bbd86 !important;
+  color: #ffffff !important;
+}
+
+.btn-pill-success:hover,
+.btn-export-excel:hover {
+  background-color: #44a870 !important;
+  box-shadow: 0 4px 12px rgba(91, 189, 134, 0.3);
+  transform: translateY(-1px);
+}
+
+/* 4. Rounded Orange Table Header & Container System */
+.pill-table-card,
+.pill-table-container,
+.card-table-wrapper {
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  border: none !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+  background-color: #ffffff;
+}
+
+html[data-theme='dark'] .pill-table-card,
+html[data-theme='dark'] .pill-table-container,
+html[data-theme='dark'] .card-table-wrapper {
+  background-color: #1e293b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Table Header Row & Cells */
+.pill-table-card table thead tr,
+.pill-table-container table thead tr,
+.card-table-wrapper table thead tr,
+table.pill-table thead tr,
+table.table-orange-header thead tr,
+table.mat-table thead tr.mat-mdc-header-row,
+.po-grid thead tr,
+.batch-grid thead tr {
+  background-color: #f97316 !important;
+}
+
+html[data-theme='dark'] .pill-table-card table thead tr,
+html[data-theme='dark'] .pill-table-container table thead tr,
+html[data-theme='dark'] .card-table-wrapper table thead tr,
+html[data-theme='dark'] table.pill-table thead tr,
+html[data-theme='dark'] table.table-orange-header thead tr,
+html[data-theme='dark'] table.mat-table thead tr.mat-mdc-header-row {
+  background-color: #ea580c !important;
+}
+
+.pill-table-card table thead th,
+.pill-table-container table thead th,
+.card-table-wrapper table thead th,
+table.pill-table thead th,
+table.table-orange-header thead th,
+table.mat-table th.mat-mdc-header-cell,
+.po-grid th,
+.batch-grid th {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 14px 16px !important;
+  border: none !important;
+}
+
+/* Rounded top corners on 1st and last th */
+.pill-table-card table thead tr th:first-child,
+.pill-table-container table thead tr th:first-child,
+.card-table-wrapper table thead tr th:first-child,
+table.pill-table thead tr th:first-child,
+table.table-orange-header thead tr th:first-child,
+table.mat-table thead tr.mat-mdc-header-row th:first-child {
+  border-top-left-radius: 16px !important;
+}
+
+.pill-table-card table thead tr th:last-child,
+.pill-table-container table thead tr th:last-child,
+.card-table-wrapper table thead tr th:last-child,
+table.pill-table thead tr th:last-child,
+table.table-orange-header thead tr th:last-child,
+table.mat-table thead tr.mat-mdc-header-row th:last-child {
+  border-top-right-radius: 16px !important;
+}
+
+/* Table Body Cells */
+.pill-table-card table tbody td,
+.pill-table-container table tbody td,
+.card-table-wrapper table tbody td,
+table.pill-table tbody td,
+table.table-orange-header tbody td,
+table.mat-table td.mat-mdc-cell {
+  padding: 12px 16px !important;
+  font-size: 13px !important;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+html[data-theme='dark'] .pill-table-card table tbody td,
+html[data-theme='dark'] .pill-table-container table tbody td,
+html[data-theme='dark'] .card-table-wrapper table tbody td,
+html[data-theme='dark'] table.pill-table tbody td,
+html[data-theme='dark'] table.table-orange-header tbody td,
+html[data-theme='dark'] table.mat-table td.mat-mdc-cell {
+  color: #cbd5e1;
+  border-bottom-color: #334155 !important;
+}
+
+/* Hover effect on table rows */
+.pill-table-card table tbody tr:hover,
+.pill-table-container table tbody tr:hover,
+.card-table-wrapper table tbody tr:hover,
+table.pill-table tbody tr:hover,
+table.table-orange-header tbody tr:hover,
+table.mat-table tbody tr.mat-mdc-row:hover {
+  background-color: #fff7ed !important;
+}
+
+html[data-theme='dark'] .pill-table-card table tbody tr:hover,
+html[data-theme='dark'] .pill-table-container table tbody tr:hover,
+html[data-theme='dark'] .card-table-wrapper table tbody tr:hover,
+html[data-theme='dark'] table.pill-table tbody tr:hover,
+html[data-theme='dark'] table.table-orange-header tbody tr:hover,
+html[data-theme='dark'] table.mat-table tbody tr.mat-mdc-row:hover {
+  background-color: rgba(249, 115, 22, 0.15) !important;
+}
+

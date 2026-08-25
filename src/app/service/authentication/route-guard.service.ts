@@ -43,27 +43,25 @@ export class RouteGuardService implements CanActivate {
 //   this.router.navigate(['/login']);
 //   return false;
 // }
- canActivate(route: ActivatedRouteSnapshot): boolean {
+  canActivate(route: ActivatedRouteSnapshot): boolean {
+    const hasSession =
+      !!sessionStorage.getItem('authenticatedUser') ||
+      !!sessionStorage.getItem('roleId') ||
+      !!sessionStorage.getItem('token') ||
+      !!sessionStorage.getItem('firstname') ||
+      !!sessionStorage.getItem('userid') ||
+      !!localStorage.getItem('loginData') ||
+      !!localStorage.getItem('roleName') ||
+      !!localStorage.getItem('supplier_user_id') ||
+      !!localStorage.getItem('vregid') ||
+      this.loginService.isUserLogedIn();
 
-    // 🔹 localStorage se login data lo
-    const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
-    const userRole = loginData?.user_type;
-    // const username = loginData?.username;
-
-    // 🔹 route se allowed roles lo
-    const allowedRoles = route.data['allowedRoles'] as string[];
-
-    // console.log('User Role:', userRole);
-    // console.log('Allowed Roles:', allowedRoles);
-
-    // 🔥 check karo
-    if (userRole && allowedRoles.includes(userRole)) {
+    if (hasSession) {
       return true;
     }
 
-    // ❌ unauthorized
+    // Only redirect to login if there is completely NO user session data in browser storage
     this.router.navigate(['/login']);
     return false;
   }
-  
 }

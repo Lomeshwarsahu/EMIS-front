@@ -482,9 +482,8 @@ export class ApiService {
 
   return this.http.get(this.apiUrls + url, options);
 }
-  
-    public post(url: string, data: FormData, options?: any) {
-    // return this.http.post(this.API + url, data, options);
+  public post(url: string, data: any, options?: any) {
+    return this.http.post(this.apiUrls + url, data, options);
   }
   public post1(url: string, data: any, options?: any) {
   return this.http.post(this.apiUrls + url, data, options);

@@ -1,0 +1,116 @@
+@import '../../component/Suppliers/supplier-po-pages.shared.css';
+
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.it-page {
+  --page-accent: #f97316;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 8px 12px 12px;
+  box-sizing: border-box;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #334155;
+  overflow: hidden;
+}
+
+.page-title {
+  margin: 0 0 16px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+:host-context(html[data-theme='dark']) .page-title {
+  color: #f8fafc;
+}
+
+.notesheet-card {
+  max-width: 480px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+:host-context(html[data-theme='dark']) .notesheet-card {
+  background: #0c0e12;
+  border-color: #262b36;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.info-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+:host-context(html[data-theme='dark']) .info-value {
+  color: #f8fafc;
+}
+
+.action-row {
+  display: flex;
+  gap: 8px;
+}
+
+.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 6px 20px;
+  border-radius: 999px;
+  border: none;
+  background: var(--page-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.primary-btn:hover:not(:disabled) { filter: brightness(0.9); }
+.primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.show-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: var(--page-accent);
+  color: #fff;
+}
+
+.show-btn:hover:not(:disabled) { filter: brightness(0.9); }

@@ -1,0 +1,111 @@
+<div class="it-page" style="--page-accent:#059669">
+  <h2 class="page-title">Receipt Pending — CMHO</h2>
+
+  <div class="filters--compact">
+    <div class="radio-group">
+      <label>
+        <input type="radio" name="balanceType" [(ngModel)]="balanceType" value="I" (change)="loadData()" />
+        Installation Pending
+      </label>
+      <label>
+        <input type="radio" name="balanceType" [(ngModel)]="balanceType" value="R" (change)="loadData()" />
+        Receipt Pending
+      </label>
+      <label>
+        <input type="radio" name="balanceType" [(ngModel)]="balanceType" value="D" (change)="loadData()" />
+        Dispatch Pending
+      </label>
+      <label>
+        <input type="radio" name="balanceType" [(ngModel)]="balanceType" value="A" (change)="loadData()" />
+        All
+      </label>
+    </div>
+
+    <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!reportData.length">Export Excel</button>
+  </div>
+
+  <div class="table-container mat-elevation-z2">
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="displayedColumns.length" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="district">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>District</th>
+          <td mat-cell *matCellDef="let element">{{ element.district || element.DBStart_Name_En || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="location">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+          <td mat-cell *matCellDef="let element">{{ element.location || element.location_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_code">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+          <td mat-cell *matCellDef="let element">{{ element.item_code || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.item_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supplier">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.supplier || element.supplier_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO No</th>
+          <td mat-cell *matCellDef="let element">{{ element.po_no || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.po_date || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="po_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Quantity</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.po_qty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="supply_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Dispatched</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.supply_qty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="receipt_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Receipt</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.receipt_qty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="install_qty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Install</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.install_qty ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="remarks">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Remarks</th>
+          <td mat-cell *matCellDef="let element">{{ element.remarks || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && reportData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

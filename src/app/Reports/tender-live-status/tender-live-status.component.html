@@ -1,0 +1,50 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Tender Live Status</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <button type="button" class="show-btn" (click)="loadData()">Refresh</button>
+      <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export Excel</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="4" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="nos_of_tender">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Nos of Tender</th>
+          <td mat-cell *matCellDef="let element" class="text-center">{{ element.nos_of_tender ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="cover_status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cover Status</th>
+          <td mat-cell *matCellDef="let element">{{ element.cover_status || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="items">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Items</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <button class="link-btn" (click)="openDrillDown(element)">{{ element.items ?? '-' }}</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && dispatchData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

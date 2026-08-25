@@ -1,0 +1,19 @@
+<div class="it-page">
+  <h2 class="page-title">Sanction Notesheet — Word Document</h2>
+
+  <app-supplier-page-skeleton *ngIf="loading" type="lines" [rows]="4" />
+
+  <div class="notesheet-card" *ngIf="!loading">
+    <div class="info-row">
+      <span class="info-label">Payment ID:</span>
+      <span class="info-value">{{ paymentId || '—' }}</span>
+    </div>
+
+    <div class="action-row">
+      <button class="primary-btn" (click)="generateNotesheet()" [disabled]="!paymentId || generating">
+        {{ generating ? 'Generating…' : 'Generate Notesheet' }}
+      </button>
+      <button class="show-btn" (click)="goBack()">Back</button>
+    </div>
+  </div>
+</div>

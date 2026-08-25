@@ -1,0 +1,77 @@
+.po-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 14px;
+  background: #fff;
+  border: 1px solid var(--border-color, #dde3ea);
+  border-radius: 8px;
+}
+
+.po-summary__item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.po-summary__label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+}
+
+.po-summary__value {
+  font-weight: 600;
+  color: #111827;
+}
+
+.po-summary__value .sub-code {
+  font-weight: 400;
+  color: #6b7280;
+  margin-left: 4px;
+}
+
+.realloc-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 14px;
+  background: #fff;
+  border: 1px solid var(--border-color, #dde3ea);
+  border-radius: 8px;
+}
+
+.realloc-form__row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.realloc-form__row label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.realloc-form__row input[type='text'] {
+  width: 320px;
+}
+
+.history-section {
+  margin-top: 20px;
+}
+
+.history-section h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+  color: #111827;
+}
+
+.row-blocked {
+  opacity: 0.55;
+  pointer-events: none;
+}

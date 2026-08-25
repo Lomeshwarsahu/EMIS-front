@@ -1,0 +1,85 @@
+<div class="it-page" style="--page-accent:#059669">
+  <h2 class="page-title">Tender Status Item Wise</h2>
+
+  <div class="filters--compact">
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      name="searchText"
+      placeholder="Search by Item Code / Name"
+      (keyup.enter)="loadData()" />
+
+    <button type="button" class="show-btn" (click)="loadData()">Search</button>
+    <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!reportData.length">Export Excel</button>
+  </div>
+
+  <div class="table-container mat-elevation-z2">
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="displayedColumns.length" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
+
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tender_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.tender_id || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tender_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender No</th>
+          <td mat-cell *matCellDef="let element">{{ element.tender_no || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_code">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Code</th>
+          <td mat-cell *matCellDef="let element">{{ element.item_code || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</th>
+          <td mat-cell *matCellDef="let element" class="wrap-cell">{{ element.item_name || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tender_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tender Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.tender_date || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="end_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>End Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.end_date || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="final_status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Final Status</th>
+          <td mat-cell *matCellDef="let element">{{ element.final_status || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="item_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Item ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.item_id ?? '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="csid">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>CSID</th>
+          <td mat-cell *matCellDef="let element">{{ element.csid || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="empty-row" [attr.colspan]="displayedColumns.length">No records found. Try a different search term.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-footer p-0" *ngIf="!loading && reportData.length">
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

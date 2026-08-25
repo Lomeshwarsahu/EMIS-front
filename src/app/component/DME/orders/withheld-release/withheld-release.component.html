@@ -1,0 +1,158 @@
+<div class="dme-stock-page">
+  <div class="note-bar">
+    Release Witheld Cheque Preparation (20% Withheld) — select sanctions pending release, prepare
+    the cheque details and generate the bank letter.
+  </div>
+
+  <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="8" />
+
+  <div class="datagrid" *ngIf="!loading">
+    <div class="table-wrap">
+      <table class="stock-grid">
+        <thead>
+          <tr>
+            <th class="text-center">SL. No</th>
+            <th class="text-center">Add for Payment</th>
+            <th class="text-center">Show Sanction</th>
+            <th>Budget</th>
+            <th>PO Type</th>
+            <th>PO No</th>
+            <th class="text-center">PO Date</th>
+            <th>Supplier</th>
+            <th class="text-center">Sanction Date</th>
+            <th class="text-right">Gross Amount</th>
+            <th class="text-right">Previous Cheque Amount</th>
+            <th class="text-center">Cheque No</th>
+            <th class="text-center">Previous Cheque Date</th>
+            <th class="text-center">Withheld Qty</th>
+            <th class="text-right">Withheld Amount</th>
+            <th class="text-right">Release Amount 20%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td class="text-center">
+              <input type="checkbox" aria-label="Add for payment" [(ngModel)]="row.checked" />
+            </td>
+            <td class="text-center">
+              <a routerLink="/reports/sanctions-rdlc" [queryParams]="{ SanctionID: row.SanctionId, PONOID: row.PoId, reporttype: 'PDF' }" target="_blank" rel="noopener">Download</a>
+            </td>
+            <td>{{ row.BudgetName || '—' }}</td>
+            <td>{{ row.PoType || '—' }}</td>
+            <td>{{ row.PoNo || '—' }}</td>
+            <td class="text-center">{{ row.PoDate || '—' }}</td>
+            <td>{{ row.SupplierName || '—' }}</td>
+            <td class="text-center">{{ row.SanctionDate || '—' }}</td>
+            <td class="text-right">{{ row.GrossAmt }}</td>
+            <td class="text-right">{{ row.ChequeAmt }}</td>
+            <td class="text-center">{{ row.AidNo || '—' }}</td>
+            <td class="text-center">{{ row.ChequeDate || '—' }}</td>
+            <td class="text-center">{{ row.WithledQty }}</td>
+            <td class="text-right">{{ row.Witheld20 }}</td>
+            <td class="text-right">{{ row.ReleaseAmt }}</td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="16" class="empty-row">
+              <div class="empty-state">
+                <p>No pending withheld releases found.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-toolbar">
+      <button type="button" class="btn btn--primary" [disabled]="!hasSelection()" (click)="releaseAmount()">
+        Release Witheld Amount
+      </button>
+    </div>
+
+    <div class="release-form" *ngIf="amountPaid > 0">
+      <div class="section-title">Supplier Account Details</div>
+      <div class="form-grid">
+        <div class="form-row">
+          <label for="supplierAcct">Supplier Account No</label>
+          <select id="supplierAcct" [(ngModel)]="supplierBankAccountId" name="supplierBankAccountId" (ngModelChange)="onSupplierBankChange()">
+            <option [ngValue]="0">-- Select --</option>
+            <option *ngFor="let b of supplierBanks" [ngValue]="b.BankAccountId">{{ b.AccountNo }}</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Supplier Account Name</label>
+          <div class="field-value">{{ bankDetail?.AccountName || '—' }}</div>
+        </div>
+        <div class="form-row">
+          <label>IFSC</label>
+          <div class="field-value">{{ bankDetail?.IfscCode || '—' }}</div>
+        </div>
+        <div class="form-row">
+          <label>Branch</label>
+          <div class="field-value">{{ bankDetail?.Branch || '—' }}</div>
+        </div>
+      </div>
+
+      <div class="section-title">Payment Details</div>
+      <div class="form-grid">
+        <div class="form-row">
+          <label>Gross Amount</label>
+          <div class="field-value">{{ amountPaid }}</div>
+        </div>
+        <div class="form-row">
+          <label>Cheque Amount</label>
+          <div class="field-value field-value--green">{{ amountPaid }}</div>
+        </div>
+        <div class="form-row">
+          <label for="payMode">Payment Mode</label>
+          <select id="payMode" [(ngModel)]="payMode" name="payMode">
+            <option [ngValue]="1">Cheque/RTGS</option>
+            <option [ngValue]="2">Online</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="chequeNo">Cheque No.</label>
+          <input id="chequeNo" type="text" [(ngModel)]="chequeNo" name="chequeNo" />
+        </div>
+        <div class="form-row">
+          <label for="chequeDate">Cheque Date</label>
+          <input id="chequeDate" type="date" [(ngModel)]="chequeDate" name="chequeDate" />
+        </div>
+        <div class="form-row">
+          <label for="debitAcct">Debit Account No.</label>
+          <select id="debitAcct" [(ngModel)]="cgmscBankAccountId" name="cgmscBankAccountId">
+            <option [ngValue]="0">-- Select --</option>
+            <option *ngFor="let b of cgmscBanks" [ngValue]="b.BankAccountId">{{ b.AccountNo }}</option>
+          </select>
+        </div>
+        <div class="form-row form-row--wide">
+          <label for="remarks">Remarks (Max 400)</label>
+          <textarea id="remarks" [(ngModel)]="remarks" name="remarks" maxlength="400" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button type="button" class="btn btn--primary" [disabled]="saving || !canSave()" (click)="save()">
+          {{ saving ? 'Saving...' : 'Update' }}
+        </button>
+        <button type="button" class="btn btn--ghost" [disabled]="saving" (click)="resetSelection()">Cancel</button>
+        <button type="button" class="btn btn--ghost" [disabled]="!paymentId" (click)="viewBankLetter()">
+          Download Bank Letter
+        </button>
+      </div>
+
+      <div class="complete-panel" *ngIf="!paymentCompleted">
+        <div class="form-row">
+          <label for="payDate">Pay Date</label>
+          <input id="payDate" type="date" [(ngModel)]="payDate" name="payDate" />
+        </div>
+        <button type="button" class="btn btn--primary" [disabled]="saving || !payDate" (click)="completePayment()">
+          {{ saving ? 'Saving...' : 'Complete' }}
+        </button>
+      </div>
+      <div class="complete-note" *ngIf="paymentCompleted">
+        Payment made successfully for 20% withheld. This entry can no longer be edited.
+      </div>
+    </div>
+  </div>
+</div>

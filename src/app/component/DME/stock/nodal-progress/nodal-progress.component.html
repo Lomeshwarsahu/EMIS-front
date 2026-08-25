@@ -1,0 +1,131 @@
+<div class="dme-stock-page">
+  <div class="note-bar">
+    Note: Weekly progress report entry. Select the equipment, tick the rows checked,
+    mark Working / Not Working status and save the report after OTP verification.
+  </div>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <select
+        aria-label="Select Equipment"
+        [(ngModel)]="selectedPid"
+        name="selectedPid"
+        (ngModelChange)="onEquipmentChange()"
+        [class.is-placeholder]="selectedPid === 0">
+        <option *ngFor="let t of equipmentTypes" [ngValue]="t.Pid">{{ t.PItemName }}</option>
+      </select>
+    </div>
+
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="8" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="stock-grid">
+        <thead>
+          <tr>
+            <th class="text-center">S.No</th>
+            <th>
+              <input
+                type="checkbox"
+                aria-label="Select all rows"
+                [checked]="allChecked()"
+                [indeterminate]="someChecked()"
+                (change)="toggleAll()" />
+            </th>
+            <th>Equipment</th>
+            <th>Item Code</th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Serial No.</th>
+            <th>Installation Location</th>
+            <th class="text-center">Installed Date</th>
+            <th class="text-center">Warranty Upto</th>
+            <th>Supplied From</th>
+            <th class="text-center">Receipt Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td class="text-center">
+              <input type="checkbox" aria-label="Select row" [(ngModel)]="row.checked" />
+            </td>
+            <td>
+              {{ row.ItemName || '—' }}
+              <span class="sub-code" *ngIf="row.ItemCode">{{ row.ItemCode }}</span>
+            </td>
+            <td>{{ row.ItemCode || '—' }}</td>
+            <td>{{ row.Make || '—' }}</td>
+            <td>{{ row.ModelNo || '—' }}</td>
+            <td>{{ row.MakeSerialNo || '—' }}</td>
+            <td>{{ row.InstallLocation || '—' }}</td>
+            <td class="text-center">{{ row.InstallationDate || '—' }}</td>
+            <td class="text-center">{{ row.WarrantyUpto || '—' }}</td>
+            <td>{{ row.SuppliedFrom || '—' }}</td>
+            <td class="text-center">{{ row.ReceiptDate || '—' }}</td>
+          </tr>
+          <tr *ngIf="selectedPid && !rows.length">
+            <td colspan="12" class="empty-row">
+              <div class="empty-state">
+                <p>All equipment for this category has already been reported today, or none found.</p>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="!selectedPid">
+            <td colspan="12" class="empty-row">
+              <div class="empty-state">
+                <p>Select an equipment to view the pending equipment checklist.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="progress-form" *ngIf="!loading && rows.length">
+      <div class="progress-form__heading">
+        {{ monthLabel }} — Week {{ week }} Report
+      </div>
+
+      <div class="progress-form__row">
+        <label for="workingStatus">Working Status</label>
+        <select id="workingStatus" [(ngModel)]="workingStatus" name="workingStatus">
+          <option value="Y">Working</option>
+          <option value="N">Not Working</option>
+        </select>
+
+        <label for="remark" class="ml">Remark (required when Not Working)</label>
+        <input
+          id="remark"
+          type="text"
+          [(ngModel)]="remark"
+          name="remark"
+          placeholder="Enter remark for Not Working equipment" />
+      </div>
+
+      <div class="progress-form__row">
+        <input type="checkbox" id="agreed" [(ngModel)]="agreed" name="agreed" />
+        <label for="agreed">
+          I confirm the above working status of the equipment is correct as on today's date.
+        </label>
+      </div>
+
+      <div class="progress-form__row progress-form__otp">
+        <button type="button" class="btn btn--primary" [disabled]="sendingOtp" (click)="sendOtp()">
+          {{ sendingOtp ? 'Sending...' : 'Send OTP' }}
+        </button>
+        <span *ngIf="otpSent" class="otp-note">OTP sent to the nodal officer's registered mobile.</span>
+      </div>
+
+      <div class="progress-form__actions">
+        <button
+          type="button"
+          class="btn btn--primary"
+          [disabled]="saving || !otpSent || !agreed"
+          (click)="save()">
+          {{ saving ? 'Saving...' : 'Save Report' }}
+        </button>
+        <button type="button" class="btn" (click)="loadProgress()">Refresh</button>
+      </div>
+    </div>
+  </div>
+</div>

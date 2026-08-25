@@ -117,10 +117,6 @@
                       SUPPLIER
                     </button>
                   </li>
-                  <li class="nav-item ms-2 align-self-center">
-                    <a routerLink="/supplier-login" class="btn btn-sm btn-outline-light">Supplier Portal</a>
-                  </li>
-
 
 
                 </ul>
@@ -488,9 +484,8 @@
                         </span>
                         <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="id"
                           (ngModelChange)="onUserChangeInfrastructure($event)" name="dme_user_id"
-                          #dmeUserField="ngModel"
-                          [placeholder]="!id ? 'Select Medical College / Hospital' : ''" [searchable]="true"
-                          [clearable]="true" [appendTo]="'body'" required class="form-control">
+                          #dmeUserField="ngModel" [placeholder]="!id ? 'Select Medical College / Hospital' : ''"
+                          [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
                         </ng-select>
                       </div>
                       <div *ngIf="dmeUserField.invalid && (dmeUserField.dirty || dmeUserField.touched)"
@@ -535,33 +530,34 @@
                   </form>
 
                 </div>
-                <!--  DHS loging-->
-                <div class="tab-pane fade " id="DHS" role="tabpanel" aria-labelledby="cgmscl-tab">
-                  <form #cgmsclForm="ngForm" (ngSubmit)="cgmsclForm.valid && handleCgmsclLogin1()">
+                <!--  DHS login -->
+                <div class="tab-pane fade" id="DHS" role="tabpanel" aria-labelledby="cgmscl-tab">
+                  <form #dhsForm="ngForm" (ngSubmit)="dhsForm.valid && handleCgmsclLogin1()">
                     <div class="mb-3">
-                      <label for="emailid" class="form-label">Select User</label>
+                      <label class="form-label fw-bold">Select Login Category</label>
                       <div class="filter-field d-flex gap-4 align-items-center">
 
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
-                            value="0" [(ngModel)]="selectedStatusDHS" (change)="onStatusChangeDHS()">
-                          <label class="form-check-label" for="exampleRadios1">
+                          <input class="form-check-input" type="radio" name="dhsRadios" id="dhsRadio1" value="0"
+                            [(ngModel)]="selectedStatusDHS" (change)="onStatusChangeDHS()">
+                          <label class="form-check-label" for="dhsRadio1">
                             Health Facility
                           </label>
                         </div>
 
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                            value="1" [(ngModel)]="selectedStatusDHS" (change)="getallusers('5')">
-                          <label class="form-check-label" for="exampleRadios2">
+                          <input class="form-check-input" type="radio" name="dhsRadios" id="dhsRadio2" value="1"
+                            [(ngModel)]="selectedStatusDHS" (change)="getallusers('5')">
+                          <label class="form-check-label" for="dhsRadio2">
                             CMHO-Store
                           </label>
                         </div>
 
                       </div>
                     </div>
-                    <ng-container *ngIf="selectedStatusDHS == '0'">
 
+                    <!-- Health Facility (Select User Dropdown & Password) -->
+                    <ng-container *ngIf="selectedStatusDHS == '0'">
                       <div class="mb-3">
 
                         <label for="pwd" class="form-label">User Id</label>
@@ -621,46 +617,49 @@
                             <i class="fas fa-user"></i>
                           </span>
                           <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
-                            [placeholder]="!emailid ? 'Select Directorate' : ''" [searchable]="true" [clearable]="true"
-                            [appendTo]="'body'" required class="form-control">
+                            (change)="onUserChangeCgmscl($event)" name="dhs_facility_user"
+                            [placeholder]="!emailid ? 'Select Health Facility / User' : ''" [searchable]="true"
+                            [clearable]="true" [appendTo]="'body'" required class="form-control">
                           </ng-select>
                         </div>
-                        <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
-                          class="text-danger">
-                          Please select a User.
-                        </div>
                       </div>
-                      <div class="mb-3">
 
-                        <label for="pwd" class="form-label">User Id</label>
-                        <div class="input-group">
-                          <!-- <span class="input-group-text bg-light">
-                          <i class="fas fa-user"></i>
-                        </span> -->
-                          <input type="text" class="form-control" id="id" name="id" [(ngModel)]="pwd"
-                            #pwdField="ngModel" required>
-
-                        </div>
-
-                        <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
-                          Password is required.
-                        </div>
-                      </div>
                       <div class="mb-3 position-relative">
-                        <label for="pwd" class="form-label">Password</label>
-
-                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                          [(ngModel)]="pwd" placeholder="Enter Password" required>
-
+                        <label for="dhs_pwd_input" class="form-label">Password</label>
+                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="dhs_pwd_input"
+                          name="dhs_pwd_input" [(ngModel)]="pwd" placeholder="Enter Password" required>
                         <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                          (click)="togglePassword()">
-                        </i>
+                          (click)="togglePassword()"></i>
+                      </div>
 
-                        <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
-                          Password is required.
+                      <button type="submit" class="btn btn-primary text-white w-100 mt-2"
+                        [disabled]="!emailid || !pwd">Login</button>
+                    </ng-container>
+
+                    <!-- CMHO-Store (Dropdown Selection & Password) -->
+                    <ng-container *ngIf="selectedStatusDHS == '1'">
+                      <div class="mb-3">
+                        <label for="dhs_select_user" class="form-label">Select User / Directorate</label>
+                        <div class="input-group">
+                          <span class="input-group-text bg-light">
+                            <i class="fas fa-user"></i>
+                          </span>
+                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
+                            (change)="onUserChangeCgmscl($event)" name="dhs_select_user"
+                            [placeholder]="!emailid ? 'Select Directorate / User' : ''" [searchable]="true"
+                            [clearable]="true" [appendTo]="'body'" required class="form-control">
+                          </ng-select>
                         </div>
                       </div>
+
+                      <div class="mb-3 position-relative">
+                        <label for="dhs_pwd_cmho" class="form-label">Password</label>
+                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="dhs_pwd_cmho"
+                          name="dhs_pwd_cmho" [(ngModel)]="pwd" placeholder="Enter Password" required>
+                        <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                          (click)="togglePassword()"></i>
+                      </div>
+
                        <div class="mb-3">
                       <label for="captcha" class="form-label">CAPTCHA</label>
                       <div class="d-flex align-items-center">
@@ -680,11 +679,13 @@
                     </div>
                       <button type="submit" class="btn btn-successs btn-primary tex-white w-100"
                         [disabled]="cgmsclForm.invalid">Login</button>
+
+
+                      <button type="submit" class="btn btn-primary text-white w-100 mt-2"
+                        [disabled]="!emailid || !pwd">Login</button>
+
                     </ng-container>
-
-
                   </form>
-
                 </div>
                 <!-- Supplier — 3 mode buttons + Login / New User / Forgot OTP flow -->
                 <div class="tab-pane fade" id="SUPPLIER" role="tabpanel" aria-labelledby="supplier-tab">
@@ -699,24 +700,15 @@
                     </div>
 
                     <div class="mode-btn-row" role="group" aria-label="Supplier auth mode">
-                      <button
-                        type="button"
-                        class="mode-btn"
-                        [class.mode-btn--active]="supplierAuthMode === 'login'"
+                      <button type="button" class="mode-btn" [class.mode-btn--active]="supplierAuthMode === 'login'"
                         (click)="setSupplierAuthMode('login')">
                         Login in EMS
                       </button>
-                      <button
-                        type="button"
-                        class="mode-btn"
-                        [class.mode-btn--active]="supplierAuthMode === 'new'"
+                      <button type="button" class="mode-btn" [class.mode-btn--active]="supplierAuthMode === 'new'"
                         (click)="setSupplierAuthMode('new')">
                         New User-ID in EMS
                       </button>
-                      <button
-                        type="button"
-                        class="mode-btn"
-                        [class.mode-btn--active]="supplierAuthMode === 'reset'"
+                      <button type="button" class="mode-btn" [class.mode-btn--active]="supplierAuthMode === 'reset'"
                         (click)="setSupplierAuthMode('reset')">
                         Forgot/Reset Password
                       </button>
@@ -728,18 +720,10 @@
                         <span class="input-group-text bg-light">
                           <i class="fas fa-user"></i>
                         </span>
-                        <ng-select
-                          [items]="supplierAuthOptions"
-                          bindLabel="user_name"
-                          bindValue="user_id"
-                          [(ngModel)]="supplierUserId"
-                          (change)="onSupplierTabSelect()"
-                          name="supplierAuthSelect"
-                          [placeholder]="supplierSelectPlaceholder"
-                          [searchable]="true"
-                          [clearable]="true"
-                          [appendTo]="'body'"
-                          class="form-control supplier-ng-select">
+                        <ng-select [items]="supplierAuthOptions" bindLabel="user_name" bindValue="user_id"
+                          [(ngModel)]="supplierUserId" (change)="onSupplierTabSelect()" name="supplierAuthSelect"
+                          [placeholder]="supplierSelectPlaceholder" [searchable]="true" [clearable]="true"
+                          [appendTo]="'body'" class="form-control supplier-ng-select">
                         </ng-select>
                       </div>
                     </div>
@@ -747,20 +731,13 @@
                     <ng-container *ngIf="supplierAuthMode === 'login'">
                       <div class="supplier-field supplier-field--password">
                         <label class="form-label">Password</label>
-                        <input
-                          [type]="isPasswordVisible ? 'text' : 'password'"
-                          class="form-control"
-                          name="supplierPwd"
-                          [(ngModel)]="pwd"
-                          placeholder="Enter Password"
-                          (keyup.enter)="handleSupplierLogin()" />
-                        <i
-                          class="fa toggle-eye supplier-toggle-eye"
-                          [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                          (click)="togglePassword()">
+                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" name="supplierPwd"
+                          [(ngModel)]="pwd" placeholder="Enter Password" (keyup.enter)="handleSupplierLogin()" />
+                        <i class="fa toggle-eye supplier-toggle-eye"
+                          [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePassword()">
                         </i>
                       </div>
-                       <div class="mb-3">
+                      <div class="mb-3">
                       <label for="captcha" class="form-label">CAPTCHA</label>
                       <div class="d-flex align-items-center">
                         <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
@@ -787,33 +764,13 @@
                     </ng-container>
                   
                     <ng-container *ngIf="supplierAuthMode !== 'login'">
-                       <div class="mb-3">
-                      <label for="captcha" class="form-label">CAPTCHA</label>
-                      <div class="d-flex align-items-center">
-                        <span class="input-group-text bg-light text-dark fw-bold p-1" id="captchaText" style="user-select: none;">{{ captcha
-                          }}</span>
-                        <button type="button" class="btn btn-link" (click)="generateCaptcha()">
-                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
-                        </button>
-                      </div>
-                    
-                    <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
-                      placeholder="Enter CAPTCHA" required>
-                    
-                    <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched)" class="text-danger">
-                      OTP/CAPTCHA is Required.
-                    </div>
-                    </div>
-                      <button
-                        type="button"
-                        class="btn btn-primary text-white w-100 supplier-action-btn"
-                        [disabled]="!supplierUserId || supplierAuthBusy"
-                        (click)="openSupplierPasswordFlow()">
+                      <button type="button" class="btn btn-primary text-white w-100 supplier-action-btn"
+                        [disabled]="!supplierUserId || supplierAuthBusy" (click)="openSupplierPasswordFlow()">
                         {{ supplierAuthBusy
-                          ? 'Please wait...'
-                          : supplierAuthMode === 'new'
-                            ? 'Action: Create User'
-                            : 'Action: Forgot & Reset User' }}
+                        ? 'Please wait...'
+                        : supplierAuthMode === 'new'
+                        ? 'Action: Create User'
+                        : 'Action: Forgot & Reset User' }}
                       </button>
                     </ng-container>
                     
@@ -837,62 +794,38 @@
                       <div class="supplier-field">
                         <label class="form-label">Enter Userid</label>
                         <div class="input-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="supplierDesiredUserId"
-                            name="supplierDesiredUserId"
-                            [readonly]="supplierAuthMode === 'reset'" />
+                          <input type="text" class="form-control" [(ngModel)]="supplierDesiredUserId"
+                            name="supplierDesiredUserId" [readonly]="supplierAuthMode === 'reset'" />
                           <span class="input-group-text" *ngIf="supplierAuthMode === 'new'">@ems.in</span>
                         </div>
                       </div>
 
-                      <button
-                        type="button"
-                        class="btn btn-outline-primary supplier-otp-send"
-                        [disabled]="supplierOtpSending"
-                        (click)="sendSupplierOtp()">
+                      <button type="button" class="btn btn-outline-primary supplier-otp-send"
+                        [disabled]="supplierOtpSending" (click)="sendSupplierOtp()">
                         {{ supplierOtpSending ? 'Sending...' : 'Send OTP' }}
                       </button>
 
                       <div class="supplier-field">
                         <label class="form-label">Enter OTP</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="supplierOtp"
-                          name="supplierOtp"
-                          maxlength="4"
-                          inputmode="numeric"
-                          placeholder="4 digit OTP" />
+                        <input type="text" class="form-control" [(ngModel)]="supplierOtp" name="supplierOtp"
+                          maxlength="4" inputmode="numeric" placeholder="4 digit OTP" />
                       </div>
                       <div class="supplier-field">
                         <label class="form-label">New Password</label>
-                        <input
-                          type="password"
-                          class="form-control"
-                          [(ngModel)]="supplierNewPassword"
-                          name="supplierNewPassword"
-                          placeholder="New Password" />
+                        <input type="password" class="form-control" [(ngModel)]="supplierNewPassword"
+                          name="supplierNewPassword" placeholder="New Password" />
                       </div>
                       <div class="supplier-field">
                         <label class="form-label">Repeat Password</label>
-                        <input
-                          type="password"
-                          class="form-control"
-                          [(ngModel)]="supplierRepeatPassword"
-                          name="supplierRepeatPassword"
-                          placeholder="Repeat Password" />
+                        <input type="password" class="form-control" [(ngModel)]="supplierRepeatPassword"
+                          name="supplierRepeatPassword" placeholder="Repeat Password" />
                       </div>
                    
                       <p class="supplier-otp-msg" *ngIf="supplierOtpMessage">{{ supplierOtpMessage }}</p>
 
 
                       <div class="supplier-otp-actions">
-                        <button
-                          type="button"
-                          class="btn btn-primary flex-fill"
-                          [disabled]="supplierOtpSubmitting"
+                        <button type="button" class="btn btn-primary flex-fill" [disabled]="supplierOtpSubmitting"
                           (click)="submitSupplierPassword()">
                           {{ supplierOtpSubmitting ? 'Saving...' : 'Submit' }}
                         </button>

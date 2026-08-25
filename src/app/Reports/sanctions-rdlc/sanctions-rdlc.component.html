@@ -1,0 +1,30 @@
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Sanctions RDLC Report</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <div class="filter-section">
+        <span class="filter-label">Sanction ID: <strong>{{ sanctionId || 'N/A' }}</strong></span>
+      </div>
+      <div class="filter-section">
+        <span class="filter-label">PO No ID: <strong>{{ poNoId || 'N/A' }}</strong></span>
+      </div>
+    </div>
+
+    <div class="rdlc-actions">
+      <button type="button" class="show-btn" (click)="downloadPdf()" [disabled]="loading || !sanctionId || !poNoId">
+        {{ loading ? 'Generating...' : 'Download' }}
+      </button>
+      <button type="button" class="export-btn" (click)="goBack()">Back</button>
+    </div>
+
+    <div class="loading-container" *ngIf="loading">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Generating PDF, please wait...</p>
+    </div>
+
+    <div class="success-message" *ngIf="downloaded && !loading">
+      <p>PDF downloaded successfully.</p>
+    </div>
+  </div>
+</div>
