@@ -3,7 +3,6 @@ import { MatDrawerMode } from '@angular/material/sidenav';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router, NavigationEnd } from '@angular/router';
-import { HardcodedAuthenticationService } from './service/authentication/hardcoded-authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { MenuServiceService } from './service/menu-service.service';
 import { BasicAuthenticationService } from './service/authentication/basic-authentication.service';

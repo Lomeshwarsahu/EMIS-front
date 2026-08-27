@@ -4,7 +4,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { HardcodedAuthenticationService } from 'src/app/service/authentication/hardcoded-authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { BasicAuthenticationService } from 'src/app/service/authentication/basic-authentication.service';
 import { ApiService } from 'src/app/service/api.service';
@@ -92,7 +91,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private location: Location,
     private toastr: ToastrService,
     private router: Router,
-    public hardcodedAuthenticationService: HardcodedAuthenticationService,
     private menuService: MenuServiceService,
   ) {}
 

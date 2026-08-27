@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { ApexAxisChartSeries, ApexChart, ApexStroke, ApexXAxis, ApexFill, ApexPlotOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
 import { ApiService } from 'src/app/service/api.service';
 import { BasicAuthenticationService } from 'src/app/service/authentication/basic-authentication.service';
-import { HardcodedAuthenticationService } from 'src/app/service/authentication/hardcoded-authentication.service'; // Assuming you have a service for getting the username
 import { MenuServiceService } from 'src/app/service/menu-service.service';
 // import { ChartOptions } from '../card/card.component';
 import { fontWeight } from 'html2canvas/dist/types/css/property-descriptors/font-weight';
@@ -393,7 +392,7 @@ colors = [];
     'Finance Dashboard':'assets/dash-icon/dashboard.png',
 
   };
-  constructor(private spinner: NgxSpinnerService, private dialog: MatDialog,private api: ApiService,private menuService: MenuServiceService,private authService: HardcodedAuthenticationService,public basicAuthentication: BasicAuthenticationService,public router:Router) {
+  constructor(private spinner: NgxSpinnerService, private dialog: MatDialog,private api: ApiService,private menuService: MenuServiceService,public basicAuthentication: BasicAuthenticationService,public router:Router) {
     
    
 
