@@ -1,95 +1,223 @@
-<div class="dme-stock-page">
-  <div class="note-bar">
-    Nodal Officer Information for Maintenance of COVID19 Related Equipment
-  </div>
+<div class="it-page">
+  <h2 class="page-title">Nodal Officer Information (COVID-19 Equipment Maintenance)</h2>
 
   <div class="datagrid">
-    <div class="table-toolbar toolbar--row">
-      <button type="button" class="btn btn--small" (click)="addRow()" [disabled]="saving">
+    <!-- Toolbar Filters -->
+    <div class="table-toolbar filters--compact">
+      <input
+        type="text"
+        class="search-input"
+        [(ngModel)]="searchQuery"
+        (input)="onFilterChange()"
+        placeholder="Search facility, district, nodal officer..."
+        aria-label="Search nodal officers"
+      />
+
+      <select
+        aria-label="District"
+        [(ngModel)]="selectedDistrict"
+        (change)="onFilterChange()">
+        <option value="ALL">All Districts</option>
+        <option *ngFor="let d of districts" [value]="d">{{ d }}</option>
+      </select>
+
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters()"
+        (click)="clearFilters()">
+        Clear Filter
+      </button>
+
+      <button
+        type="button"
+        class="show-btn btn-add"
+        (click)="addRow()"
+        [disabled]="loading || saving">
         + Add Entry
+      </button>
+
+      <button
+        type="button"
+        class="show-btn export-btn"
+        (click)="exportCsv()"
+        [disabled]="loading || !dataSource.filteredData.length && !dataSource.data.length">
+        Export CSV
       </button>
     </div>
 
-    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="8" />
+    <!-- Skeleton Loading -->
+    <app-dme-page-skeleton
+      *ngIf="loading"
+      type="table"
+      [rows]="6"
+      [cols]="8"
+    />
 
+    <!-- Data Table -->
     <div class="table-wrap" *ngIf="!loading">
-      <table class="stock-grid">
-        <thead>
-          <tr>
-            <th class="text-center">S.No</th>
-            <th>Facility Name</th>
-            <th class="text-center">District</th>
-            <th>Nodal Officer Name</th>
-            <th>Designation</th>
-            <th>Email-ID</th>
-            <th>Mobile No</th>
-            <th class="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
-            <td class="text-center">{{ i + 1 }}</td>
-            <td>
-              {{ row.LocationName || '—' }}
-              <span class="sub-code" *ngIf="row.FacilityTypeName">{{ row.FacilityTypeName }}</span>
-            </td>
-            <td class="text-center">{{ row.DistrictName || '—' }}</td>
-            <td>
-              <ng-container *ngIf="row.isNew">
-                <input type="text" class="form-input" [(ngModel)]="row.Name" placeholder="Name" />
-              </ng-container>
-              <ng-container *ngIf="!row.isNew">{{ row.Name || '—' }}</ng-container>
-            </td>
-            <td>
-              <ng-container *ngIf="row.isNew">
-                <input
-                  type="text"
-                  class="form-input"
-                  [(ngModel)]="row.Designation"
-                  placeholder="Designation" />
-              </ng-container>
-              <ng-container *ngIf="!row.isNew">{{ row.Designation || '—' }}</ng-container>
-            </td>
-            <td>
-              <ng-container *ngIf="row.isNew">
-                <input type="email" class="form-input" [(ngModel)]="row.EmailId" placeholder="Email" />
-              </ng-container>
-              <ng-container *ngIf="!row.isNew">{{ row.EmailId || '—' }}</ng-container>
-            </td>
-            <td>
-              <ng-container *ngIf="row.isNew">
-                <input type="text" class="form-input" [(ngModel)]="row.MobileNo" placeholder="Mobile" />
-              </ng-container>
-              <ng-container *ngIf="!row.isNew">{{ row.MobileNo || '—' }}</ng-container>
-            </td>
-            <td class="text-center">
-              <button
-                *ngIf="row.isNew"
-                type="button"
-                class="btn btn--small btn--primary"
-                (click)="saveNew(row)"
-                [disabled]="saving">
-                Save
-              </button>
-              <button
-                *ngIf="!row.isNew"
-                type="button"
-                class="btn btn--small btn--danger"
-                (click)="deleteRow(row)"
-                [disabled]="saving">
-                Delete
-              </button>
-            </td>
-          </tr>
-          <tr *ngIf="!rows.length && !loading">
-            <td colspan="8" class="empty-row">
-              <div class="empty-state">
-                <p>No nodal officer information found.</p>
-              </div>
-            </td>
-          </tr>
-        </tbody>
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="it-grid"
+        matSort
+        #sort="matSort"
+      >
+        <!-- S.No Column -->
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let row; let i = index" class="text-center">
+            {{ paginator ? paginator.pageIndex * paginator.pageSize + i + 1 : i + 1 }}
+          </td>
+        </ng-container>
+
+        <!-- Facility Name Column -->
+        <ng-container matColumnDef="locationName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Facility Name</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="facility-name">{{ row.LocationName || '—' }}</span>
+            <span class="sub-type" *ngIf="row.FacilityTypeName">{{ row.FacilityTypeName }}</span>
+          </td>
+        </ng-container>
+
+        <!-- District Column -->
+        <ng-container matColumnDef="districtName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>District</th>
+          <td mat-cell *matCellDef="let row">{{ row.DistrictName || '—' }}</td>
+        </ng-container>
+
+        <!-- Nodal Officer Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nodal Officer Name</th>
+          <td mat-cell *matCellDef="let row" class="editable-cell">
+            <ng-container *ngIf="row.isNew">
+              <input
+                type="text"
+                class="cell-input is-new-input"
+                [(ngModel)]="row.Name"
+                placeholder="Enter Nodal Name"
+              />
+            </ng-container>
+            <ng-container *ngIf="!row.isNew">
+              <span class="officer-name">{{ row.Name || '—' }}</span>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!-- Designation Column -->
+        <ng-container matColumnDef="designation">
+          <th mat-header-cell *matHeaderCellDef>Designation</th>
+          <td mat-cell *matCellDef="let row" class="editable-cell">
+            <ng-container *ngIf="row.isNew">
+              <input
+                type="text"
+                class="cell-input is-new-input"
+                [(ngModel)]="row.Designation"
+                placeholder="Enter Designation"
+              />
+            </ng-container>
+            <ng-container *ngIf="!row.isNew">
+              {{ row.Designation || '—' }}
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="emailId">
+          <th mat-header-cell *matHeaderCellDef>Email-ID</th>
+          <td mat-cell *matCellDef="let row" class="editable-cell">
+            <ng-container *ngIf="row.isNew">
+              <input
+                type="email"
+                class="cell-input is-new-input"
+                [(ngModel)]="row.EmailId"
+                placeholder="Enter Email"
+              />
+            </ng-container>
+            <ng-container *ngIf="!row.isNew">
+              <span class="email-text">{{ row.EmailId || '—' }}</span>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!-- Mobile Column -->
+        <ng-container matColumnDef="mobileNo">
+          <th mat-header-cell *matHeaderCellDef>Mobile No</th>
+          <td mat-cell *matCellDef="let row" class="editable-cell">
+            <ng-container *ngIf="row.isNew">
+              <input
+                type="text"
+                class="cell-input is-new-input"
+                [(ngModel)]="row.MobileNo"
+                placeholder="10-digit mobile"
+                maxlength="10"
+              />
+            </ng-container>
+            <ng-container *ngIf="!row.isNew">
+              <span class="mobile-badge" *ngIf="row.MobileNo">{{ row.MobileNo }}</span>
+              <span *ngIf="!row.MobileNo">—</span>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
+          <td mat-cell *matCellDef="let row" class="text-center action-col">
+            <button
+              *ngIf="row.isNew"
+              type="button"
+              class="show-btn btn-save"
+              (click)="saveNew(row)"
+              [disabled]="saving"
+              matTooltip="Save this entry">
+              Save
+            </button>
+            <button
+              *ngIf="!row.isNew && row.Id"
+              type="button"
+              class="show-btn btn-delete"
+              (click)="deleteRow(row)"
+              [disabled]="saving"
+              matTooltip="Delete this officer">
+              Delete
+            </button>
+            <button
+              *ngIf="row.isNew"
+              type="button"
+              class="show-btn btn-cancel"
+              (click)="deleteRow(row)"
+              matTooltip="Cancel">
+              Cancel
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          [class.new-row-highlight]="row.isNew"
+        ></tr>
+
+        <!-- No Data Row -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell empty-cell" [attr.colspan]="displayedColumns.length">
+            <div class="empty-state">
+              <mat-icon class="empty-icon">person_off</mat-icon>
+              <p>No nodal officer information found.</p>
+            </div>
+          </td>
+        </tr>
       </table>
     </div>
+
+    <!-- Paginator -->
+    <mat-paginator
+      [pageSizeOptions]="[10, 25, 50, 100]"
+      [pageSize]="25"
+      showFirstLastButtons
+      aria-label="Select page of nodal officers">
+    </mat-paginator>
   </div>
 </div>

@@ -241,7 +241,7 @@ const ROUTE_MAP: Record<string, string> = {
   '/stock/facstockcoviditems.aspx': '/stock/covid-stock-report',
   '/stock/existingcoviditems.aspx': '/stock/opening-stock-entry',
   '/stock/newcoviditemd.aspx': '/stock/new-opening-stock-entry',
-  '/stock/nodelcredential.aspx': '/stock/nodal-information',
+  '/stock/nodelcredential.aspx': '/masters/health-facility-details',
   '/funds/newfundmaster.aspx': '/NewFundMaster',
   '/funds/budgetdetailsprovisional.aspx': '/BudgetDetailsProvisional',
   '/funds/fundmap.aspx': '/FundMap',
@@ -439,40 +439,48 @@ const ROUTE_MAP: Record<string, string> = {
   '/changepasswordforcefully.aspx': '/home',
   '/forcechangepwd.aspx': '/home',
   '/master/updated report_specification.aspx': '/masters/report-specification',
+  '/master/associateeqpreagent.aspx.aspx': '/masters/map-items',
+  '/master/associateeqpreagent.aspx': '/masters/map-items',
+  '/master/masfacilityauth.aspx': '/masters/mas-facility-users-locations',
+  '/order/emspodashboard.aspx': '/orders/purchase-order-dashboard',
+  '/order/po_supply.aspx': '/orders/po-supply',
+  '/reports/popaidreport_pocell.aspx': '/reports/po-wise-payment',
 };
-
-
 
 function mapLegacyRoute(route: string): string {
   if (!route) return '';
   const raw = route.trim();
 
-  // Separate path from query string & hash (e.g. "/Stock/FACProgress4Cat.aspx?type=1" -> "/Stock/FACProgress4Cat.aspx")
+  // Separate path from query string & hash
   const pathOnly = raw.split('?')[0].split('#')[0].trim();
-  const lower = pathOnly.toLowerCase();
 
-  // 1. Direct match in override map
-  if (ROUTE_MAP[lower]) {
-    return ROUTE_MAP[lower];
-  }
-
-  // 2. If it's already a clean Angular route (doesn't contain .aspx)
-  if (!lower.includes('.aspx')) {
-    return pathOnly.startsWith('/') ? pathOnly : '/' + pathOnly;
-  }
-
-  // 3. Remove .aspx extension and leading slashes/tilde
-  let clean = pathOnly.replace(/\.aspx$/i, '').replace(/^~?\//, '');
-
-  // 4. Check clean route in override map
-  const cleanLower = '/' + clean.toLowerCase();
-  if (ROUTE_MAP[cleanLower]) {
-    return ROUTE_MAP[cleanLower];
-  }
-
-  // 5. Extract page name (e.g. "Stock/FACStockCOVIDItemsMC" -> "FACStockCOVIDItemsMC")
-  const parts = clean.split('/');
+  // Normalize: strip leading tildes and slashes (e.g. "~/Reports/CMCdetail.aspx" -> "Reports/CMCdetail.aspx")
+  const norm = pathOnly.replace(/^[~/]+/, '');
+  const normLower = norm.toLowerCase();
+  const normNoAspx = normLower.replace(/\.aspx$/i, '');
+  const parts = normNoAspx.split('/');
   const pageName = parts[parts.length - 1];
+
+  const candidates = [
+    '/' + normLower,
+    '/' + normNoAspx,
+    '/' + pageName + '.aspx',
+    '/' + pageName,
+    normLower,
+    normNoAspx,
+    pathOnly.toLowerCase(),
+  ];
+
+  for (const c of candidates) {
+    if (ROUTE_MAP[c]) {
+      return ROUTE_MAP[c];
+    }
+  }
+
+  // If already a clean Angular route (doesn't end in .aspx)
+  if (!raw.toLowerCase().endsWith('.aspx')) {
+    return '/' + norm;
+  }
 
   return '/' + pageName;
 }
