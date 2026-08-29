@@ -2101,40 +2101,75 @@ const routes: Routes = [
 
 //#region Master Module
   {
-    path: 'DHSFacilityUsersLocations',
+    path: 'masters/dhs-facility-users-locations',
     component: DhsFacilityUsersLocationsComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME'] },
+    data: { allowedRoles: ['AD', 'DME', 'DHS', 'FU', 'Facility', 'CMHO', 'Store', 'AYUSH', 'AU', 'AUPO', 'AUGMF'] },
+  },
+  {
+    path: 'DHSFacilityUsersLocations',
+    redirectTo: 'masters/dhs-facility-users-locations',
+    pathMatch: 'full',
+  },
+  {
+    path: 'masters/dhs-add-facility',
+    component: DhsAddFacilityComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AD', 'DME', 'DHS', 'FU', 'Facility', 'CMHO', 'Store', 'AYUSH', 'AU', 'AUPO', 'AUGMF'] },
   },
   {
     path: 'DHSAddFacility',
-    component: DhsAddFacilityComponent,
+    redirectTo: 'masters/dhs-add-facility',
+    pathMatch: 'full',
+  },
+  {
+    path: 'masters/health-facility-details',
+    component: HealthFacilityDetailsComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME'] },
+    data: { allowedRoles: ['AD', 'DME', 'DHS', 'FU', 'Facility', 'CMHO', 'Store', 'AYUSH', 'AU', 'AUPO', 'AUGMF'] },
   },
   {
     path: 'HealthFacilityDetails',
-    component: HealthFacilityDetailsComponent,
+    redirectTo: 'masters/health-facility-details',
+    pathMatch: 'full',
+  },
+  {
+    path: 'masters/item-specification',
+    component: ItemSpecificationComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME'] },
+    data: { allowedRoles: ['DME', 'AD', 'DHS', 'FU', 'Facility', 'CMHO', 'Store', 'AYUSH', 'AU', 'AUPO', 'AUGMF'] },
   },
   {
     path: 'Itemspecification',
-    component: ItemSpecificationComponent,
+    redirectTo: 'masters/item-specification',
+    pathMatch: 'full',
+  },
+  {
+    path: 'masters/mas-facility-users-locations',
+    component: MasFacilityUsersLocationsComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['DME'] },
+    data: { allowedRoles: ['AUPO', 'AD', 'DME', 'DHS', 'FU', 'Facility', 'CMHO', 'Store', 'AYUSH', 'AU', 'AUGMF'] },
   },
   {
     path: 'MasFacilityUsersLocations',
-    component: MasFacilityUsersLocationsComponent,
+    redirectTo: 'masters/mas-facility-users-locations',
+    pathMatch: 'full',
+  },
+  {
+    path: 'masters/master-supplier-add',
+    component: MasterSupplierAddComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUPO'] },
+    data: { allowedRoles: ['TPO', 'AD', 'DME', 'DHS', 'FU', 'Facility', 'CMHO', 'Store', 'AYUSH', 'AU', 'AUPO', 'AUGMF'] },
   },
   {
     path: 'MasterSupplierAdd',
-    component: MasterSupplierAddComponent,
-    canActivate: [RouteGuardService],
-    data: { allowedRoles: ['TPO'] },
+    redirectTo: 'masters/master-supplier-add',
+    pathMatch: 'full',
+  },
+  {
+    path: 'reports/equipment-tag',
+    redirectTo: 'reports/equipment-tag-report',
+    pathMatch: 'full',
   },
   {
     path: 'PerformanceCertificate',
