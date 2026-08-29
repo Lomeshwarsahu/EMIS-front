@@ -428,9 +428,9 @@ table.filter-panel .label-col {
 .table-wrap {
   width: 100%;
   max-width: 100%;
-  flex: 1 1 auto;
+  flex: 1 1 0;
   min-height: 0;
-  max-height: var(--supplier-table-scroll-height);
+  max-height: 100%;
   overflow-x: auto;
   overflow-y: auto;
   background: var(--table-cell-bg);

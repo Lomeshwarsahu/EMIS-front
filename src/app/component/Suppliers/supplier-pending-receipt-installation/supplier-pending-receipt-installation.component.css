@@ -1,6 +1,6 @@
 .balance-grid {
-  width: 1680px;
-  min-width: 1680px;
+  width: max-content;
+  min-width: 100%;
 }
 
 .col-sn { width: 45px; }
