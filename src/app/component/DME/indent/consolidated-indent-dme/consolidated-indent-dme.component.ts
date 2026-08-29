@@ -1,24 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { apiErrorMessage, resolveLoginUserId } from '../../shared/session.util';
+import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 
-interface FinancialYearOption {
+export interface FinancialYearOption {
   FinancialYearId: number;
   Year: string;
 }
 
-interface BudgetHeadOption {
+export interface BudgetHeadOption {
   HeadId: number;
   HeadNo: string;
   HeadName: string;
 }
 
-interface FacilityIndentRow {
+export interface FacilityIndentRow {
   IndentId: number;
   McName: string;
   ConsolidatedDate: string;
@@ -34,21 +40,51 @@ interface FacilityIndentRow {
 @Component({
   selector: 'app-consolidated-indent-dme',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatIconModule,
+    MatTooltipModule,
+    DmePageSkeletonComponent,
+  ],
   templateUrl: './consolidated-indent-dme.component.html',
   styleUrls: ['./consolidated-indent-dme.component.css'],
 })
 export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   private readonly orderApi = `${environment.apiUrl}/DMEOrder/`;
+
+  displayedColumns = [
+    'sno',
+    'indentId',
+    'mcName',
+    'consolidatedDate',
+    'asLetterNo',
+    'asDate',
+    'dispatchNo',
+    'nosIndentQty',
+    'eStatus',
+    'uploadStatus',
+    'actions',
+  ];
+
+  dataSource = new MatTableDataSource<FacilityIndentRow>([]);
+  allRows: FacilityIndentRow[] = [];
 
   financialYears: FinancialYearOption[] = [];
   budgetHeads: BudgetHeadOption[] = [];
-  rows: FacilityIndentRow[] = [];
 
   selectedFinancialYearId = 0;
+  searchQuery = '';
   loading = false;
   userId = 0;
 
+  // New Indent Modal
   showNewModal = false;
   newFinancialYearId = 0;
   newBudgetId = 0;
@@ -86,7 +122,8 @@ export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
       .get<FacilityIndentRow[]>(`${this.orderApi}facility-indents?userId=${this.userId}${yearQ}`)
       .subscribe({
         next: (res) => {
-          this.rows = this.mapIndents(res);
+          this.allRows = this.mapIndents(res);
+          this.applyFilter();
           this.loading = false;
         },
         error: (e) => {
@@ -94,6 +131,40 @@ export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
           this.toastr.error(apiErrorMessage(e, 'Could not load indents.'));
         },
       });
+  }
+
+  applyFilter(): void {
+    let filtered = [...this.allRows];
+    if (this.searchQuery.trim()) {
+      const q = this.searchQuery.trim().toLowerCase();
+      filtered = filtered.filter(
+        (r) =>
+          String(r.IndentId).includes(q) ||
+          (r.McName && r.McName.toLowerCase().includes(q)) ||
+          (r.AsLetterNo && r.AsLetterNo.toLowerCase().includes(q)) ||
+          (r.DispatchNo && r.DispatchNo.toLowerCase().includes(q)) ||
+          (r.EStatus && r.EStatus.toLowerCase().includes(q)) ||
+          (r.ConsolidatedDate && r.ConsolidatedDate.toLowerCase().includes(q)),
+      );
+    }
+
+    this.dataSource.data = filtered;
+    if (this.sort) this.dataSource.sort = this.sort;
+    if (this.paginator) this.dataSource.paginator = this.paginator;
+  }
+
+  onSearchChange(): void {
+    this.applyFilter();
+  }
+
+  clearFilters(): void {
+    this.searchQuery = '';
+    this.selectedFinancialYearId = 0;
+    this.show();
+  }
+
+  hasActiveFilters(): boolean {
+    return !!this.searchQuery.trim() || this.selectedFinancialYearId > 0;
   }
 
   openNewIndent(): void {
@@ -183,7 +254,6 @@ export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
             this.toastr.error('File not found.');
             return;
           }
-          // API may return JSON error with blob content-type mistaken — check JSON.
           if (blob.type && blob.type.includes('application/json')) {
             blob.text().then((t) => {
               try {
@@ -219,7 +289,7 @@ export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
                 msg = parsed.message;
               }
             } catch {
-              /* keep default */
+              /* ignore parse error */
             }
           }
           this.toastr.error(msg);
@@ -227,75 +297,109 @@ export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
       });
   }
 
-  isCompleted(status: string): boolean {
-    return status?.trim().toLowerCase() === 'completed';
+  exportCsv(): void {
+    const data = this.dataSource.filteredData.length ? this.dataSource.filteredData : this.dataSource.data;
+    if (!data.length) return;
+
+    const headers = [
+      'S.No',
+      'Indent Id',
+      'MC/MCH Name',
+      'Indent Date',
+      'AS Letter No',
+      'AS Date',
+      'Dispatch No',
+      'No of Items',
+      'Status',
+      'Upload Status',
+    ];
+
+    const rows = data.map((r, i) => [
+      i + 1,
+      r.IndentId,
+      `"${(r.McName || '').replace(/"/g, '""')}"`,
+      `"${(r.ConsolidatedDate || '').replace(/"/g, '""')}"`,
+      `"${(r.AsLetterNo || '').replace(/"/g, '""')}"`,
+      `"${(r.AsDate || '').replace(/"/g, '""')}"`,
+      `"${(r.DispatchNo || '').replace(/"/g, '""')}"`,
+      r.NosIndentQty,
+      `"${(r.EStatus || '').replace(/"/g, '""')}"`,
+      `"${(r.UploadStatus || '').replace(/"/g, '""')}"`,
+    ]);
+
+    const csvContent = [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `Annual_Indents_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  isCompleted(status: string | null | undefined): boolean {
+    return (status || '').toLowerCase().includes('completed');
   }
 
   private loadFinancialYears(): void {
-    this.http.get<FinancialYearOption[]>(`${this.orderApi}financial-years`).subscribe({
+    this.http.get<unknown[]>(`${this.orderApi}financial-years`).subscribe({
       next: (res) => {
-        this.financialYears = this.mapYears(res).filter((y) => y.FinancialYearId > 0);
-        if (this.financialYears.length) {
-          this.selectedFinancialYearId = this.financialYears[0].FinancialYearId;
-        }
+        const arr = Array.isArray(res) ? res : [];
+        this.financialYears = arr.map((item: any) => ({
+          FinancialYearId: Number(item.financialYearId ?? item.FinancialYearId ?? 0),
+          Year: String(item.year ?? item.Year ?? ''),
+        }));
       },
-      error: (e) => this.toastr.error(apiErrorMessage(e, 'Could not load financial years.')),
+      error: () => {
+        this.financialYears = [];
+      },
     });
   }
 
   private loadBudgetHeads(): void {
-    if (!this.userId) return;
-    this.http.get<BudgetHeadOption[]>(`${this.orderApi}budget-heads?userId=${this.userId}`).subscribe({
-      next: (res) => (this.budgetHeads = this.mapHeads(res)),
-      error: () => (this.budgetHeads = []),
+    this.http.get<unknown[]>(`${this.orderApi}budget-heads`).subscribe({
+      next: (res) => {
+        const arr = Array.isArray(res) ? res : [];
+        this.budgetHeads = arr.map((item: any) => ({
+          HeadId: Number(item.headId ?? item.HeadId ?? 0),
+          HeadNo: String(item.headNo ?? item.HeadNo ?? ''),
+          HeadName: String(item.headName ?? item.HeadName ?? ''),
+        }));
+      },
+      error: () => {
+        this.budgetHeads = [];
+      },
     });
-  }
-
-  private todayIso(): string {
-    const d = new Date();
-    const dd = String(d.getDate()).padStart(2, '0');
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    return `${d.getFullYear()}-${mm}-${dd}`;
-  }
-
-  private fromIsoDate(isoDate: string): string {
-    if (!isoDate) {
-      return '';
-    }
-    const [year, month, day] = isoDate.split('-');
-    return `${day}/${month}/${year}`;
-  }
-
-  private mapYears(raw: unknown): FinancialYearOption[] {
-    const arr = Array.isArray(raw) ? raw : [];
-    return arr.map((r: Record<string, unknown>) => ({
-      FinancialYearId: Number(r['FinancialYearId'] ?? r['financialYearId'] ?? 0),
-      Year: String(r['Year'] ?? r['year'] ?? ''),
-    }));
-  }
-
-  private mapHeads(raw: unknown): BudgetHeadOption[] {
-    const arr = Array.isArray(raw) ? raw : [];
-    return arr.map((r: Record<string, unknown>) => ({
-      HeadId: Number(r['HeadId'] ?? r['headId'] ?? 0),
-      HeadNo: String(r['HeadNo'] ?? r['headNo'] ?? ''),
-      HeadName: String(r['HeadName'] ?? r['headName'] ?? ''),
-    }));
   }
 
   private mapIndents(raw: unknown): FacilityIndentRow[] {
     const arr = Array.isArray(raw) ? raw : [];
-    return arr.map((r: Record<string, unknown>) => ({
-      IndentId: Number(r['IndentId'] ?? r['indentId'] ?? 0),
-      McName: String(r['McName'] ?? r['mcName'] ?? ''),
-      ConsolidatedDate: String(r['ConsolidatedDate'] ?? r['consolidatedDate'] ?? ''),
-      AsLetterNo: String(r['AsLetterNo'] ?? r['asLetterNo'] ?? ''),
-      AsDate: String(r['AsDate'] ?? r['asDate'] ?? ''),
-      DispatchNo: String(r['DispatchNo'] ?? r['dispatchNo'] ?? ''),
-      DispatchDate: String(r['DispatchDate'] ?? r['dispatchDate'] ?? ''),
-      NosIndentQty: Number(r['NosIndentQty'] ?? r['nosIndentQty'] ?? 0),
-      EStatus: String(r['EStatus'] ?? r['eStatus'] ?? ''),
-      UploadStatus: String(r['UploadStatus'] ?? r['uploadStatus'] ?? ''),
+    return arr.map((item: any) => ({
+      IndentId: Number(item.indentId ?? item.IndentId ?? 0),
+      McName: String(item.mcName ?? item.McName ?? ''),
+      ConsolidatedDate: String(item.consolidatedDate ?? item.ConsolidatedDate ?? ''),
+      AsLetterNo: String(item.asLetterNo ?? item.AsLetterNo ?? ''),
+      AsDate: String(item.asDate ?? item.AsDate ?? ''),
+      DispatchNo: String(item.dispatchNo ?? item.DispatchNo ?? ''),
+      DispatchDate: String(item.dispatchDate ?? item.DispatchDate ?? ''),
+      NosIndentQty: Number(item.nosIndentQty ?? item.NosIndentQty ?? 0),
+      EStatus: String(item.eStatus ?? item.EStatus ?? ''),
+      UploadStatus: String(item.uploadStatus ?? item.UploadStatus ?? ''),
     }));
+  }
+
+  private todayIso(): string {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
+  private fromIsoDate(iso: string): string {
+    if (!iso) return '';
+    const parts = iso.split('-');
+    if (parts.length === 3) {
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+    return iso;
   }
 }

@@ -1,169 +1,283 @@
-<div class="dme-indent-page">
+<div class="it-page">
+  <h2 class="page-title">Annual Indent & Approval (Facility / DME)</h2>
+
   <div class="datagrid">
-    <div class="table-toolbar filters filters--compact">
+    <!-- Toolbar Filters -->
+    <div class="table-toolbar filters--compact">
+      <input
+        type="text"
+        class="search-input"
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+        placeholder="Search by ID, MC Name, Letter No, Status..."
+        aria-label="Search indents"
+      />
+
       <select
         aria-label="Financial Year"
         [(ngModel)]="selectedFinancialYearId"
-        name="financialYear"
-        [class.is-placeholder]="selectedFinancialYearId === 0">
-        <option [ngValue]="0">All</option>
+        (change)="show()"
+        name="financialYear">
+        <option [ngValue]="0">All Financial Years</option>
         <option *ngFor="let y of financialYears" [ngValue]="y.FinancialYearId">{{ y.Year }}</option>
       </select>
 
-      <button type="button" class="show-btn" (click)="show()" [disabled]="loading">
-        {{ loading ? 'Loading…' : 'Show' }}
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters()"
+        (click)="clearFilters()">
+        Clear Filter
       </button>
-      <button type="button" class="show-btn accent-btn" (click)="openNewIndent()">New Indent</button>
+
+      <button
+        type="button"
+        class="show-btn btn-add"
+        (click)="openNewIndent()"
+        [disabled]="loading">
+        + New Indent
+      </button>
+
+      <button
+        type="button"
+        class="show-btn export-btn"
+        (click)="exportCsv()"
+        [disabled]="loading || !dataSource.filteredData.length && !dataSource.data.length">
+        Export CSV
+      </button>
     </div>
 
-    <div class="table-wrap">
-      <table class="indent-grid">
-        <thead>
-          <tr>
-            <th class="col-sn text-center">S.No</th>
-            <th class="text-center">Indent Id</th>
-            <th>MC/MCH Name</th>
-            <th class="text-center">Indent Initiation Date</th>
-            <th>AS Letter No</th>
-            <th class="text-center">AS Letter Date</th>
-            <th>Letter No / Dispatch No</th>
-            <th class="text-center">Dispatch Date</th>
-            <th class="text-center">No of Items</th>
-            <th>Indent Status</th>
-            <th class="text-center">AI Letter Upload</th>
-            <th class="text-center">Add Indent</th>
-            <th class="text-center">Indent Report</th>
-            <th class="text-center">Download</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
-            <td class="text-center">{{ i + 1 }}</td>
-            <td class="text-center">{{ row.IndentId }}</td>
-            <td>{{ row.McName || '—' }}</td>
-            <td class="text-center">{{ row.ConsolidatedDate || '—' }}</td>
-            <td>{{ row.AsLetterNo || '—' }}</td>
-            <td class="text-center">{{ row.AsDate || '—' }}</td>
-            <td class="text-center">{{ row.DispatchNo || '—' }}</td>
-            <td class="text-center">{{ row.DispatchDate || '—' }}</td>
-            <td class="text-center">{{ row.NosIndentQty }}</td>
-            <td>
-              <span class="status-pill" [class.status-done]="isCompleted(row.EStatus)">
-                {{ row.EStatus || '—' }}
-              </span>
-            </td>
-            <td class="text-center">
-              <span
-                class="upload-pill"
-                [class.upload-yes]="row.UploadStatus === 'Uploaded'">
-                {{ row.UploadStatus || '—' }}
-              </span>
-            </td>
-            <td class="text-center">
-              <button
-                type="button"
-                class="add-btn"
-                [disabled]="isCompleted(row.EStatus)"
-                (click)="onAddIndent(row)"
-                [title]="'Add indent items for #' + row.IndentId">
-                +
-              </button>
-            </td>
-            <td class="text-center">
-              <button type="button" class="plain-link" (click)="onShowIndent(row)">Show Indent</button>
-            </td>
-            <td class="text-center">
-              <button
-                *ngIf="row.UploadStatus === 'Uploaded'; else noPdf"
-                type="button"
-                class="pdf-icon-btn"
-                (click)="onDownload(row)"
-                title="Download PDF">
-                <img src="assets/images/pdfDownload.png" alt="PDF" class="pdf-icon" />
-              </button>
-              <ng-template #noPdf>—</ng-template>
-            </td>
-          </tr>
-          <tr *ngIf="loading">
-            <td colspan="14" class="empty-row">Loading…</td>
-          </tr>
-          <tr *ngIf="!loading && !rows.length">
-            <td colspan="14" class="empty-row">
-              <div class="empty-state">
-                <p>No annual indents found for the selected filter.</p>
-              </div>
-            </td>
-          </tr>
-        </tbody>
+    <!-- Skeleton Loading -->
+    <app-dme-page-skeleton
+      *ngIf="loading"
+      type="table"
+      [rows]="6"
+      [cols]="11"
+    />
+
+    <!-- Data Table -->
+    <div class="table-wrap" *ngIf="!loading">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="it-grid"
+        matSort
+        #sort="matSort"
+      >
+        <!-- S.No Column -->
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef class="text-center">S.No</th>
+          <td mat-cell *matCellDef="let row; let i = index" class="text-center">
+            {{ paginator ? paginator.pageIndex * paginator.pageSize + i + 1 : i + 1 }}
+          </td>
+        </ng-container>
+
+        <!-- Indent Id -->
+        <ng-container matColumnDef="indentId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Indent ID</th>
+          <td mat-cell *matCellDef="let row" class="text-center fw-bold">
+            #{{ row.IndentId }}
+          </td>
+        </ng-container>
+
+        <!-- MC Name -->
+        <ng-container matColumnDef="mcName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>MC / MCH Name</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="mc-name">{{ row.McName || '—' }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Initiation Date -->
+        <ng-container matColumnDef="consolidatedDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Initiation Date</th>
+          <td mat-cell *matCellDef="let row" class="text-center">{{ row.ConsolidatedDate || '—' }}</td>
+        </ng-container>
+
+        <!-- AS Letter No -->
+        <ng-container matColumnDef="asLetterNo">
+          <th mat-header-cell *matHeaderCellDef>AS Letter No</th>
+          <td mat-cell *matCellDef="let row">{{ row.AsLetterNo || '—' }}</td>
+        </ng-container>
+
+        <!-- AS Date -->
+        <ng-container matColumnDef="asDate">
+          <th mat-header-cell *matHeaderCellDef class="text-center">AS Date</th>
+          <td mat-cell *matCellDef="let row" class="text-center">{{ row.AsDate || '—' }}</td>
+        </ng-container>
+
+        <!-- Dispatch No -->
+        <ng-container matColumnDef="dispatchNo">
+          <th mat-header-cell *matHeaderCellDef>Dispatch No</th>
+          <td mat-cell *matCellDef="let row">{{ row.DispatchNo || '—' }}</td>
+        </ng-container>
+
+        <!-- No of Items -->
+        <ng-container matColumnDef="nosIndentQty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Items Qty</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <span class="qty-badge">{{ row.NosIndentQty }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Status -->
+        <ng-container matColumnDef="eStatus">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="status-pill" [class.status-done]="isCompleted(row.EStatus)">
+              {{ row.EStatus || 'In Progress' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Upload Status -->
+        <ng-container matColumnDef="uploadStatus">
+          <th mat-header-cell *matHeaderCellDef class="text-center">AI Letter</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <span
+              class="upload-pill"
+              [class.upload-yes]="row.UploadStatus === 'Uploaded'">
+              {{ row.UploadStatus || 'Pending' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
+          <td mat-cell *matCellDef="let row" class="text-center action-col">
+            <button
+              type="button"
+              class="action-btn btn-add-item"
+              [disabled]="isCompleted(row.EStatus)"
+              (click)="onAddIndent(row)"
+              matTooltip="Add / Edit Items">
+              + Items
+            </button>
+
+            <button
+              type="button"
+              class="action-btn btn-report"
+              (click)="onShowIndent(row)"
+              matTooltip="View & Print Indent Report">
+              📄 Report
+            </button>
+
+            <button
+              *ngIf="row.UploadStatus === 'Uploaded'"
+              type="button"
+              class="action-btn btn-dl"
+              (click)="onDownload(row)"
+              matTooltip="Download Uploaded PDF">
+              📥 PDF
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <!-- No Data Row -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell empty-cell" [attr.colspan]="displayedColumns.length">
+            <div class="empty-state">
+              <mat-icon class="empty-icon">inbox</mat-icon>
+              <p>No annual indents found for the selected filter.</p>
+            </div>
+          </td>
+        </tr>
       </table>
     </div>
+
+    <!-- Paginator -->
+    <mat-paginator
+      [pageSizeOptions]="[10, 25, 50, 100]"
+      [pageSize]="25"
+      showFirstLastButtons
+      aria-label="Select page of indents">
+    </mat-paginator>
   </div>
 
-  <div class="indent-modal-backdrop" *ngIf="showNewModal" (click)="closeNewIndent()">
-    <div class="indent-modal-card" (click)="$event.stopPropagation()">
-      <div class="indent-modal-head">
-        <h3 class="section-title">New Indent No Generation</h3>
-        <button
-          type="button"
-          class="indent-close-btn"
-          aria-label="Close"
-          title="Close"
-          (click)="closeNewIndent()"
-          [disabled]="saving">
-          &times;
-        </button>
+  <!-- New Indent Modal -->
+  <div class="modal-backdrop" *ngIf="showNewModal" (click)="closeNewIndent()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">New Annual Indent</h3>
+        <button type="button" class="modal-close-btn" (click)="closeNewIndent()">&times;</button>
       </div>
 
-      <table class="indent-form-table">
-        <tbody>
-          <tr>
-            <td class="label-col">Financial Year</td>
-            <td class="value-col">
-              <select [(ngModel)]="newFinancialYearId" name="newFinancialYearId" [disabled]="saving">
-                <option [ngValue]="0">Select</option>
-                <option *ngFor="let y of financialYears" [ngValue]="y.FinancialYearId">{{ y.Year }}</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td class="label-col">Indent Date</td>
-            <td class="value-col">
-              <input type="date" [(ngModel)]="newIndentDateIso" name="newIndentDateIso" [disabled]="saving" />
-            </td>
-          </tr>
-          <tr>
-            <td class="label-col">Select Fund / Budget</td>
-            <td class="value-col">
-              <select [(ngModel)]="newBudgetId" name="newBudgetId" [disabled]="saving">
-                <option [ngValue]="0">Select</option>
-                <option *ngFor="let h of budgetHeads" [ngValue]="h.HeadId">{{ h.HeadName }}</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td class="label-col">AS Letter No</td>
-            <td class="value-col">
-              <input type="text" [(ngModel)]="newAsLetterNo" name="newAsLetterNo" maxlength="100" [disabled]="saving" />
-            </td>
-          </tr>
-          <tr>
-            <td class="label-col">AS Date</td>
-            <td class="value-col">
-              <input type="date" [(ngModel)]="newAsDateIso" name="newAsDateIso" [disabled]="saving" />
-            </td>
-          </tr>
-          <tr class="form-actions-row">
-            <td colspan="2">
-              <button type="button" class="show-btn" (click)="saveNewIndent()" [disabled]="saving">
-                {{ saving ? 'Saving…' : 'Save' }}
-              </button>
-              <button type="button" class="cancel-btn" (click)="closeNewIndent()" [disabled]="saving">
-                Cancel
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="modal-body">
+        <div class="field-row">
+          <label for="modalFinYear" class="field-label">Financial Year <span class="req">*</span></label>
+          <select
+            id="modalFinYear"
+            class="field-input"
+            [(ngModel)]="newFinancialYearId"
+            name="newFinancialYearId">
+            <option [ngValue]="0" disabled>Select Financial Year</option>
+            <option *ngFor="let y of financialYears" [ngValue]="y.FinancialYearId">{{ y.Year }}</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label for="modalBudget" class="field-label">Fund / Budget Head <span class="req">*</span></label>
+          <select
+            id="modalBudget"
+            class="field-input"
+            [(ngModel)]="newBudgetId"
+            name="newBudgetId">
+            <option [ngValue]="0" disabled>Select Budget Head</option>
+            <option *ngFor="let b of budgetHeads" [ngValue]="b.HeadId">
+              {{ b.HeadNo }} - {{ b.HeadName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label for="modalIndentDate" class="field-label">Indent Date <span class="req">*</span></label>
+          <input
+            id="modalIndentDate"
+            type="date"
+            class="field-input"
+            [(ngModel)]="newIndentDateIso"
+            name="newIndentDateIso"
+          />
+        </div>
+
+        <div class="field-row">
+          <label for="modalAsLetter" class="field-label">AS Letter No <span class="req">*</span></label>
+          <input
+            id="modalAsLetter"
+            type="text"
+            class="field-input"
+            [(ngModel)]="newAsLetterNo"
+            placeholder="Enter AS letter number"
+            name="newAsLetterNo"
+          />
+        </div>
+
+        <div class="field-row">
+          <label for="modalAsDate" class="field-label">AS Letter Date <span class="req">*</span></label>
+          <input
+            id="modalAsDate"
+            type="date"
+            class="field-input"
+            [(ngModel)]="newAsDateIso"
+            name="newAsDateIso"
+          />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="closeNewIndent()">Cancel</button>
+        <button
+          type="button"
+          class="btn-save"
+          (click)="saveNewIndent()"
+          [disabled]="saving">
+          {{ saving ? 'Saving…' : 'Save Indent' }}
+        </button>
+      </div>
     </div>
   </div>
 </div>
