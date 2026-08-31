@@ -534,7 +534,9 @@ post3(endpoint: string, payload: any) {
 
   // const absoluteUrl = `https://localhost:7036/api/${endpoint}`;
   // const absoluteUrl = `http://103.51.8.80/emsapi/api/${endpoint}`;
-  const absoluteUrl = `https://cgmsc.gov.in/emsapi/api/${endpoint}`;
+  // const absoluteUrl = `https://cgmsc.gov.in/emsapi/api/${endpoint}`;
+  const absoluteUrl = `${environment.apiUrl}/${endpoint}`;
+
   return this.http.post(absoluteUrl, payload);
 }
 

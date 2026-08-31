@@ -75,7 +75,7 @@ export class MasFacilityUsersLocationsComponent implements OnInit {
       this.api.getMedicalCollegeUsers().subscribe((res) => (this.medicalUsers = res));
     }
 
-    this.api.getFacilityTypes(0).subscribe((res) => (this.facilityTypes = res));
+    this.api.getFacilityTypes(this.facilityTypeId).subscribe((res) => (this.facilityTypes = res));
   }
 
   loadGrid(): void {

@@ -436,7 +436,7 @@ export class MenuServiceService {
           route: '',
           submenu: [
             { label: 'Health Facility Users', route: '/MasFacilityUsers' },
-            { label: 'Add Facility Location', route: '/MasFacilityUsersLocations' },
+            // { label: 'Add Facility Location', route: '/MasFacilityUsersLocations' },
             { label: 'Add New Items', route: '/ItemsBME' },
             { label: 'Program Master', route: 'ProgramMaster' },
             // { label: 'Mapping to Main items', route: '/masters/map-items' },
