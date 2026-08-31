@@ -160,8 +160,8 @@ export class SanctionComponent implements OnInit {
   fetchPoDetails1(poId: number) {
     // const apiUrl = `https://localhost:7036/api/GMFI/GetPoPenaltyDetails/${poId}`;
     // const apiUrl = `http://103.51.8.80/emsapi/api/GMFI/GetPoPenaltyDetails/${poId}`;
-    const apiUrl = `https://cgmsc.gov.in/emsapi/api/GMFI/GetPoPenaltyDetails/${poId}`; 
-    this.api.get(apiUrl).subscribe({
+    // const apiUrl = `https://cgmsc.gov.in/emsapi/api/GMFI/GetPoPenaltyDetails/${poId}`; 
+    this.api.get(`GMFI/GetPoPenaltyDetails/${poId}`).subscribe({
       next: (data:any) => {
         if (Array.isArray(data)) { this.penaltyData = data[0]; } 
         else { this.penaltyData = data; }

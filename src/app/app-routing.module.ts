@@ -214,11 +214,13 @@ import { PoSummaryDrilldownQtyComponent } from './Reports/po-summary-drilldown-q
 import { PoSummaryDrilldownQtyPowiseComponent } from './Reports/po-summary-drilldown-qty-powise/po-summary-drilldown-qty-powise.component';
 import { PoSummaryDrilldownQtyReagentComponent } from './Reports/po-summary-drilldown-qty-reagent/po-summary-drilldown-qty-reagent.component';
 import { IndentPoSummaryDirwiseComponent } from './Reports/indent-po-summary-dirwise/indent-po-summary-dirwise.component';
+import { MasFacilityUsersLocationsmasterComponent } from './component/mas-facility-users-locationsmaster/mas-facility-users-locationsmaster.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'supplier-login', component: SupplierLoginComponent },
+  { path: 'MasFacilityUsersLocationsmaster', component: MasFacilityUsersLocationsmasterComponent},
   { path: 'LoginEmsSup', redirectTo: 'supplier-login', pathMatch: 'full' },
   {
     path: 'masters/particular-supplier-add',
@@ -336,6 +338,7 @@ const routes: Routes = [
     redirectTo: 'transaction/po-supply-receipt',
     pathMatch: 'full',
   },
+
   {
     path: 'transaction/po-supply-installation-report',
     component: PoSupplyInstallationReportComponent,
