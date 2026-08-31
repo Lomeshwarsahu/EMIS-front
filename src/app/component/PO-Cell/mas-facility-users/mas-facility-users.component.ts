@@ -74,8 +74,8 @@ mappingForm!: FormGroup;
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
   
-  displayedColumns: string[] = ['sno', 'FacilityTypeId', 'FacilityTypeName', 'NoOfUser','Addlocation','adduser',];
-  
+  displayedColumns: string[] = ['sno', 'FacilityTypeId', 'FacilityTypeName','NoOfConsignee', 'NoOfUser','Addlocation','adduser',];
+
 
   selectedItems: number[] = [];
 
@@ -119,6 +119,7 @@ mappingForm!: FormGroup;
           ...item,
           sno: index + 1,
         }));
+        console.log('add=',res);
         this.dataSource.data = this.dispatchData;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -136,7 +137,14 @@ mappingForm!: FormGroup;
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+AddLocation(fid:any,did:any){
+// MasFacilityUsersLocations
+    this.router.navigate(['/MasFacilityUsersLocationsmaster'], {
+      queryParams: { fid: fid,did:did },
+    });
+}
+MakeUserID(){
 
-
+}
 
 }
