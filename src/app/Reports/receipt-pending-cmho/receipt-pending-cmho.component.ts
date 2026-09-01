@@ -70,7 +70,8 @@ export class ReceiptPendingCmhoComponent implements OnInit {
 
   loadData() {
     this.loading = true;
-    this.api.get(`Reports/balance-status?balanceType=${this.balanceType}&directorateId=${this.selectedDirectorate}`)
+    const districtId = sessionStorage.getItem('districtid') || 0;
+    this.api.get(`Reports/balance-status-cmho?balanceType=${this.balanceType}&districtId=${districtId}`)
       .subscribe({
         next: (res: any) => {
           this.reportData = (res || []).map((item: BalanceStatusDTO, index: number) => ({

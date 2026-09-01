@@ -102,7 +102,7 @@ export class CmhoPoSummaryComponent {
             BasicRate: item.BasicRate ?? item.basicRate ?? item.basic_rate ?? 0,
             Percentage: item.Percentage ?? item.percentage ?? 0,
             SingleUnitPrice: item.SingleUnitPrice ?? item.singleUnitPrice ?? item.single_unit_price ?? 0,
-            TotalPOValue: item.TotalPOValue ?? item.totalPOValue ?? item.totalPoValue ?? item.total_po_value ?? 0,
+            TotalPOValue: item.TotalPOValue ?? item.totalPOValue ?? item.totalPOvalue ?? item.totalPoValue ?? item.total_po_value ?? 0,
           }));
           this.dataSource.data = this.summaryData;
           this.dataSource.paginator = this.paginator;

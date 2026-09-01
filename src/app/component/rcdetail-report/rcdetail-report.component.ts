@@ -64,7 +64,7 @@ export class RCDetailReportComponent implements OnInit {
   ];
 
   get isCmho(): boolean {
-    const role = (this.basicAuth?.getRole()?.roleName || localStorage.getItem('roleName') || '').toUpperCase();
+    const role = (this.basicAuth?.getRole()?.roleName || localStorage.getItem('roleName') || '').toUpperCase().trim();
     return ['CMHO', 'STORE', 'FU', 'FACILITY', 'HEALTHFACILITY'].includes(role);
   }
 
