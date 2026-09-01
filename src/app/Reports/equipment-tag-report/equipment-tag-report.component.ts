@@ -56,7 +56,7 @@ export class EquipmentTagReportComponent {
   displayedColumns: string[] = [
     'sno', 'district', 'location', 'itemName', 'itemCode',
     'make', 'modelNo', 'receiptDate', 'installationDate',
-    'warrantyUpto', 'serialNo'
+    'warrantyUpto', 'serialNo', 'isTagged'
   ];
 
   constructor(
