@@ -33,10 +33,14 @@ import { SupplierPageSkeletonComponent } from '../../component/Suppliers/supplie
 })
 export class CmhoPoSummaryComponent {
   Yearlist: any[] = [];
+  Itemlist: any[] = [];
   selectedYear: any;
+  selectedItem: any;
   summaryData: IndentItemSummaryDTO[] = [];
   dataSource!: MatTableDataSource<IndentItemSummaryDTO>;
   loading: boolean = false;
+  totalQuantity: number = 0;
+  totalPOValue: number = 0;
 
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
@@ -57,12 +61,24 @@ export class CmhoPoSummaryComponent {
 
   ngOnInit() {
     this.GetYearsList();
+    this.GetItemsList();
   }
 
   GetYearsList() {
     this.api.get(`Reports/GetFinancialYear`).subscribe({
       next: (res: any) => {
-        this.Yearlist = res;
+        this.Yearlist = res || [];
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
+    });
+  }
+
+  GetItemsList() {
+    this.api.get(`Reports/items/5`).subscribe({
+      next: (res: any) => {
+        this.Itemlist = res || [];
       },
       error: (err: any) => {
         console.error(err);
@@ -73,8 +89,9 @@ export class CmhoPoSummaryComponent {
   loadData() {
     this.loading = true;
     const financialYearId = this.selectedYear || '';
+    const itemCode = this.selectedItem || '';
 
-    this.api.get(`Reports/po-summary?financialYearId=${financialYearId}&directorateId=5`)
+    this.api.get(`Reports/po-summary?financialYearId=${financialYearId}&directorateId=5&itemCode=${itemCode}`)
       .subscribe({
         next: (res: any) => {
           this.summaryData = (res || []).map((item: any, index: number) => ({
@@ -90,6 +107,7 @@ export class CmhoPoSummaryComponent {
           this.dataSource.data = this.summaryData;
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+          this.calcTotals();
           this.cdr.detectChanges();
           this.loading = false;
         },
@@ -99,6 +117,11 @@ export class CmhoPoSummaryComponent {
           console.error('Error fetching data:', err);
         },
       });
+  }
+
+  calcTotals() {
+    this.totalQuantity = this.summaryData.reduce((sum, item) => sum + (Number(item.Quantity) || 0), 0);
+    this.totalPOValue = this.summaryData.reduce((sum, item) => sum + (Number(item.TotalPOValue) || 0), 0);
   }
 
   onQuantityClick(element: IndentItemSummaryDTO) {

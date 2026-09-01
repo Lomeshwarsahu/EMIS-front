@@ -1405,13 +1405,13 @@ const routes: Routes = [
     path: 'reports/cmho-po-summary',
     component: CmhoPoSummaryComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/cmho-po-summary-drilldown',
     component: CmhoPoSummaryDrilldownComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/po-summary-directorate',
@@ -1489,7 +1489,7 @@ const routes: Routes = [
     path: 'reports/equipment-tag-report',
     component: EquipmentTagReportComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/tender-wise-po-details',
@@ -1519,7 +1519,7 @@ const routes: Routes = [
     path: 'reports/receipt-pending-cmho',
     component: ReceiptPendingCmhoComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/report-indent-po-details',
@@ -1609,7 +1609,7 @@ const routes: Routes = [
     path: 'reports/district-wise-po-detail',
     component: DistrictWisePoDetailComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/emd-refund-report',
@@ -1639,7 +1639,7 @@ const routes: Routes = [
     path: 'reports/po-summary',
     component: PoSummaryComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
+    data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/po-summary-drilldown-qty',
