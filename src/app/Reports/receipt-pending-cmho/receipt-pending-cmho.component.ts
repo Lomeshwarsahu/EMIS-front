@@ -41,7 +41,7 @@ import { BalanceStatusDTO } from 'src/app/Model/models';
   ],
 })
 export class ReceiptPendingCmhoComponent implements OnInit {
-  balanceType: string = 'A';
+  balanceType: string = 'D';
   selectedDirectorate: number = 5;
   reportData: BalanceStatusDTO[] = [];
   dataSource!: MatTableDataSource<BalanceStatusDTO>;
@@ -70,8 +70,8 @@ export class ReceiptPendingCmhoComponent implements OnInit {
 
   loadData() {
     this.loading = true;
-    const districtId = sessionStorage.getItem('districtid') || 0;
-    this.api.get(`Reports/balance-status-cmho?balanceType=${this.balanceType}&districtId=${districtId}`)
+    const userId = sessionStorage.getItem('userid') || 0;
+    this.api.get(`Reports/balance-status-cmho?balanceType=${this.balanceType}&userId=${userId}`)
       .subscribe({
         next: (res: any) => {
           this.reportData = (res || []).map((item: BalanceStatusDTO, index: number) => ({
