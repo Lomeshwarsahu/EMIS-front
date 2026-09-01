@@ -1659,6 +1659,7 @@ export class MenuServiceService {
         { label: 'CMHO PO Summary', route: '/reports/cmho-po-summary' },
         { label: 'Receipt Pending CMHO', route: '/reports/receipt-pending-cmho' },
         { label: 'District Wise PO Detail', route: '/reports/district-wise-po-detail' },
+        { label: 'RC Detail Report', route: '/contracts/rc-detail-report' },
       ],
     },
 
@@ -1687,6 +1688,7 @@ export class MenuServiceService {
         { label: 'CMHO PO Summary', route: '/reports/cmho-po-summary' },
         { label: 'Receipt Pending CMHO', route: '/reports/receipt-pending-cmho' },
         { label: 'District Wise PO Detail', route: '/reports/district-wise-po-detail' },
+        { label: 'RC Detail Report', route: '/contracts/rc-detail-report' },
       ],
     },
   };

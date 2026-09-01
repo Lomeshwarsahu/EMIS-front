@@ -1192,7 +1192,7 @@ const routes: Routes = [
     path: 'contracts/rc-detail-report',
     component: RCDetailReportComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME','AUPO'] },
+    data: { allowedRoles: ['AD', 'DME', 'AUPO', 'AU', 'TPO', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'tender/plan',
