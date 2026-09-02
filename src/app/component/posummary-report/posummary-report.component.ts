@@ -236,9 +236,16 @@ this.year=years.year;
       };
       this.api.get('Contract/Reports/GetPOSummaryReport?', { params }).subscribe(
         (res: any) => {
-          this.dispatchData = res.map((item: IndentItemSummaryDTO, index: number) => ({
-            ...item,
+          this.dispatchData = (res || []).map((item: any, index: number) => ({
             sno: index + 1,
+            Code: item.Code ?? item.code ?? item.CODE ?? '',
+            ItemName: item.ItemName ?? item.itemName ?? item.item_name ?? item.ITEM_NAME ?? '',
+            Quantity: item.Quantity ?? item.quantity ?? 0,
+            BasicRate: item.BasicRate ?? item.basicRate ?? item.basic_rate ?? 0,
+            Percentage: item.Percentage ?? item.percentage ?? 0,
+            SingleUnitPrice: item.SingleUnitPrice ?? item.singleUnitPrice ?? item.single_unit_price ?? 0,
+            TotalPOValue: item.TotalPOValue ?? item.totalPOValue ?? item.totalPoValue ?? item.total_po_value ?? 0,
+            Description: item.Description ?? item.description ?? '',
           }));
           console.log('TenderSupplierDataDTO=:', this.dispatchData);
           this.dataSource.data = this.dispatchData;

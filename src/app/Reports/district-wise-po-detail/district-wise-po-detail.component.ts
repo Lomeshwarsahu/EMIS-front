@@ -143,12 +143,26 @@ export class DistrictWisePoDetailComponent {
     const url = `Reports/GetDistrictWiseDetails?${params.toString()}`;
     this.api.get(url).subscribe({
       next: (res: any) => {
-        this.poData = (res || []).map(
-          (item: DistrictWisePoRow, index: number) => ({
-            ...item,
-            sno: index + 1,
-          }),
-        );
+        this.poData = (res || []).map((item: any, index: number) => ({
+          sno: index + 1,
+          potype: item.potype ?? item.Potype ?? item.poType ?? '',
+          tender_no: item.tender_no ?? item.Tender_no ?? item.tenderNo ?? item.TENDER_NO ?? '',
+          po_no: item.po_no ?? item.Po_no ?? item.poNo ?? item.PO_NO ?? '',
+          po_date: item.po_date ?? item.Po_date ?? item.poDate ?? '',
+          supplier_name: item.supplier_name ?? item.Supplier_name ?? item.supplierName ?? item.SUPPLIER_NAME ?? '',
+          item_code_as_per_tender: item.item_code_as_per_tender ?? item.Item_code_as_per_tender ?? item.itemCode ?? '',
+          item_name: item.item_name ?? item.Item_name ?? item.itemName ?? item.ITEM_NAME ?? '',
+          DBStart_Name_En: item.dbStart_Name_En ?? item.dBStart_Name_En ?? item.DBStart_Name_En ?? item.district ?? '',
+          location_name: item.location_name ?? item.Location_name ?? item.locationName ?? '',
+          basicrate: item.basicrate ?? item.basicRate ?? item.BasicRate ?? 0,
+          percentage: item.percentage ?? item.Percentage ?? 0,
+          totalprice: item.totalprice ?? item.totalPrice ?? item.TotalPrice ?? 0,
+          po_qty: item.po_qty ?? item.poQty ?? item.po_quantity ?? 0,
+          supply_qty: item.supply_qty ?? item.supplyQty ?? 0,
+          receiptQTY: item.receiptQTY ?? item.receiptQty ?? item.receipt_qty ?? 0,
+          insqty: item.insqty ?? item.insQty ?? item.installation_qty ?? 0,
+          eqptype: item.eqptype ?? item.Eqptype ?? item.eqpType ?? '',
+        }));
         this.dataSource.data = this.poData;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

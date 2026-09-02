@@ -1300,6 +1300,9 @@ export interface BalanceStatusDTO {
   install_qty?: number;
   po_type?: string;
   balance_qty?: number;
+  district?: string;
+  location?: string;
+  remarks?: string;
 }
 
 export interface OpeningStockSummaryDTO {

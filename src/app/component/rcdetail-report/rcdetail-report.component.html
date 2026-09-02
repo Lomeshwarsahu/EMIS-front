@@ -12,14 +12,14 @@
         <option *ngFor="let t of Tenterlist" [ngValue]="t.tender_id">{{ t.tender_no }}</option>
       </select>
 
-      <div class="radio-group" role="radiogroup" aria-label="Category">
+      <div class="radio-group" role="radiogroup" aria-label="Category" *ngIf="!isCmho">
         <label>
           <input
             type="radio"
             name="CategoryType"
             value="E"
             [(ngModel)]="CategoryType"
-            (ngModelChange)="onFilterChange()"
+            (ngModelChange)="onFilterChange(true)"
             [disabled]="loading" />
           Equipment
         </label>
@@ -29,20 +29,20 @@
             name="CategoryType"
             value="R"
             [(ngModel)]="CategoryType"
-            (ngModelChange)="onFilterChange()"
+            (ngModelChange)="onFilterChange(true)"
             [disabled]="loading" />
           Reagent
         </label>
       </div>
 
-      <div class="radio-group" role="radiogroup" aria-label="RC Type">
+      <div class="radio-group" role="radiogroup" aria-label="RC Type" *ngIf="!isCmho">
         <label>
           <input
             type="radio"
             name="RcType"
             value="R"
             [(ngModel)]="RcType"
-            (ngModelChange)="onFilterChange()"
+            (ngModelChange)="onFilterChange(true)"
             [disabled]="loading" />
           Current RC Valid
         </label>
@@ -52,7 +52,7 @@
             name="RcType"
             value="D"
             [(ngModel)]="RcType"
-            (ngModelChange)="onFilterChange()"
+            (ngModelChange)="onFilterChange(true)"
             [disabled]="loading" />
           Expired / Previous RC
         </label>

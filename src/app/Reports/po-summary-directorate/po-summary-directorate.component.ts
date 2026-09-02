@@ -92,9 +92,15 @@ export class PoSummaryDirectorateComponent {
     this.api.get(`Reports/po-summary?financialYearId=${financialYearId}&directorateId=${directorateId}`)
       .subscribe({
         next: (res: any) => {
-          this.summaryData = res.map((item: IndentItemSummaryDTO, index: number) => ({
-            ...item,
+          this.summaryData = (res || []).map((item: any, index: number) => ({
             sno: index + 1,
+            Code: item.Code ?? item.code ?? item.CODE ?? '',
+            ItemName: item.ItemName ?? item.itemName ?? item.item_name ?? item.ITEM_NAME ?? '',
+            Quantity: item.Quantity ?? item.quantity ?? 0,
+            BasicRate: item.BasicRate ?? item.basicRate ?? item.basic_rate ?? 0,
+            Percentage: item.Percentage ?? item.percentage ?? 0,
+            SingleUnitPrice: item.SingleUnitPrice ?? item.singleUnitPrice ?? item.single_unit_price ?? 0,
+            TotalPOValue: item.TotalPOValue ?? item.totalPOValue ?? item.totalPoValue ?? item.total_po_value ?? 0,
           }));
           this.dataSource.data = this.summaryData;
           this.dataSource.paginator = this.paginator;

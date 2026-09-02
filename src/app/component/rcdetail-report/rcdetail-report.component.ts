@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { ContractItem } from 'src/app/Model/models';
 import { MaterialModule } from 'src/app/material-module';
 import { ApiService } from 'src/app/service/api.service';
+import { BasicAuthenticationService } from 'src/app/service/authentication/basic-authentication.service';
 import { DmePageSkeletonComponent } from '../DME/shared/dme-page-skeleton/dme-page-skeleton.component';
 
 @Component({
@@ -31,8 +32,8 @@ import { DmePageSkeletonComponent } from '../DME/shared/dme-page-skeleton/dme-pa
 export class RCDetailReportComponent implements OnInit {
   Tenterlist: { tender_id: number; tender_no: string }[] = [];
   tender_id = 0;
-  CategoryType = 'E';
-  RcType = 'R';
+  CategoryType = 'ALL';
+  RcType = 'ALL';
   loading = false;
   dataSource = new MatTableDataSource<ContractItem>([]);
 
@@ -62,7 +63,15 @@ export class RCDetailReportComponent implements OnInit {
     'fileUpload',
   ];
 
+  get isCmho(): boolean {
+    const role = (this.basicAuth?.getRole()?.roleName || localStorage.getItem('roleName') || '').toUpperCase().trim();
+    return ['CMHO', 'STORE', 'FU', 'FACILITY', 'HEALTHFACILITY'].includes(role);
+  }
+
   get hasActiveFilter(): boolean {
+    if (this.isCmho) {
+      return this.tender_id > 0;
+    }
     return this.tender_id > 0 || this.CategoryType !== 'E' || this.RcType !== 'R';
   }
 
@@ -76,28 +85,52 @@ export class RCDetailReportComponent implements OnInit {
 
   constructor(
     private readonly api: ApiService,
+    private readonly basicAuth: BasicAuthenticationService,
     private readonly toastr: ToastrService,
     private readonly cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
+    if (this.isCmho) {
+      this.CategoryType = 'ALL';
+      this.RcType = 'R';
+    } else {
+      this.CategoryType = 'E';
+      this.RcType = 'R';
+    }
     this.GetConTenterlist();
     this.loadRows();
   }
 
-  onFilterChange(): void {
+  onFilterChange(reloadTenders = false): void {
+    if (reloadTenders) {
+      this.GetConTenterlist();
+    }
     this.loadRows();
   }
 
   clearFilters(): void {
     this.tender_id = 0;
-    this.CategoryType = 'E';
-    this.RcType = 'R';
+    if (this.isCmho) {
+      this.CategoryType = 'ALL';
+      this.RcType = 'R';
+    } else {
+      this.CategoryType = 'E';
+      this.RcType = 'R';
+    }
+    this.GetConTenterlist();
     this.loadRows();
   }
 
   GetConTenterlist(): void {
-    this.api.get('Contract/GetConTenterlist').subscribe({
+    const rcType = this.isCmho ? 'R' : this.RcType;
+    const categoryId = this.isCmho ? 0 : this.CategoryType === 'E' ? 1 : this.CategoryType === 'R' ? 2 : 0;
+    const params: Record<string, string | number> = {
+      rcType,
+      categoryId,
+    };
+
+    this.api.get('Contract/GetConTenterlist', { params }).subscribe({
       next: (res: unknown) => {
         const arr = Array.isArray(res) ? res : [];
         const mapped = arr.map((r: Record<string, unknown>) => ({
@@ -106,7 +139,9 @@ export class RCDetailReportComponent implements OnInit {
         }));
         const hasAll = mapped.some((t) => t.tender_id === 0);
         this.Tenterlist = hasAll ? mapped : [{ tender_id: 0, tender_no: '--All--' }, ...mapped];
-        this.tender_id = 0;
+        if (!this.Tenterlist.some((t) => t.tender_id === this.tender_id)) {
+          this.tender_id = 0;
+        }
       },
       error: () => this.toastr.error('Could not load tender list.'),
     });
@@ -114,7 +149,7 @@ export class RCDetailReportComponent implements OnInit {
 
   loadRows(): void {
     this.loading = true;
-    const categoryId = this.CategoryType === 'E' ? 1 : 2;
+    const categoryId = this.CategoryType === 'E' ? 1 : this.CategoryType === 'R' ? 2 : 0;
     const params: Record<string, string | number> = {
       CategoryId: categoryId,
       RcType: this.RcType,

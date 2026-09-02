@@ -1,19 +1,19 @@
 <div class="it-page" style="--page-accent:#059669">
-  <h2 class="page-title">Receipt Pending — CMHO</h2>
+  <h2 class="page-title">Consignee Wise - Quantity Balance Status (Dispatch / Received / Install)</h2>
 
   <div class="filters--compact">
     <div class="radio-group">
       <label>
-        <input type="radio" name="balanceType" [(ngModel)]="balanceType" value="I" (change)="loadData()" />
-        Installation Pending
+        <input type="radio" name="balanceType" [(ngModel)]="balanceType" value="D" (change)="loadData()" />
+        Balance to Dispatch
       </label>
       <label>
         <input type="radio" name="balanceType" [(ngModel)]="balanceType" value="R" (change)="loadData()" />
-        Receipt Pending
+        Balance to Receipt
       </label>
       <label>
-        <input type="radio" name="balanceType" [(ngModel)]="balanceType" value="D" (change)="loadData()" />
-        Dispatch Pending
+        <input type="radio" name="balanceType" [(ngModel)]="balanceType" value="I" (change)="loadData()" />
+        Balance To Install
       </label>
       <label>
         <input type="radio" name="balanceType" [(ngModel)]="balanceType" value="A" (change)="loadData()" />
