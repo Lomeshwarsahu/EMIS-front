@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card p-4 mb-4 shadow-sm text-center bg-light border-0 rounded-3">
           <!-- Main Heading Centered -->
-          <!-- <h2 class="fw-bold text-primary mb-2">Extension HO Entry Desk </h2> -->
+          <h2 class="fw-bold text-primary mb-2">Extension HO Entry Desk</h2>
         
           <!-- Optional small subtitle for clarity -->
           <p class="text-muted mb-0 fs-6">
@@ -13,6 +13,7 @@
             <div class="card-body border rounded px-0 pt-2 pb-3 bg-light"
                 style="height: auto; overflow: hidden; position: relative;">
                 <div class="mb-3 Fon-family" style="text-align: justify;">
+                    <!-- <form class="p-2 " #GSTForm="ngForm" (ngSubmit)="InsertGSTCertificate(GSTForm)"> -->
                     <form class="p-2 ">
                         <div class="row pb-3">
                             <div class="form-group col-md-12 pt-3 form-check form-check-inline"
@@ -22,10 +23,18 @@
                                        (change)="onSelectSupplier($event)" placeholder="Select Supplier">
                                     </ng-select>
                             </div>
-                        
+                            <!-- <div class="form-group col-md-6  pt-3">
+                                <label for="inputPassword4">Tender number: <span class="text-danger">*</span></label>
+                                <input type="textarea" class="form-control" id="turnoveran" name="gstno"
+                                    placeholder="Type GST No." minlength="15" maxlength="15">
+
+
+
+                            </div> -->
                         </div>
                         <div class="d-flex justify-content-center mt-3">
                             <button type="submit" class="btn btn-primary mt-3 me-2" (click)="GETExtensionEHODetails()">Show</button>
+                            <!-- <button type="submit" class="btn btn-primary mt-3 ">Cancel</button> -->
 
                         </div>
                     </form>
@@ -61,7 +70,7 @@
                 </div>
                 <div class="table-responsive">
                   <table class="table table-bordered table-striped border rounded " mat-table matTableExporter
-                    [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort"  style="width: 100% !important;">
+                    [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
     
                     <ng-container matColumnDef="sno">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No </th>
@@ -109,16 +118,11 @@
                     <ng-container matColumnDef="Fill">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>Fill Extension</th>
                       
-                      <!-- <td mat-cell *matCellDef="let element" class="text-center">
+                      <td mat-cell *matCellDef="let element" class="text-center">
                           <span class="d-flex  flex-row-reverse p-2 ">
                           <a type="link" class="download-link" (click)="ONOpenlink(element.PO_ID)">Apply Status 
                           </a>
-                        </span></td> -->
-                        <td mat-cell *matCellDef="let element" class="text-center">
-    <button class="btn btn-sm btn-outline-primary rounded-pill px-3" (click)="ONOpenlink(element.PO_ID)">
-        Apply Status
-    </button>
-</td>
+                        </span></td>
                     </ng-container>
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

@@ -4,5 +4,6 @@ export const environment = {
   // apiUrl: '/api',
   // apiUrl: 'http://103.51.8.80/emsapi/api',
   // apiUrl: 'https://cgmsc.gov.in/emsapi/api',
-    apiUrl: 'http://localhost:5169/api',
+    // apiUrl: 'http://localhost:5169/api',
+      apiUrl: 'https://localhost:7036/api',
 };
