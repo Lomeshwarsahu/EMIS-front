@@ -62,7 +62,8 @@ const ROUTE_MAP: Record<string, string> = {
   // --- 4. Contracts Module ---
   '/contract/rcextend.aspx': '/RCExtend',
   '/contract/rcextendadmin.aspx': '/RCExtend',
-  '/contract/rcdetailreport.aspx': '/contracts/rc-detail-report',
+  // '/contract/rcdetailreport.aspx': '/contracts/rc-detail-report',
+  '/contract/rcdetailreport.aspx': '/RCDetailReport',
   '/contract/rcdetailreportforsupplier.aspx': '/contracts/rc-detail-report-supplier',
   '/contract/acceptedreoprtsupplier.aspx': '/contracts/accepted-report-supplier',
   '/contracts/rc-detail-report-supplier.aspx': '/contracts/rc-detail-report-supplier',
@@ -305,7 +306,7 @@ const ROUTE_MAP: Record<string, string> = {
   '/pocell/emspoammendment.aspx': '/orders/po-amendment',
   '/pocell/emsrcdashboard.aspx': '/contracts/dashboard',
   '/pocell/sddetailsupplierforbme.aspx': '/orders/po-supply-sd-detail',
-  '/pocell/po_supplyho.aspx': '/orders/po-supply',
+  '/pocell/po_supplyho.aspx': '/POSupplyHO',
   '/pocell/rdlcporeport.aspx': '/orders/po-print',
   '/pocell/incompletedispatch.aspx': '/transaction/po-supply-dispatch',
   '/pocell/porealloaction.aspx': '/orders/po-reallocation',
@@ -442,7 +443,8 @@ const ROUTE_MAP: Record<string, string> = {
   '/master/associateeqpreagent.aspx.aspx': '/masters/map-items',
   '/master/associateeqpreagent.aspx': '/masters/map-items',
   '/master/masfacilityauth.aspx': '/masters/mas-facility-users-locations',
-  '/order/emspodashboard.aspx': '/orders/purchase-order-dashboard',
+  '/order/emspodashboard.aspx': '/EMSPODashboard',
+  // '/order/emspodashboard.aspx': '/orders/purchase-order-dashboard',
   '/order/po_supply.aspx': '/orders/po-supply',
   '/reports/popaidreport_pocell.aspx': '/reports/po-wise-payment',
 };

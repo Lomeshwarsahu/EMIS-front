@@ -283,7 +283,8 @@
 </div>
         <div class="table-responsive border rounded">
             <!-- <table class="table table-hover align-middle text-nowrap mb-0" mat-table [dataSource]="dataSource" matSort> -->
-            <table class="table table-hover align-middle text-nowrap mb-0"  mat-table matTableExporter [dataSource]="dataSource"  #exporter="matTableExporter" matSort #sort="matSort">
+            <table class="table table-hover align-middle text-nowrap mb-0"  mat-table matTableExporter [dataSource]="dataSource"  #exporter="matTableExporter" matSort #sort="matSort"
+            style="width: 100% !important;">
 
                 <ng-container matColumnDef="sno">
                     <th mat-header-cell *matHeaderCellDef class="bg-light text-secondary text-center"> S.No </th>
