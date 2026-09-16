@@ -395,8 +395,9 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     const rawRoleId = sessionStorage.getItem('roleId') || localStorage.getItem('roleId');
     const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
     const roleId = rawRoleId ? parseInt(rawRoleId, 10) : (loginData?.roleid ? parseInt(loginData.roleid, 10) : null);
+    const activeRole = (this.role || this.basicAuthentication.getRole().roleName || localStorage.getItem('roleName') || loginData?.user_type || '').toUpperCase().trim();
 
-    if (roleId && !isNaN(roleId)) {
+    if (roleId && !isNaN(roleId) && activeRole !== 'DME' && activeRole !== 'FU' && activeRole !== 'PRINCIPAL' && activeRole !== 'FDA') {
       this.roleMenuService.getSidebarTreeForRole(roleId).subscribe({
         next: (items) => {
           console.log('[Sidebar Debug] roleId:', roleId, 'items received:', JSON.stringify(items, null, 2));
@@ -417,7 +418,6 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
         }
       });
     } else {
-      console.log('[Sidebar Debug] No roleId in session/storage, using static menu. sessionStorage:', sessionStorage.getItem('roleId'), 'localStorage:', localStorage.getItem('roleId'), 'loginData.roleid:', loginData?.roleid);
       this.fallbackStaticMenu();
       this.expandActiveParentMenu();
       this.updatePageHeading(this.router.url);
@@ -426,16 +426,17 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
 
 
   private fallbackStaticMenu() {
-    const hasCategories = ['SEC1', 'DHS', 'CME', 'Collector', 'DME1'].includes(this.role);
+    const currentRole = this.role || this.basicAuthentication.getRole().roleName || localStorage.getItem('roleName') || '';
+    const hasCategories = ['SEC1', 'DHS', 'CME', 'Collector', 'DME1'].includes(currentRole);
 
     if (hasCategories) {
       // Ensure a category exists so sidebar is never blank after department switch.
       if (!this.menuService.getSelectedCategory()) {
         this.menuService.setSelectedCategory('DrugsConsumables');
       }
-      this.menuItems = this.menuService.getMenuItems(this.role);
+      this.menuItems = this.menuService.getMenuItems(currentRole);
     } else {
-      this.menuItems = this.menuService.getMenuItems(this.role);
+      this.menuItems = this.menuService.getMenuItems(currentRole);
     }
   }
 
