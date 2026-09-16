@@ -224,4 +224,16 @@ export class IssuePerDetailModel {
     work_text: string
   }
   
-  
+  export interface LocationDto {
+  locationName: string;
+  dpDistrictId: string;
+  mobileNo: string;
+  address1: string;
+  address2?: string;
+  address3?: string;
+  emailId: string;
+  conductPerson?: string;
+  did?: string;
+  mcName?: string;
+  facilityTypeId?: string;
+}

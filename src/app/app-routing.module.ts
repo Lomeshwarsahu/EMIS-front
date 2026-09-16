@@ -215,6 +215,7 @@ import { PoSummaryDrilldownQtyPowiseComponent } from './Reports/po-summary-drill
 import { PoSummaryDrilldownQtyReagentComponent } from './Reports/po-summary-drilldown-qty-reagent/po-summary-drilldown-qty-reagent.component';
 import { IndentPoSummaryDirwiseComponent } from './Reports/indent-po-summary-dirwise/indent-po-summary-dirwise.component';
 import { MasFacilityUsersLocationsmasterComponent } from './component/mas-facility-users-locationsmaster/mas-facility-users-locationsmaster.component';
+// import { POSupplyHOComponent } from './component/PO-Cell/po-supply-ho/po-supply-ho.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -686,7 +687,8 @@ const routes: Routes = [
   },
 
   {
-    path: 'ExtensionHODetail',
+    // path: 'ExtensionHODetail',
+    path: 'POSupplyHO',
     component: ExtensionHODetailComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO','AUPO'] },
@@ -912,7 +914,7 @@ const routes: Routes = [
     path: 'RCDetailReport',
     component: RCDetailReportComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME'] },
+    data: { allowedRoles: ['AD', 'DME','AUPO'] },
   },
   {
     path: 'AcceptedReort',
@@ -1192,7 +1194,7 @@ const routes: Routes = [
     path: 'contracts/rc-detail-report',
     component: RCDetailReportComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME', 'AUPO', 'AU', 'TPO', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
+    data: { allowedRoles: ['AD', 'DME','AU', 'TPO', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'tender/plan',
@@ -1853,11 +1855,11 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'EMSNEWRC', redirectTo: 'contracts/new-rc', pathMatch: 'full' },
-  {
-    path: 'RCDetailReport',
-    redirectTo: 'contracts/rc-detail-report',
-    pathMatch: 'full',
-  },
+  // {
+  //   path: 'RCDetailReport',
+  //   redirectTo: 'contracts/rc-detail-report',
+  //   pathMatch: 'full',
+  // },
   { path: 'PlanaTenderD', redirectTo: 'tender/plan', pathMatch: 'full' },
   {
     path: 'TenderStatusUpdate',
@@ -2256,6 +2258,12 @@ const routes: Routes = [
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUPO','AD'], variant: 'gmt' },
   },
+  // {
+  //   path: 'POSupplyHO',
+  //   component: POSupplyHOComponent,
+  //   canActivate: [RouteGuardService],
+  //   data: { allowedRoles: ['AUPO','AD'] },
+  // },
   //#endregion
   //#region File Movement — Others
   {
