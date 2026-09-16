@@ -114,4 +114,22 @@ export class AddSubMenuComponent implements OnInit {
         },
       });
   }
+
+// Typing ke waqt numbers ya special characters ko block karega
+allowOnlyLetters(event: KeyboardEvent): boolean {
+  const pattern = /^[a-zA-Z\s]*$/;
+  if (!pattern.test(event.key)) {
+    event.preventDefault();
+    return false;
+  }
+  return true;
+}
+
+// Agar koi copy-paste kare to invalid characters hata dega aur 30 characters par trim karega
+sanitizeText(): void {
+  if (this.newSubMenuName) {
+    this.newSubMenuName = this.newSubMenuName.replace(/[^a-zA-Z\s]/g, '').slice(0, 35);
+  }
+}
+
 }

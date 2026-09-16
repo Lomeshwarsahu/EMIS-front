@@ -24,15 +24,12 @@
     <!-- Add form -->
     <div class="form-card" *ngIf="showForm && selectedMenuId">
       <div class="form-grid">
+     
         <label class="field">
           <span class="field-label">Sub-Menu Name <em>*</em></span>
-          <input
-            type="text"
-            [(ngModel)]="newSubMenuName"
-            placeholder="Enter display name"
-            [disabled]="saving" />
+          <input type="text" [(ngModel)]="newSubMenuName" placeholder="Enter display name" maxlength="30"
+            (keypress)="allowOnlyLetters($event)" (input)="sanitizeText()" [disabled]="saving" />
         </label>
-
         <label class="field">
           <span class="field-label">Sub-Menu Link <em>*</em></span>
           <input
