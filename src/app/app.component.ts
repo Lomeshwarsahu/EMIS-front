@@ -397,12 +397,31 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     const roleId = rawRoleId ? parseInt(rawRoleId, 10) : (loginData?.roleid ? parseInt(loginData.roleid, 10) : null);
     const activeRole = (this.role || this.basicAuthentication.getRole().roleName || localStorage.getItem('roleName') || loginData?.user_type || '').toUpperCase().trim();
 
-    if (roleId && !isNaN(roleId) && activeRole !== 'DME' && activeRole !== 'FU' && activeRole !== 'PRINCIPAL' && activeRole !== 'FDA') {
+    if (roleId && !isNaN(roleId) && activeRole !== 'FU' && activeRole !== 'PRINCIPAL' && activeRole !== 'FDA') {
       this.roleMenuService.getSidebarTreeForRole(roleId).subscribe({
         next: (items) => {
           console.log('[Sidebar Debug] roleId:', roleId, 'items received:', JSON.stringify(items, null, 2));
           if (items && items.length > 0) {
-            this.menuItems = items;
+            // For DME role: merge any static menu sections missing from the API response.
+            // The DB may not have all sub-menus mapped in masSubMenuRole, so sections like
+            // Stock can be absent from the API even though they exist in the static definition.
+            const isDme = ['DME', 'FU', 'PRINCIPAL', 'FDA'].includes(activeRole) ||
+                          ['DME', 'FU', 'PRINCIPAL', 'FDA'].includes((this.basicAuthentication.getRole().roleName || '').toUpperCase().trim());
+            if (isDme) {
+              const staticItems = this.menuService.getMenuItems(activeRole === 'DME' ? 'DME' : activeRole);
+              const apiLabels = new Set(items.map((i: any) => (i.label || '').toLowerCase()));
+              const missingStatic = (staticItems || []).filter(
+                (s: any) => s.label && !apiLabels.has(s.label.toLowerCase())
+              );
+              if (missingStatic.length > 0) {
+                console.log('[Sidebar Debug] DME: merging missing static sections:', missingStatic.map((s: any) => s.label));
+                this.menuItems = [...items, ...missingStatic];
+              } else {
+                this.menuItems = items;
+              }
+            } else {
+              this.menuItems = items;
+            }
           } else {
             console.log('[Sidebar Debug] No items returned, falling back to static menu');
             this.fallbackStaticMenu();
