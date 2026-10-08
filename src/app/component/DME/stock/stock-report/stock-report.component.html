@@ -72,8 +72,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
-            <td class="text-center">{{ i + 1 }}</td>
+          <tr *ngFor="let row of pagedRows; index as i" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ pageIndex * pageSize + i + 1 }}</td>
             <td>
               {{ row.ItemName || '—' }}
               <span class="sub-code" *ngIf="row.ItemCode">{{ row.ItemCode }}</span>
@@ -99,5 +99,16 @@
         </tbody>
       </table>
     </div>
+
+    <mat-paginator
+      *ngIf="!loading && rows.length > 0"
+      [length]="rows.length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [pageIndex]="pageIndex"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+      aria-label="Select page of stock records">
+    </mat-paginator>
   </div>
 </div>

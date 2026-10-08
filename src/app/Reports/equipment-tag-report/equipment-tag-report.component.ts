@@ -80,10 +80,14 @@ export class EquipmentTagReportComponent {
           sno: index + 1,
         }));
         this.dataSource.data = this.dispatchData;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.cdr.detectChanges();
         this.loading = false;
+        this.cdr.detectChanges();
+        if (this.paginator) {
+          this.dataSource.paginator = this.paginator;
+        }
+        if (this.sort) {
+          this.dataSource.sort = this.sort;
+        }
       },
       error: (err: any) => {
         this.loading = false;
