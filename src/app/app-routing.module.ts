@@ -215,6 +215,7 @@ import { PoSummaryDrilldownQtyPowiseComponent } from './Reports/po-summary-drill
 import { PoSummaryDrilldownQtyReagentComponent } from './Reports/po-summary-drilldown-qty-reagent/po-summary-drilldown-qty-reagent.component';
 import { IndentPoSummaryDirwiseComponent } from './Reports/indent-po-summary-dirwise/indent-po-summary-dirwise.component';
 import { MasFacilityUsersLocationsmasterComponent } from './component/mas-facility-users-locationsmaster/mas-facility-users-locationsmaster.component';
+import { MainFundHeadEnComponent } from './component/Finance/main-fund-head-en/main-fund-head-en.component';
 // import { POSupplyHOComponent } from './component/PO-Cell/po-supply-ho/po-supply-ho.component';
 
 const routes: Routes = [
@@ -222,7 +223,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'supplier-login', component: SupplierLoginComponent },
   { path: 'MasFacilityUsersLocationsmaster', component: MasFacilityUsersLocationsmasterComponent},
+  // { path: 'MainFundHead', component: MainFundHeadEnComponent },
   { path: 'LoginEmsSup', redirectTo: 'supplier-login', pathMatch: 'full' },
+
   {
     path: 'masters/particular-supplier-add',
     component: ParticularSupplierAddComponent,
@@ -234,6 +237,7 @@ const routes: Routes = [
     redirectTo: 'masters/particular-supplier-add',
     pathMatch: 'full',
   },
+    
   {
     path: 'masters/supplier-gst-entry',
     component: SupplierGstEntryComponent,
@@ -2027,6 +2031,12 @@ const routes: Routes = [
   {
     path: 'BudgentEntry',
     component: BudgentEntryComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'MainFundHead',
+    component: MainFundHeadEnComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
