@@ -325,34 +325,32 @@ export class LoginComponent implements OnInit, AfterViewInit {
       return '';
     }
 
-    // 1. Background gradient with soft pastel tones
-    const bgGrad = ctx.createLinearGradient(0, 0, width, height);
-    bgGrad.addColorStop(0, '#f1f5f9');
-    bgGrad.addColorStop(0.5, '#e2e8f0');
-    bgGrad.addColorStop(1, '#f8fafc');
-    ctx.fillStyle = bgGrad;
+    // 1. Pure White Background
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, width, height);
 
-    // 2. Background noise dots
-    for (let i = 0; i < 45; i++) {
-      ctx.fillStyle = `rgba(${Math.floor(Math.random() * 150)}, ${Math.floor(Math.random() * 150)}, ${Math.floor(Math.random() * 150)}, ${0.15 + Math.random() * 0.25})`;
+    // 2. Monochrome / Gray Background Noise Dots
+    for (let i = 0; i < 40; i++) {
+      const alpha = 0.08 + Math.random() * 0.18;
+      ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
       ctx.beginPath();
       ctx.arc(
         Math.random() * width,
         Math.random() * height,
-        1 + Math.random() * 2,
+        1 + Math.random() * 1.5,
         0,
         Math.PI * 2
       );
       ctx.fill();
     }
 
-    // 3. Background interference wave curves / lines
-    for (let i = 0; i < 4; i++) {
-      ctx.strokeStyle = `rgba(${Math.floor(Math.random() * 120)}, ${Math.floor(Math.random() * 120)}, ${Math.floor(Math.random() * 120)}, ${0.25 + Math.random() * 0.25})`;
-      ctx.lineWidth = 1 + Math.random() * 1.5;
+    // 3. Monochrome / Gray Interference Wave Curves (anti-bot)
+    for (let i = 0; i < 3; i++) {
+      const alpha = 0.15 + Math.random() * 0.2;
+      ctx.strokeStyle = `rgba(0, 0, 0, ${alpha})`;
+      ctx.lineWidth = 1 + Math.random() * 1.2;
       ctx.beginPath();
-      ctx.moveTo(Math.random() * 20, Math.random() * height);
+      ctx.moveTo(Math.random() * 15, Math.random() * height);
       ctx.bezierCurveTo(
         Math.random() * width * 0.4,
         Math.random() * height,
@@ -364,9 +362,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
       ctx.stroke();
     }
 
-    // 4. Draw each digit with random rotation, distortion, and styling (Anti-Bot / Robot Non-Readable)
+    // 4. Draw each digit in solid BLACK with random rotation & distortion (Anti-Bot)
     const fontFamilies = ['Arial', 'Verdana', 'Georgia', 'Courier New', 'Impact'];
-    const textColors = ['#0f172a', '#1e293b', '#1e3a8a', '#065f46', '#831843', '#431407'];
     const charSpacing = (width - 24) / text.length;
 
     for (let i = 0; i < text.length; i++) {
@@ -380,25 +377,22 @@ export class LoginComponent implements OnInit, AfterViewInit {
       ctx.rotate(angle);
 
       const fontFamily = fontFamilies[Math.floor(Math.random() * fontFamilies.length)];
-      const fontSize = Math.floor(22 + Math.random() * 5);
+      const fontSize = Math.floor(23 + Math.random() * 4);
       ctx.font = `bold ${fontSize}px ${fontFamily}`;
-      ctx.fillStyle = textColors[Math.floor(Math.random() * textColors.length)];
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
-      ctx.shadowBlur = 1.5;
-      ctx.shadowOffsetX = 1;
-      ctx.shadowOffsetY = 1;
+      ctx.fillStyle = '#000000'; // Black numbers
 
       ctx.fillText(char, 0, 0);
       ctx.restore();
     }
 
-    // 5. Foreground strike-through scratch lines cutting across digits
+    // 5. Monochrome scratch lines cutting across digits (anti-bot)
     for (let i = 0; i < 3; i++) {
-      ctx.strokeStyle = `rgba(${Math.floor(Math.random() * 100)}, ${Math.floor(Math.random() * 100)}, ${Math.floor(Math.random() * 100)}, ${0.35 + Math.random() * 0.3})`;
+      const alpha = 0.22 + Math.random() * 0.25;
+      ctx.strokeStyle = `rgba(0, 0, 0, ${alpha})`;
       ctx.lineWidth = 1 + Math.random();
       ctx.beginPath();
-      ctx.moveTo(Math.random() * 15, Math.random() * height);
-      ctx.lineTo(width - Math.random() * 15, Math.random() * height);
+      ctx.moveTo(Math.random() * 10, Math.random() * height);
+      ctx.lineTo(width - Math.random() * 10, Math.random() * height);
       ctx.stroke();
     }
 
