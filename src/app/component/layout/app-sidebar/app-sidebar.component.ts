@@ -277,7 +277,7 @@ export class AppSidebarComponent {
     return 'subdirectory_arrow_right';
   }
 
-
+// ~//Funds/MainFundHead.aspx
 
 // canShowSupplierMenu(): boolean {
 //   const userId = localStorage.getItem('user_id');

@@ -553,6 +553,7 @@ export class MenuServiceService {
             { label: 'Add Funds', route: '/NewFundMaster' },
             { label: 'Fund Map', route: '/FundMap' },
             { label: 'Fund Receipt Entry', route: '/BudgentEntry' },
+            { label: 'Main Fund Head', route: '/MainFundHead' },
           ],
         },
         {

@@ -1,0 +1,327 @@
+<section class="container-fluid bg-light min-vh-100 py-4 px-3">
+
+    <div class="card p-4 mb-4 shadow-sm text-center bg-gradient bg-light border-0 rounded-4">
+        <h2 class="fw-bold text-primary mb-1 tracking-tight">
+            <i class="bi bi-wallet2 me-2"></i>Main Fund Head Entry
+        </h2>
+        <!-- <p class="text-muted mb-0 fs-6">Manage ledger statements, allocate fund categories, and archive authorization document directories.</p> -->
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn">
+        <div class="card-body p-4 bg-white">
+            <form #mainHeadForm="ngForm" (ngSubmit)="onSaveMainHead(mainHeadForm)" novalidate>
+    <div class="row border p-4 rounded-3 shadow-sm bg-white m-1">
+        
+        <!-- Header / Title -->
+       <div class="col-12 mb-4 border-bottom pb-2 d-flex justify-content-between align-items-center">
+    <!-- Left Side: Heading -->
+    <h5 class="text-primary fw-bold mb-0">
+        <i class="bi bi-file-earmark-plus me-2"></i>Add New Main Head
+    </h5>
+    
+    <!-- Right Side: SubHead Button -->
+    <!-- <button type="button" class="btn btn-outline-primary btn-sm fw-bold px-3 rounded-pill shadow-sm">
+        <i class="bi bi-plus-circle me-1"></i> Add SubHead
+    </button> -->
+    <button type="button" class="btn btn-outline-primary btn-sm fw-bold px-3 rounded-pill shadow-sm" 
+            data-bs-toggle="modal" data-bs-target="#subHeadModal">
+        <i class="bi bi-plus-circle me-1"></i> Add SubHead
+    </button>
+    </div>
+
+        <div class="col-12 col-md-8 mx-auto">
+            <!-- 1. Main Head (English) Input -->
+            <div class="row mb-4 align-items-start">
+                <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2">
+                    Main Head (English) <span class="text-danger">*</span>:
+                </label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control shadow-sm border-primary" placeholder="Enter Main Head in English"
+                           [(ngModel)]="formModel.MainHead_Eng" name="MainHead_Eng" #mainHeadEng="ngModel" required
+                           [ngClass]="{'is-invalid': mainHeadEng.invalid && (mainHeadEng.dirty || mainHeadEng.touched)}">
+                    <div class="invalid-feedback small fw-bold" *ngIf="mainHeadEng.invalid && (mainHeadEng.dirty || mainHeadEng.touched)">
+                        Main Head (English) is required.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Main Head (Hindi) Input -->
+            <div class="row mb-4 align-items-start">
+                <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2">
+                    Main Head (Hindi) :
+                </label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control shadow-sm" placeholder="Enter Main Head in Hindi"
+                           [(ngModel)]="formModel.MainHead_Hindi" name="MainHead_Hindi" #mainHeadHindi="ngModel">
+                </div>
+            </div>
+
+            <!-- 3. IsActive Radio Buttons -->
+            <div class="row mb-4 align-items-center">
+                <label class="col-sm-4 col-form-label text-muted fw-semibold small">Status <span class="text-danger">*</span>:</label>
+                <div class="col-sm-8 d-flex gap-4">
+                    <div class="form-check">
+                        <input class="form-check-input border-secondary cursor-pointer" type="radio" value="Active" id="statusActive" 
+                               [(ngModel)]="formModel.IsActive" name="IsActive" required>
+                        <label class="form-check-label fw-bold small text-success cursor-pointer" for="statusActive">Active</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input border-secondary cursor-pointer" type="radio" value="Inactive" id="statusInactive" 
+                               [(ngModel)]="formModel.IsActive" name="IsActive" required>
+                        <label class="form-check-label fw-bold small text-danger cursor-pointer" for="statusInactive">Inactive</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-12 mt-3 border-top pt-4 d-flex justify-content-center gap-3">
+            <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm fw-bold d-inline-flex align-items-center" 
+                    [disabled]="mainHeadForm.invalid">
+                <i class="bi bi-save me-1.5"></i> Save Main Head
+            </button>
+            <button type="button" class="btn btn-secondary px-4 py-2 rounded-pill shadow-sm fw-medium d-inline-flex align-items-center" 
+                    (click)="mainHeadForm.resetForm({IsActive: 'Active'})">
+                <i class="bi bi-arrow-counterclockwise me-1.5"></i> Reset Form
+            </button>
+        </div>
+
+    </div>
+</form>
+          
+        </div>
+    </div>
+
+<!-- ========================================== -->
+<!-- SUBHEAD MODAL POPUP DESIGN                 -->
+<!-- ========================================== -->
+<div class="modal fade" id="subHeadModal" tabindex="-1" aria-labelledby="subHeadModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-light border-bottom-0 rounded-top-4">
+        <h5 class="modal-title fw-bold text-primary" id="subHeadModalLabel">
+            <i class="bi bi-node-plus me-2"></i> Add New Sub Head
+        </h5>
+        <!-- Hidden button for TS to trigger close -->
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close" #closeModalBtn></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body p-4">
+        <form #subHeadForm="ngForm" (ngSubmit)="onSaveSubHead(subHeadForm)" novalidate>
+            
+            <!-- 1. Select Main Head (MHID) -->
+            <div class="mb-3">
+                <label class="form-label text-muted fw-semibold small">Select Main Head <span class="text-danger">*</span></label>
+                <!-- Agar aapke paas mainHeadsList hai, to use bind karein, warna ise number input bana sakte hain -->
+                <select class="form-select shadow-sm" [(ngModel)]="subHeadFormModel.MHID" name="MHID" #mhid="ngModel" required
+                        [ngClass]="{'is-invalid': mhid.invalid && (mhid.dirty || mhid.touched)}">
+                    <option [ngValue]="null" disabled>-- Choose Main Head --</option>
+                    <!-- User ki aai hui list ko yahan loop kar rahe hain -->
+                    <option *ngFor="let head of dataSource.data" [value]="head.MHID">
+                        {{head.MainHead_Eng}}
+                    </option>
+                </select>
+                <div class="invalid-feedback small fw-bold" *ngIf="mhid.invalid">Please select a Main Head.</div>
+            </div>
+
+            <!-- 2. Sub Head English -->
+            <div class="mb-3">
+                <label class="form-label text-muted fw-semibold small">Sub Head (English) <span class="text-danger">*</span></label>
+                <input type="text" class="form-control shadow-sm" placeholder="Enter Sub Head Name" 
+                       [(ngModel)]="subHeadFormModel.SubHead_Eng" name="SubHead_Eng" #subHeadEng="ngModel" required
+                       [ngClass]="{'is-invalid': subHeadEng.invalid && (subHeadEng.dirty || subHeadEng.touched)}">
+                <div class="invalid-feedback small fw-bold" *ngIf="subHeadEng.invalid">Sub Head in English is required.</div>
+            </div>
+
+            <!-- 3. Sub Head Hindi -->
+            <div class="mb-3">
+                <label class="form-label text-muted fw-semibold small">Sub Head (Hindi)</label>
+                <input type="text" class="form-control shadow-sm" placeholder="Sub Head in Hindi required." 
+                       [(ngModel)]="subHeadFormModel.SubHead_Hindi" name="SubHead_Hindi">
+            </div>
+
+            <!-- 4. IsActive Status -->
+            <div class="mb-4">
+                <label class="form-label text-muted fw-semibold small d-block">Status <span class="text-danger">*</span></label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input border-secondary" type="radio" value="Active" id="subActive" 
+                           [(ngModel)]="subHeadFormModel.IsActive" name="subIsActive" required>
+                    <label class="form-check-label fw-bold small text-success" for="subActive">Active</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input border-secondary" type="radio" value="Inactive" id="subInactive" 
+                           [(ngModel)]="subHeadFormModel.IsActive" name="subIsActive" required>
+                    <label class="form-check-label fw-bold small text-danger" for="subInactive">Inactive</label>
+                </div>
+            </div>
+
+            <!-- Modal Footer Buttons -->
+            <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold" data-bs-dismiss="modal" (click)="subHeadForm.resetForm({IsActive: 'Active'})">Cancel</button>
+                <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" [disabled]="subHeadForm.invalid">
+                    <i class="bi bi-save me-1"></i> Save SubHead
+                </button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+ <div class="card shadow-sm border-0 rounded-4 overflow-hidden m-1">
+    <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center border-bottom gap-3 px-4">
+        <h6 class="mb-0 fw-bold text-dark d-flex align-items-center fs-6">
+            <i class="bi bi-layers-half text-success me-2 fs-5"></i> Historic Fund Allocation Streams Ledgers
+        </h6>
+        <div class="input-group input-group-sm" style="max-width: 250px;">
+            <span class="input-group-text bg-light border-end-0 text-muted shadow-none"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control border-start-0 shadow-none bg-light" placeholder="Search entries metrics..." (keyup)="applyTextFilter($event)">
+        </div>
+    </div>
+
+    <!-- BAINEADH: 'white-space: nowrap;' ionas gur féidir leis an tábla leathnú -->
+      <div class="table-responsive shadow-sm border rounded-3"
+                style="overflow-x: auto; white-space: nowrap; max-height: 600px;">
+       
+
+        <!-- Table tag me 'multiTemplateDataRows' zaroor lagayen -->
+<table class="table table-hover align-middle mb-0 text-nowrap" mat-table matTableExporter
+       [dataSource]="dataSource" multiTemplateDataRows #exporter="matTableExporter" matSort #sort="matSort" style="width: 100% !important;">
+    
+    <!-- 1. Naya Expand/Collapse Button Column -->
+    <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef style="width: 50px;" class="text-center"></th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+            <!-- Button click par toggleRow call hoga -->
+            <button class="btn btn-sm btn-light rounded-circle shadow-sm"
+                    (click)="toggleRow(element); $event.stopPropagation()">
+                <i class="bi" [ngClass]="expandedElement === element ? 'bi-chevron-up text-primary' : 'bi-chevron-down text-secondary'"></i>
+            </button>
+        </td>
+    </ng-container>
+
+    <!-- Colún S.No -->
+    <!-- <ng-container matColumnDef="sno">
+        <th mat-header-cell *matHeaderCellDef class="grid-header text-center" style="width: 70px;"> S.No </th>
+        <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold small"> {{ i + 1 }} </td>
+    </ng-container> -->
+
+    <!-- Colún MHID -->
+    <ng-container matColumnDef="MHID">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> MHID </th>
+        <td mat-cell *matCellDef="let element" class="px-3 small text-dark fw-semibold"> {{ element.MHID }} </td>
+    </ng-container>
+
+    <!-- Colún Main Head -->
+    <ng-container matColumnDef="MainHead_Eng">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> Main Head </th>
+        <td mat-cell *matCellDef="let element" class="px-3 small text-secondary"> 
+            {{ element.MainHead_Eng | titlecase }} / {{ element.MainHead_Hindi }} 
+        </td>
+    </ng-container>
+
+    <!-- Colún Created Date -->
+    <ng-container matColumnDef="CreatedDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Created Date </th>
+        <td mat-cell *matCellDef="let element" class="text-center font-monospace small"> {{ element.CreatedDate | date:'mediumDate' }} </td>
+    </ng-container>
+
+    <!-- Colún IsActive -->
+    <ng-container matColumnDef="IsActive">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3 text-center"> Status </th>
+        <td mat-cell *matCellDef="let element" class="px-3 small text-center">
+            <span class="badge rounded-pill px-2 py-1 small fw-medium" 
+                  [ngClass]="element.IsActive === 'Active' ? 'bg-success-subtle text-success border border-success' : 'bg-danger-subtle text-danger border border-danger'">
+                {{ element.IsActive }}
+            </span>
+        </td>
+    </ng-container>
+
+    <!-- ============================================== -->
+    <!-- INNER EXPANDABLE SUBHEAD TABLE (Naya Hissa)   -->
+    <!-- ============================================== -->
+    <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length" class="p-0 border-0">
+            <!-- Ye div tabhi dikhega jab row expand hogi -->
+            <div class="expandable-content bg-light" *ngIf="expandedElement === element">
+                <div class="p-4 border-start border-4 border-primary ms-3 my-2 bg-white shadow-sm rounded">
+                    
+                    <!-- Loading State -->
+                    <div *ngIf="element.isLoadingSubHeads" class="text-center text-primary py-3 small fw-bold">
+                        <span class="spinner-border spinner-border-sm me-2"></span> Fetching Sub Heads...
+                    </div>
+
+                    <!-- SubHead Data Table -->
+                    <div *ngIf="!element.isLoadingSubHeads && element.subHeads?.length > 0">
+                        <h6 class="text-dark fw-bold mb-3"><i class="bi bi-list-nested me-2 text-primary"></i>Sub Head List</h6>
+                        <table class="table table-sm table-bordered align-middle mb-0" style="width: 100% !important;">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="px-3 text-muted small">SHID</th>
+                                    <th class="px-3 text-muted small">Sub Head</th>
+                                    <th class="px-3 text-muted small text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let sub of element.subHeads">
+                                    <td class="px-3 small fw-bold">{{ sub.SHID }}</td>
+                                    <td class="px-3 small">{{ sub.SubHead_Eng }} / {{ sub.SubHead_Hindi }}</td>
+                                    <td class="px-3 small text-center">
+                                        <span class="badge" [ngClass]="sub.IsActive === 'Active' ? 'bg-success' : 'bg-danger'">
+                                            {{ sub.IsActive }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- No Data Found State -->
+                    <div *ngIf="!element.isLoadingSubHeads && element.subHeads?.length === 0" class="text-center text-muted py-3 small">
+                        <i class="bi bi-info-circle fs-4 d-block mb-2 text-secondary opacity-50"></i>
+                        No Sub Heads mapped to this Main Head.
+                    </div>
+
+                </div>
+            </div>
+        </td>
+    </ng-container>
+    <!-- ============================================== -->
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-light border-bottom"></tr>
+    
+    <!-- Main Row par bhi click event lagaya hai -->
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="grid-row-effect bg-white cursor-pointer"
+        [class.expanded-row]="expandedElement === element"
+        (click)="toggleRow(element)">
+    </tr>
+    
+    <!-- Expanded Detail Row Definition -->
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+
+    <!-- Sraith Gan Sonraí -->
+    <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell text-center py-5 text-muted" [attr.colspan]="displayedColumns.length">
+            <div class="py-4">
+                <i class="bi bi-card-checklist text-secondary opacity-25 fs-1 mb-2 d-block"></i> 
+                No budget allocation streams found.
+            </div>
+        </td>
+    </tr>
+</table>
+    </div>
+
+    <div class="card-footer bg-white border-top p-0 px-3">
+        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons class="border-0 bg-transparent"></mat-paginator>
+    </div>
+</div>
+
+
+
+</section>
