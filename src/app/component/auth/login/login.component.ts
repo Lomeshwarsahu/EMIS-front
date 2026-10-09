@@ -33,6 +33,7 @@ import { MenuServiceService } from 'src/app/service/menu-service.service';
 export class LoginComponent implements OnInit, AfterViewInit {
   captcha: string = '';
   captchaValue: string = '';
+  captchaImageUrl: string = '';
 
   adminDropdownList: any = [];
   cgmsclDropdownList: any = [];
@@ -303,10 +304,105 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   generateCaptcha(): void {
-    const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
-    this.captcha = Array.from({ length: 6 }, () =>
-      characters.charAt(Math.floor(Math.random() * characters.length))
-    ).join('');
+    // 6-digit numeric captcha
+    const digits = Math.floor(100000 + Math.random() * 900000).toString();
+    this.captcha = digits;
+    this.captchaImageUrl = this.generateAntiBotCaptchaImage(digits);
+  }
+
+  private generateAntiBotCaptchaImage(text: string): string {
+    if (typeof document === 'undefined') {
+      return '';
+    }
+
+    const width = 145;
+    const height = 40;
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      return '';
+    }
+
+    // 1. Background gradient with soft pastel tones
+    const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+    bgGrad.addColorStop(0, '#f1f5f9');
+    bgGrad.addColorStop(0.5, '#e2e8f0');
+    bgGrad.addColorStop(1, '#f8fafc');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, width, height);
+
+    // 2. Background noise dots
+    for (let i = 0; i < 45; i++) {
+      ctx.fillStyle = `rgba(${Math.floor(Math.random() * 150)}, ${Math.floor(Math.random() * 150)}, ${Math.floor(Math.random() * 150)}, ${0.15 + Math.random() * 0.25})`;
+      ctx.beginPath();
+      ctx.arc(
+        Math.random() * width,
+        Math.random() * height,
+        1 + Math.random() * 2,
+        0,
+        Math.PI * 2
+      );
+      ctx.fill();
+    }
+
+    // 3. Background interference wave curves / lines
+    for (let i = 0; i < 4; i++) {
+      ctx.strokeStyle = `rgba(${Math.floor(Math.random() * 120)}, ${Math.floor(Math.random() * 120)}, ${Math.floor(Math.random() * 120)}, ${0.25 + Math.random() * 0.25})`;
+      ctx.lineWidth = 1 + Math.random() * 1.5;
+      ctx.beginPath();
+      ctx.moveTo(Math.random() * 20, Math.random() * height);
+      ctx.bezierCurveTo(
+        Math.random() * width * 0.4,
+        Math.random() * height,
+        Math.random() * width * 0.8,
+        Math.random() * height,
+        width - Math.random() * 10,
+        Math.random() * height
+      );
+      ctx.stroke();
+    }
+
+    // 4. Draw each digit with random rotation, distortion, and styling (Anti-Bot / Robot Non-Readable)
+    const fontFamilies = ['Arial', 'Verdana', 'Georgia', 'Courier New', 'Impact'];
+    const textColors = ['#0f172a', '#1e293b', '#1e3a8a', '#065f46', '#831843', '#431407'];
+    const charSpacing = (width - 24) / text.length;
+
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const charX = 14 + i * charSpacing + (Math.random() * 4 - 2);
+      const charY = 28 + (Math.random() * 6 - 3);
+      const angle = (Math.random() * 36 - 18) * (Math.PI / 180); // -18 to +18 degrees
+
+      ctx.save();
+      ctx.translate(charX, charY);
+      ctx.rotate(angle);
+
+      const fontFamily = fontFamilies[Math.floor(Math.random() * fontFamilies.length)];
+      const fontSize = Math.floor(22 + Math.random() * 5);
+      ctx.font = `bold ${fontSize}px ${fontFamily}`;
+      ctx.fillStyle = textColors[Math.floor(Math.random() * textColors.length)];
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+      ctx.shadowBlur = 1.5;
+      ctx.shadowOffsetX = 1;
+      ctx.shadowOffsetY = 1;
+
+      ctx.fillText(char, 0, 0);
+      ctx.restore();
+    }
+
+    // 5. Foreground strike-through scratch lines cutting across digits
+    for (let i = 0; i < 3; i++) {
+      ctx.strokeStyle = `rgba(${Math.floor(Math.random() * 100)}, ${Math.floor(Math.random() * 100)}, ${Math.floor(Math.random() * 100)}, ${0.35 + Math.random() * 0.3})`;
+      ctx.lineWidth = 1 + Math.random();
+      ctx.beginPath();
+      ctx.moveTo(Math.random() * 15, Math.random() * height);
+      ctx.lineTo(width - Math.random() * 15, Math.random() * height);
+      ctx.stroke();
+    }
+
+    return canvas.toDataURL('image/png');
   }
 
   private loadSupplierAuthOptions(): void {
