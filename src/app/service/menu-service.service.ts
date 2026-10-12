@@ -554,6 +554,7 @@ export class MenuServiceService {
             { label: 'Fund Map', route: '/FundMap' },
             { label: 'Fund Receipt Entry', route: '/BudgentEntry' },
             { label: 'Main Fund Head', route: '/MainFundHead' },
+            { label: 'Opening Balance', route: '/OpeningBalance'},
           ],
         },
         {
