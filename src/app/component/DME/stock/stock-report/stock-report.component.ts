@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
@@ -29,7 +30,7 @@ interface CovidStockRow {
 @Component({
   selector: 'app-stock-report',
   standalone: true,
-  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
+  imports: [CommonModule, FormsModule, DmePageSkeletonComponent, MatPaginatorModule],
   templateUrl: './stock-report.component.html',
   styleUrls: ['./stock-report.component.css'],
 })
@@ -38,6 +39,15 @@ export class StockReportComponent implements OnInit {
 
   equipmentTypes: MainEquipmentType[] = [];
   rows: CovidStockRow[] = [];
+
+  pageIndex = 0;
+  pageSize = 20;
+  pageSizeOptions = [10, 20, 50, 100];
+
+  get pagedRows(): CovidStockRow[] {
+    const start = this.pageIndex * this.pageSize;
+    return this.rows.slice(start, start + this.pageSize);
+  }
 
   selectedPid = 0;
   filterType: 'All' | 'OR' | 'RI' = 'All';
@@ -60,6 +70,7 @@ export class StockReportComponent implements OnInit {
   }
 
   onEquipmentChange(): void {
+    this.pageIndex = 0;
     this.loadStock();
   }
 
@@ -68,13 +79,20 @@ export class StockReportComponent implements OnInit {
       return;
     }
     this.filterType = type;
+    this.pageIndex = 0;
     this.loadStock();
   }
 
   clearFilters(): void {
     this.selectedPid = 0;
     this.filterType = 'All';
+    this.pageIndex = 0;
     this.loadStock();
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 
   loadStock(): void {
