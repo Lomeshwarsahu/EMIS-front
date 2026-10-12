@@ -31,7 +31,7 @@ html {
 }
 
 .login-page-shell .login-content {
-  padding: 0 !important;
+  padding: 8px 0 24px 0 !important;
 }
 
 .login-page-shell .custom-header {
@@ -381,29 +381,54 @@ footer p {
   transform: rotate(90deg);
 }
 
+.login-card {
+  max-width: 500px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.login-card .card-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+  padding: 0.65rem 0.75rem 0 0.75rem !important;
+}
+
 #loginTabs {
-  border-bottom: none;
-  gap: 4px;
+  border-bottom: none !important;
+  gap: 6px;
+  justify-content: center !important;
+  width: 100%;
 }
 
 #loginTabs .nav-link {
   font-size: 0.82rem;
   font-weight: 600;
-  padding: 0.45rem 0.65rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 6px 6px 0 0;
-  color: rgba(255, 255, 255, 0.85);
+  color: #1e3a8a !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-bottom: none !important;
   transition: all 0.2s ease;
+  opacity: 0.88;
+}
+
+#loginTabs .nav-link:hover {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  opacity: 1 !important;
 }
 
 #loginTabs .nav-link.active {
-  background-color: #ffffff;
-  color: #1e3a8a;
-  border-color: transparent;
-}
-
-.login-card {
-  max-width: 500px;
-  margin: 0 auto;
+  background-color: #ffffff !important;
+  color: #1e3a8a !important;
+  border-color: #ffffff !important;
+  font-weight: 700;
+  opacity: 1 !important;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.15);
+  border-bottom: 3px solid #f59e0b !important;
 }
 
 .Active {
