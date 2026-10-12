@@ -800,7 +800,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
               localStorage.setItem('roleId', roleIdVal);
             }
             const userIdVal = String(
-              updatedRes?.user_id ?? res?.user_id ?? this.id ?? '',
+              updatedRes?.user_id ?? res?.user_id ?? this.emailid ?? this.id ?? '',
             );
             if (userIdVal) {
               sessionStorage.setItem('userid', userIdVal);

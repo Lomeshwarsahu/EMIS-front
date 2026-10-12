@@ -381,6 +381,31 @@ footer p {
   transform: rotate(90deg);
 }
 
+#loginTabs {
+  border-bottom: none;
+  gap: 4px;
+}
+
+#loginTabs .nav-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px 6px 0 0;
+  color: rgba(255, 255, 255, 0.85);
+  transition: all 0.2s ease;
+}
+
+#loginTabs .nav-link.active {
+  background-color: #ffffff;
+  color: #1e3a8a;
+  border-color: transparent;
+}
+
+.login-card {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
 .Active {
   background-color: #4f07f7;
   /* Example for active button */
