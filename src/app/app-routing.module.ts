@@ -224,7 +224,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'supplier-login', component: SupplierLoginComponent },
   { path: 'MasFacilityUsersLocationsmaster', component: MasFacilityUsersLocationsmasterComponent},
-  // { path: 'MainFundHead', component: MainFundHeadEnComponent },
+
   { path: 'LoginEmsSup', redirectTo: 'supplier-login', pathMatch: 'full' },
 
   {

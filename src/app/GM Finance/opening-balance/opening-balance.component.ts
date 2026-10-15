@@ -47,7 +47,6 @@ export class OpeningBalanceComponent implements OnInit {
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
 
-  // labelAmountCaption: string = 'UTR NO';
   labelAmountCaption: string = 'Balance Amount/Fund Received Amount';
   labelDateCaption: string = 'Opening Balance Date/Fund Date';
   labelFileUploadCaption: string = 'Upload Letter/Receipt/Bank Statement (In PDF)';
@@ -75,17 +74,15 @@ export class OpeningBalanceComponent implements OnInit {
   // **RADIO BUTTON CHANGE LOGIC**
   onFundTypeChange() {
     if (this.formModel.fundType === 'A') {
-      
       this.formModel.receivedDate = '2026-04-01';
-        this.labelAmountCaption = 'Balance Amount/Fund Received Amount';
-        this.labelDateCaption = 'Opening Balance Date/Fund Date';
+      this.labelAmountCaption = 'Balance Amount/Fund Received Amount';
+      this.labelDateCaption = 'Opening Balance Date/Fund Date';
       this.isDateInputLocked = true;
     } else {
-      // 2 & 3. Received Fund ('Y') & Unidentified ('U')
       this.formModel.receivedDate = ''; 
       this.isDateInputLocked = false;
-        this.labelAmountCaption = 'Received Amount';
-          this.labelDateCaption = 'Received Date';
+      this.labelAmountCaption = 'Received Amount';
+      this.labelDateCaption = 'Received Date';
     }
   }
 
@@ -123,7 +120,6 @@ export class OpeningBalanceComponent implements OnInit {
   }
 
   onInstituteSelectedChange() {
-    // debugger
     this.mappedFundsList = [];
     this.formModel.budgetId = null;
     if (this.formModel.facilityId) {
@@ -132,7 +128,6 @@ export class OpeningBalanceComponent implements OnInit {
   }
 
   loadMappedFundsDropdown(dirId: number, facId: number) {
-    // debugger
     this.api.get(`GMFI/GetFundsToMap/${dirId}`).subscribe({
       next: (res:any) => {
         this.mappedFundsList = (res || []).filter((x: any) => x.Cnt === 1);
@@ -140,59 +135,72 @@ export class OpeningBalanceComponent implements OnInit {
       error: (err) => console.error(err)
     });
   }
-// onFundHeadSelectedChange() {
 
-//     if (this.formModel.fundType !== 'A') {
-//         return;
-//     }
-
-//     if (!this.formModel.budgetId) return;
-    
-//     const facId = this.formModel.facilityId ? this.formModel.facilityId : 0;
-//     const url = `GMFI/VerifyFirstTimeOpeningBalance?budgetId=${this.formModel.budgetId}&directorateId=${this.formModel.directorateId}&facilityId=${facId}`;
-
-//     this.api.get(url).subscribe({
-//       next: (res:any) => {
-//         if (res.isAlreadyInitialized) {
-//           this.toastr.warning('Opening balance is already added for this fund!', 'Warning');
-          
-//           this.formModel.budgetId = null; 
-          
-//           this.labelAmountCaption = 'Fund Amount (Rs)';
-//           this.labelDateCaption = 'Fund Date';
-//           this.formModel.isOp = false;
-//         } else {
-//           this.labelAmountCaption = 'Opening Balance Fund (Rs)';
-//           this.labelDateCaption = 'Opening Balance Date';
-//           this.formModel.isOp = true;
-//           this.formModel.fundType = 'A';
-//           this.onFundTypeChange(); 
-//         }
-//         console.log('check opbalence', res);
-//       },
-//       error: (err) => console.error(err)
-//     });
-//   }
   onFundHeadSelectedChange() {
-    // debugger
-    if (!this.formModel.budgetId) return;
-    const facId = this.formModel.facilityId ? this.formModel.facilityId : 0;
-    const url = `GMFI/VerifyFirstTimeOpeningBalance?budgetId=${this.formModel.budgetId}&directorateId=${this.formModel.directorateId}&facilityId=${facId}`;
+ 
+  }
+
+  // **NEW LOGIC: MHID Change hone par call hoga**
+  onMainFundHeadSelectedChange() {
+    // debugger;
+    this.subHeadFormModel.SHID = null; 
+    this.subheadfund = []; 
+    if (!this.subHeadFormModel.MHID) return; 
+
+    this.api.get(`GMFI/GetSubHeadById/${this.subHeadFormModel.MHID}`).subscribe({
+      next: (res: any) => {
+        this.subheadfund = Array.isArray(res) ? res : (res ? [res] : []);
+        
+       
+        this.verifyOpeningBalance();
+      },
+      error: (err: any) => console.error("SubHead fetch error", err)
+    });
+     this.verifyOpeningBalance();
+  }
+
+  // **NEW LOGIC: SHID Change hone par call hoga**
+  // onSubHeadSelectedChange() {
+  //   this.verifyOpeningBalance();
+  // }
+
+  // **NEW LOGIC: COMMON FUNCTION FOR API CALL (Only for Opening Balance 'A')**
+  verifyOpeningBalance() {
+    // debugger;
     
+    if (this.formModel.fundType !== 'A') return; 
+    
+    if (!this.formModel.directorateId) {
+        this.toastr.warning('Please select Directorate first!', 'Warning');
+        this.subHeadFormModel.MHID = null;
+        return;
+    }
+
+    if (!this.subHeadFormModel.MHID) return;
+
+    const facId = this.formModel.facilityId ? this.formModel.facilityId : 0;
+    const shidParam = this.subHeadFormModel.SHID ? this.subHeadFormModel.SHID : '';
+
+   
+    const url = `GMFI/VerifyFirstTimeOpeningBalanceByHead/${this.formModel.directorateId}?mhid=${this.subHeadFormModel.MHID}&shid=${shidParam}&facilityId=${facId}`;
+
     this.api.get(url).subscribe({
       next: (res:any) => {
         if (res.isAlreadyInitialized) {
-          // this.labelAmountCaption = 'Fund Amount (Rs)';
-          // this.labelDateCaption = 'Fund Received Date';
-          this.formModel.isOp = false;
+          console.log('res=',res);
+            this.formModel.isOp = true;
+          // this.toastr.warning('Opening balance is already added for this Head!', 'Warning');
+          
+          // Clear selections
+          this.subHeadFormModel.MHID = null; 
+          this.subHeadFormModel.SHID = null; 
+          this.subheadfund = []; 
+        
         } else {
-          // this.labelAmountCaption = 'Opening Balance Fund (Rs)';
-          // this.labelDateCaption = 'Opening Balance Date';
-          this.formModel.isOp = true;
+          this.formModel.isOp = false;
           this.formModel.fundType = 'A';
           this.onFundTypeChange(); 
         }
-        console.log('check opbalence',res)
       },
       error: (err) => console.error(err)
     });
@@ -226,9 +234,16 @@ export class OpeningBalanceComponent implements OnInit {
     });
   }
 
+  loadMainfund() {
+    this.api.get(`GMFI/GetMainHeads`).subscribe({
+      next: (res: any) => this.Mainfundhead = res,
+      error: (err) => console.error(err)
+    });
+  }
+
   // **SUBMIT LOGIC & VALIDATIONS**
   onSubmitFundReceipt(form: any) {
-    
+    // debugger
     // Received Fund ('Y') - Check > 01-04-2026
     if (this.formModel.fundType === 'Y') {
         if (form.invalid) {
@@ -251,7 +266,6 @@ export class OpeningBalanceComponent implements OnInit {
     else if (this.formModel.fundType === 'A') {
         this.formModel.receivedDate = '2026-04-01'; 
     }
-    // Unidentified ('U') - Sidha submit ho jayega.
 
     this.spinner.show();
 
@@ -264,16 +278,13 @@ export class OpeningBalanceComponent implements OnInit {
       FacilityId: this.formModel.facilityId ? Number(this.formModel.facilityId) : null,
       BankId: this.formModel.bankId ? Number(this.formModel.bankId) : null, 
       Remarks: this.formModel.remarks || '',
-      // IsOp: this.formModel.fundType === 'A' ? 'Y' : 'N',
       IsOp: this.formModel.fundType === 'A' ? 'Y' : (this.formModel.fundType === 'U' ? 'U' : 'N'),
-      
-      IsProvisional: null, // As requested
-      FundType: this.formModel.fundType, // Backend ko A, Y ya U milega.
-      
+      IsProvisional: null, 
+      FundType: this.formModel.fundType, 
       FileBase64: this.formModel.fileBase64 || '',
       MHID: this.subHeadFormModel.MHID ? Number(this.subHeadFormModel.MHID) : null,
       SHID: this.subHeadFormModel.SHID ? Number(this.subHeadFormModel.SHID) : null,
-      UTRNO: this.formModel.utrNo || '' // No mandatory check
+      UTRNO: this.formModel.utrNo || '' 
     };
 
     this.api.post1('GMFI/SaveOpeningBalanceRecord', payload).subscribe({
@@ -285,7 +296,7 @@ export class OpeningBalanceComponent implements OnInit {
       },
       error: (err: any) => {
         this.spinner.hide();
-        Swal.fire('Error', err.error?.message || 'Submission process collapsed.', 'error');
+        Swal.fire('Error', err.error?.message || 'Failed to save the record. Please try again.', 'error');
       }
     });
   }
@@ -297,42 +308,55 @@ export class OpeningBalanceComponent implements OnInit {
     }
   }
 
-  onDownloadFileStream(bgid: number) {
-    this.toastr.success(`Initiating document binary bundle stream download pipeline for identity ID: ${bgid}`);
-  }
 
   onCancelClearForm(form: any) {
     form.resetForm();
     this.formModel = { directorateId: null, facilityId: null, budgetId: null, bankId: null, isOp: false, fundType: 'A', amount: null, receivedDate: '', remarks: '', fileBase64: '', utrNo: '' };
+    this.subHeadFormModel = { MHID: null, SHID: null, SubHead_Eng: '', SubHead_Hindi: '', IsActive: 'Active' };
     this.onFundTypeChange(); 
     this.isDateInputLocked = false;
-    this.labelAmountCaption = 'Fund Amount (Rs)';
-    this.labelDateCaption = 'Fund Date';
-    this.labelFileUploadCaption = 'Upload Letter/Acknowledgement/Mail Copy (In PDF)';
   }
 
   applyTextFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+  // onDownloadFileStream(bgid: number) {
+  //   this.toastr.success(`Initiating document binary bundle stream download pipeline for identity ID: ${bgid}`);
+  // }
+onDownloadFileStream(filePath: string) {
+    if (!filePath || filePath.trim() === '') {
+      this.toastr.warning('Document not found for this record!', 'Warning');
+      return;
+    }
 
-  loadMainfund() {
-    this.api.get(`GMFI/GetMainHeads`).subscribe({
-      next: (res: any) => this.Mainfundhead = res,
-      error: (err) => console.error(err)
-    });
+    // 1. अपनी C# API का बेस URL यहाँ डालें (Live सर्वर पर इसे लाइव डोमेन से बदल दें)
+    const apiBaseUrl = 'https://localhost:7036'; 
+
+    // 2. पूरा URL बनाना (e.g., https://localhost:7036/Uploads/FundReceipts/FileName.pdf)
+    // अगर filePath में पहले से '/' नहीं है, तो उसे जोड़ लें
+    const finalPath = filePath.startsWith('/') ? filePath : '/' + filePath;
+    const fullUrl = apiBaseUrl + finalPath;
+
+    // 3. PDF को नए टैब में ओपन करना (ब्राउज़र अपने आप PDF व्यूअर में दिखा देगा)
+    window.open(fullUrl, '_blank');
   }
+  // PDF Download Logic
+  // onDownloadFileStream(filePath: string) {
+  //   if (!filePath || filePath.trim() === '') {
+  //     this.toastr.warning('Document not found for this record!', 'Warning');
+  //     return;
+  //   }
 
-  onMainFundHeadSelectedChange() {
-    this.subHeadFormModel.SHID = null; 
-    this.subheadfund = []; 
-    if (!this.subHeadFormModel.MHID) return; 
+  //   // ध्यान दें: अगर आपकी C# API किसी दूसरे पोर्ट पर चल रही है (जैसे https://localhost:7036)
+  //   // तो आपको यहाँ API का Base URL लगाना पड़ेगा। 
+  //   // अगर FilePath में पहले से पूरा URL आ रहा है, तो सीधे window.open(filePath) कर सकते हैं।
+    
+  //   // उदाहरण (अपने API URL के हिसाब से बदलें):
+  //   const apiBaseUrl = 'https://localhost:7036'; 
+  //   const fullUrl = apiBaseUrl + filePath;
 
-    this.api.get(`GMFI/GetSubHeadById/${this.subHeadFormModel.MHID}`).subscribe({
-      next: (res: any) => {
-        this.subheadfund = Array.isArray(res) ? res : (res ? [res] : []);
-      },
-      error: (err: any) => console.error("SubHead fetch error", err)
-    });
-  }
+  //   // यह PDF को नए टैब में ओपन कर देगा
+  //   window.open(fullUrl, '_blank');
+  // }
 }
