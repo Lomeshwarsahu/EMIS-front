@@ -53,9 +53,9 @@
   --sidebar-text: #f3f4f6;
   --sidebar-muted: #9ca3af;
   --sidebar-hover: #141414;
-  --sidebar-active-bg: rgba(110, 0, 179, 0.24);
-  --sidebar-active-text: #f3e8ff;
-  --sidebar-accent: #6E00B3;
+  --sidebar-active-bg: rgba(37, 99, 235, 0.24);
+  --sidebar-active-text: #eff6ff;
+  --sidebar-accent: #2563eb;
   --sidebar-search-bg: #0a0a0a;
   --sidebar-footer-bg: #070707;
   --sidebar-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
@@ -817,7 +817,7 @@
 }
 
 .theme-switch-icon--moon {
-  color: #6E00B3;
+  color: #2563eb;
 }
 
 .theme-switch {

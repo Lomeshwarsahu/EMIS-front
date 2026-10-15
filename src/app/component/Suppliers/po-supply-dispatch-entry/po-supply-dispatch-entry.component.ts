@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -8,6 +8,7 @@ import { ApiService } from 'src/app/service/api.service';
 import { resolveSupplierUserId } from '../supplier-user.util';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 import { PoSupplyDispatchFilters, poSupplyDispatchQuery, readPoSupplyDispatchFilters } from '../supplier-transaction-state.util';
+import { SecureFileService } from '../../../service/secure-file.service';
 
 type DispatchTab = 'invoice' | 'equipment' | 'complete';
 
@@ -34,6 +35,7 @@ interface EquipmentLine {
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-dispatch-entry.component.css'],
 })
 export class PoSupplyDispatchEntryComponent implements OnInit {
+  private readonly secureFile = inject(SecureFileService);
   loading = false;
   saving = false;
   userId = 0;
@@ -287,7 +289,7 @@ export class PoSupplyDispatchEntryComponent implements OnInit {
       return;
     }
     const url = `${environment.apiUrl}/Auth/supplier/dispatch-entry/invoice-file/by-user/${this.userId}?issueId=${this.issueId}`;
-    window.open(url, '_blank');
+    this.secureFile.openInNewTab(url);
   }
 
   goBack(): void {

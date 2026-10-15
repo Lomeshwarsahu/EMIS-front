@@ -30,8 +30,8 @@
 }
 
 :host-context(html[data-theme='dark']) .dme-detail-page {
-  --page-accent: #6e00b3;
-  --table-head-bg: #6e00b3;
+  --page-accent: #2563eb;
+  --table-head-bg: #2563eb;
   --table-cell-bg: #0c0e12;
   --table-row-border: #262b36;
   --table-wrap-border: #262b36;
@@ -67,7 +67,7 @@
 
 :host-context(html[data-theme='dark']) .back-btn {
   color: #e2e8f0;
-  border-color: #6e00b3;
+  border-color: #2563eb;
 }
 
 .header-grid {
@@ -409,7 +409,7 @@
 }
 
 :host-context(html[data-theme='dark']) .orders-grid tbody tr:hover td {
-  background: rgba(110, 0, 179, 0.16);
+  background: rgba(37, 99, 235, 0.16);
 }
 
 .text-center {

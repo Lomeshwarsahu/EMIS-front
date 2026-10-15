@@ -6,6 +6,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MenuServiceService } from './service/menu-service.service';
 import { BasicAuthenticationService } from './service/authentication/basic-authentication.service';
+import { broadcastLogout } from './service/authentication/session-sync';
 import { RoleMenuService } from './service/role-menu.service';
 
 import { Location } from '@angular/common';
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   menuSearchFocused = false;
   pageHeading = '';
   notificationsOpen = false;
+  profileOpen = false;
   notifications: AppNotification[] = [];
   unreadNotificationCount = 0;
   private menuSearchBlurTimer: ReturnType<typeof setTimeout> | null = null;
@@ -190,7 +192,24 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
   toggleNotifications(event: MouseEvent): void {
     event.stopPropagation();
     this.notificationsOpen = !this.notificationsOpen;
+    this.profileOpen = false;
     this.menuSearchFocused = false;
+  }
+
+  toggleProfile(event: MouseEvent): void {
+    event.stopPropagation();
+    this.profileOpen = !this.profileOpen;
+    this.notificationsOpen = false;
+  }
+
+  openChangePassword(): void {
+    this.profileOpen = false;
+    this.router.navigate(['/change-password']);
+  }
+
+  logoutFromProfile(): void {
+    this.profileOpen = false;
+    this.logout();
   }
 
   markAllNotificationsRead(): void {
@@ -210,9 +229,13 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     if (this.notificationsOpen) {
       this.notificationsOpen = false;
     }
+    if (this.profileOpen) {
+      this.profileOpen = false;
+    }
   }
 
   logout() {
+    broadcastLogout();
     if (sessionStorage.getItem('roleId') === '482') {
       sessionStorage.clear();
       localStorage.clear();

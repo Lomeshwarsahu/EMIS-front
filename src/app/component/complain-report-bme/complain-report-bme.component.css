@@ -1,0 +1,38 @@
+.toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 10px;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.toolbar-search {
+  width: 220px;
+  max-width: 100%;
+}
+
+.legacy-grid th.mat-mdc-header-cell,
+.legacy-grid td.mat-mdc-cell {
+  height: auto;
+}
+
+@media (max-width: 576px) {
+  .toolbar-spacer {
+    display: none;
+  }
+
+  .toolbar-search {
+    width: 100%;
+  }
+}
+
+/* Material rows default to 52px — keep them compact like the other legacy grids */
+.legacy-grid tr.mat-mdc-row,
+.legacy-grid tr.mat-mdc-header-row,
+.legacy-grid tr.mat-row {
+  height: auto;
+}

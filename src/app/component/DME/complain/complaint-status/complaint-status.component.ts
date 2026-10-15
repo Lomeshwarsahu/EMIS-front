@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { apiErrorMessage, resolveLoginUserId } from '../../shared/session.util';
+import { SecureFileService } from '../../../../service/secure-file.service';
 
 interface ComplainStatusRow {
   complaintId: number;
@@ -30,6 +31,7 @@ interface ComplainStatusRow {
   styleUrls: ['../../shared/legacy-ems-page.css', './complaint-status.component.css'],
 })
 export class ComplaintStatusComponent implements OnInit {
+  private readonly secureFile = inject(SecureFileService);
   private readonly apiRoot = `${environment.apiUrl}/DMEComplain/`;
 
   rows: ComplainStatusRow[] = [];
@@ -76,7 +78,7 @@ export class ComplaintStatusComponent implements OnInit {
   }
 
   download(row: ComplainStatusRow): void {
-    window.open(`${this.apiRoot}letter/${row.complaintId}`, '_blank');
+    this.secureFile.openInNewTab(`${this.apiRoot}letter/${row.complaintId}`);
   }
 
   private mapRows(raw: unknown): ComplainStatusRow[] {

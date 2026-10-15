@@ -181,15 +181,15 @@
 }
 
 :host-context(html[data-theme='dark']) .dispatch-entry-page .tab-bar button.active {
-  background: #6e00b3;
-  border-color: #6e00b3;
+  background: #2563eb;
+  border-color: #2563eb;
   color: #fff;
 }
 
 :host-context(html[data-theme='dark']) .dispatch-entry-page .tab-bar button:hover:not(:disabled):not(.active) {
-  background: rgba(110, 0, 179, 0.16);
-  border-color: rgba(110, 0, 179, 0.45);
-  color: #e9d5ff;
+  background: rgba(37, 99, 235, 0.16);
+  border-color: rgba(37, 99, 235, 0.45);
+  color: #dbeafe;
 }
 
 :host-context(html[data-theme='dark']) .dispatch-entry-page .note-cell {
@@ -218,8 +218,8 @@
 }
 
 :host-context(html[data-theme='dark']) .dispatch-entry-page .add-btn {
-  background: #6e00b3;
-  border-color: #6e00b3;
+  background: #2563eb;
+  border-color: #2563eb;
 }
 
 @media (max-width: 767.98px) {

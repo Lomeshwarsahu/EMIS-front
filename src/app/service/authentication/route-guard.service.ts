@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { BasicAuthenticationService } from './basic-authentication.service';
+import { hasActiveSession } from './session-sync';
 
 @Injectable({
   providedIn: 'root'
@@ -43,17 +44,10 @@ export class RouteGuardService implements CanActivate {
 //   return false;
 // }
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    const hasSession =
-      !!sessionStorage.getItem('authenticatedUser') ||
-      !!sessionStorage.getItem('roleId') ||
-      !!sessionStorage.getItem('token') ||
-      !!sessionStorage.getItem('firstname') ||
-      !!sessionStorage.getItem('userid') ||
-      !!localStorage.getItem('loginData') ||
-      !!localStorage.getItem('roleName') ||
-      !!localStorage.getItem('supplier_user_id') ||
-      !!localStorage.getItem('vregid') ||
-      this.loginService.isUserLogedIn();
+    // Only a real tab session counts. localStorage leftovers (loginData, roleName...)
+    // survive browser restarts and must not open pages from a copied URL.
+    // New tabs of the same browser get the session from session-sync first.
+    const hasSession = hasActiveSession() || this.loginService.isUserLogedIn();
 
     if (hasSession) {
       return true;

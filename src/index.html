@@ -2,6 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script>
+    // Splash helpers. First thing in <head> so no stylesheet download can delay it.
+    (function () {
+      var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      var slowNet = !!conn && (conn.saveData || /(^|-)(2g|3g)$/.test(conn.effectiveType || '') || (conn.downlink && conn.downlink < 1.5));
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // play the splash video only on a good connection, so it never steals bandwidth from the app on a slow one
+      (function startVideo() {
+        var video = document.querySelector('#app-splash .splash-video');
+        if (!video) return document.readyState === 'complete' ? undefined : setTimeout(startVideo, 30); // body not parsed yet
+        if (slowNet || reduceMotion) return;           // poster image only
+        video.src = video.getAttribute('data-src');
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {});
+      })();
+      // still loading after 6 s: tell the user it is the network, not a hang
+      setTimeout(function () {
+        var splash = document.getElementById('app-splash');
+        if (splash) splash.classList.add('is-slow');
+      }, 6000);
+    })();
+  </script>
   <title>EMSA</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,11 +32,95 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="manifest" href="manifest.webmanifest">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
   <meta name="theme-color" content="#1976d2">
   <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5hW2eQFDDSAYfngDFdtVp4TFa47SKwjM"></script> -->
+  <style>
+    /* Splash screen (logic in main.ts):
+       1. both logos open big together as one group (fits any screen width)
+       2. they zoom out and fly into their places in the login header
+       3. the background video blurs and fades away, revealing the login page */
+    #app-splash { position: fixed; inset: 0; z-index: 99999; pointer-events: none; font-family: 'Segoe UI', Roboto, sans-serif; }
+    #app-splash .splash-bg {
+      position: absolute; inset: 0; overflow: hidden;
+      background: #eaf2fb url('assets/videos/splash-poster.jpg') center / cover no-repeat;
+      transition: opacity .9s ease;
+    }
+    #app-splash .splash-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    /* soft white glow in the centre so logos and text stay readable over the video */
+    #app-splash .splash-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 46% 42% at 50% 46%, rgba(255, 255, 255, .82) 0%, rgba(255, 255, 255, .45) 55%, rgba(255, 255, 255, 0) 100%);
+    }
+    #app-splash .splash-blur { position: absolute; inset: 0; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); transition: backdrop-filter .9s ease, -webkit-backdrop-filter .9s ease; }
+    #app-splash .splash-stage {
+      position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px;
+    }
+    /* Both logos as one group; sized so the pair always fits the screen width */
+    #app-splash .splash-logos {
+      --logo-h: clamp(64px, min(26vmin, 30vw), 220px);
+      display: flex; align-items: center; justify-content: center; gap: calc(var(--logo-h) * .14);
+    }
+    #app-splash .splash-logos.intro { animation: splash-in 1s cubic-bezier(.2, .8, .2, 1) both; }
+    #app-splash .splash-logo { position: relative; display: block; transform-origin: 0 0; }
+    #app-splash .splash-logo img { display: block; height: var(--logo-h); width: auto; max-width: none; }
+    #app-splash .splash-divider {
+      width: 2px; height: calc(var(--logo-h) * .7); border-radius: 2px; transition: opacity .3s ease;
+      background: linear-gradient(180deg, transparent, rgba(22, 51, 122, .45), transparent);
+    }
+    @keyframes splash-in { from { opacity: 0; transform: scale(1.25); } to { opacity: 1; transform: none; } }
+    #app-splash .splash-text { margin-top: clamp(20px, 6vmin, 56px); max-width: 92vw; text-align: center; color: #0f2557; transition: opacity .4s ease, transform .4s ease; }
+    #app-splash .splash-text > * { opacity: 0; animation: splash-up .6s ease forwards; }
+    #app-splash .splash-text h1 { margin: 0; font-size: clamp(1.6rem, 6vw, 2.6rem); font-weight: 800; letter-spacing: .14em; animation-delay: .9s; }
+    #app-splash .splash-text p { margin: 6px 0 0; color: #334155; font-weight: 600; font-size: clamp(.8rem, 3.4vw, 1rem); line-height: 1.4; animation-delay: 1.05s; }
+    #app-splash .splash-flag { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; transition: opacity .6s ease;
+      background: linear-gradient(90deg, #ff9933 0 33.33%, #ffffff 33.33% 66.66%, #138808 66.66% 100%); }
+    #app-splash .splash-text .splash-slow { display: none; margin-top: 14px; font-size: .85rem; font-weight: 600; color: #b45309; animation-delay: 0s; }
+    #app-splash.is-slow .splash-text .splash-slow { display: block; }
+    #app-splash.is-slow .splash-text::after {
+      content: ''; display: block; width: 160px; height: 4px; margin: 12px auto 0; border-radius: 4px;
+      background: linear-gradient(90deg, rgba(22, 51, 122, .15) 0%, #16337a 50%, rgba(22, 51, 122, .15) 100%) 0 0 / 200% 100%;
+      animation: splash-load 1.2s linear infinite;
+    }
+    @keyframes splash-load { to { background-position: -200% 0; } }
+    @keyframes splash-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+    /* Hand-off state (set by main.ts) */
+    #app-splash.flying .splash-bg { opacity: 0; }
+    #app-splash.flying .splash-blur { backdrop-filter: blur(0); -webkit-backdrop-filter: blur(0); }
+    #app-splash.flying .splash-text { opacity: 0; transform: translateY(12px); }
+    #app-splash.flying .splash-flag,
+    #app-splash.flying .splash-divider { opacity: 0; }
+    #app-splash.flying .splash-logo { transition: transform .95s cubic-bezier(.65, 0, .25, 1); }
+    #app-splash.splash-hide { opacity: 0; transition: opacity .35s ease; }
+
+    @media (prefers-reduced-motion: reduce) {
+      #app-splash *, #app-splash .splash-text > * { animation: none !important; opacity: 1; transition: none !important; }
+    }
+  </style>
 </head>
 <body class="mat-typography">
+  <div id="app-splash" role="status" aria-live="polite">
+    <!-- blur sits under the video: it only blurs the login page once the video fades out -->
+    <div class="splash-blur"></div>
+    <div class="splash-bg">
+      <!-- src is set by the inline script below only on a good connection (poster image otherwise) -->
+      <video class="splash-video" data-src="assets/videos/splash.mp4" poster="assets/videos/splash-poster.jpg"
+        muted playsinline loop preload="none" aria-hidden="true"></video>
+    </div>
+    <div class="splash-stage">
+      <div class="splash-logos intro">
+        <span class="splash-logo" data-target="left"><img src="assets/images/cg-govt.png" alt="Government of Chhattisgarh"></span>
+        <span class="splash-divider" aria-hidden="true"></span>
+        <span class="splash-logo" data-target="right"><img src="assets/images/cgmsc-logo.png" alt="CGMSC"></span>
+      </div>
+      <div class="splash-text">
+        <h1>EMIS</h1>
+        <p>Equipment Management Information System</p>
+        <p class="splash-slow">Loading, please wait&hellip; your connection seems slow.</p>
+      </div>
+    </div>
+    <div class="splash-flag"></div>
+  </div>
   <app-root></app-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>

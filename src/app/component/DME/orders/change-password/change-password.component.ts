@@ -39,6 +39,23 @@ export class ChangePasswordComponent implements OnInit {
   sendingOtp = false;
   saving = false;
   otpSent = false;
+  showPassword = false;
+
+  get passwordsMatch(): boolean {
+    return !!this.confirmPassword && this.newPassword === this.confirmPassword;
+  }
+
+  /** 0–4 score for the strength meter. */
+  get passwordStrength(): { score: number; label: string } {
+    const p = this.newPassword;
+    let score = 0;
+    if (p.length >= 8) score++;
+    if (/[a-z]/.test(p) && /[A-Z]/.test(p)) score++;
+    if (/\d/.test(p)) score++;
+    if (/[^A-Za-z0-9]/.test(p)) score++;
+    const labels = ['Very weak', 'Weak', 'Fair', 'Good', 'Strong'];
+    return { score, label: labels[score] };
+  }
 
   constructor(
     private readonly http: HttpClient,

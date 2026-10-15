@@ -1,650 +1,681 @@
 <section class="login-page-shell">
-  <div class="container-fluid vh-100 d-flex flex-column g-0">
-    <!-- new code -->
-
-    <div class="row g-0">
-      <header class="header text-white py-3 p-0 m-0 w-100 bg-successs bg-primary custom-header">
-        <div class="container-fluid px-3 px-md-4 d-flex flex-wrap justify-content-between align-items-center">
-          <!-- Left Logo -->
-          <div class="col-12 col-md-3">
-
-            <div class="header-logo-container d-flex justify-content-center justify-content-md-start flex-shrink-0">
-              <img src="assets\images\cg-govt.png" alt="Left Logo" class="header-logo img-fluid"
-                style="max-height: 60px;">
-            </div>
-          </div>
-
-          <!-- Title Section -->
-          <div class="col-12 col-md-6">
-            <div class="header-title text-center flex-grow-1 mx-md-3 my-2 my-md-0">
-              <h1 class="cgmsctitle text-white fs-5 fw-bold mb-1">Department of Health & Family Welfare
-                Chhattisgarh</h1>
-              <h1 class="cgmsctitle text-white fs-5 fw-bold mb-1">Chhattisgarh Medical Services Corporation Ltd.</h1>
-              <p class="collector-title text-white fs-6 fw-bold mb-1">
-              </p>
-              <p class="sub-title text-white small m-0">
-                Equipment Management Information System
-              </p>
-            </div>
-          </div>
-
-          <!-- Right Logo -->
-          <div class="col-12 col-md-3">
-            <div class="header-logo-container d-flex justify-content-center justify-content-md-end flex-shrink-0">
-              <img src="assets/images/cgmsc-logo.png" alt="Right Logo" class="header-logo img-fluid"
-                style="max-height: 60px;">
-            </div>
-          </div>
+  <!-- Utility strip -->
+  <div class="gov-strip">
+    <div class="gov-wrap">
+      <span class="gov-strip-left">छत्तीसगढ़ शासन &nbsp;|&nbsp; Government of Chhattisgarh</span>
+      <div class="gov-strip-right">
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+        <span class="strip-sep" aria-hidden="true"></span>
+        <div class="font-size-ctrl" role="group" aria-label="Text size">
+          <button type="button" (click)="setFontScale(-1)" [class.active]="fontScale === 0.9" title="Decrease text size">A-</button>
+          <button type="button" (click)="setFontScale(0)" [class.active]="fontScale === 1" title="Normal text size">A</button>
+          <button type="button" (click)="setFontScale(1)" [class.active]="fontScale === 1.1" title="Increase text size">A+</button>
         </div>
-
-      </header>
+      </div>
     </div>
-    <!-- Main Content -->
-    <div class="container-fluid login-content g-0 flex-grow-1 d-flex align-items-start justify-content-center pt-2 pb-4">
-      <div class="row g-0 justify-content-center w-100">
+  </div>
 
-        <div class="col-xl-5 col-lg-6 col-md-8 col-11 p-2">
+  <!-- Header -->
+  <header class="gov-header">
+    <div class="gov-wrap gov-header-inner">
+      <img src="assets/images/cg-govt.png" alt="Government of Chhattisgarh" class="gov-logo">
+      <div class="gov-title">
+        <span class="gov-dept">स्वास्थ्य एवं परिवार कल्याण विभाग, छत्तीसगढ़ शासन</span>
+        <span class="gov-dept-en">Department of Health &amp; Family Welfare, Government of Chhattisgarh</span>
+        <span class="gov-org">छत्तीसगढ़ मेडिकल सर्विसेज कॉर्पोरेशन लिमिटेड</span>
+        <span class="gov-org-en">Chhattisgarh Medical Services Corporation Ltd.</span>
+      </div>
+      <img src="assets/images/cgmsc-logo.png" alt="CGMSC" class="gov-logo gov-logo--wide">
+    </div>
+  </header>
+  <div class="gov-tricolor" aria-hidden="true"></div>
 
-          <div class="d-flex justify-content-center align-items-center">
+  <!-- System band -->
+  <div class="gov-band">
+    <div class="gov-wrap gov-band-inner">
+      <div class="gov-band-title">
+        <i class="fa-solid fa-hospital-user"></i>
+        <span>Equipment Management Information System <b>(EMIS)</b></span>
+        <small>उपकरण प्रबंधन सूचना प्रणाली</small>
+      </div>
+      <span class="gov-band-crumb"><i class="fa-solid fa-house"></i> Home &rsaquo; Login</span>
+    </div>
+  </div>
 
-            <div class="card shadow login-card w-100 ">
-              <div class="card-header text-white d-flex align-items-center">
+  <!-- Main Content -->
+  <main id="main-content" class="login-main gov-wrap" [style.zoom]="fontScale">
+    <!-- Welcome image -->
+    <figure class="login-hero">
+      <div class="hero-media">
+        <img src="assets/images/login-hero.jpg" class="hero-img"
+          alt="Doctor and technician checking medical equipment in a hospital" />
+      </div>
+      <figcaption class="hero-caption">
+        <h2 class="hero-title">Welcome to EMIS</h2>
+        <p class="hero-hi">ई.एम.आई.एस. में आपका स्वागत है</p>
+        <p class="hero-sub">Managing medical equipment across government health facilities of Chhattisgarh.</p>
+      </figcaption>
+    </figure>
 
-                <ul class="nav nav-tabs card-header-tabs flex-grow-1 justify-content-center" id="loginTabs" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="cgmscl-tab" data-bs-toggle="tab" data-bs-target="#cgmscl"
-                      type="button" role="tab" aria-controls="cgmscl" aria-selected="false" (click)="onTabClick('ADMIN')">
-                      ADMIN
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link " id="dme-tab" data-bs-toggle="tab" data-bs-target="#DME" type="button"
-                      role="tab" aria-controls="DME" aria-selected="false" (click)="onTabClick('DME')">
-                      DME Facility
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link " id="dhs-tab" data-bs-toggle="tab" data-bs-target="#DHS" type="button"
-                      role="tab" aria-controls="DHS" aria-selected="false" (click)="onTabClick('DHS')">
-                      DHS/AYUSH Facility
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link " id="supplier-tab" data-bs-toggle="tab" data-bs-target="#SUPPLIER"
-                      type="button" role="tab" aria-controls="SUPPLIER" aria-selected="false"
-                      (click)="onTabClick('SUPPLIER')">
-                      SUPPLIER
-                    </button>
-                  </li>
-                </ul>
-
-              </div>
-
-              <div class="card-body tab-content" id="loginTabsContent">
-                <!--  Admin login -->
-                <div class="tab-pane fade show active" id="cgmscl" role="tabpanel" aria-labelledby="cgmscl-tab">
-                  <form #cgmsclForm="ngForm" (ngSubmit)="cgmsclForm.valid && handleCgmsclLogin1()">
-                    <div class="mb-3">
-                      <label for="emailid" class="form-label">Select User</label>
-                      <div class="filter-field d-flex gap-4 align-items-center">
-
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
-                            value="0" [(ngModel)]="selectedStatus" (change)="onStatusChangeAdmin('0')">
-                          <label class="form-check-label" for="exampleRadios1">
-                            ADMINISTRATOR
-                          </label>
-                        </div>
-
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                            value="1" [(ngModel)]="selectedStatus" (change)="onStatusChangeAdmin('1')">
-                          <label class="form-check-label" for="exampleRadios2">
-                            DIRECTORATE
-                          </label>
-                        </div>
-
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3"
-                            value="2" [(ngModel)]="selectedStatus" (change)="onStatusChangeAdmin('2')">
-                          <label class="form-check-label" for="exampleRadios3">
-                            CGMSCL
-                          </label>
-                        </div>
-
-                      </div>
-                    </div>
-
-                    <!-- Administrator -->
-                    <ng-container *ngIf="selectedStatus == '0'">
-                      <div class="mb-3">
-                        <label for="emailid" class="form-label">User Administrator</label>
-                        <div class="input-group">
-                          <span class="input-group-text bg-light">
-                            <i class="fas fa-user"></i>
-                          </span>
-                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
-                            [placeholder]="!emailid ? 'Choose Administrator User' : ''" [searchable]="true" [clearable]="true"
-                            [appendTo]="'body'" required class="form-control">
-                          </ng-select>
-                        </div>
-                        <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
-                          class="text-danger">
-                          Please select a User.
-                        </div>
-                      </div>
-                      <div class="mb-3">
-                        <label for="pwd" class="form-label">Password</label>
-                        <div class="position-relative">
-                          <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                            [(ngModel)]="pwd" (input)="invalidLogin = false" #pwdField="ngModel" placeholder="Enter Password" required>
-                          <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                            (click)="togglePassword()">
-                          </i>
-                        </div>
-                        <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
-                          Password is required.
-                        </div>
-                        <div *ngIf="invalidLogin && !pwdField.invalid" class="text-danger small mt-1">
-                          {{ errorMessage }}
-                        </div>
-                      </div>
-                      <div class="mb-3">
-                        <label for="captcha" class="form-label">CAPTCHA</label>
-                        <div class="d-flex align-items-center mb-1">
-                          <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
-                            <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
-                          </div>
-                          <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
-                            <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
-                          </button>
-                        </div>
-                        <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
-                          placeholder="Enter CAPTCHA" required autocomplete="off">
-                        <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched) && !invalidLogin" class="text-danger small mt-1">
-                          CAPTCHA is Required.
-                        </div>
-                      </div>
-
-                      <button type="submit" class="btn btn-successs btn-primary text-white w-100"
-                        [disabled]="cgmsclForm.invalid">Login</button>
-                    </ng-container>
-
-                    <!-- Directorate -->
-                    <ng-container *ngIf="selectedStatus == '1'">
-                      <div class="mb-3">
-                        <label for="emailid" class="form-label">User Directorate</label>
-                        <div class="input-group">
-                          <span class="input-group-text bg-light">
-                            <i class="fas fa-user"></i>
-                          </span>
-                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
-                            [placeholder]="!emailid ? 'Select Directorate User' : ''" [searchable]="true" [clearable]="true"
-                            [appendTo]="'body'" required class="form-control">
-                          </ng-select>
-                        </div>
-                        <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
-                          class="text-danger">
-                          Please select a User.
-                        </div>
-                      </div>
-
-                      <div class="mb-3">
-                        <label for="pwd" class="form-label">Password</label>
-                        <div class="position-relative">
-                          <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                            [(ngModel)]="pwd" (input)="invalidLogin = false" #pwdField="ngModel" placeholder="Enter Password" required>
-                          <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                            (click)="togglePassword()">
-                          </i>
-                        </div>
-                        <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
-                          Password is required.
-                        </div>
-                        <div *ngIf="invalidLogin && !pwdField.invalid" class="text-danger small mt-1">
-                          {{ errorMessage }}
-                        </div>
-                      </div>
-                      <div class="mb-3">
-                        <label for="captcha" class="form-label">CAPTCHA</label>
-                        <div class="d-flex align-items-center mb-1">
-                          <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
-                            <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
-                          </div>
-                          <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
-                            <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
-                          </button>
-                        </div>
-                        <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
-                          placeholder="Enter CAPTCHA" required autocomplete="off">
-                        <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched) && !invalidLogin" class="text-danger small mt-1">
-                          CAPTCHA is Required.
-                        </div>
-                      </div>
-                      <button type="submit" class="btn btn-successs btn-primary text-white w-100"
-                        [disabled]="cgmsclForm.invalid">Login</button>
-                    </ng-container>
-
-                    <!-- CGMSC -->
-                    <ng-container *ngIf="selectedStatus == '2'">
-                      <div class="mb-3">
-                        <label for="emailid" class="form-label">User CGMSC</label>
-                        <div class="input-group">
-                          <span class="input-group-text bg-light">
-                            <i class="fas fa-user"></i>
-                          </span>
-                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
-                            [placeholder]="!emailid ? 'Choose CGMSC User' : ''" [searchable]="true" [clearable]="true"
-                            [appendTo]="'body'" required class="form-control">
-                          </ng-select>
-                        </div>
-                        <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
-                          class="text-danger">
-                          Please select a User.
-                        </div>
-                      </div>
-
-                      <div class="mb-3">
-                        <label for="pwd" class="form-label">Password</label>
-                        <div class="position-relative">
-                          <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                            [(ngModel)]="pwd" (input)="invalidLogin = false" #pwdField="ngModel" placeholder="Enter Password" required>
-                          <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                            (click)="togglePassword()">
-                          </i>
-                        </div>
-                        <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
-                          Password is required.
-                        </div>
-                        <div *ngIf="invalidLogin && !pwdField.invalid" class="text-danger small mt-1">
-                          {{ errorMessage }}
-                        </div>
-                      </div>
-                      <div class="mb-3">
-                        <label for="captcha" class="form-label">CAPTCHA</label>
-                        <div class="d-flex align-items-center mb-1">
-                          <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
-                            <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
-                          </div>
-                          <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
-                            <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
-                          </button>
-                        </div>
-                        <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
-                          placeholder="Enter CAPTCHA" required autocomplete="off">
-                        <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched) && !invalidLogin" class="text-danger small mt-1">
-                          CAPTCHA is Required.
-                        </div>
-                      </div>
-                      
-                      <button type="submit" class="btn btn-successs btn-primary text-white w-100"
-                        [disabled]="cgmsclForm.invalid">Login</button>
-                    </ng-container>
-
-                  </form>
-                </div>
-
-                <!--  DME login -->
-                <div class="tab-pane fade" id="DME" role="tabpanel" aria-labelledby="infrastructure-tab">
-                  <form #dmeLoginForm="ngForm" (ngSubmit)="dmeLoginForm.valid && handleCgmsclLogin1()">
-                    <div class="mb-3">
-                      <label class="form-label">User DME</label>
-                      <div class="input-group">
-                        <span class="input-group-text bg-light">
-                          <i class="fas fa-user"></i>
-                        </span>
-                        <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="id"
-                          (ngModelChange)="onUserChangeInfrastructure($event)" name="dme_user_id"
-                          #dmeUserField="ngModel" [placeholder]="!id ? 'Select Medical College / Hospital' : ''"
-                          [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
-                        </ng-select>
-                      </div>
-                      <div *ngIf="dmeUserField.invalid && (dmeUserField.dirty || dmeUserField.touched)"
-                        class="text-danger mt-1">
-                        Please select a Medical College / Hospital.
-                      </div>
-                    </div>
-                    <div class="mb-3">
-                      <label for="dmePwdInput" class="form-label">Password</label>
-                      <div class="position-relative">
-                        <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="dmePwdInput"
-                          name="dmePwd" [(ngModel)]="pwd" (input)="invalidLogin = false" placeholder="Enter Password" required #dmePwdField="ngModel">
-                        <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                          (click)="togglePassword()">
-                        </i>
-                      </div>
-                      <div *ngIf="dmePwdField.invalid && (dmePwdField.dirty || dmePwdField.touched)"
-                        class="text-danger mt-1">
-                        Password is required.
-                      </div>
-                      <div *ngIf="invalidLogin && !dmePwdField.invalid" class="text-danger small mt-1">
-                        {{ errorMessage }}
-                      </div>
-                    </div>
-                    <div class="mb-3">
-                      <label for="captcha" class="form-label">CAPTCHA</label>
-                      <div class="d-flex align-items-center mb-1">
-                        <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
-                          <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
-                        </div>
-                        <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
-                          <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
-                        </button>
-                      </div>
-                      <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
-                        placeholder="Enter CAPTCHA" required autocomplete="off">
-                      <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched) && !invalidLogin" class="text-danger small mt-1">
-                        CAPTCHA is Required.
-                      </div>
-                    </div>
-                    <button type="submit" class="btn btn-successs btn-primary text-white w-100 mb-3"
-                      [disabled]="dmeLoginForm.invalid">Login</button>
-                  </form>
-                </div>
-
-                <!--  DHS login -->
-                <div class="tab-pane fade" id="DHS" role="tabpanel" aria-labelledby="cgmscl-tab">
-                  <form #dhsForm="ngForm" (ngSubmit)="dhsForm.valid && handleCgmsclLogin1()">
-                    <div class="mb-3">
-                      <label class="form-label fw-bold">Select Login Category</label>
-                      <div class="filter-field d-flex gap-4 align-items-center">
-
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="dhsRadios" id="dhsRadio1" value="0"
-                            [(ngModel)]="selectedStatusDHS" (change)="onStatusChangeDHS('0')">
-                          <label class="form-check-label" for="dhsRadio1">
-                            Health Facility
-                          </label>
-                        </div>
-
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="dhsRadios" id="dhsRadio2" value="1"
-                            [(ngModel)]="selectedStatusDHS" (change)="onStatusChangeDHS('1')">
-                          <label class="form-check-label" for="dhsRadio2">
-                            CMHO-Store
-                          </label>
-                        </div>
-
-                      </div>
-                    </div>
-
-                    <!-- Health Facility -->
-                    <ng-container *ngIf="selectedStatusDHS == '0'">
-                      <div class="mb-3">
-                        <label for="dhs_facility_user" class="form-label">User Health Facility</label>
-                        <div class="input-group">
-                          <span class="input-group-text bg-light">
-                            <i class="fas fa-user"></i>
-                          </span>
-                          <input type="text" class="form-control" id="dhs_facility_user" name="dhs_facility_user"
-                            [(ngModel)]="emailid" (input)="invalidLogin = false" #dhsFacilityField="ngModel"
-                            placeholder="Enter User ID" required autocomplete="username">
-                        </div>
-                        <div *ngIf="dhsFacilityField.invalid && (dhsFacilityField.dirty || dhsFacilityField.touched)"
-                          class="text-danger small mt-1">
-                          User ID is required.
-                        </div>
-                      </div>
-                      <div class="mb-3">
-                        <label for="pwd" class="form-label">Password</label>
-                        <div class="position-relative">
-                          <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
-                            [(ngModel)]="pwd" (input)="invalidLogin = false" #pwdField="ngModel" placeholder="Enter Password" required>
-                          <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                            (click)="togglePassword()">
-                          </i>
-                        </div>
-                        <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
-                          Password is required.
-                        </div>
-                        <div *ngIf="invalidLogin && !pwdField.invalid" class="text-danger small mt-1">
-                          {{ errorMessage }}
-                        </div>
-                      </div>
-                      <div class="mb-3">
-                        <label for="captcha" class="form-label">CAPTCHA</label>
-                        <div class="d-flex align-items-center mb-1">
-                          <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
-                            <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
-                          </div>
-                          <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
-                            <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
-                          </button>
-                        </div>
-                        <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
-                          placeholder="Enter CAPTCHA" required autocomplete="off">
-                        <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched) && !invalidLogin" class="text-danger small mt-1">
-                          CAPTCHA is Required.
-                        </div>
-                      </div>
-                      <button type="submit" class="btn btn-successs btn-primary text-white w-100"
-                        [disabled]="dhsForm.invalid">Login</button>
-                    </ng-container>
-
-                    <!-- CMHO-Store -->
-                    <ng-container *ngIf="selectedStatusDHS == '1'">
-                      <div class="mb-3">
-                        <label for="dhs_select_user" class="form-label">User CMHO-Store</label>
-                        <div class="input-group">
-                          <span class="input-group-text bg-light">
-                            <i class="fas fa-user"></i>
-                          </span>
-                          <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
-                            (change)="onUserChangeCgmscl($event)" name="dhs_select_user" #dhsCmhoField="ngModel"
-                            [placeholder]="!emailid ? 'Select CMHO-Store User' : ''" [searchable]="true"
-                            [clearable]="true" [appendTo]="'body'" required class="form-control">
-                          </ng-select>
-                        </div>
-                        <div *ngIf="dhsCmhoField.invalid && (dhsCmhoField.dirty || dhsCmhoField.touched)"
-                          class="text-danger">
-                          Please select a User.
-                        </div>
-                      </div>
-
-                      <div class="mb-3">
-                        <label for="dhs_pwd_cmho" class="form-label">Password</label>
-                        <div class="position-relative">
-                          <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="dhs_pwd_cmho"
-                            name="dhs_pwd_cmho" [(ngModel)]="pwd" (input)="invalidLogin = false" #dhsPwdCmhoField="ngModel" placeholder="Enter Password" required>
-                          <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
-                            (click)="togglePassword()"></i>
-                        </div>
-                        <div *ngIf="dhsPwdCmhoField.invalid && (dhsPwdCmhoField.dirty || dhsPwdCmhoField.touched)" class="text-danger">
-                          Password is required.
-                        </div>
-                        <div *ngIf="invalidLogin && !dhsPwdCmhoField.invalid" class="text-danger small mt-1">
-                          {{ errorMessage }}
-                        </div>
-                      </div>
-
-                      <div class="mb-3">
-                        <label for="captcha" class="form-label">CAPTCHA</label>
-                        <div class="d-flex align-items-center mb-1">
-                          <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
-                            <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
-                          </div>
-                          <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
-                            <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
-                          </button>
-                        </div>
-                        <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
-                          placeholder="Enter CAPTCHA" required autocomplete="off">
-                        <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched) && !invalidLogin" class="text-danger small mt-1">
-                          CAPTCHA is Required.
-                        </div>
-                      </div>
-                      <button type="submit" class="btn btn-successs btn-primary text-white w-100"
-                        [disabled]="dhsForm.invalid">Login</button>
-                    </ng-container>
-                  </form>
-                </div>
-
-                <!-- Supplier — 3 mode buttons + Login / New User / Forgot OTP flow -->
-                <div class="tab-pane fade" id="SUPPLIER" role="tabpanel" aria-labelledby="supplier-tab">
-                  <div class="supplier-auth-panel">
-                    <div class="manual-links-sup">
-                      <a href="assets/manuals/EMIS_Supplier_Mannual.pdf" target="_blank" rel="noopener">
-                        Download Supplier Mannual
-                      </a>
-                      <a href="assets/manuals/Notice_Supplier.pdf" target="_blank" rel="noopener">
-                        Notice for Supplier to Reciept &amp; Installation Entry
-                      </a>
-                    </div>
-
-                    <div class="mode-btn-row" role="group" aria-label="Supplier auth mode">
-                      <button type="button" class="mode-btn" [class.mode-btn--active]="supplierAuthMode === 'login'"
-                        (click)="setSupplierAuthMode('login')">
-                        Login in EMS
-                      </button>
-                      <button type="button" class="mode-btn" [class.mode-btn--active]="supplierAuthMode === 'new'"
-                        (click)="setSupplierAuthMode('new')">
-                        New User-ID in EMS
-                      </button>
-                      <button type="button" class="mode-btn" [class.mode-btn--active]="supplierAuthMode === 'reset'"
-                        (click)="setSupplierAuthMode('reset')">
-                        Forgot/Reset Password
-                      </button>
-                    </div>
-
-                    <div class="supplier-field">
-                      <label class="form-label">User Supplier</label>
-                      <div class="input-group supplier-select-group">
-                        <span class="input-group-text bg-light">
-                          <i class="fas fa-user"></i>
-                        </span>
-                        <ng-select [items]="supplierAuthOptions" bindLabel="user_name" bindValue="user_id"
-                          [(ngModel)]="supplierUserId" (change)="onSupplierTabSelect()" name="supplierAuthSelect"
-                          [placeholder]="supplierSelectPlaceholder" [searchable]="true" [clearable]="true"
-                          [appendTo]="'body'" class="form-control supplier-ng-select">
-                        </ng-select>
-                      </div>
-                    </div>
-
-                    <ng-container *ngIf="supplierAuthMode === 'login'">
-                      <div class="supplier-field supplier-field--password">
-                        <label class="form-label">Password</label>
-                        <div class="position-relative">
-                          <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" name="supplierPwd"
-                            [(ngModel)]="pwd" (input)="invalidLogin = false" placeholder="Enter Password" (keyup.enter)="handleSupplierLogin()" />
-                          <i class="fa toggle-eye supplier-toggle-eye"
-                            [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePassword()">
-                          </i>
-                        </div>
-                        <div *ngIf="invalidLogin" class="text-danger small mt-1">
-                          {{ errorMessage }}
-                        </div>
-                      </div>
-                      <div class="mb-3">
-                        <label for="captcha" class="form-label">CAPTCHA</label>
-                        <div class="d-flex align-items-center mb-1">
-                          <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
-                            <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
-                          </div>
-                          <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
-                            <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
-                          </button>
-                        </div>
-                        <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
-                          placeholder="Enter CAPTCHA" required autocomplete="off">
-                        <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched) && !invalidLogin" class="text-danger small mt-1">
-                          CAPTCHA is Required.
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        class="btn btn-primary text-white w-100 supplier-action-btn"
-                        [disabled]="!supplierUserId || !pwd.trim() || supplierAuthBusy"
-                        (click)="handleSupplierLogin()">
-                        {{ supplierAuthBusy ? 'Please wait...' : 'Login' }}
-                      </button>
-                    </ng-container>
-                  
-                    <ng-container *ngIf="supplierAuthMode !== 'login'">
-                      <button type="button" class="btn btn-primary text-white w-100 supplier-action-btn"
-                        [disabled]="!supplierUserId || supplierAuthBusy" (click)="openSupplierPasswordFlow()">
-                        {{ supplierAuthBusy
-                        ? 'Please wait...'
-                        : supplierAuthMode === 'new'
-                        ? 'Action: Create User'
-                        : 'Action: Forgot & Reset User' }}
-                      </button>
-                    </ng-container>
-                    
-                    <div class="supplier-otp-panel" *ngIf="supplierShowOtp && supplierProfile">
-                      <div class="supplier-otp-title">OTP Verification</div>
-                      <div class="supplier-otp-meta">
-                        <div class="supplier-otp-row">
-                          <span>Supplier</span>
-                          <strong>{{ supplierProfile.name }}</strong>
-                        </div>
-                        <div class="supplier-otp-row">
-                          <span>Mobile No</span>
-                          <strong>{{ supplierProfile.maskedMobile }}</strong>
-                        </div>
-                        <div class="supplier-otp-row">
-                          <span>e-Mail</span>
-                          <strong>{{ supplierProfile.email }}</strong>
-                        </div>
-                      </div>
-
-                      <div class="supplier-field">
-                        <label class="form-label">Enter Userid</label>
-                        <div class="input-group">
-                          <input type="text" class="form-control" [(ngModel)]="supplierDesiredUserId"
-                            name="supplierDesiredUserId" [readonly]="supplierAuthMode === 'reset'" />
-                          <span class="input-group-text" *ngIf="supplierAuthMode === 'new'">@ems.in</span>
-                        </div>
-                      </div>
-
-                      <button type="button" class="btn btn-outline-primary supplier-otp-send"
-                        [disabled]="supplierOtpSending" (click)="sendSupplierOtp()">
-                        {{ supplierOtpSending ? 'Sending...' : 'Send OTP' }}
-                      </button>
-
-                      <div class="supplier-field">
-                        <label class="form-label">Enter OTP</label>
-                        <input type="text" class="form-control" [(ngModel)]="supplierOtp" name="supplierOtp"
-                          maxlength="4" inputmode="numeric" placeholder="4 digit OTP" />
-                      </div>
-                      <div class="supplier-field">
-                        <label class="form-label">New Password</label>
-                        <input type="password" class="form-control" [(ngModel)]="supplierNewPassword"
-                          name="supplierNewPassword" placeholder="New Password" />
-                      </div>
-                      <div class="supplier-field">
-                        <label class="form-label">Repeat Password</label>
-                        <input type="password" class="form-control" [(ngModel)]="supplierRepeatPassword"
-                          name="supplierRepeatPassword" placeholder="Repeat Password" />
-                      </div>
-                   
-                      <p class="supplier-otp-msg" *ngIf="supplierOtpMessage">{{ supplierOtpMessage }}</p>
-
-                      <div class="supplier-otp-actions">
-                        <button type="button" class="btn btn-primary flex-fill" [disabled]="supplierOtpSubmitting"
-                          (click)="submitSupplierPassword()">
-                          {{ supplierOtpSubmitting ? 'Saving...' : 'Submit' }}
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary flex-fill" (click)="cancelSupplierOtp()">
-                          Cancel
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-
+    <!-- Login card -->
+    <div class="card login-card">
+      <div class="login-card-head">
+        <h3 class="login-card-title">Sign in</h3>
+        <p class="login-card-sub">उपयोगकर्ता लॉगिन &middot; Choose your account type</p>
+      </div>
+      <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs" id="loginTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="cgmscl-tab" data-bs-toggle="tab" data-bs-target="#cgmscl"
+              type="button" role="tab" aria-controls="cgmscl" aria-selected="false" (click)="onTabClick('ADMIN')">
+              <i class="fa-solid fa-user-shield"></i><span>Admin</span>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link " id="dme-tab" data-bs-toggle="tab" data-bs-target="#DME" type="button"
+              role="tab" aria-controls="DME" aria-selected="false" (click)="onTabClick('DME')">
+              <i class="fa-solid fa-hospital"></i><span>DME Facility</span>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link " id="dhs-tab" data-bs-toggle="tab" data-bs-target="#DHS" type="button"
+              role="tab" aria-controls="DHS" aria-selected="false" (click)="onTabClick('DHS')">
+              <i class="fa-solid fa-house-medical"></i><span>DHS/AYUSH</span>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link " id="supplier-tab" data-bs-toggle="tab" data-bs-target="#SUPPLIER"
+              type="button" role="tab" aria-controls="SUPPLIER" aria-selected="false"
+              (click)="onTabClick('SUPPLIER')">
+              <i class="fa-solid fa-truck-field"></i><span>Supplier</span>
+            </button>
+          </li>
+        </ul>
       </div>
 
-    </div>
+      <div class="card-body tab-content" id="loginTabsContent" [class.users-loading]="usersLoading" [attr.aria-busy]="usersLoading">
+        <!--  Admin login -->
+        <div class="tab-pane fade show active" id="cgmscl" role="tabpanel" aria-labelledby="cgmscl-tab">
+          <form #cgmsclForm="ngForm" (ngSubmit)="cgmsclForm.valid && handleCgmsclLogin1()">
+            <div class="mb-3">
+              <label for="emailid" class="form-label">Select User</label>
+              <div class="filter-field d-flex gap-4 align-items-center">
 
-  </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                    value="0" [(ngModel)]="selectedStatus" (change)="onStatusChangeAdmin('0')">
+                  <label class="form-check-label" for="exampleRadios1">
+                    ADMINISTRATOR
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                    value="1" [(ngModel)]="selectedStatus" (change)="onStatusChangeAdmin('1')">
+                  <label class="form-check-label" for="exampleRadios2">
+                    DIRECTORATE
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3"
+                    value="2" [(ngModel)]="selectedStatus" (change)="onStatusChangeAdmin('2')">
+                  <label class="form-check-label" for="exampleRadios3">
+                    CGMSCL
+                  </label>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Administrator -->
+            <ng-container *ngIf="selectedStatus == '0'">
+              <div class="mb-3">
+                <label for="emailid" class="form-label">User Administrator</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="fas fa-user"></i>
+                  </span>
+                  <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
+                    (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
+                    [placeholder]="!emailid ? 'Choose Administrator User' : ''" [searchable]="true" [clearable]="true"
+                    [appendTo]="'body'" required class="form-control">
+                  </ng-select>
+                </div>
+                <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                  class="text-danger">
+                  Please select a User.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="pwd" class="form-label">Password</label>
+                <div class="position-relative">
+                  <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                    [(ngModel)]="pwd" (input)="invalidLogin = false" #pwdField="ngModel" placeholder="Enter Password" required>
+                  <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                    (click)="togglePassword()">
+                  </i>
+                </div>
+                <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                  Password is required.
+                </div>
+                <div *ngIf="invalidLogin && !pwdField.invalid" class="text-danger small mt-1">
+                  {{ errorMessage }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="captcha" class="form-label">CAPTCHA</label>
+                <div class="d-flex align-items-center mb-1">
+                  <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
+                    <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
+                  </div>
+                  <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
+                    <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                  </button>
+                </div>
+                <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
+                  placeholder="Enter CAPTCHA" required autocomplete="off">
+                <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched) && !invalidLogin" class="text-danger small mt-1">
+                  CAPTCHA is Required.
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-successs btn-primary text-white w-100"
+                [disabled]="cgmsclForm.invalid">Login</button>
+            </ng-container>
+
+            <!-- Directorate -->
+            <ng-container *ngIf="selectedStatus == '1'">
+              <div class="mb-3">
+                <label for="emailid" class="form-label">User Directorate</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="fas fa-user"></i>
+                  </span>
+                  <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
+                    (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
+                    [placeholder]="!emailid ? 'Select Directorate User' : ''" [searchable]="true" [clearable]="true"
+                    [appendTo]="'body'" required class="form-control">
+                  </ng-select>
+                </div>
+                <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                  class="text-danger">
+                  Please select a User.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="pwd" class="form-label">Password</label>
+                <div class="position-relative">
+                  <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                    [(ngModel)]="pwd" (input)="invalidLogin = false" #pwdField="ngModel" placeholder="Enter Password" required>
+                  <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                    (click)="togglePassword()">
+                  </i>
+                </div>
+                <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                  Password is required.
+                </div>
+                <div *ngIf="invalidLogin && !pwdField.invalid" class="text-danger small mt-1">
+                  {{ errorMessage }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="captcha" class="form-label">CAPTCHA</label>
+                <div class="d-flex align-items-center mb-1">
+                  <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
+                    <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
+                  </div>
+                  <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
+                    <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                  </button>
+                </div>
+                <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
+                  placeholder="Enter CAPTCHA" required autocomplete="off">
+                <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched) && !invalidLogin" class="text-danger small mt-1">
+                  CAPTCHA is Required.
+                </div>
+              </div>
+              <button type="submit" class="btn btn-successs btn-primary text-white w-100"
+                [disabled]="cgmsclForm.invalid">Login</button>
+            </ng-container>
+
+            <!-- CGMSC -->
+            <ng-container *ngIf="selectedStatus == '2'">
+              <div class="mb-3">
+                <label for="emailid" class="form-label">User CGMSC</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="fas fa-user"></i>
+                  </span>
+                  <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
+                    (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
+                    [placeholder]="!emailid ? 'Choose CGMSC User' : ''" [searchable]="true" [clearable]="true"
+                    [appendTo]="'body'" required class="form-control">
+                  </ng-select>
+                </div>
+                <div *ngIf="emailidField.invalid && (emailidField.dirty || emailidField.touched)"
+                  class="text-danger">
+                  Please select a User.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="pwd" class="form-label">Password</label>
+                <div class="position-relative">
+                  <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                    [(ngModel)]="pwd" (input)="invalidLogin = false" #pwdField="ngModel" placeholder="Enter Password" required>
+                  <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                    (click)="togglePassword()">
+                  </i>
+                </div>
+                <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                  Password is required.
+                </div>
+                <div *ngIf="invalidLogin && !pwdField.invalid" class="text-danger small mt-1">
+                  {{ errorMessage }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="captcha" class="form-label">CAPTCHA</label>
+                <div class="d-flex align-items-center mb-1">
+                  <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
+                    <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
+                  </div>
+                  <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
+                    <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                  </button>
+                </div>
+                <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
+                  placeholder="Enter CAPTCHA" required autocomplete="off">
+                <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched) && !invalidLogin" class="text-danger small mt-1">
+                  CAPTCHA is Required.
+                </div>
+              </div>
+              
+              <button type="submit" class="btn btn-successs btn-primary text-white w-100"
+                [disabled]="cgmsclForm.invalid">Login</button>
+            </ng-container>
+
+          </form>
+        </div>
+
+        <!--  DME login -->
+        <div class="tab-pane fade" id="DME" role="tabpanel" aria-labelledby="infrastructure-tab">
+          <form #dmeLoginForm="ngForm" (ngSubmit)="dmeLoginForm.valid && handleCgmsclLogin1()">
+            <div class="mb-3">
+              <label class="form-label">User DME</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-user"></i>
+                </span>
+                <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="id"
+                  (ngModelChange)="onUserChangeInfrastructure($event)" name="dme_user_id"
+                  #dmeUserField="ngModel" [placeholder]="!id ? 'Select Medical College / Hospital' : ''"
+                  [searchable]="true" [clearable]="true" [appendTo]="'body'" required class="form-control">
+                </ng-select>
+              </div>
+              <div *ngIf="dmeUserField.invalid && (dmeUserField.dirty || dmeUserField.touched)"
+                class="text-danger mt-1">
+                Please select a Medical College / Hospital.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="dmePwdInput" class="form-label">Password</label>
+              <div class="position-relative">
+                <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="dmePwdInput"
+                  name="dmePwd" [(ngModel)]="pwd" (input)="invalidLogin = false" placeholder="Enter Password" required #dmePwdField="ngModel">
+                <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                  (click)="togglePassword()">
+                </i>
+              </div>
+              <div *ngIf="dmePwdField.invalid && (dmePwdField.dirty || dmePwdField.touched)"
+                class="text-danger mt-1">
+                Password is required.
+              </div>
+              <div *ngIf="invalidLogin && !dmePwdField.invalid" class="text-danger small mt-1">
+                {{ errorMessage }}
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="captcha" class="form-label">CAPTCHA</label>
+              <div class="d-flex align-items-center mb-1">
+                <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
+                  <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
+                </div>
+                <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
+                  <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                </button>
+              </div>
+              <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
+                placeholder="Enter CAPTCHA" required autocomplete="off">
+              <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched) && !invalidLogin" class="text-danger small mt-1">
+                CAPTCHA is Required.
+              </div>
+            </div>
+            <button type="submit" class="btn btn-successs btn-primary text-white w-100 mb-3"
+              [disabled]="dmeLoginForm.invalid">Login</button>
+          </form>
+        </div>
+
+        <!--  DHS login -->
+        <div class="tab-pane fade" id="DHS" role="tabpanel" aria-labelledby="cgmscl-tab">
+          <form #dhsForm="ngForm" (ngSubmit)="dhsForm.valid && handleCgmsclLogin1()">
+            <div class="mb-3">
+              <label class="form-label fw-bold">Select Login Category</label>
+              <div class="filter-field d-flex gap-4 align-items-center">
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="dhsRadios" id="dhsRadio1" value="0"
+                    [(ngModel)]="selectedStatusDHS" (change)="onStatusChangeDHS('0')">
+                  <label class="form-check-label" for="dhsRadio1">
+                    Health Facility
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="dhsRadios" id="dhsRadio2" value="1"
+                    [(ngModel)]="selectedStatusDHS" (change)="onStatusChangeDHS('1')">
+                  <label class="form-check-label" for="dhsRadio2">
+                    CMHO-Store
+                  </label>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Health Facility -->
+            <ng-container *ngIf="selectedStatusDHS == '0'">
+              <div class="mb-3">
+                <label for="dhs_facility_user" class="form-label">User Health Facility</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="fas fa-user"></i>
+                  </span>
+                  <input type="text" class="form-control" id="dhs_facility_user" name="dhs_facility_user"
+                    [(ngModel)]="emailid" (input)="invalidLogin = false" #dhsFacilityField="ngModel"
+                    placeholder="Enter User ID" required autocomplete="username">
+                </div>
+                <div *ngIf="dhsFacilityField.invalid && (dhsFacilityField.dirty || dhsFacilityField.touched)"
+                  class="text-danger small mt-1">
+                  User ID is required.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="pwd" class="form-label">Password</label>
+                <div class="position-relative">
+                  <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="pwd" name="pwd"
+                    [(ngModel)]="pwd" (input)="invalidLogin = false" #pwdField="ngModel" placeholder="Enter Password" required>
+                  <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                    (click)="togglePassword()">
+                  </i>
+                </div>
+                <div *ngIf="pwdField.invalid && (pwdField.dirty || pwdField.touched)" class="text-danger">
+                  Password is required.
+                </div>
+                <div *ngIf="invalidLogin && !pwdField.invalid" class="text-danger small mt-1">
+                  {{ errorMessage }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="captcha" class="form-label">CAPTCHA</label>
+                <div class="d-flex align-items-center mb-1">
+                  <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
+                    <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
+                  </div>
+                  <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
+                    <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                  </button>
+                </div>
+                <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
+                  placeholder="Enter CAPTCHA" required autocomplete="off">
+                <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched) && !invalidLogin" class="text-danger small mt-1">
+                  CAPTCHA is Required.
+                </div>
+              </div>
+              <button type="submit" class="btn btn-successs btn-primary text-white w-100"
+                [disabled]="dhsForm.invalid">Login</button>
+            </ng-container>
+
+            <!-- CMHO-Store -->
+            <ng-container *ngIf="selectedStatusDHS == '1'">
+              <div class="mb-3">
+                <label for="dhs_select_user" class="form-label">User CMHO-Store</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="fas fa-user"></i>
+                  </span>
+                  <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
+                    (change)="onUserChangeCgmscl($event)" name="dhs_select_user" #dhsCmhoField="ngModel"
+                    [placeholder]="!emailid ? 'Select CMHO-Store User' : ''" [searchable]="true"
+                    [clearable]="true" [appendTo]="'body'" required class="form-control">
+                  </ng-select>
+                </div>
+                <div *ngIf="dhsCmhoField.invalid && (dhsCmhoField.dirty || dhsCmhoField.touched)"
+                  class="text-danger">
+                  Please select a User.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="dhs_pwd_cmho" class="form-label">Password</label>
+                <div class="position-relative">
+                  <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" id="dhs_pwd_cmho"
+                    name="dhs_pwd_cmho" [(ngModel)]="pwd" (input)="invalidLogin = false" #dhsPwdCmhoField="ngModel" placeholder="Enter Password" required>
+                  <i class="fa toggle-eye" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"
+                    (click)="togglePassword()"></i>
+                </div>
+                <div *ngIf="dhsPwdCmhoField.invalid && (dhsPwdCmhoField.dirty || dhsPwdCmhoField.touched)" class="text-danger">
+                  Password is required.
+                </div>
+                <div *ngIf="invalidLogin && !dhsPwdCmhoField.invalid" class="text-danger small mt-1">
+                  {{ errorMessage }}
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="captcha" class="form-label">CAPTCHA</label>
+                <div class="d-flex align-items-center mb-1">
+                  <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
+                    <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
+                  </div>
+                  <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
+                    <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                  </button>
+                </div>
+                <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #captchaInput="ngModel"
+                  placeholder="Enter CAPTCHA" required autocomplete="off">
+                <div *ngIf="captchaInput.invalid && (captchaInput.dirty || captchaInput.touched) && !invalidLogin" class="text-danger small mt-1">
+                  CAPTCHA is Required.
+                </div>
+              </div>
+              <button type="submit" class="btn btn-successs btn-primary text-white w-100"
+                [disabled]="dhsForm.invalid">Login</button>
+            </ng-container>
+          </form>
+        </div>
+
+        <!-- Supplier: Login / New User ID / Reset Password (OTP) -->
+        <div class="tab-pane fade" id="SUPPLIER" role="tabpanel" aria-labelledby="supplier-tab">
+          <div class="supplier-auth-panel">
+            <!-- Supplier options as radio buttons (same style as Admin "Select User") -->
+            <div class="mb-3">
+              <label class="form-label">Select Option</label>
+              <div class="filter-field d-flex gap-4 align-items-center" role="radiogroup" aria-label="Supplier options">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="supplierMode" id="supplierModeLogin"
+                    [checked]="supplierAuthMode === 'login'" (change)="setSupplierAuthMode('login')">
+                  <label class="form-check-label" for="supplierModeLogin">LOGIN</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="supplierMode" id="supplierModeNew"
+                    [checked]="supplierAuthMode === 'new'" (change)="setSupplierAuthMode('new')">
+                  <label class="form-check-label" for="supplierModeNew">NEW USER ID</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="supplierMode" id="supplierModeReset"
+                    [checked]="supplierAuthMode === 'reset'" (change)="setSupplierAuthMode('reset')">
+                  <label class="form-check-label" for="supplierModeReset">RESET PASSWORD</label>
+                </div>
+              </div>
+            </div>
+
+            <p class="mode-hint" [ngSwitch]="supplierAuthMode">
+              <ng-container *ngSwitchCase="'new'">Select your firm. An OTP will be sent to your registered mobile to create your User ID.</ng-container>
+              <ng-container *ngSwitchCase="'reset'">Select your firm. An OTP will be sent to your registered mobile to set a new password.</ng-container>
+              <ng-container *ngSwitchDefault>Select your firm and enter your password.</ng-container>
+            </p>
+
+            <div class="supplier-field">
+              <label class="form-label">Supplier</label>
+              <div class="input-group supplier-select-group">
+                <span class="input-group-text">
+                  <i class="fas fa-building"></i>
+                </span>
+                <ng-select [items]="supplierAuthOptions" bindLabel="user_name" bindValue="user_id"
+                  [(ngModel)]="supplierUserId" (change)="onSupplierTabSelect()" name="supplierAuthSelect"
+                  [placeholder]="supplierSelectPlaceholder" [searchable]="true" [clearable]="true"
+                  [appendTo]="'body'" class="form-control supplier-ng-select">
+                </ng-select>
+              </div>
+            </div>
+
+            <ng-container *ngIf="supplierAuthMode === 'login'">
+              <div class="supplier-field supplier-field--password">
+                <label class="form-label">Password</label>
+                <div class="position-relative">
+                  <input [type]="isPasswordVisible ? 'text' : 'password'" class="form-control" name="supplierPwd"
+                    [(ngModel)]="pwd" (input)="invalidLogin = false" placeholder="Enter Password" (keyup.enter)="handleSupplierLogin()" />
+                  <i class="fa toggle-eye"
+                    [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePassword()">
+                  </i>
+                </div>
+                <div *ngIf="invalidLogin" class="text-danger small mt-1">
+                  {{ errorMessage }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="captcha" class="form-label">CAPTCHA</label>
+                <div class="d-flex align-items-center mb-1">
+                  <div class="captcha-img-box" (click)="generateCaptcha()" title="Click to refresh CAPTCHA" role="button" tabindex="0">
+                    <img [src]="captchaImageUrl" alt="Visual CAPTCHA" class="captcha-img" draggable="false" />
+                  </div>
+                  <button type="button" class="btn btn-link ms-1" (click)="generateCaptcha()" title="Refresh CAPTCHA">
+                    <i class="fa-solid fa-arrows-rotate me-1" style="font-size: 20px;"></i>
+                  </button>
+                </div>
+                <input type="text" class="form-control" id="captcha" name="captcha" [(ngModel)]="captchaValue" #capCtrl="ngModel"
+                  placeholder="Enter CAPTCHA" required autocomplete="off">
+                <div *ngIf="capCtrl.invalid && (capCtrl.dirty || capCtrl.touched) && !invalidLogin" class="text-danger small mt-1">
+                  CAPTCHA is Required.
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary text-white w-100 supplier-action-btn"
+                [disabled]="!supplierUserId || !pwd.trim() || supplierAuthBusy" (click)="handleSupplierLogin()">
+                {{ supplierAuthBusy ? 'Please wait...' : 'Login' }}
+              </button>
+            </ng-container>
+
+            <ng-container *ngIf="supplierAuthMode !== 'login' && !supplierShowOtp">
+              <button type="button" class="btn btn-primary text-white w-100 supplier-action-btn"
+                [disabled]="!supplierUserId || supplierAuthBusy" (click)="openSupplierPasswordFlow()">
+                {{ supplierAuthBusy ? 'Please wait...' : 'Continue' }}
+              </button>
+            </ng-container>
+
+            <!-- Step 2: OTP verification -->
+            <div class="supplier-otp-panel" *ngIf="supplierShowOtp && supplierProfile">
+              <div class="supplier-otp-title">
+                <span class="otp-step">2</span>
+                {{ supplierAuthMode === 'new' ? 'Create User ID' : 'Reset Password' }} &middot; Verify with OTP
+              </div>
+              <div class="supplier-otp-meta">
+                <div class="supplier-otp-row">
+                  <span>Supplier</span>
+                  <strong>{{ supplierProfile.name }}</strong>
+                </div>
+                <div class="supplier-otp-row">
+                  <span>Mobile</span>
+                  <strong>{{ supplierProfile.maskedMobile }}</strong>
+                </div>
+                <div class="supplier-otp-row">
+                  <span>e-Mail</span>
+                  <strong>{{ supplierProfile.email }}</strong>
+                </div>
+              </div>
+
+              <div class="supplier-field">
+                <label class="form-label">User ID</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" [(ngModel)]="supplierDesiredUserId"
+                    name="supplierDesiredUserId" [readonly]="supplierAuthMode === 'reset'"
+                    [placeholder]="supplierAuthMode === 'new' ? 'Choose a User ID' : ''" />
+                  <span class="input-group-text input-group-text--suffix" *ngIf="supplierAuthMode === 'new'">@ems.in</span>
+                </div>
+              </div>
+
+              <div class="supplier-field">
+                <label class="form-label">OTP</label>
+                <div class="otp-row">
+                  <input type="text" class="form-control" [(ngModel)]="supplierOtp" name="supplierOtp"
+                    maxlength="4" inputmode="numeric" placeholder="4 digit OTP" />
+                  <button type="button" class="btn btn-outline-primary supplier-otp-send"
+                    [disabled]="supplierOtpSending" (click)="sendSupplierOtp()">
+                    {{ supplierOtpSending ? 'Sending...' : 'Send OTP' }}
+                  </button>
+                </div>
+              </div>
+              <div class="otp-pass-grid">
+                <div class="supplier-field">
+                  <label class="form-label">New Password</label>
+                  <input type="password" class="form-control" [(ngModel)]="supplierNewPassword"
+                    name="supplierNewPassword" placeholder="New Password" autocomplete="new-password" />
+                </div>
+                <div class="supplier-field">
+                  <label class="form-label">Confirm Password</label>
+                  <input type="password" class="form-control" [(ngModel)]="supplierRepeatPassword"
+                    name="supplierRepeatPassword" placeholder="Repeat Password" autocomplete="new-password" />
+                </div>
+              </div>
+
+              <p class="supplier-otp-msg" *ngIf="supplierOtpMessage">{{ supplierOtpMessage }}</p>
+
+              <div class="supplier-otp-actions">
+                <button type="button" class="btn btn-outline-secondary" (click)="cancelSupplierOtp()">
+                  Cancel
+                </button>
+                <button type="button" class="btn btn-primary flex-fill" [disabled]="supplierOtpSubmitting"
+                  (click)="submitSupplierPassword()">
+                  {{ supplierOtpSubmitting ? 'Saving...' : (supplierAuthMode === 'new' ? 'Create User ID' : 'Save New Password') }}
+                </button>
+              </div>
+            </div>
+
+            <div class="manual-links-sup">
+              <a href="assets/manuals/EMIS_Supplier_Mannual.pdf" target="_blank" rel="noopener">
+                <i class="fa-regular fa-file-pdf"></i> Supplier Manual
+              </a>
+              <a href="assets/manuals/Notice_Supplier.pdf" target="_blank" rel="noopener">
+                <i class="fa-regular fa-file-pdf"></i> Receipt &amp; Installation Notice
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="login-card-foot">
+        <i class="fa-solid fa-lock"></i> Never share your password or OTP with anyone.
+      </div>
+    </div>
+  </main>
+
+  <footer class="gov-footer">
+    <div class="gov-tricolor" aria-hidden="true"></div>
+    <div class="gov-wrap gov-footer-inner">
+      <p>Content owned &amp; managed by <b>Chhattisgarh Medical Services Corporation Ltd.</b>, Department of Health &amp; Family Welfare, Government of Chhattisgarh.</p>
+      <p class="gov-footer-meta">
+        <span>&copy; {{ currentYear }} CGMSC. All rights reserved.</span>
+        <span>Best viewed in the latest Chrome, Edge or Firefox.</span>
+      </p>
+    </div>
+  </footer>
 </section>

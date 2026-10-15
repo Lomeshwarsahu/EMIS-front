@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import { SecureFileService } from '../../../service/secure-file.service';
 
 interface TenderOption {
   tenderId: number;
@@ -35,6 +36,7 @@ interface RcDetailRow {
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-rc-detail-report.component.css'],
 })
 export class SupplierRcDetailReportComponent implements OnInit {
+  private readonly secureFile = inject(SecureFileService);
   loading = false;
   userId = 0;
   showExport = false;
@@ -108,7 +110,7 @@ export class SupplierRcDetailReportComponent implements OnInit {
       this.toastr.warning('Specification file not found.');
       return;
     }
-    window.open(`${environment.apiUrl}/ReportSpecification/items/${row.itemId}/download`, '_blank');
+    this.secureFile.openInNewTab(`${environment.apiUrl}/ReportSpecification/items/${row.itemId}/download`);
   }
 
   exportExcel(): void {

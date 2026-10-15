@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -12,6 +12,7 @@ import {
   navigateToPoSupplyReceipt,
   readPoSupplyReceiptFilters,
 } from '../supplier-transaction-state.util';
+import { SecureFileService } from '../../../service/secure-file.service';
 
 type ReceiptTab = 'receipt' | 'installation' | 'complete' | 'denied';
 type InstallationFileType = 'insreport' | 'insphoto' | 'waranty' | 'chalan';
@@ -55,6 +56,7 @@ interface BulkUploadRow {
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-receipt-entry.component.css'],
 })
 export class PoSupplyReceiptEntryComponent implements OnInit {
+  private readonly secureFile = inject(SecureFileService);
   loading = false;
   saving = false;
   uploading = false;
@@ -474,7 +476,7 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
       params.set('bulk', 'true');
     }
     const url = `${environment.apiUrl}/Auth/supplier/installation-report/file/by-user/${this.userId}?${params.toString()}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
+    this.secureFile.openInNewTab(url);
   }
 
   completeInstallation(): void {
@@ -597,7 +599,7 @@ export class PoSupplyReceiptEntryComponent implements OnInit {
     if (!this.descrepencyId) {
       return;
     }
-    window.open(this.api.getSupplierReceiptDeniedFileUrl(this.userId, this.descrepencyId, fileKind), '_blank');
+    this.secureFile.openInNewTab(this.api.getSupplierReceiptDeniedFileUrl(this.userId, this.descrepencyId, fileKind));
   }
 
   goBack(): void {
