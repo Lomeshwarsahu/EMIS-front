@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import { SecureFileService } from '../../../service/secure-file.service';
 
 interface TenderOption {
   tenderId: number;
@@ -36,6 +37,7 @@ interface EmdDepositRow {
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-emd-deposit.component.css'],
 })
 export class SupplierEmdDepositComponent implements OnInit {
+  private readonly secureFile = inject(SecureFileService);
   loading = false;
   saving = false;
   showRefundForm = false;
@@ -207,10 +209,7 @@ export class SupplierEmdDepositComponent implements OnInit {
       this.toastr.warning('File not found.');
       return;
     }
-    window.open(
-      `${environment.apiUrl}/Auth/supplier/emd-deposit/file/by-user/${this.userId}?depositId=${row.id}`,
-      '_blank',
-    );
+    this.secureFile.openInNewTab(`${environment.apiUrl}/Auth/supplier/emd-deposit/file/by-user/${this.userId}?depositId=${row.id}`);
   }
 
   private resetForm(): void {

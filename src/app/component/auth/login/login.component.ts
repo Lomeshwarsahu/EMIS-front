@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
+import { Observable, catchError, map, shareReplay, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BasicAuthenticationService } from 'src/app/service/authentication/basic-authentication.service';
@@ -38,6 +39,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
   adminDropdownList: any = [];
   cgmsclDropdownList: any = [];
   isPasswordVisible: boolean = false;
+  fontScale = 1;
+  /** User dropdown lists by list id — fetched once, reused on every tab / option switch. */
+  private readonly usersCache = new Map<string, Observable<unknown[]>>();
+  private activeUsersKey = '';
+  /** true while the current section's user list is loading (shows a skeleton instead of a blank dropdown) */
+  usersLoading = false;
+  readonly currentYear = new Date().getFullYear();
   otp: any = '';
   username: any;
   emailid: any;
@@ -111,7 +119,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.id = null;
     this.pwd = '';
     this.captchaValue = '';
-    this.generateCaptcha();
 
     if (tab === 'ADMIN') {
       this.selectedStatus = this.selectedStatus || '0';
@@ -135,13 +142,39 @@ export class LoginComponent implements OnInit, AfterViewInit {
     return this.supplierAuthMode === 'reset' ? 'Select User Supplier' : 'Select Supplier User';
   }
 
+  /** Cached list request: one API call per list id; a failed call is not cached. */
+  private loadUsers(id: number | string): Observable<unknown[]> {
+    const key = String(id);
+    let list$ = this.usersCache.get(key);
+    if (!list$) {
+      list$ = this.api.getUsers(Number(id)).pipe(
+        map((res) => (Array.isArray(res) ? res : [])),
+        catchError((err) => {
+          this.usersCache.delete(key);
+          return throwError(() => err);
+        }),
+        shareReplay(1),
+      );
+      this.usersCache.set(key, list$);
+    }
+    return list$;
+  }
+
   getallusers(id: any): void {
-    this.api.getUsers(id).subscribe({
-      next: (res) => {
-        this.userdatas = Array.isArray(res) ? res : [];
+    const key = String(id);
+    this.activeUsersKey = key;
+    this.usersLoading = true; // a cached list answers synchronously, so this never flashes
+    this.loadUsers(id).subscribe({
+      next: (rows) => {
+        // ignore a late answer for a tab the user has already left
+        if (this.activeUsersKey !== key) return;
+        this.userdatas = rows;
+        this.usersLoading = false;
       },
       error: () => {
+        if (this.activeUsersKey !== key) return;
         this.userdatas = [];
+        this.usersLoading = false;
       },
     });
   }
@@ -227,6 +260,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /** A- / A / A+ accessibility control in the top strip. */
+  setFontScale(step: -1 | 0 | 1): void {
+    this.fontScale = step === 0 ? 1 : step < 0 ? 0.9 : 1.1;
+  }
+
   togglePassword(): void {
     this.isPasswordVisible = !this.isPasswordVisible;
     const ids = ['pwd', 'dmePwdInput', 'dhs_pwd_input', 'dhs_pwd_cmho'];
@@ -300,7 +338,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.captchaValue = '';
     this.cancelSupplierOtp();
     this.loadSupplierAuthOptions();
-    this.generateCaptcha();
   }
 
   generateCaptcha(): void {
@@ -401,9 +438,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   private loadSupplierAuthOptions(): void {
     const listId = this.supplierAuthMode === 'new' ? 8 : 6;
-    this.api.getUsers(listId).subscribe({
-      next: (res: unknown) => {
-        const rows = Array.isArray(res) ? res : [];
+    const key = String(listId);
+    this.activeUsersKey = key;
+    this.usersLoading = true;
+    this.loadUsers(listId).subscribe({
+      next: (res: unknown[]) => {
+        if (this.activeUsersKey !== key) return;
+        this.usersLoading = false;
+        const rows = res as Record<string, unknown>[];
         this.supplierAuthOptions = rows
           .map((row: Record<string, unknown>) => ({
             user_id: Number(row['user_id'] ?? row['User_Id'] ?? 0),
@@ -421,6 +463,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
         }
       },
       error: () => {
+        if (this.activeUsersKey !== key) return;
+        this.usersLoading = false;
         this.supplierAuthOptions = [];
         this.userdatas = [];
         if (this.supplierAuthMode === 'new') {
@@ -457,7 +501,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.emailid = null;
     this.pwd = '';
     this.captchaValue = '';
-    this.generateCaptcha();
     const apiId = status === '0' ? '1' : status === '1' ? '2' : '3';
     this.getallusers(apiId);
   }
@@ -467,7 +510,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.emailid = null;
     this.pwd = '';
     this.captchaValue = '';
-    this.generateCaptcha();
     const apiId = status === '0' ? '2' : '5';
     this.getallusers(apiId);
   }
@@ -592,6 +634,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
           this.toastr.success(
             res?.message ?? 'You have successfully generated/reset password. Please login in EMIS.',
           );
+          // supplier lists changed (new user id) — fetch them fresh next time
+          this.usersCache.delete('6');
+          this.usersCache.delete('8');
           this.setSupplierAuthMode('login');
         },
         error: (err) => {

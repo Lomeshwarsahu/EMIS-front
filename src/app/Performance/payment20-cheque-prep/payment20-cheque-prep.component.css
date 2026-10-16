@@ -42,8 +42,8 @@
 }
 
 :host-context(html[data-theme='dark']) .it-page {
-  --page-accent: #6e00b3;
-  --table-head-bg: #6e00b3;
+  --page-accent: #2563eb;
+  --table-head-bg: #2563eb;
   --table-cell-bg: #0c0e12;
   --table-row-border: #262b36;
   --table-wrap-border: #262b36;

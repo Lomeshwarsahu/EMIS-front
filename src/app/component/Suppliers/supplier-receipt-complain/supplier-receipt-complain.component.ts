@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import { SecureFileService } from '../../../service/secure-file.service';
 
 interface ReceiptComplainRow {
   complaintId: number;
@@ -32,6 +33,7 @@ type ComplainStatus = 'Booked' | 'Closed';
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-receipt-complain.component.css'],
 })
 export class SupplierReceiptComplainComponent implements OnInit {
+  private readonly secureFile = inject(SecureFileService);
   loading = false;
   userId = 0;
   showExport = false;
@@ -88,10 +90,7 @@ export class SupplierReceiptComplainComponent implements OnInit {
       this.toastr.warning('File not found.');
       return;
     }
-    window.open(
-      `${environment.apiUrl}/Auth/supplier/receipt-complain/file/by-user/${this.userId}?complaintId=${row.complaintId}`,
-      '_blank',
-    );
+    this.secureFile.openInNewTab(`${environment.apiUrl}/Auth/supplier/receipt-complain/file/by-user/${this.userId}?complaintId=${row.complaintId}`);
   }
 
   exportExcel(): void {

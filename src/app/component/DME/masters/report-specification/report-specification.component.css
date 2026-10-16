@@ -29,8 +29,8 @@
 }
 
 :host-context(html[data-theme='dark']) .dme-spec-page {
-  --page-accent: #6e00b3;
-  --table-head-bg: #6e00b3;
+  --page-accent: #2563eb;
+  --table-head-bg: #2563eb;
   --table-head-text: #ffffff;
   --table-cell-bg: #0c0e12;
   --table-row-border: #262b36;
@@ -158,7 +158,7 @@
 }
 
 :host-context(html[data-theme='dark']) .show-btn {
-  background: #6e00b3;
+  background: #2563eb;
 }
 
 .ghost-btn {
@@ -168,9 +168,9 @@
 }
 
 :host-context(html[data-theme='dark']) .ghost-btn {
-  background: rgba(110, 0, 179, 0.14);
-  border-color: rgba(110, 0, 179, 0.5);
-  color: #e9d5ff;
+  background: rgba(37, 99, 235, 0.14);
+  border-color: rgba(37, 99, 235, 0.5);
+  color: #dbeafe;
 }
 
 .summary-bar {
@@ -241,9 +241,9 @@
 }
 
 :host-context(html[data-theme='dark']) .summary-pill.active {
-  background: rgba(110, 0, 179, 0.18);
-  border-color: rgba(110, 0, 179, 0.5);
-  color: #e9d5ff;
+  background: rgba(37, 99, 235, 0.18);
+  border-color: rgba(37, 99, 235, 0.5);
+  color: #dbeafe;
 }
 
 .table-wrap {
@@ -343,9 +343,9 @@
 }
 
 :host-context(html[data-theme='dark']) .edit-btn {
-  background: rgba(110, 0, 179, 0.14);
-  border-color: rgba(110, 0, 179, 0.5);
-  color: #e9d5ff;
+  background: rgba(37, 99, 235, 0.14);
+  border-color: rgba(37, 99, 235, 0.5);
+  color: #dbeafe;
 }
 
 .status-pill {

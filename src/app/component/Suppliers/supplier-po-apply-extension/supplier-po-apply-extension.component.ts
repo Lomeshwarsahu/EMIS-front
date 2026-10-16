@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -12,6 +12,7 @@ import {
   type PoSupplyListFilters,
 } from '../supplier-po-supply-state.util';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import { SecureFileService } from '../../../service/secure-file.service';
 
 interface ExtensionRow {
   extensionId: number;
@@ -34,6 +35,7 @@ interface ExtensionRow {
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-po-apply-extension.component.css'],
 })
 export class SupplierPoApplyExtensionComponent implements OnInit {
+  private readonly secureFile = inject(SecureFileService);
   loading = false;
   saving = false;
   userId = 0;
@@ -191,7 +193,7 @@ export class SupplierPoApplyExtensionComponent implements OnInit {
 
   downloadFile(row: ExtensionRow): void {
     const url = `${environment.apiUrl}/Auth/supplier/po-extension/file/by-user/${this.userId}?extensionId=${row.extensionId}`;
-    window.open(url, '_blank');
+    this.secureFile.openInNewTab(url);
   }
 
   resetForm(): void {

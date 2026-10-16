@@ -138,12 +138,42 @@
                 </div>
               </div>
 
-              <div class="header-user">
-                <span class="header-user-name">{{ firstname || 'User' }}</span>
-                <img
-                  class="header-avatar"
-                  [src]="'https://ui-avatars.com/api/?name=' + (firstname || 'User') + '&background=' + (themeService.isDark ? '6E00B3' : 'f97316') + '&color=fff&rounded=true'"
-                  alt="User avatar" />
+              <div class="header-user-wrap" [class.is-open]="profileOpen">
+                <button
+                  type="button"
+                  class="header-user"
+                  aria-haspopup="menu"
+                  [attr.aria-expanded]="profileOpen"
+                  title="Profile"
+                  (click)="toggleProfile($event)">
+                  <span class="header-user-name">{{ firstname || 'User' }}</span>
+                  <img
+                    class="header-avatar"
+                    [src]="'https://ui-avatars.com/api/?name=' + (firstname || 'User') + (themeService.isDark ? '&background=f5b301&color=0b1f4d' : '&background=f97316&color=fff') + '&rounded=true'"
+                    alt="User avatar" />
+                  <mat-icon class="header-user-caret">expand_more</mat-icon>
+                </button>
+
+                <div class="header-profile-panel" *ngIf="profileOpen" (click)="$event.stopPropagation()" role="menu">
+                  <div class="profile-panel-head">
+                    <img
+                      class="profile-panel-avatar"
+                      [src]="'https://ui-avatars.com/api/?name=' + (firstname || 'User') + (themeService.isDark ? '&background=f5b301&color=0b1f4d' : '&background=f97316&color=fff') + '&rounded=true'"
+                      alt="" />
+                    <div class="profile-panel-id">
+                      <strong>{{ firstname || 'User' }}</strong>
+                      <span *ngIf="role">{{ role }}</span>
+                    </div>
+                  </div>
+                  <button type="button" class="profile-item-btn" role="menuitem" (click)="openChangePassword()">
+                    <mat-icon>lock_reset</mat-icon>
+                    <span>Change Password</span>
+                  </button>
+                  <button type="button" class="profile-item-btn profile-item-btn--danger" role="menuitem" (click)="logoutFromProfile()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

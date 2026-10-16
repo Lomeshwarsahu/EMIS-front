@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
@@ -16,6 +16,7 @@ import {
   navigateToPoSupplyReceipt,
   readPoSupplyReceiptFilters,
 } from '../supplier-transaction-state.util';
+import { SecureFileService } from '../../../service/secure-file.service';
 
 type InstallationFileType = 'insReport' | 'insPhoto' | 'waranty' | 'chalan';
 
@@ -27,6 +28,7 @@ type InstallationFileType = 'insReport' | 'insPhoto' | 'waranty' | 'chalan';
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-installation-report.component.css'],
 })
 export class PoSupplyInstallationReportComponent implements OnInit {
+  private readonly secureFile = inject(SecureFileService);
   loading = false;
   userId = 0;
   receiptId = 0;
@@ -141,6 +143,6 @@ export class PoSupplyInstallationReportComponent implements OnInit {
     }
 
     const url = `${environment.apiUrl}/Auth/supplier/installation-report/file/by-user/${this.userId}?${params.toString()}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
+    this.secureFile.openInNewTab(url);
   }
 }

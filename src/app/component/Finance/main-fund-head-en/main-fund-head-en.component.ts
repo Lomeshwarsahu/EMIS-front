@@ -101,6 +101,13 @@ constructor(
   ngOnInit(): void {
     this.loadReceiptRecordsGrid(); 
   }
+
+  preventAction(event: any, actionName: string) {
+    
+    event.preventDefault(); 
+    this.toastr.warning(`${actionName} is disabled for this field. Please type manually.`, 'Action Blocked');
+}
+
 toggleRow(element: any) {
   if (this.expandedElement === element) {
     this.expandedElement = null;
@@ -189,8 +196,99 @@ toggleRow(element: any) {
  
 
 
+convertToHindi(event: any, fieldType: string) {
+    // Sirf tabhi convert karega jab user 'Space' dabayega
+    if (event.key === ' ' || event.code === 'Space') {
+      
+      // Check karna ki konsa field type ho raha hai
+      let text = '';
+      if (fieldType === 'main') {
+        text = this.formModel.MainHead_Hindi;
+      } else if (fieldType === 'sub') {
+        text = this.subHeadFormModel.SubHead_Hindi;
+      }
 
+      if (!text) return; // Agar text khali hai toh kuch mat karo
 
+      // Text ko words me todna
+      const words = text.split(' ');
+      
+      // Space ke theek pehle wala word nikalna
+      const wordToConvert = words[words.length - 2]; 
+
+      if (wordToConvert && wordToConvert.trim() !== '') {
+        // Check karna ki word pehle se Hindi me toh nahi hai (Devanagari Regex)
+        const isAlreadyHindi = /[\u0900-\u097F]/.test(wordToConvert);
+        
+        if (!isAlreadyHindi) {
+          // Google Input Tools API URL
+          const url = `https://inputtools.google.com/request?text=${wordToConvert}&itc=hi-t-i0-und&num=1&cp=0&cs=1&ie=utf-8&oe=utf-8&app=demopage`;
+
+          fetch(url)
+            .then(response => response.json())
+            .then(data => {
+              if (data[0] === 'SUCCESS') {
+                // Pehla Hindi suggestion nikalna
+                const hindiWord = data[1][0][1][0]; 
+                
+                // Puraane English word ko Hindi word se replace karna
+                words[words.length - 2] = hindiWord;
+                
+                // Naya text banana
+                const newText = words.join(' ');
+
+                // Wapas sahi form model me set karna
+                if (fieldType === 'main') {
+                  this.formModel.MainHead_Hindi = newText;
+                } else if (fieldType === 'sub') {
+                  this.subHeadFormModel.SubHead_Hindi = newText;
+                }
+              }
+            })
+            .catch(error => console.error('Transliteration Error:', error));
+        }
+      }
+    }
+}
+
+convertToHindi1(event: any) {
+    // Sirf tabhi convert karega jab user 'Space' dabayega
+    if (event.key === ' ' || event.code === 'Space') {
+      const text = this.subHeadFormModel.SubHead_Hindi;
+      
+      // Text ko words me todna
+      const words = text.split(' ');
+      
+      // Space ke theek pehle wala word nikalna
+      const wordToConvert = words[words.length - 2]; 
+
+      if (wordToConvert && wordToConvert.trim() !== '') {
+        // Check karna ki word pehle se Hindi me toh nahi hai (Devanagari Regex)
+        const isAlreadyHindi = /[\u0900-\u097F]/.test(wordToConvert);
+        
+        if (!isAlreadyHindi) {
+          // Google Input Tools API URL
+          const url = `https://inputtools.google.com/request?text=${wordToConvert}&itc=hi-t-i0-und&num=1&cp=0&cs=1&ie=utf-8&oe=utf-8&app=demopage`;
+
+          fetch(url)
+            .then(response => response.json())
+            .then(data => {
+              if (data[0] === 'SUCCESS') {
+                // Pehla Hindi suggestion nikalna
+                const hindiWord = data[1][0][1][0]; 
+                
+                // Puraane English word ko Hindi word se replace karna
+                words[words.length - 2] = hindiWord;
+                
+                // Wapas form model me set karna
+                this.subHeadFormModel.SubHead_Hindi = words.join(' ');
+              }
+            })
+            .catch(error => console.error('Transliteration Error:', error));
+        }
+      }
+    }
+}
  
  
 

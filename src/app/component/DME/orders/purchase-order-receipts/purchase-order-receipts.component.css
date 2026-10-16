@@ -29,8 +29,8 @@
 }
 
 :host-context(html[data-theme='dark']) .dme-orders-page {
-  --page-accent: #6e00b3;
-  --table-head-bg: #6e00b3;
+  --page-accent: #2563eb;
+  --table-head-bg: #2563eb;
   --table-cell-bg: #0c0e12;
   --table-row-border: #262b36;
   --table-wrap-border: #262b36;
@@ -123,9 +123,9 @@
 }
 
 :host-context(html[data-theme='dark']) .clear-btn:hover:not(:disabled) {
-  border-color: rgba(110, 0, 179, 0.55);
-  color: #e9d5ff;
-  background: rgba(110, 0, 179, 0.14);
+  border-color: rgba(37, 99, 235, 0.55);
+  color: #dbeafe;
+  background: rgba(37, 99, 235, 0.14);
 }
 
 .table-wrap {
@@ -320,9 +320,9 @@
 }
 
 :host-context(html[data-theme='dark']) .nested-grid th {
-  background: rgba(110, 0, 179, 0.18);
-  color: #e9d5ff;
-  border-bottom-color: rgba(110, 0, 179, 0.35);
+  background: rgba(37, 99, 235, 0.18);
+  color: #dbeafe;
+  border-bottom-color: rgba(37, 99, 235, 0.35);
 }
 
 :host-context(html[data-theme='dark']) .nested-grid td {
@@ -345,7 +345,7 @@
 }
 
 :host-context(html[data-theme='dark']) .action-link {
-  color: #e9d5ff;
+  color: #dbeafe;
 }
 
 .text-center {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DmePageSkeletonComponent } from '../../DME/shared/dme-page-skeleton/dme-page-skeleton.component';
@@ -10,6 +10,7 @@ import {
   EmdTenderOption,
 } from '../../../service/emd-refund-api.service';
 import { environment } from '../../../../environments/environment';
+import { SecureFileService } from '../../../service/secure-file.service';
 
 @Component({
   selector: 'app-emd-refund-tenderwise',
@@ -19,6 +20,7 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./emd-refund-tenderwise.component.css'],
 })
 export class EmdRefundTenderwiseComponent implements OnInit {
+  private readonly secureFile = inject(SecureFileService);
   loading = false;
   submitting = false;
 
@@ -128,10 +130,7 @@ export class EmdRefundTenderwiseComponent implements OnInit {
       return;
     }
     const userId = localStorage.getItem('userid') || '0';
-    window.open(
-      `${environment.apiUrl}/Auth/supplier/emd-deposit/file/by-user/${userId}?depositId=${row.id}`,
-      '_blank'
-    );
+    this.secureFile.openInNewTab(`${environment.apiUrl}/Auth/supplier/emd-deposit/file/by-user/${userId}?depositId=${row.id}`);
   }
 
   approveAndSend(): void {

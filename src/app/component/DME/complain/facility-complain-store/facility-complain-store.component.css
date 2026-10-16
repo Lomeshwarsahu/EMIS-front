@@ -24,7 +24,7 @@
 }
 
 :host-context(html[data-theme='dark']) .dme-complain-page {
-  --page-accent: #6e00b3;
+  --page-accent: #2563eb;
   --card-border: #262b36;
   color: #e2e8f0;
 }
@@ -184,9 +184,9 @@
 }
 
 :host-context(html[data-theme='dark']) .file-btn {
-  background: rgba(110, 0, 179, 0.14);
-  border-color: rgba(110, 0, 179, 0.5);
-  color: #e9d5ff;
+  background: rgba(37, 99, 235, 0.14);
+  border-color: rgba(37, 99, 235, 0.5);
+  color: #dbeafe;
 }
 
 .file-name {
@@ -235,7 +235,7 @@
 }
 
 :host-context(html[data-theme='dark']) .show-btn {
-  background: #6e00b3;
+  background: #2563eb;
 }
 
 .ghost-btn {
@@ -245,9 +245,9 @@
 }
 
 :host-context(html[data-theme='dark']) .ghost-btn {
-  background: rgba(110, 0, 179, 0.14);
-  border-color: rgba(110, 0, 179, 0.5);
-  color: #e9d5ff;
+  background: rgba(37, 99, 235, 0.14);
+  border-color: rgba(37, 99, 235, 0.5);
+  color: #dbeafe;
 }
 
 @media (max-width: 767.98px) {

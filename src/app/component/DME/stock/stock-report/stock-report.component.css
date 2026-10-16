@@ -29,8 +29,8 @@
 }
 
 :host-context(html[data-theme='dark']) .dme-stock-page {
-  --page-accent: #6e00b3;
-  --table-head-bg: #6e00b3;
+  --page-accent: #2563eb;
+  --table-head-bg: #2563eb;
   --table-cell-bg: #0c0e12;
   --table-row-border: #262b36;
   --table-wrap-border: #262b36;
@@ -50,9 +50,9 @@
 }
 
 :host-context(html[data-theme='dark']) .note-bar {
-  background: rgba(110, 0, 179, 0.12);
-  border-color: rgba(110, 0, 179, 0.35);
-  color: #e9d5ff;
+  background: rgba(37, 99, 235, 0.12);
+  border-color: rgba(37, 99, 235, 0.35);
+  color: #dbeafe;
 }
 
 .datagrid {
@@ -140,7 +140,7 @@
 }
 
 :host-context(html[data-theme='dark']) .filter-pill.active {
-  background: #6e00b3;
+  background: #2563eb;
   color: #fff;
 }
 
@@ -177,9 +177,9 @@
 }
 
 :host-context(html[data-theme='dark']) .clear-btn:hover:not(:disabled) {
-  border-color: rgba(110, 0, 179, 0.55);
-  color: #e9d5ff;
-  background: rgba(110, 0, 179, 0.14);
+  border-color: rgba(37, 99, 235, 0.55);
+  color: #dbeafe;
+  background: rgba(37, 99, 235, 0.14);
 }
 
 .table-wrap {
