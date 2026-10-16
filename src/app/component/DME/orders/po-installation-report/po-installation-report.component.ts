@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 import { apiErrorMessage, resolveLoginUserId } from '../../shared/session.util';
+import { SecureFileService } from '../../../../service/secure-file.service';
 
 type InstallationFileType = 'insReport' | 'insPhoto' | 'waranty' | 'chalan';
 
@@ -45,6 +46,7 @@ interface InstallationReportPage {
   styleUrls: ['../dme-order-detail.shared.css', './po-installation-report.component.css'],
 })
 export class PoInstallationReportComponent implements OnInit {
+  private readonly secureFile = inject(SecureFileService);
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
 
   loading = false;
@@ -109,7 +111,7 @@ export class PoInstallationReportComponent implements OnInit {
 </table>
 <script>window.onload=function(){window.print();}</script>
 </body></html>`;
-    const w = window.open('', '_blank', 'noopener,noreferrer');
+    const w = window.open('', '_blank');
     if (!w) {
       this.toastr.warning('Please allow pop-ups to print.');
       return;
@@ -172,7 +174,7 @@ export class PoInstallationReportComponent implements OnInit {
       params.set('bulk', 'true');
     }
     const url = `${this.apiRoot}installation-report/file?${params.toString()}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
+    this.secureFile.openInNewTab(url);
   }
 
   private mapPage(raw: Record<string, unknown>): InstallationReportPage {

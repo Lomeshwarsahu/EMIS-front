@@ -1328,7 +1328,7 @@ const routes: Routes = [
     path: 'change-password',
     component: ChangePasswordComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AU', 'TPO', 'AUPO', 'FU', 'PRINCIPAL', 'FDA'] },
+    data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AU', 'TPO', 'AUPO', 'FU', 'PRINCIPAL', 'FDA', 'SUP'] },
   },
   {
     path: 'ChangePasswordForcefully',

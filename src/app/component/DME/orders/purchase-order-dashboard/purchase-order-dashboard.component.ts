@@ -159,7 +159,7 @@ export class PurchaseOrderDashboardComponent implements OnInit {
           }
 
           const url = window.URL.createObjectURL(blob);
-          const opened = window.open(url, '_blank', 'noopener,noreferrer');
+          const opened = window.open(url, '_blank');
           if (!opened) {
             const a = document.createElement('a');
             a.href = url;

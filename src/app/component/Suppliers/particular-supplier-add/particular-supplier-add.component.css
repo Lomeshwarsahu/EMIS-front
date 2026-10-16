@@ -144,8 +144,8 @@
 
 :host-context(html[data-theme='dark']) .field-input:focus,
 :host-context(html[data-theme='dark']) .field-textarea:focus {
-  border-color: #6e00b3;
-  box-shadow: 0 0 0 3px rgba(110, 0, 179, 0.22);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.22);
 }
 
 :host-context(html[data-theme='dark']) .supplier-info-form-card .section-title,

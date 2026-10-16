@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -12,6 +12,7 @@ import { MaterialModule } from 'src/app/material-module';
 import { ApiService } from 'src/app/service/api.service';
 import { BasicAuthenticationService } from 'src/app/service/authentication/basic-authentication.service';
 import { DmePageSkeletonComponent } from '../DME/shared/dme-page-skeleton/dme-page-skeleton.component';
+import { SecureFileService } from '../../service/secure-file.service';
 
 @Component({
   selector: 'app-rcdetail-report',
@@ -30,6 +31,7 @@ import { DmePageSkeletonComponent } from '../DME/shared/dme-page-skeleton/dme-pa
   styleUrls: ['./rcdetail-report.component.css'],
 })
 export class RCDetailReportComponent implements OnInit {
+  private readonly secureFile = inject(SecureFileService);
   Tenterlist: { tender_id: number; tender_no: string }[] = [];
   tender_id = 0;
   CategoryType = 'ALL';
@@ -184,7 +186,7 @@ export class RCDetailReportComponent implements OnInit {
       this.toastr.warning('Specification file not found.');
       return;
     }
-    window.open(`${environment.apiUrl}/ReportSpecification/items/${row.itemId}/download`, '_blank');
+    this.secureFile.openInNewTab(`${environment.apiUrl}/ReportSpecification/items/${row.itemId}/download`);
   }
 
   exportExcel(): void {

@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { apiErrorMessage, resolveLoginUserId } from '../../shared/session.util';
+import { SecureFileService } from '../../../../service/secure-file.service';
 
 interface ComplainStatusRow {
   complaintId: number;
@@ -33,6 +34,7 @@ interface ComplainStatusRow {
   styleUrls: ['./complain-cmho.component.css'],
 })
 export class ComplainCmhoComponent implements OnInit {
+  private readonly secureFile = inject(SecureFileService);
   private readonly apiRoot = `${environment.apiUrl}/DMEComplain/`;
 
   rows: ComplainStatusRow[] = [];
@@ -78,7 +80,7 @@ export class ComplainCmhoComponent implements OnInit {
       this.toastr.warning('Complaint letter not uploaded.');
       return;
     }
-    window.open(`${this.apiRoot}letter/${row.complaintId}`, '_blank');
+    this.secureFile.openInNewTab(`${this.apiRoot}letter/${row.complaintId}`);
   }
 
   private mapRows(raw: unknown): ComplainStatusRow[] {

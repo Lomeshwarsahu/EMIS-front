@@ -56,7 +56,10 @@ export class OpeningBalanceComponent implements OnInit {
     isOp: false, fundType: 'A', amount: null, receivedDate: '', remarks: '', fileBase64: '', utrNo: ''
   };
 
-  isDateInputLocked: boolean = false;
+  isDateInputLocked: boolean = true;
+minAllowedDate: string = '2026-04-01'; // Minimum Fixed Date
+maxAllowedDate: string = '';
+  // isDateInputLocked: boolean = false;
 
   constructor(
     private spinner: NgxSpinnerService, private api: ApiService, public toastr: ToastrService,
@@ -64,6 +67,12 @@ export class OpeningBalanceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  this.maxAllowedDate = `${yyyy}-${mm}-${dd}`;
+
     this.loadDirectoratesDropdown();
     this.loadBankAccountsDropdown();
     this.loadReceiptRecordsGrid(0);
@@ -75,6 +84,7 @@ export class OpeningBalanceComponent implements OnInit {
   onFundTypeChange() {
     if (this.formModel.fundType === 'A') {
       this.formModel.receivedDate = '2026-04-01';
+      // this.formModel.receivedDate = '2026-04-01';
       this.labelAmountCaption = 'Balance Amount/Fund Received Amount';
       this.labelDateCaption = 'Opening Balance Date/Fund Date';
       this.isDateInputLocked = true;
@@ -86,12 +96,21 @@ export class OpeningBalanceComponent implements OnInit {
     }
   }
 
+  // loadDirectoratesDropdown() {
+  //   this.api.get('BME/GetFacilityList').subscribe({
+  //     next: (res:any) => this.directorateList = res || [],
+  //     error: (err) => console.error(err)
+  //   });
+  // }
   loadDirectoratesDropdown() {
-    this.api.get('BME/GetFacilityList').subscribe({
-      next: (res:any) => this.directorateList = res || [],
-      error: (err) => console.error(err)
-    });
-  }
+  this.api.get('BME/GetFacilityList').subscribe({
+    next: (res: any) => {
+      let data = res || [];
+      this.directorateList = data.filter((item: any) => item.FacilityAutName !== 'CGMSC');
+    },
+    error: (err) => console.error(err)
+  });
+}
 
   loadBankAccountsDropdown() {
     this.api.get('GMFI/GetCgmscBankAccounts').subscribe({
@@ -152,60 +171,66 @@ export class OpeningBalanceComponent implements OnInit {
         this.subheadfund = Array.isArray(res) ? res : (res ? [res] : []);
         
        
-        this.verifyOpeningBalance();
+        // this.verifyOpeningBalance();
       },
       error: (err: any) => console.error("SubHead fetch error", err)
     });
-     this.verifyOpeningBalance();
+    //  this.verifyOpeningBalance();
   }
 
   // **NEW LOGIC: SHID Change hone par call hoga**
   // onSubHeadSelectedChange() {
   //   this.verifyOpeningBalance();
   // }
-
-  // **NEW LOGIC: COMMON FUNCTION FOR API CALL (Only for Opening Balance 'A')**
+onBankAccountSelectedChange() {
+    this.verifyOpeningBalance();
+  }
   verifyOpeningBalance() {
-    // debugger;
-    
+    // Agar Opening Fund nahi hai toh check mat karo
     if (this.formModel.fundType !== 'A') return; 
     
+    // Directorate validation
     if (!this.formModel.directorateId) {
         this.toastr.warning('Please select Directorate first!', 'Warning');
         this.subHeadFormModel.MHID = null;
         return;
     }
 
+   
+    if (!this.formModel.bankId) {
+        this.toastr.warning('Please select Bank Account!', 'Warning');
+        return;
+    }
     if (!this.subHeadFormModel.MHID) return;
 
     const facId = this.formModel.facilityId ? this.formModel.facilityId : 0;
     const shidParam = this.subHeadFormModel.SHID ? this.subHeadFormModel.SHID : '';
 
-   
-    const url = `GMFI/VerifyFirstTimeOpeningBalanceByHead/${this.formModel.directorateId}?mhid=${this.subHeadFormModel.MHID}&shid=${shidParam}&facilityId=${facId}`;
+    const url = `GMFI/VerifyFirstTimeOpeningBalanceByHead/${this.formModel.directorateId}?mhid=${this.subHeadFormModel.MHID}&bankId=${this.formModel.bankId}&shid=${shidParam}&facilityId=${facId}`;
 
     this.api.get(url).subscribe({
       next: (res:any) => {
         if (res.isAlreadyInitialized) {
-          console.log('res=',res);
-            this.formModel.isOp = true;
-          // this.toastr.warning('Opening balance is already added for this Head!', 'Warning');
+          // console.log('Already Initialized:', res);
+          this.formModel.isOp = true;
           
-          // Clear selections
+          this.toastr.warning('Opening balance is already added for this Head and Bank!', 'Warning');
+          
+          // Data pehle se hai toh selections clear kar dein
           this.subHeadFormModel.MHID = null; 
           this.subHeadFormModel.SHID = null; 
           this.subheadfund = []; 
         
         } else {
+          // Data nahi hai toh aage badhne dein
           this.formModel.isOp = false;
           this.formModel.fundType = 'A';
-          this.onFundTypeChange(); 
+          // this.onFundTypeChange('A'); // Agar aapne onFundTypeChange banaya hai toh pass karein
         }
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error("Verify API Error: ", err)
     });
   }
-
   handleFileInputEvent(event: any) {
     const file = event.target.files[0];
     if (file) {

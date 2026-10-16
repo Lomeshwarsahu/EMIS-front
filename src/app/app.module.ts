@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, provideAppInitializer } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppRoutingModule } from './app-routing.module';
@@ -31,6 +31,7 @@ import { AppSidebarComponent } from './component/layout/app-sidebar/app-sidebar.
 import { AppSanitizeInputDirective } from './directives/sanitize-input.directive';
 import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { authInterceptor } from './service/authentication/authInterceptor';
+import { restoreSessionFromOtherTabs } from './service/authentication/session-sync';
 @NgModule({
   declarations: [
     AppComponent,
@@ -75,6 +76,7 @@ import { authInterceptor } from './service/authentication/authInterceptor';
     }),
 ], providers: [DatePipe, 
       { provide: APP_BASE_HREF, useValue: '/EMSA/' },
+      provideAppInitializer(restoreSessionFromOtherTabs),
          provideHttpClient(withInterceptors([authInterceptor])),
       provideHttpClient(withInterceptorsFromDi()),
 

@@ -46,15 +46,40 @@
             </div>
 
             <!-- 2. Main Head (Hindi) Input -->
-            <div class="row mb-4 align-items-start">
+             <div class="row mb-4 align-items-start">
+    <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2">
+        Main Head (Hindi) :
+    </label>
+    <div class="col-sm-8">
+        <input type="text" class="form-control shadow-sm" placeholder="Enter Main Head in Hindi"
+               [(ngModel)]="formModel.MainHead_Hindi" name="MainHead_Hindi" #mainHeadHindi="ngModel" 
+               (keyup)="convertToHindi($event, 'main')"
+               (paste)="preventAction($event, 'Paste')" 
+               (copy)="preventAction($event, 'Copy')" 
+               (cut)="preventAction($event, 'Cut')" 
+               (drop)="preventAction($event, 'Drop')"
+               autocomplete="off">
+    </div>
+</div>
+             <!-- <div class="row mb-4 align-items-start">
+    <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2">
+        Main Head (Hindi) :
+    </label>
+    <div class="col-sm-8">
+        <input type="text" class="form-control shadow-sm" placeholder="Enter Main Head in Hindi"
+               [(ngModel)]="formModel.MainHead_Hindi" name="MainHead_Hindi" #mainHeadHindi="ngModel" 
+               (keyup)="convertToHindi($event, 'main')">
+    </div>
+</div> -->
+            <!-- <div class="row mb-4 align-items-start">
                 <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2">
                     Main Head (Hindi) :
                 </label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control shadow-sm" placeholder="Enter Main Head in Hindi"
-                           [(ngModel)]="formModel.MainHead_Hindi" name="MainHead_Hindi" #mainHeadHindi="ngModel">
+                           [(ngModel)]="formModel.MainHead_Hindi" name="MainHead_Hindi" #mainHeadHindi="ngModel" >
                 </div>
-            </div>
+            </div> -->
 
             <!-- 3. IsActive Radio Buttons -->
             <div class="row mb-4 align-items-center">
@@ -137,12 +162,22 @@
             </div>
 
             <!-- 3. Sub Head Hindi -->
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label class="form-label text-muted fw-semibold small">Sub Head (Hindi)</label>
                 <input type="text" class="form-control shadow-sm" placeholder="Sub Head in Hindi required." 
                        [(ngModel)]="subHeadFormModel.SubHead_Hindi" name="SubHead_Hindi">
+            </div> -->
+            <div class="mb-3">
+                <label class="form-label text-muted fw-semibold small">Sub Head (Hindi)</label>
+                <input type="text" class="form-control shadow-sm" placeholder="Sub Head in Hindi required." 
+                    [(ngModel)]="subHeadFormModel.SubHead_Hindi" name="SubHead_Hindi"
+                    (keyup)="convertToHindi($event,'sub')"
+                   (paste)="preventAction($event, 'Paste')" 
+               (copy)="preventAction($event, 'Copy')" 
+               (cut)="preventAction($event, 'Cut')" 
+               (drop)="preventAction($event, 'Drop')"
+               autocomplete="off">
             </div>
-
             <!-- 4. IsActive Status -->
             <div class="mb-4">
                 <label class="form-label text-muted fw-semibold small d-block">Status <span class="text-danger">*</span></label>

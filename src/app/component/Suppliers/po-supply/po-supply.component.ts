@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import { SecureFileService } from '../../../service/secure-file.service';
 
 interface FinancialYearOption {
   financialYearId: number;
@@ -54,6 +55,7 @@ interface SdPaymentMode {
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply.component.css'],
 })
 export class PoSupplyComponent implements OnInit, OnDestroy {
+  private readonly secureFile = inject(SecureFileService);
   loading = false;
   userId = 0;
   supplierId = 0;
@@ -422,7 +424,7 @@ export class PoSupplyComponent implements OnInit, OnDestroy {
 
   downloadSdFile(): void {
     const url = `${environment.apiUrl}/Auth/supplier/po-sd-detail/file/by-user/${this.userId}?poId=${this.sdPoId}`;
-    window.open(url, '_blank');
+    this.secureFile.openInNewTab(url);
   }
 
   resetSdForm(): void {

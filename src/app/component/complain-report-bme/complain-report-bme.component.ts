@@ -62,13 +62,14 @@ import { ComplaintDTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './complain-report-bme.component.html',
-  styleUrl: './complain-report-bme.component.css',
+  styleUrls: ['../DME/shared/legacy-ems-page.css', './complain-report-bme.component.css'],
 })
 export class ComplainReportBMEComponent {
 Status:any;
 Did:any;
   
-  CategoryType:any;
+  CategoryType: 'Booked' | 'Closed' = 'Booked';
+  loaded = false;
   dispatchData: ComplaintDTO[] = [];
 
   dataSource!: MatTableDataSource<ComplaintDTO>;
@@ -88,9 +89,6 @@ Did:any;
     'SupplierName',
     'Email',
     'MobileNo',
-    
-    'action'
-
   ];
 
   constructor(
@@ -113,7 +111,6 @@ Did:any;
 
   //https://localhost:7036/api/Contract/complain/GetComplainReport?Did=0&Status=Booked
   GetIndentConsolidation() {
-    debugger
     try {
       this.spinner.show();
       const params = {
@@ -130,6 +127,7 @@ Did:any;
           this.dataSource.data = this.dispatchData;
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+          this.loaded = true;
           this.cdr.detectChanges();
           this.spinner.hide();
         },
