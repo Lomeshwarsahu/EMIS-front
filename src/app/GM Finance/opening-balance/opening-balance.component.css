@@ -1,0 +1,30 @@
+.grid-header {
+  background-color: #2b3035 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 0.76rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+  padding: 12px 10px !important;
+}
+.grid-row-effect { transition: background-color 0.12s ease-in-out; }
+.cursor-pointer { cursor: pointer; }
+.font-size-11 { font-size: 11px !important; }
+.tracking-tight { letter-spacing: -0.5px; }
+.style-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+.style-scrollbar::-webkit-scrollbar-track { background: #f8f9fa; }
+.style-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+/* Custom row background colors override styles emulating old GridView color codes */
+.pink-row-accent {
+  background-color: #ffeef2 !important;
+}
+.pink-row-accent:hover {
+  background-color: #ffdce5 !important;
+}
+.white-row-accent:hover {
+  background-color: rgba(var(--bs-primary-rgb), 0.02) !important;
+}
+.text-indigo { color: #4f46e5; }
+.bg-indigo-subtle { background-color: #e0e7ff; border-color: #c7d2fe; }

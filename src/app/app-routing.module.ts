@@ -216,6 +216,7 @@ import { PoSummaryDrilldownQtyReagentComponent } from './Reports/po-summary-dril
 import { IndentPoSummaryDirwiseComponent } from './Reports/indent-po-summary-dirwise/indent-po-summary-dirwise.component';
 import { MasFacilityUsersLocationsmasterComponent } from './component/mas-facility-users-locationsmaster/mas-facility-users-locationsmaster.component';
 import { MainFundHeadEnComponent } from './component/Finance/main-fund-head-en/main-fund-head-en.component';
+import { OpeningBalanceComponent } from './GM Finance/opening-balance/opening-balance.component';
 // import { POSupplyHOComponent } from './component/PO-Cell/po-supply-ho/po-supply-ho.component';
 
 const routes: Routes = [
@@ -223,7 +224,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'supplier-login', component: SupplierLoginComponent },
   { path: 'MasFacilityUsersLocationsmaster', component: MasFacilityUsersLocationsmasterComponent},
-  // { path: 'MainFundHead', component: MainFundHeadEnComponent },
+
   { path: 'LoginEmsSup', redirectTo: 'supplier-login', pathMatch: 'full' },
 
   {
@@ -2037,6 +2038,12 @@ const routes: Routes = [
   {
     path: 'MainFundHead',
     component: MainFundHeadEnComponent,
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUGMF'] },
+  },
+  {
+    path: 'OpeningBalance',
+    component: OpeningBalanceComponent,
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },

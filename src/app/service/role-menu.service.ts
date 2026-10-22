@@ -247,6 +247,7 @@ const ROUTE_MAP: Record<string, string> = {
   '/funds/budgetdetailsprovisional.aspx': '/BudgetDetailsProvisional',
   '/funds/fundmap.aspx': '/FundMap',
   '/funds/budgententry.aspx': '/BudgentEntry',
+  '/fund/OpeningBalance.aspx':'/OpeningBalance',
   '/Funds/MainFundHead.aspx': '/MainFundHead',
   '/emdrefund/emdrefundtenderwise.aspx': '/reports/emd-refund-report',
   '/reports/emddepositereport.aspx': '/emd-refund/emd-deposit',
