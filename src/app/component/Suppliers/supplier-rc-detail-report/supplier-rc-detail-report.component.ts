@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 import { SecureFileService } from '../../../service/secure-file.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface TenderOption {
   tenderId: number;
@@ -31,11 +33,12 @@ interface RcDetailRow {
 @Component({
   selector: 'app-supplier-rc-detail-report',
   standalone: true,
-  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-rc-detail-report.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-rc-detail-report.component.css'],
 })
 export class SupplierRcDetailReportComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly secureFile = inject(SecureFileService);
   loading = false;
   userId = 0;
@@ -95,10 +98,12 @@ export class SupplierRcDetailReportComponent implements OnInit {
         this.loading = false;
         this.showExport = true;
         const list = Array.isArray(raw) ? raw : [];
+        this.pager.reset();
         this.rows = list.map((row) => this.mapRow(row as Record<string, unknown>));
       },
       error: (err) => {
         this.loading = false;
+        this.pager.reset();
         this.rows = [];
         this.toastr.error(err?.error?.message ?? 'Unable to load RC detail report.');
       },

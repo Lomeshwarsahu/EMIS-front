@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { apiErrorMessage, resolveLoginUserId } from '../../shared/session.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface ReportHeader {
   IndentId: number;
@@ -47,11 +49,12 @@ interface FacilityIndentSummary {
 @Component({
   selector: 'app-dme-fac-indent-report',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [MatPaginatorModule, CommonModule, FormsModule],
   templateUrl: './dme-fac-indent-report.component.html',
   styleUrls: ['./dme-fac-indent-report.component.css'],
 })
 export class DmeFacIndentReportComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly orderApi = `${environment.apiUrl}/DMEOrder/`;
   private printing = false;
 
@@ -219,6 +222,7 @@ export class DmeFacIndentReportComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.header = this.mapHeader(res['header'] ?? res['Header']);
+          this.pager.reset();
           this.lines = this.mapLines(res['lines'] ?? res['Lines']);
           this.loading = false;
           if (!this.header) {
@@ -228,6 +232,7 @@ export class DmeFacIndentReportComponent implements OnInit {
         error: (e) => {
           this.loading = false;
           this.header = null;
+          this.pager.reset();
           this.lines = [];
           this.loadError = apiErrorMessage(e, 'Could not load indent report.');
           this.toastr.error(this.loadError);

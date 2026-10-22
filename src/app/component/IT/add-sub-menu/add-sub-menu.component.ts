@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { ViewChild } from '@angular/core';
 import { DmePageSkeletonComponent } from '../../DME/shared/dme-page-skeleton/dme-page-skeleton.component';
@@ -37,6 +37,9 @@ export class AddSubMenuComponent implements OnInit {
   menus: MenuDto[] = [];
   subMenus: SubMenuDto[] = [];
   dataSource = new MatTableDataSource<SubMenuDto>([]);
+  @ViewChild('paginator') set paginator(p: MatPaginator | undefined) {
+    this.dataSource.paginator = p ?? null;
+  }
   displayedColumns = ['sno', 'menuName', 'subMenuName', 'subMenuLink', 'isActive'];
 
   selectedMenuId: number | null = null;

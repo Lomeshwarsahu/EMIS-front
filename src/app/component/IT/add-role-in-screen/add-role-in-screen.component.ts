@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { DmePageSkeletonComponent } from '../../DME/shared/dme-page-skeleton/dme-page-skeleton.component';
 import {
@@ -40,6 +40,9 @@ export class AddRoleInScreenComponent implements OnInit {
 
   topDataSource = new MatTableDataSource<SubMenuWithRoleStatusDto>([]);
   bottomDataSource = new MatTableDataSource<SubMenuRoleMappingDto>([]);
+  @ViewChild('bottomPaginator') set bottomPaginator(p: MatPaginator | undefined) {
+    this.bottomDataSource.paginator = p ?? null;
+  }
   topColumns = ['check', 'sno', 'subMenuName', 'subMenuLink', 'status'];
   bottomColumns = ['sno', 'menuName', 'subMenuName', 'subMenuLink'];
 

@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { apiErrorMessage, resolveLoginUserId } from '../../shared/session.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface BudgetHeadRow {
   HeadId: number;
@@ -15,11 +17,12 @@ interface BudgetHeadRow {
 @Component({
   selector: 'app-dme-fac-heads',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [MatPaginatorModule, CommonModule, FormsModule],
   templateUrl: './dme-fac-heads.component.html',
   styleUrls: ['./dme-fac-heads.component.css'],
 })
 export class DmeFacHeadsComponent implements OnInit, OnDestroy {
+  readonly pager = new ListPager();
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
 
   rows: BudgetHeadRow[] = [];
@@ -53,6 +56,7 @@ export class DmeFacHeadsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.http.get<BudgetHeadRow[]>(`${this.apiRoot}budget-heads?userId=${this.userId}`).subscribe({
       next: (res) => {
+        this.pager.reset();
         this.rows = this.mapRows(res);
         this.loading = false;
       },

@@ -29,6 +29,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import Swal from 'sweetalert2'; 
+import { ListPager } from 'src/app/helper/list-pager';
 
 @Component({
   selector: 'app-new-fund-master',
@@ -54,6 +55,7 @@ import Swal from 'sweetalert2';
   styleUrl: './new-fund-master.component.css',
 })
 export class NewFundMasterComponent {
+  readonly pager = new ListPager();
 // Data binding source lists arrays
   fundsMasterList: any[] = [];
   filteredFundsList: any[] = [];
@@ -81,6 +83,7 @@ fetchRegisteredFundsGrid() {
   this.api.get('GMFI/GetFundsList').subscribe({
     next: (res: any) => {
       this.fundsMasterList = res || [];
+      this.pager.reset();
       this.filteredFundsList = [...this.fundsMasterList];
       this.spinner.hide();
     },
@@ -128,10 +131,12 @@ fetchRegisteredFundsGrid() {
     const searchVal = (event.target as HTMLInputElement).value.trim().toLowerCase();
     
     if (!searchVal) {
+      this.pager.reset();
       this.filteredFundsList = [...this.fundsMasterList];
       return;
     }
 
+    this.pager.reset();
     this.filteredFundsList = this.fundsMasterList.filter((fund: any) => {
       return fund.budgetname?.toLowerCase().includes(searchVal);
     });

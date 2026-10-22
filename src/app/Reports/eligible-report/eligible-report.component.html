@@ -46,8 +46,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of summaryRows; index as i" [class.alt-row]="i % 2 === 1">
-          <td class="text-center">{{ i + 1 }}</td>
+        <tr *ngFor="let row of summaryRows | slice: pager.start : pager.end; index as i" [class.alt-row]="i % 2 === 1">
+          <td class="text-center">{{ pager.start + i + 1 }}</td>
           <td>{{ row.FacilityAutCode || '—' }}</td>
           <td class="text-center">{{ row.NoofConsinee }}</td>
           <td class="text-center">{{ row.NoofItems }}</td>
@@ -57,6 +57,8 @@
         </tr>
       </tbody>
     </table>
+    <mat-paginator *ngIf="summaryRows.length" [length]="summaryRows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+      [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
   </div>
 
   <div class="table-wrap" *ngIf="!loading && view === 'detail'">
@@ -77,8 +79,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of detailRows; index as i" [class.alt-row]="i % 2 === 1">
-          <td class="text-center">{{ i + 1 }}</td>
+        <tr *ngFor="let row of detailRows | slice: detailPager.start : detailPager.end; index as i" [class.alt-row]="i % 2 === 1">
+          <td class="text-center">{{ detailPager.start + i + 1 }}</td>
           <td>{{ row.UserName || '—' }}</td>
           <td>{{ row.IndentConNo || '—' }}</td>
           <td>{{ row.ItemCode || '—' }}</td>
@@ -95,5 +97,7 @@
         </tr>
       </tbody>
     </table>
+    <mat-paginator *ngIf="detailRows.length" [length]="detailRows.length" [pageIndex]="detailPager.index" [pageSize]="detailPager.size"
+      [pageSizeOptions]="detailPager.sizes" (page)="detailPager.onPage($event)" showFirstLastButtons></mat-paginator>
   </div>
 </div>

@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { NewOpeningStockEntryComponent } from '../new-opening-stock-entry/new-opening-stock-entry.component';
 import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface MainEquipmentType {
   Pid: number;
@@ -31,11 +33,12 @@ interface OpeningStockRow {
 @Component({
   selector: 'app-opening-stock-entry',
   standalone: true,
-  imports: [CommonModule, FormsModule, NewOpeningStockEntryComponent, DmePageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, NewOpeningStockEntryComponent, DmePageSkeletonComponent],
   templateUrl: './opening-stock-entry.component.html',
   styleUrls: ['./opening-stock-entry.component.css'],
 })
 export class OpeningStockEntryComponent implements OnInit, OnDestroy {
+  readonly pager = new ListPager();
   private readonly apiRoot = `${environment.apiUrl}/DMEStock/`;
 
   equipmentTypes: MainEquipmentType[] = [];
@@ -121,6 +124,7 @@ export class OpeningStockEntryComponent implements OnInit, OnDestroy {
       error: (e) => {
         this.loading = false;
         this.allRows = [];
+        this.pager.reset();
         this.rows = [];
         this.toastr.error(this.apiError(e, 'Could not load opening stock.'));
       },
@@ -128,6 +132,7 @@ export class OpeningStockEntryComponent implements OnInit, OnDestroy {
   }
 
   private applyFilter(): void {
+    this.pager.reset();
     this.rows =
       this.selectedPid > 0 ? this.allRows.filter((r) => r.Pid === this.selectedPid) : [...this.allRows];
   }

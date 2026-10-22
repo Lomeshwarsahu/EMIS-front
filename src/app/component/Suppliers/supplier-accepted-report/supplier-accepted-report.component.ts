@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface TenderOption {
   tenderId: number;
@@ -33,11 +35,12 @@ type FilterMode = 'tender' | 'supplier';
 @Component({
   selector: 'app-supplier-accepted-report',
   standalone: true,
-  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-accepted-report.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-accepted-report.component.css'],
 })
 export class SupplierAcceptedReportComponent implements OnInit {
+  readonly pager = new ListPager();
   loading = false;
   userId = 0;
   showExport = false;
@@ -63,6 +66,7 @@ export class SupplierAcceptedReportComponent implements OnInit {
   }
 
   onFilterModeChange(): void {
+    this.pager.reset();
     this.rows = [];
     this.showExport = false;
     this.showFilters = this.filterMode !== null;
@@ -118,6 +122,7 @@ export class SupplierAcceptedReportComponent implements OnInit {
 
   onFilterChange(): void {
     if (this.filterMode === 'tender' && !this.selectedTenderId) {
+      this.pager.reset();
       this.rows = [];
       this.showExport = false;
       return;
@@ -127,6 +132,7 @@ export class SupplierAcceptedReportComponent implements OnInit {
 
   clearFilters(): void {
     this.selectedTenderId = 0;
+    this.pager.reset();
     this.rows = [];
     this.showExport = false;
   }
@@ -153,10 +159,12 @@ export class SupplierAcceptedReportComponent implements OnInit {
           this.loading = false;
           this.showExport = true;
           const list = Array.isArray(raw) ? raw : [];
+          this.pager.reset();
           this.rows = list.map((row) => this.mapRow(row as Record<string, unknown>));
         },
         error: (err) => {
           this.loading = false;
+          this.pager.reset();
           this.rows = [];
           this.toastr.error(err?.error?.message ?? 'Unable to load accepted report.');
         },

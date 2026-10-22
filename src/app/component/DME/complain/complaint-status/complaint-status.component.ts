@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { apiErrorMessage, resolveLoginUserId } from '../../shared/session.util';
 import { SecureFileService } from '../../../../service/secure-file.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface ComplainStatusRow {
   complaintId: number;
@@ -26,11 +28,12 @@ interface ComplainStatusRow {
 @Component({
   selector: 'app-complaint-status',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [MatPaginatorModule, CommonModule, FormsModule],
   templateUrl: './complaint-status.component.html',
   styleUrls: ['../../shared/legacy-ems-page.css', './complaint-status.component.css'],
 })
 export class ComplaintStatusComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly secureFile = inject(SecureFileService);
   private readonly apiRoot = `${environment.apiUrl}/DMEComplain/`;
 
@@ -62,6 +65,7 @@ export class ComplaintStatusComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
+          this.pager.reset();
           this.rows = this.mapRows(res);
           this.loaded = true;
           this.loading = false;

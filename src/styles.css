@@ -1064,3 +1064,21 @@ html[data-theme='dark'] table.mat-table tbody tr.mat-mdc-row:hover {
   background-color: rgba(249, 115, 22, 0.15) !important;
 }
 
+
+/* Paginator layout (all pages): page-size selector bottom-left, range + nav buttons bottom-right */
+.mat-mdc-paginator-container {
+  justify-content: space-between !important;
+  flex-wrap: wrap;
+}
+.mat-mdc-paginator-page-size {
+  margin-right: auto;
+}
+.mat-mdc-paginator-range-actions {
+  margin-left: auto;
+}
+/* Paginator inside a horizontally scrolling grid stays in view */
+.table-wrap > .mat-mdc-paginator,
+.grid-scroll > .mat-mdc-paginator {
+  position: sticky;
+  left: 0;
+}

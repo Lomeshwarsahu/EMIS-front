@@ -13,6 +13,8 @@ import {
 } from '../supplier-po-supply-state.util';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 import { SecureFileService } from '../../../service/secure-file.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface ExtensionRow {
   extensionId: number;
@@ -30,11 +32,12 @@ interface ExtensionRow {
 @Component({
   selector: 'app-supplier-po-apply-extension',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, RouterModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-po-apply-extension.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-po-apply-extension.component.css'],
 })
 export class SupplierPoApplyExtensionComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly secureFile = inject(SecureFileService);
   loading = false;
   saving = false;
@@ -134,6 +137,7 @@ export class SupplierPoApplyExtensionComponent implements OnInit {
         this.baseEndDate = String(data['baseEndDate'] ?? data['BaseEndDate'] ?? this.poEndDate);
         this.canApply = Boolean(data['canApply'] ?? data['CanApply']);
         this.hasPendingExtension = Boolean(data['hasPendingExtension'] ?? data['HasPendingExtension']);
+        this.pager.reset();
         this.rows = this.mapRows((data['extensions'] ?? data['Extensions'] ?? []) as unknown[]);
       },
       error: (err) => {

@@ -4,6 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface EquipmentCategory {
   EqpCatId: number;
@@ -39,11 +41,12 @@ interface ReportSpecificationSummary {
 @Component({
   selector: 'app-report-specification',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [MatPaginatorModule, CommonModule, FormsModule],
   templateUrl: './report-specification.component.html',
   styleUrls: ['./report-specification.component.css'],
 })
 export class ReportSpecificationComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly apiRoot = `${environment.apiUrl}/ReportSpecification/`;
 
   categories: EquipmentCategory[] = [];
@@ -155,6 +158,7 @@ export class ReportSpecificationComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
+          this.pager.reset();
           this.items = this.mapItems(res);
           this.loading = false;
         },
@@ -199,6 +203,7 @@ export class ReportSpecificationComponent implements OnInit {
     this.loading = true;
     this.http.get<ReportSpecificationItem>(`${this.apiRoot}items/${match.ItemId}`).subscribe({
       next: (res) => {
+        this.pager.reset();
         this.items = [this.mapItem(res)];
         this.searchInput = '';
         this.loading = false;

@@ -91,7 +91,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of page.rows; let i = index" [class.alt-row]="i % 2 === 1">
+          <tr *ngFor="let row of page.rows | slice: pager.start : pager.end; let i = index" [class.alt-row]="i % 2 === 1">
             <td class="text-center">{{ row.slNo }}</td>
             <td>{{ row.serialNo || '—' }}</td>
             <td class="text-center">{{ row.installationDate || '—' }}</td>
@@ -181,6 +181,8 @@
           </tr>
         </tbody>
       </table>
+      <mat-paginator *ngIf="page.rows.length" [length]="page.rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+        [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 </div>

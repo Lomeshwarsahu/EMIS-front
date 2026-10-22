@@ -11,6 +11,8 @@ import {
   resolveLoginAuthorityId,
   resolveLoginUserId,
 } from '../../shared/session.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface FinancialYearOption {
   FinancialYearId: number;
@@ -52,11 +54,12 @@ interface PoReceiptDeskRow {
 @Component({
   selector: 'app-purchase-order-receipts',
   standalone: true,
-  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './purchase-order-receipts.component.html',
   styleUrls: ['./purchase-order-receipts.component.css'],
 })
 export class PurchaseOrderReceiptsComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
 
   financialYears: FinancialYearOption[] = [];
@@ -117,11 +120,13 @@ export class PurchaseOrderReceiptsComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
+          this.pager.reset();
           this.rows = this.mapRows(res);
           this.loading = false;
         },
         error: (e) => {
           this.loading = false;
+          this.pager.reset();
           this.rows = [];
           this.toastr.error(apiErrorMessage(e, 'Could not load PO receipt desk.'));
         },

@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 import { apiErrorMessage, resolveLoginUserId } from '../../shared/session.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface MainEquipmentType {
   Pid: number;
@@ -43,11 +45,12 @@ interface ProgressCategoryRow {
 @Component({
   selector: 'app-progress-category',
   standalone: true,
-  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './progress-category.component.html',
   styleUrls: ['../../shared/legacy-ems-page.css', './progress-category.component.css'],
 })
 export class ProgressCategoryComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly apiRoot = `${environment.apiUrl}/DMEStock/`;
 
   equipmentTypes: MainEquipmentType[] = [];
@@ -97,12 +100,14 @@ export class ProgressCategoryComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
+          this.pager.reset();
           this.rows = this.mapRows(res);
           this.hasSearched = true;
           this.loading = false;
         },
         error: (e) => {
           this.loading = false;
+          this.pager.reset();
           this.rows = [];
           this.hasSearched = true;
           this.toastr.error(apiErrorMessage(e, 'Could not load progress report.'));

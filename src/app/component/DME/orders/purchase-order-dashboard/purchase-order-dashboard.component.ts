@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 type PoAttachmentType = 'reagent' | 'accessories';
 
@@ -41,11 +43,12 @@ interface PoDashboardRow {
 @Component({
   selector: 'app-purchase-order-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './purchase-order-dashboard.component.html',
   styleUrls: ['./purchase-order-dashboard.component.css'],
 })
 export class PurchaseOrderDashboardComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
 
   financialYears: FinancialYearOption[] = [];
@@ -102,11 +105,13 @@ export class PurchaseOrderDashboardComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
+          this.pager.reset();
           this.rows = this.mapRows(res);
           this.loading = false;
         },
         error: (e) => {
           this.loading = false;
+          this.pager.reset();
           this.rows = [];
           this.toastr.error(this.apiError(e, 'Could not load purchase orders.'));
         },

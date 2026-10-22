@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 import { SecureFileService } from '../../../service/secure-file.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface ReceiptComplainRow {
   complaintId: number;
@@ -28,11 +30,12 @@ type ComplainStatus = 'Booked' | 'Closed';
 @Component({
   selector: 'app-supplier-receipt-complain',
   standalone: true,
-  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-receipt-complain.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-receipt-complain.component.css'],
 })
 export class SupplierReceiptComplainComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly secureFile = inject(SecureFileService);
   loading = false;
   userId = 0;
@@ -75,10 +78,12 @@ export class SupplierReceiptComplainComponent implements OnInit {
         this.loading = false;
         this.showExport = true;
         const list = Array.isArray(raw) ? raw : [];
+        this.pager.reset();
         this.rows = list.map((row) => this.mapRow(row as Record<string, unknown>));
       },
       error: (err) => {
         this.loading = false;
+        this.pager.reset();
         this.rows = [];
         this.toastr.error(err?.error?.message ?? 'Unable to load complaints.');
       },

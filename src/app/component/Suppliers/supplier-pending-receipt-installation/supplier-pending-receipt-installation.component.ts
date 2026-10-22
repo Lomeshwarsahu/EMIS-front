@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 import { resolveSupplierUserId } from '../supplier-user.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface BalanceStatusRow {
   poId: number;
@@ -31,11 +33,12 @@ type BalanceTypeFilter = 'R' | 'I';
 @Component({
   selector: 'app-supplier-pending-receipt-installation',
   standalone: true,
-  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-pending-receipt-installation.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-pending-receipt-installation.component.css'],
 })
 export class SupplierPendingReceiptInstallationComponent implements OnInit {
+  readonly pager = new ListPager();
   loading = false;
   userId = 0;
   showExport = false;
@@ -71,6 +74,7 @@ export class SupplierPendingReceiptInstallationComponent implements OnInit {
     this.userId = resolveSupplierUserId();
     if (!this.userId) {
       this.loading = false;
+      this.pager.reset();
       this.rows = [];
       this.toastr.error('Please login as supplier.');
       return;
@@ -82,10 +86,12 @@ export class SupplierPendingReceiptInstallationComponent implements OnInit {
         this.loading = false;
         this.showExport = true;
         const list = Array.isArray(raw) ? raw : [];
+        this.pager.reset();
         this.rows = list.map((row) => this.mapRow(row as Record<string, unknown>));
       },
       error: (err) => {
         this.loading = false;
+        this.pager.reset();
         this.rows = [];
         this.toastr.error(err?.error?.message ?? 'Unable to load pending receipt/installation report.');
       },

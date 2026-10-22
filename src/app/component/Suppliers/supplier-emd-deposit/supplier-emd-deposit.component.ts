@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 import { SecureFileService } from '../../../service/secure-file.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface TenderOption {
   tenderId: number;
@@ -32,11 +34,12 @@ interface EmdDepositRow {
 @Component({
   selector: 'app-supplier-emd-deposit',
   standalone: true,
-  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-emd-deposit.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-emd-deposit.component.css'],
 })
 export class SupplierEmdDepositComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly secureFile = inject(SecureFileService);
   loading = false;
   saving = false;
@@ -128,10 +131,12 @@ export class SupplierEmdDepositComponent implements OnInit {
       next: (raw) => {
         this.loading = false;
         const list = Array.isArray(raw) ? raw : [];
+        this.pager.reset();
         this.rows = list.map((row) => this.mapRow(row as Record<string, unknown>));
       },
       error: (err) => {
         this.loading = false;
+        this.pager.reset();
         this.rows = [];
         this.toastr.error(err?.error?.message ?? 'Unable to load EMD deposits.');
       },

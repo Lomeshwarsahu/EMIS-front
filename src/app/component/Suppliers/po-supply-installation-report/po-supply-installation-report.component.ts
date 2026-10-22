@@ -17,17 +17,20 @@ import {
   readPoSupplyReceiptFilters,
 } from '../supplier-transaction-state.util';
 import { SecureFileService } from '../../../service/secure-file.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 type InstallationFileType = 'insReport' | 'insPhoto' | 'waranty' | 'chalan';
 
 @Component({
   selector: 'app-po-supply-installation-report',
   standalone: true,
-  imports: [CommonModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, SupplierPageSkeletonComponent],
   templateUrl: './po-supply-installation-report.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-installation-report.component.css'],
 })
 export class PoSupplyInstallationReportComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly secureFile = inject(SecureFileService);
   loading = false;
   userId = 0;
@@ -107,11 +110,13 @@ export class PoSupplyInstallationReportComponent implements OnInit {
   private loadReport(): void {
     this.loading = true;
     this.loadError = '';
+    this.pager.reset();
     this.page = null;
 
     this.api.getSupplierInstallationReport(this.userId, this.receiptId).subscribe({
       next: (raw) => {
         this.loading = false;
+        this.pager.reset();
         this.page = mapInstallationReportPage(raw as Record<string, unknown>);
         if (!this.page.rows.length) {
           this.loadError = 'No installation items found for this receipt.';

@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface GstRow {
   gstId: number;
@@ -15,11 +17,12 @@ interface GstRow {
 @Component({
   selector: 'app-supplier-gst-entry',
   standalone: true,
-  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-gst-entry.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './supplier-gst-entry.component.css'],
 })
 export class SupplierGstEntryComponent implements OnInit {
+  readonly pager = new ListPager();
   loading = false;
   saving = false;
   statusMessage = '';
@@ -57,6 +60,7 @@ export class SupplierGstEntryComponent implements OnInit {
         this.supplierName = String(raw['supplierName'] ?? raw['SupplierName'] ?? '');
 
         const entries = (raw['entries'] ?? raw['Entries'] ?? []) as Record<string, unknown>[];
+        this.pager.reset();
         this.rows = entries.map((row) => ({
           gstId: Number(row['gstId'] ?? row['GstId'] ?? 0),
           gstNo: String(row['gstNo'] ?? row['GstNo'] ?? ''),
