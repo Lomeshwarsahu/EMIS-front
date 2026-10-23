@@ -673,22 +673,41 @@ canvas {
   font-weight: bold;
 }
 
-/* Supplier modals must sit above Material drawer / sidebar (drawer ~1002, collapse pill ~2100) */
+/* Modals must sit above Material drawer / sidebar (drawer ~1002, collapse pill ~2100) */
+body.modal-open mat-drawer.premium-drawer,
+body.modal-open mat-drawer.premium-drawer.premium-drawer--collapsed,
+body.modal-open mat-drawer.premium-drawer.premium-drawer--dark-collapsed,
+body.modal-open mat-drawer.premium-drawer.mat-drawer-side,
+body.modal-open mat-drawer.premium-drawer.mat-drawer-over,
+body.modal-open .sidebar-collapse-pill,
+body.modal-open .collapse-trigger,
 body.emis-modal-open mat-drawer.premium-drawer,
 body.emis-modal-open mat-drawer.premium-drawer.premium-drawer--collapsed,
 body.emis-modal-open mat-drawer.premium-drawer.premium-drawer--dark-collapsed,
 body.emis-modal-open mat-drawer.premium-drawer.mat-drawer-side,
-body.emis-modal-open mat-drawer.premium-drawer.mat-drawer-over {
+body.emis-modal-open mat-drawer.premium-drawer.mat-drawer-over,
+body.emis-modal-open .sidebar-collapse-pill,
+body.emis-modal-open .collapse-trigger {
   z-index: 1 !important;
 }
 
+body.modal-open .mat-drawer-content,
 body.emis-modal-open .mat-drawer-content {
   position: relative;
   z-index: 10040 !important;
 }
 
+body.modal-open .mat-drawer-backdrop,
 body.emis-modal-open .mat-drawer-backdrop {
   z-index: 0 !important;
+}
+
+.modal {
+  z-index: 10060 !important;
+}
+
+.modal-backdrop {
+  z-index: 10050 !important;
 }
 
 /* ================= EMIS Toast Notifications ================= */
