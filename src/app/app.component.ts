@@ -439,43 +439,34 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
         next: (items) => {
           console.log('[Sidebar Debug] roleId:', roleId, 'items received:', JSON.stringify(items, null, 2));
           if (items && items.length > 0) {
-            // Merge missing static menu sections and sub-menus (e.g. if DB doesn't have them mapped yet)
-            const staticItems = this.menuService.getMenuItems(activeRole);
-            if (staticItems && staticItems.length > 0) {
-              const apiLabels = new Set(items.map((i: any) => (i.label || '').toLowerCase()));
-              const merged = items.map((apiItem: any) => {
-                const staticMatch = staticItems.find(
-                  (s: any) => (s.label || '').trim().toLowerCase() === (apiItem.label || '').trim().toLowerCase()
-                );
-                if (staticMatch?.submenu?.length) {
-                  const existingSubRoutes = new Set(
-                    (apiItem.submenu || []).map((sub: any) => (sub.route || '').toLowerCase())
-                  );
-                  const existingSubLabels = new Set(
-                    (apiItem.submenu || []).map((sub: any) => (sub.label || '').toLowerCase())
-                  );
-                  const missingSubs = staticMatch.submenu.filter(
-                    (sub: any) =>
-                      sub.route &&
-                      !existingSubRoutes.has(sub.route.toLowerCase()) &&
-                      !existingSubLabels.has(sub.label.toLowerCase())
-                  );
-                  if (missingSubs.length > 0) {
-                    return {
-                      ...apiItem,
-                      submenu: [...(apiItem.submenu || []), ...missingSubs],
-                    };
+            const isGmFinance = ['AUGMF', 'GM FINANCE', 'GM Finance', 'GMF'].includes(activeRole);
+            if (isGmFinance) {
+              const staticItems = this.menuService.getMenuItems(activeRole);
+              const fundsStatic = staticItems.find((s) => (s.label || '').toLowerCase() === 'funds');
+              if (fundsStatic?.submenu?.length) {
+                const merged = items.map((apiItem: any) => {
+                  if ((apiItem.label || '').toLowerCase() === 'funds') {
+                    const existingSubRoutes = new Set(
+                      (apiItem.submenu || []).map((sub: any) => (sub.route || '').toLowerCase())
+                    );
+                    const missingSubs = fundsStatic.submenu!.filter(
+                      (sub: any) => sub.route && !existingSubRoutes.has(sub.route.toLowerCase())
+                    );
+                    if (missingSubs.length > 0) {
+                      return {
+                        ...apiItem,
+                        submenu: [...(apiItem.submenu || []), ...missingSubs],
+                      };
+                    }
                   }
-                }
-                return apiItem;
-              });
-
-              const missingSections = staticItems.filter(
-                (s: any) => s.label && !apiLabels.has(s.label.toLowerCase())
-              );
-
-              this.menuItems = [...merged, ...missingSections];
+                  return apiItem;
+                });
+                this.menuItems = merged;
+              } else {
+                this.menuItems = items;
+              }
             } else {
+              // For all other roles (including DME Facility), keep sidebar 100% dynamic from DB
               this.menuItems = items;
             }
           } else {

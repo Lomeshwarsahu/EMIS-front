@@ -793,23 +793,6 @@ export class MenuServiceService {
           ],
         },
         {
-          label: 'Tender',
-          route: '',
-          submenu: [
-            { label: 'Plan a Tender', route: '/tender/plan' },
-            { label: 'Evaluation A', route: '/tender/evaluation' },
-            {
-              label: 'Claim-Object Preparation',
-              route: '/tender/claim-object',
-            },
-            {
-              label: 'Gem-Price EAcceptance',
-              route: '/tender/gem-price-acceptance',
-            },
-            { label: 'Gem-Price Entry', route: '/tender/plan' },
-          ],
-        },
-        {
           label: 'Indents',
           route: '',
           submenu: [
@@ -1642,17 +1625,6 @@ export class MenuServiceService {
         { label: 'Annual Indent', route: '/indents/annual-indent' },
         { label: 'Annual Indent Items', route: '/indents/annual-indent-items' },
         { label: 'Annual Indent Report', route: '/indents/annual-indent-report' },
-        {
-          label: 'Tender',
-          route: '',
-          submenu: [
-            { label: 'Plan a Tender', route: '/PlanaTenderD' },
-            { label: 'Evaluation A', route: '/tender/evaluation' },
-            { label: 'Claim-Object Preparation', route: '/tender/claim-object' },
-            { label: 'Gem-Price EAcceptance', route: '/tender/gem-price-acceptance' },
-            { label: 'Gem-Price Entry', route: '/tender/plan' },
-          ],
-        },
         { label: 'Facility Complaints', route: '/complain/facility-store' },
         { label: 'Complaint Status', route: '/complain/complaint-status-facility' },
         { label: 'RC Detail Report', route: '/contracts/rc-detail-report' },
@@ -1675,17 +1647,6 @@ export class MenuServiceService {
         { label: 'Annual Indent', route: '/indents/annual-indent' },
         { label: 'Annual Indent Items', route: '/indents/annual-indent-items' },
         { label: 'Annual Indent Report', route: '/indents/annual-indent-report' },
-        {
-          label: 'Tender',
-          route: '',
-          submenu: [
-            { label: 'Plan a Tender', route: '/PlanaTenderD' },
-            { label: 'Evaluation A', route: '/tender/evaluation' },
-            { label: 'Claim-Object Preparation', route: '/tender/claim-object' },
-            { label: 'Gem-Price EAcceptance', route: '/tender/gem-price-acceptance' },
-            { label: 'Gem-Price Entry', route: '/tender/plan' },
-          ],
-        },
         { label: 'Facility Complaints', route: '/complain/facility-store' },
         { label: 'Complaint Status', route: '/complain/complaint-status-facility' },
         { label: 'RC Detail Report', route: '/contracts/rc-detail-report' },
