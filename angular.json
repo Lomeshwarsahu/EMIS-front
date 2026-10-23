@@ -103,6 +103,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/EMSA/",
               "budgets": [
                 {
                   "type": "initial",

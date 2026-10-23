@@ -439,24 +439,42 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
         next: (items) => {
           console.log('[Sidebar Debug] roleId:', roleId, 'items received:', JSON.stringify(items, null, 2));
           if (items && items.length > 0) {
-            // For DME role: merge any static menu sections missing from the API response.
-            // The DB may not have all sub-menus mapped in masSubMenuRole, so sections like
-            // Stock can be absent from the API even though they exist in the static definition.
-            const isDmeOrCategoryRole =
-              ['DME', 'FU', 'PRINCIPAL', 'FDA', 'DHS', 'SEC1', 'CME', 'COLLECTOR', 'DME1'].includes(activeRole) ||
-              ['DME', 'FU', 'PRINCIPAL', 'FDA', 'DHS', 'SEC1', 'CME', 'COLLECTOR', 'DME1'].includes((this.basicAuthentication.getRole().roleName || '').toUpperCase().trim());
-            if (isDmeOrCategoryRole) {
-              const staticItems = this.menuService.getMenuItems(activeRole);
+            // Merge missing static menu sections and sub-menus (e.g. if DB doesn't have them mapped yet)
+            const staticItems = this.menuService.getMenuItems(activeRole);
+            if (staticItems && staticItems.length > 0) {
               const apiLabels = new Set(items.map((i: any) => (i.label || '').toLowerCase()));
-              const missingStatic = (staticItems || []).filter(
+              const merged = items.map((apiItem: any) => {
+                const staticMatch = staticItems.find(
+                  (s: any) => (s.label || '').trim().toLowerCase() === (apiItem.label || '').trim().toLowerCase()
+                );
+                if (staticMatch?.submenu?.length) {
+                  const existingSubRoutes = new Set(
+                    (apiItem.submenu || []).map((sub: any) => (sub.route || '').toLowerCase())
+                  );
+                  const existingSubLabels = new Set(
+                    (apiItem.submenu || []).map((sub: any) => (sub.label || '').toLowerCase())
+                  );
+                  const missingSubs = staticMatch.submenu.filter(
+                    (sub: any) =>
+                      sub.route &&
+                      !existingSubRoutes.has(sub.route.toLowerCase()) &&
+                      !existingSubLabels.has(sub.label.toLowerCase())
+                  );
+                  if (missingSubs.length > 0) {
+                    return {
+                      ...apiItem,
+                      submenu: [...(apiItem.submenu || []), ...missingSubs],
+                    };
+                  }
+                }
+                return apiItem;
+              });
+
+              const missingSections = staticItems.filter(
                 (s: any) => s.label && !apiLabels.has(s.label.toLowerCase())
               );
-              if (missingStatic.length > 0) {
-                console.log('[Sidebar Debug] Merging missing static sections:', missingStatic.map((s: any) => s.label));
-                this.menuItems = [...items, ...missingStatic];
-              } else {
-                this.menuItems = items;
-              }
+
+              this.menuItems = [...merged, ...missingSections];
             } else {
               this.menuItems = items;
             }
@@ -464,6 +482,17 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
             console.log('[Sidebar Debug] No items returned, falling back to static menu');
             this.fallbackStaticMenu();
           }
+          // Ensure Home is always the first item in the sidebar for all roles
+          const homeIdx = this.menuItems.findIndex(
+            (i) => i.route === '/home' || (i.label || '').trim().toLowerCase() === 'home'
+          );
+          if (homeIdx > 0) {
+            const [homeItem] = this.menuItems.splice(homeIdx, 1);
+            this.menuItems.unshift(homeItem);
+          } else if (homeIdx === -1) {
+            this.menuItems.unshift({ label: 'Home', route: '/home' });
+          }
+
           this.expandActiveParentMenu();
           this.updatePageHeading(this.router.url);
           this.cdr.markForCheck();
@@ -497,6 +526,16 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
       this.menuItems = this.menuService.getMenuItems(currentRole);
     } else {
       this.menuItems = this.menuService.getMenuItems(currentRole);
+    }
+
+    const homeIdx = this.menuItems.findIndex(
+      (i) => i.route === '/home' || (i.label || '').trim().toLowerCase() === 'home'
+    );
+    if (homeIdx > 0) {
+      const [homeItem] = this.menuItems.splice(homeIdx, 1);
+      this.menuItems.unshift(homeItem);
+    } else if (homeIdx === -1) {
+      this.menuItems.unshift({ label: 'Home', route: '/home' });
     }
   }
 
