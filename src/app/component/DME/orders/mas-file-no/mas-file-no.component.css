@@ -52,3 +52,14 @@
   gap: 16px;
   margin-bottom: 12px;
 }
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .field label {
+  color: #cbd5e1;
+}
+
+:host-context(html[data-theme='dark']) .form-input {
+  background-color: #0c0e12;
+  border-color: #262b36;
+  color: #e2e8f0;
+}

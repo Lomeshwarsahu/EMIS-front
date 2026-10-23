@@ -56,3 +56,25 @@
   gap: 10px;
   margin-top: 4px;
 }
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .progress-form {
+  background: #0c0e12;
+  border-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) .progress-form__heading {
+  color: #f8fafc;
+}
+
+:host-context(html[data-theme='dark']) .progress-form__row label {
+  color: #cbd5e1;
+}
+
+:host-context(html[data-theme='dark']) .progress-form__row select {
+  border-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) .otp-note {
+  color: #4ade80;
+}

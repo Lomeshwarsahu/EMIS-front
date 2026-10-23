@@ -25,3 +25,9 @@
   cursor: pointer;
   font-size: 11px;
 }
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .grid-link,
+:host-context(html[data-theme='dark']) .download-link {
+  color: #60a5fa;
+}

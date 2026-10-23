@@ -205,3 +205,18 @@
     text-decoration: underline;
 }
 
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .custom-form-field {
+  background-color: #141820;
+}
+
+:host-context(html[data-theme='dark']) .clickable-link,
+:host-context(html[data-theme='dark']) .download-link {
+  color: #60a5fa;
+}
+
+:host-context(html[data-theme='dark']) .clickable-link:hover,
+:host-context(html[data-theme='dark']) .download-link:hover {
+  color: #93c5fd;
+}

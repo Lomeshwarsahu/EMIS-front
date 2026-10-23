@@ -42,3 +42,20 @@
 .style-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .style-scrollbar::-webkit-scrollbar-track {
+  background: #0c0e12;
+}
+
+:host-context(html[data-theme='dark']) .style-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+:host-context(html[data-theme='dark']) .style-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .text-purple {
+  color: #c4b5fd;
+}

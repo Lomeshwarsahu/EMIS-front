@@ -84,3 +84,26 @@
   font-size: 15px;
   color: #111827;
 }
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .po-summary,
+:host-context(html[data-theme='dark']) .amend-form,
+:host-context(html[data-theme='dark']) .realloc-form {
+  background: #0c0e12;
+  border-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) .po-summary__label,
+:host-context(html[data-theme='dark']) .po-summary__value .sub-code {
+  color: #94a3b8;
+}
+
+:host-context(html[data-theme='dark']) .po-summary__value,
+:host-context(html[data-theme='dark']) .history-section h3 {
+  color: #f8fafc;
+}
+
+:host-context(html[data-theme='dark']) .amend-form__row label,
+:host-context(html[data-theme='dark']) .realloc-form__row label {
+  color: #cbd5e1;
+}

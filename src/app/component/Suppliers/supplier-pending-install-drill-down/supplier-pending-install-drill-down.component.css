@@ -86,3 +86,8 @@
     width: 100% !important;
   }
 }
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .load-error {
+  color: #f87171;
+}
