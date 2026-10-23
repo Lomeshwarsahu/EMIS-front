@@ -61,7 +61,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of rows | slice: pager.start : pager.end; index as i" [class.alt-row]="i % 2 === 1">
+          <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
             <td class="text-center col-sno-cell">{{ pager.start + i + 1 }}</td>
             <td class="wrap-cell">{{ row.LocationName || '—' }}</td>
             <td class="wrap-cell po-no">{{ row.PoNo || '—' }}</td>
@@ -123,8 +123,8 @@
           </tr>
         </tbody>
       </table>
-      <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
-        [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
+      <mat-paginator *ngIf="totalCount" [length]="totalCount" [pageIndex]="pager.index" [pageSize]="pager.size"
+        [pageSizeOptions]="pager.sizes" (page)="onPageChange($event)" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 </div>

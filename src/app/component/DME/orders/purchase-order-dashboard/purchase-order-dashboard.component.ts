@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ListPager } from 'src/app/helper/list-pager';
 
 type PoAttachmentType = 'reagent' | 'accessories';
@@ -54,6 +54,7 @@ export class PurchaseOrderDashboardComponent implements OnInit {
   financialYears: FinancialYearOption[] = [];
   equipmentOptions: PoEquipmentOption[] = [];
   rows: PoDashboardRow[] = [];
+  totalCount = 0;
 
   selectedFinancialYearId = 0;
   selectedItemCode = '0';
@@ -88,31 +89,41 @@ export class PurchaseOrderDashboardComponent implements OnInit {
     this.loadOrders();
   }
 
-  loadOrders(): void {
+  onPageChange(e: PageEvent): void {
+    this.pager.onPage(e);
+    this.loadOrders(false);
+  }
+
+  /** Server-side paging: API returns only the current page plus `totalCount`. */
+  loadOrders(resetPage = true): void {
     if (!this.userId) {
       this.toastr.warning('Please login again — user id missing.');
       return;
     }
 
+    if (resetPage) {
+      this.pager.reset();
+    }
     this.loading = true;
     const itemQ =
       this.selectedItemCode && this.selectedItemCode !== '0'
         ? `&itemCode=${encodeURIComponent(this.selectedItemCode)}`
         : '';
     this.http
-      .get<PoDashboardRow[]>(
-        `${this.apiRoot}po-dashboard?userId=${this.userId}&financialYearId=${this.selectedFinancialYearId}${itemQ}`,
+      .get<{ Items?: unknown; items?: unknown; TotalCount?: number; totalCount?: number }>(
+        `${this.apiRoot}po-dashboard?userId=${this.userId}&financialYearId=${this.selectedFinancialYearId}${itemQ}` +
+          `&page=${this.pager.index + 1}&pageSize=${this.pager.size}`,
       )
       .subscribe({
         next: (res) => {
-          this.pager.reset();
-          this.rows = this.mapRows(res);
+          this.rows = this.mapRows(res?.Items ?? res?.items);
+          this.totalCount = Number(res?.TotalCount ?? res?.totalCount ?? 0);
           this.loading = false;
         },
         error: (e) => {
           this.loading = false;
-          this.pager.reset();
           this.rows = [];
+          this.totalCount = 0;
           this.toastr.error(this.apiError(e, 'Could not load purchase orders.'));
         },
       });
