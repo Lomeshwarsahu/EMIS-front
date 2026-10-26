@@ -143,6 +143,7 @@ const ROUTE_MAP: Record<string, string> = {
   '/gmfinance/newfundmaster.aspx': '/NewFundMaster',
   '/gmfinance/fundmap.aspx': '/FundMap',
   '/gmfinance/budgententry.aspx': '/BudgentEntry',
+
   '/gmfinance/budgetdetailsprovisional.aspx': '/BudgetDetailsProvisional',
   '/gmfinance/filemrcdashboardfinfile.aspx': '/FileMRCDashboardFINFile',
   '/gmfinance/sanction.aspx': '/Sanction',
@@ -247,15 +248,17 @@ const ROUTE_MAP: Record<string, string> = {
   '/funds/budgetdetailsprovisional.aspx': '/BudgetDetailsProvisional',
   '/funds/fundmap.aspx': '/FundMap',
   '/funds/budgententry.aspx': '/BudgentEntry',
-  '/fund/OpeningBalance.aspx':'/OpeningBalance',
-  '/Funds/MainFundHead.aspx': '/MainFundHead',
+  // lomesh
+  '/funds/openingbalance.aspx':'/OpeningBalance',
+  '/funds/mainfundhead.aspx': '/MainFundHead',
+      
   '/emdrefund/emdrefundtenderwise.aspx': '/reports/emd-refund-report',
   '/reports/emddepositereport.aspx': '/emd-refund/emd-deposit',
   '/reports/tenderwise_podetails.aspx': '/orders/purchase-order-dashboard',
   '/reports/paymentscpreport20per.aspx': '/reports/payments-cpreport20per',
   '/reports/posummarydrilldwnqtyreagent.aspx': '/reports/po-summary-drilldown-qty-reagent',
   '/reports/indentpotenderstatussummarydrldwnitems.aspx': '/reports/indent-po-tender-status-drilldown',
-  '/reports/posummaryconsigneeho.aspx': '/reports/po-summary-consignee-ho',
+  '/reports/posummaryconsigneeho.aspx': '/reports/po-summary-consignee-ho', 
   '/reports/tenderstatusitemwise.aspx': '/tender/evaluation',
   '/reports/rdlc_dhspending.aspx': '/reports/rdlc-dhs-pending',
   '/reports/tenderstatus.aspx': '/tender/evaluation',
@@ -452,6 +455,7 @@ const ROUTE_MAP: Record<string, string> = {
 };
 
 function mapLegacyRoute(route: string): string {
+  // debugger
   if (!route) return '';
   const raw = route.trim();
 
@@ -480,6 +484,10 @@ function mapLegacyRoute(route: string): string {
       return ROUTE_MAP[c];
     }
   }
+
+
+
+
 
   // If already a clean Angular route (doesn't end in .aspx)
   if (!raw.toLowerCase().endsWith('.aspx')) {
