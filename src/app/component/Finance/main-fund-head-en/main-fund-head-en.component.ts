@@ -135,22 +135,69 @@ toggleRow(element: any) {
     });     
   }
 }
-  onSaveMainHead(form: any) {
+
+onSaveMainHead(form: any) {
     if (form.invalid) return;
 
-    this.api.post('GMFI/SaveMainHead', this.formModel).subscribe({
-      next: (res: any) => {
-             this.toastr.success(`Main Head Saved Successfully`);
-
-         console.log(res);
-         form.resetForm({ IsActive: 'Active' }); 
-           this.loadReceiptRecordsGrid(0); 
-      },
-      error: (err) => {
-         console.error(err);
-      }
-    });
+    // Condition: Agar MHID hai matlab Update (PUT) karna hai, nahi toh Save (POST) karna hai
+    if (this.formModel.MHID) {
+      // --- UPDATE (PUT) API CALL ---
+      this.api.put('GMFI/UpdateMainHead', this.formModel).subscribe({
+        next: (res: any) => {
+          this.toastr.success('Main Head Updated Successfully');
+          console.log(res);
+          this.resetForm(form); // Form reset aur MHID clear karne ke liye
+          this.loadReceiptRecordsGrid(0); // Grid reload
+        },
+        error: (err) => {
+          console.error("Update error:", err);
+          this.toastr.error(err.error?.message || 'Failed to update Main Head.');
+        }
+      });
+    } else {
+      // --- SAVE / INSERT (POST) API CALL ---
+      this.api.post('GMFI/SaveMainHead', this.formModel).subscribe({
+        next: (res: any) => {
+          this.toastr.success('Main Head Saved Successfully');
+          console.log(res);
+          this.resetForm(form);
+          this.loadReceiptRecordsGrid(0); // Grid reload
+        },
+        
+        error: (err) => {
+          console.error("Save error:", err);
+          this.toastr.error(err.error?.message || 'Failed to save Main Head.');
+        }
+      });
+    }
   }
+
+  // Reset form function (MHID ko null karne ke liye taaki dobara Save mode aa jaye)
+  resetForm(form: any) {
+    form.resetForm({ IsActive: 'Active' });
+    this.formModel = {
+      MHID: null,
+      MainHead_Eng: '',
+      MainHead_Hindi: '',
+      IsActive: 'Active'
+    };
+  }
+  // onSaveMainHead(form: any) {
+  //   if (form.invalid) return;
+
+  //   this.api.post('GMFI/SaveMainHead', this.formModel).subscribe({
+  //     next: (res: any) => {
+  //            this.toastr.success(`Main Head Saved Successfully`);
+
+  //        console.log(res);
+  //        form.resetForm({ IsActive: 'Active' }); 
+  //          this.loadReceiptRecordsGrid(0); 
+  //     },
+  //     error: (err) => {
+  //        console.error(err);
+  //     }
+  //   });
+  // }
 
 
   onSaveSubHead(form: any) {
@@ -206,11 +253,11 @@ onEnglishChange(text: string) {
       'v': 'वी', 'w': 'डब्ल्यू', 'x': 'एक्स', 'y': 'वाई', 'z': 'ज़'
     };
 
-    // Har word ko alag-alag process karenge
+  
     const processedWordsPromises = words.map(async (word) => {
       if (!word) return '';
 
-      // 1. Agar word pure uppercase acronym hai (jaise NPCB, CGMSC), toh letter-by-letter spell karein
+     
       if (word === word.toUpperCase() && /^[A-Z0-9]+$/.test(word)) {
         let spelled = '';
         for (let char of word.toLowerCase()) {
@@ -219,20 +266,20 @@ onEnglishChange(text: string) {
         return spelled;
       }
 
-      // 2. Normal words ke liye Backend API (Google Transliteration) call karein
+     
       try {
         const res: any = await this.api.get(`GMFI/Transliterate?text=${encodeURIComponent(word)}`).toPromise();
         if (res && res[0] === 'SUCCESS' && res[1] && res[1][0] && res[1][0][1]) {
-          return res[1][0][1][0]; // Jaise 'Fund' ka 'फंड'
+          return res[1][0][1][0]; 
         }
       } catch (err) {
         console.error('Transliteration error for word:', word, err);
       }
 
-      return word; // Agar API fail ho toh original word return karega
+      return word; 
     });
 
-    // Sabhi words convert hone ke baad unhe jod denge
+    
     Promise.all(processedWordsPromises).then((translatedWords) => {
       this.formModel.MainHead_Hindi = translatedWords.join(' ');
     });
@@ -266,7 +313,7 @@ onEnglishChange(text: string) {
   loadReceiptRecordsGridEdit(id:any) {
     this.api.get(`GMFI/GetMainHeadById/${id}`).subscribe({
       next: (res: any) => {
-        // Agar API single object degi toh [res] array banayega, agar list degi toh direct bind karega
+   
         this.dataSource.data = Array.isArray(res) ? res : (res ? [res] : []);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -281,7 +328,7 @@ onEnglishChange(text: string) {
   loadReceiptRecordsGrid(id:any) {
     this.api.get(`GMFI/GetMainHeadById/${id}`).subscribe({
       next: (res: any) => {
-        // Agar API single object degi toh [res] array banayega, agar list degi toh direct bind karega
+    
         this.dataSource.data = Array.isArray(res) ? res : (res ? [res] : []);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -334,15 +381,5 @@ onEnglishChange(text: string) {
     });
   }
 
-  // Reset form function
-  resetForm(form: any) {
-    form.resetForm({ IsActive: 'Active' });
-    this.formModel = {
-      MHID: null,
-      MainHead_Eng: '',
-      MainHead_Hindi: '',
-      IsActive: 'Active'
-    };
-  }
 
 }
