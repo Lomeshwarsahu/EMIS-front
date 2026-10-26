@@ -239,6 +239,15 @@ Filters should **auto-load** grid data on change where legacy did postback — a
 | `.wrap-cell` | Allow line wrap in dense columns |
 | `.empty-row` | Centered italic empty state |
 
+### Pagination (`mat-paginator`)
+
+Global rule in `src/styles.css` (applies to every page): page-size selector ("Items per page") sits **bottom-left**, range label + first/prev/next/last buttons sit **bottom-right**. Place `<mat-paginator>` directly **below** the table. Do not override `.mat-mdc-paginator-container` alignment per component.
+
+- **`mat-table` + `MatTableDataSource`**: add `<mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons>` and connect with a `@ViewChild('paginator') set paginator(p) { this.dataSource.paginator = p ?? null; }` setter (survives `*ngIf`).
+- **Plain `*ngFor` grids**: use `ListPager` (`src/app/helper/list-pager.ts`): `readonly pager = new ListPager();`, `*ngFor="let row of rows | slice: pager.start : pager.end"`, S.No `{{ pager.start + i + 1 }}`, call `this.pager.reset()` wherever the list is reloaded/filtered, and
+  `<mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size" [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons>` right after `</table>`.
+- **Do not page** entry grids with per-row inputs, selection/approval grids (rows ticked for submit), or print views.
+
 ### Nested batch grid (receipt desk)
 
 ```html

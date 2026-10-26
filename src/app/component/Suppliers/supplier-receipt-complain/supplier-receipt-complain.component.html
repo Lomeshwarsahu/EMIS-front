@@ -51,8 +51,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
-            <td class="text-center">{{ i + 1 }}</td>
+          <tr *ngFor="let row of rows | slice: pager.start : pager.end; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ pager.start + i + 1 }}</td>
             <td>{{ row.complaintNo }}</td>
             <td>{{ row.poNo }}</td>
             <td>{{ row.itemCode }}</td>
@@ -77,13 +77,15 @@
           <tr *ngIf="!rows.length">
             <td colspan="12" class="empty-row">
               <div class="empty-state">
-                <div style="font-size: 32px; color: #cbd5e1; margin-bottom: 8px;">&#128532;</div>
+                <div style="font-size: 32px; color: #cbd5e1; margin-bottom: 8px;">&#128522;</div>
                 <p>No complaints found. All clear!</p>
               </div>
             </td>
           </tr>
         </tbody>
       </table>
+      <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+        [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 </div>

@@ -248,10 +248,21 @@ const ROUTE_MAP: Record<string, string> = {
   '/funds/budgetdetailsprovisional.aspx': '/BudgetDetailsProvisional',
   '/funds/fundmap.aspx': '/FundMap',
   '/funds/budgententry.aspx': '/BudgentEntry',
-  // lomesh
-  '/funds/openingbalance.aspx':'/OpeningBalance',
-  '/funds/mainfundhead.aspx': '/MainFundHead',
+
+//   // lomesh
+//   '/funds/openingbalance.aspx':'/OpeningBalance',
+//   '/funds/mainfundhead.aspx': '/MainFundHead',
       
+
+  '/funds/openingbalance.aspx': '/OpeningBalance',
+  '/fund/openingbalance.aspx': '/OpeningBalance',
+  '/openingbalance.aspx': '/OpeningBalance',
+  '/openingbalance': '/OpeningBalance',
+  '/funds/mainfundhead.aspx': '/MainFundHead',
+  '/fund/mainfundhead.aspx': '/MainFundHead',
+  '/mainfundhead.aspx': '/MainFundHead',
+  '/mainfundhead': '/MainFundHead',
+
   '/emdrefund/emdrefundtenderwise.aspx': '/reports/emd-refund-report',
   '/reports/emddepositereport.aspx': '/emd-refund/emd-deposit',
   '/reports/tenderwise_podetails.aspx': '/orders/purchase-order-dashboard',

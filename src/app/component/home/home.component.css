@@ -296,3 +296,14 @@ border-radius: 0;
 
 
 
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .card {
+  background-color: #0c0e12;
+  border-color: #262b36;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+:host-context(html[data-theme='dark']) .card-title {
+  color: #f8fafc;
+}

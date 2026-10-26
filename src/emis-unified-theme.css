@@ -1,0 +1,1113 @@
+/*
+ * EMIS unified page theme
+ * -----------------------
+ * Gives every department page (BME, PO-Cell, Tender Cell, Finance, GM Finance,
+ * Master, Reports, DME …) the same table / form / button look as the Supplier
+ * module (`Suppliers/supplier-po-pages.shared.css`) in light and dark theme.
+ *
+ * It re-skins the shared building blocks those pages use — Bootstrap `.table`,
+ * Angular Material `mat-table`, `.card`, `.form-control` / `.form-select`,
+ * `.btn-*`, `mat-paginator` and the common Bootstrap colour utilities — so no
+ * template changes are needed. Pages that already ship their own scoped theme
+ * (supplier-po-page, it-page, …) keep winning through their component styles.
+ *
+ * Scope: the routed page area only (`.emis-page-content`), never the login view.
+ */
+
+/* ============================== Tokens ============================== */
+html[data-theme='light'],
+html:not([data-theme]) {
+  --emis-accent: #f97316;
+  --emis-accent-hover: #ea580c;
+  --emis-head-bg: #f97316;
+  --emis-head-text: #ffffff;
+  --emis-surface: #ffffff;
+  --emis-surface-alt: #f8fafc;
+  --emis-hover: #f8fafc;
+  --emis-border: #e2e8f0;
+  --emis-input-bg: #ffffff;
+  --emis-input-border: #cbd5e1;
+  --emis-text: #334155;
+  --emis-text-strong: #0f172a;
+  --emis-muted: #64748b;
+  --emis-placeholder: #94a3b8;
+  --emis-success: #16a34a;
+  --emis-success-hover: #15803d;
+  --emis-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme='dark'] {
+  --emis-accent: #2563eb;
+  --emis-accent-hover: #1d4ed8;
+  --emis-head-bg: #2563eb;
+  --emis-head-text: #ffffff;
+  --emis-surface: #0c0e12;
+  --emis-surface-alt: #141820;
+  --emis-hover: #1a2030;
+  --emis-border: #262b36;
+  --emis-input-bg: #0c0e12;
+  --emis-input-border: #262b36;
+  --emis-text: #e2e8f0;
+  --emis-text-strong: #f8fafc;
+  --emis-muted: #94a3b8;
+  --emis-placeholder: #6b7280;
+  --emis-success: #16a34a;
+  --emis-success-hover: #15803d;
+  --emis-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+/* Bootstrap + Material design tokens inside the page area */
+.emis-page-content:not(.content-area--login) {
+  --bs-body-bg: var(--emis-surface);
+  --bs-body-color: var(--emis-text);
+  --bs-emphasis-color: var(--emis-text-strong);
+  --bs-secondary-color: var(--emis-muted);
+  --bs-secondary-bg: var(--emis-surface-alt);
+  --bs-tertiary-bg: var(--emis-surface-alt);
+  --bs-border-color: var(--emis-border);
+  --bs-heading-color: var(--emis-text-strong);
+  --bs-primary: var(--emis-accent);
+
+  --mat-table-background-color: var(--emis-surface);
+  --mat-table-header-headline-color: var(--emis-head-text);
+  --mat-table-row-item-label-text-color: var(--emis-text);
+  --mat-table-row-item-outline-color: var(--emis-border);
+  --mat-paginator-container-background-color: var(--emis-surface);
+  --mat-paginator-container-text-color: var(--emis-text);
+  --mat-paginator-enabled-icon-color: var(--emis-text);
+  --mat-paginator-disabled-icon-color: var(--emis-placeholder);
+  --mat-sort-arrow-color: var(--emis-head-text);
+  --mat-select-enabled-trigger-text-color: var(--emis-text);
+  --mat-select-enabled-arrow-color: var(--emis-muted);
+  --mat-select-placeholder-text-color: var(--emis-placeholder);
+
+  color: var(--emis-text);
+}
+
+/* Page wrapper sections sit directly on the shell canvas, like supplier pages */
+.emis-page-content:not(.content-area--login) .container-fluid.bg-light,
+.emis-page-content:not(.content-area--login) section.bg-light.min-vh-100 {
+  background: transparent !important;
+}
+
+/* ============================== Tables ============================== */
+/* Table frame */
+.emis-page-content:not(.content-area--login) .table-responsive,
+.emis-page-content:not(.content-area--login) .mat-elevation-z8:has(> .mat-mdc-table) {
+  background: var(--emis-surface);
+  border: 1px solid var(--emis-border) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--emis-shadow) !important;
+}
+
+.emis-page-content:not(.content-area--login) .table,
+.emis-page-content:not(.content-area--login) .mat-mdc-table {
+  --bs-table-bg: var(--emis-surface);
+  --bs-table-color: var(--emis-text);
+  --bs-table-border-color: var(--emis-border);
+  --bs-table-striped-bg: var(--emis-surface-alt);
+  --bs-table-striped-color: var(--emis-text);
+  --bs-table-hover-bg: var(--emis-hover);
+  --bs-table-hover-color: var(--emis-text);
+  --bs-table-active-bg: var(--emis-hover);
+  background: var(--emis-surface);
+  color: var(--emis-text);
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Header cells — accent bar (orange light / blue dark), uppercase, sticky-friendly */
+.emis-page-content:not(.content-area--login) .table > thead > tr > th,
+.emis-page-content:not(.content-area--login) .table > thead > tr > td,
+.emis-page-content:not(.content-area--login) th.mat-mdc-header-cell,
+.emis-page-content:not(.content-area--login) .mat-mdc-header-row > .mat-mdc-header-cell {
+  background: var(--emis-head-bg) !important;
+  color: var(--emis-head-text) !important;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 8px 10px;
+  border: none !important;
+  border-bottom: 1px solid var(--emis-head-bg) !important;
+  white-space: nowrap;
+  vertical-align: middle;
+  box-shadow: none !important;
+}
+
+.emis-page-content:not(.content-area--login) .table > thead > tr > th *,
+.emis-page-content:not(.content-area--login) th.mat-mdc-header-cell * {
+  color: inherit !important;
+}
+
+.emis-page-content:not(.content-area--login) .mat-mdc-header-row {
+  background: var(--emis-head-bg) !important;
+}
+
+.emis-page-content:not(.content-area--login) .mat-sort-header-arrow {
+  color: var(--emis-head-text) !important;
+}
+
+/* Body cells */
+.emis-page-content:not(.content-area--login) .table > tbody > tr > td,
+.emis-page-content:not(.content-area--login) .table > tbody > tr > th,
+.emis-page-content:not(.content-area--login) .table > tfoot > tr > td,
+.emis-page-content:not(.content-area--login) td.mat-mdc-cell,
+.emis-page-content:not(.content-area--login) td.mat-mdc-footer-cell {
+  background-color: var(--emis-surface);
+  color: var(--emis-text);
+  font-size: 12px;
+  padding: 5px 8px;
+  border: none;
+  border-bottom: 1px solid var(--emis-border);
+  vertical-align: middle;
+  box-shadow: none;
+}
+
+.emis-page-content:not(.content-area--login) .table-striped > tbody > tr:nth-of-type(odd) > *,
+.emis-page-content:not(.content-area--login) .mat-mdc-table .mat-mdc-row:nth-child(even) > .mat-mdc-cell {
+  background-color: var(--emis-surface-alt);
+}
+
+.emis-page-content:not(.content-area--login) .table > tbody > tr:hover > *,
+.emis-page-content:not(.content-area--login) .mat-mdc-table .mat-mdc-row:hover > .mat-mdc-cell {
+  background-color: var(--emis-hover);
+}
+
+.emis-page-content:not(.content-area--login) .table > tbody > tr:last-child > *,
+.emis-page-content:not(.content-area--login) .mat-mdc-table .mat-mdc-row:last-child > .mat-mdc-cell {
+  border-bottom: none;
+}
+
+.emis-page-content:not(.content-area--login) .mat-mdc-no-data-row > td,
+.emis-page-content:not(.content-area--login) .table td.text-center[colspan] {
+  color: var(--emis-muted);
+}
+
+/* Paginator */
+.emis-page-content:not(.content-area--login) .mat-mdc-paginator {
+  background: var(--emis-surface);
+  color: var(--emis-text);
+  border-top: 1px solid var(--emis-border);
+}
+
+/* ============================== Cards ============================== */
+.emis-page-content:not(.content-area--login) .card {
+  --bs-card-bg: var(--emis-surface);
+  --bs-card-color: var(--emis-text);
+  --bs-card-border-color: var(--emis-border);
+  --bs-card-cap-bg: var(--emis-surface);
+  background-color: var(--emis-surface);
+  color: var(--emis-text);
+  border-color: var(--emis-border);
+  border-radius: 12px;
+}
+
+.emis-page-content:not(.content-area--login) .card-header,
+.emis-page-content:not(.content-area--login) .card-footer {
+  background-color: var(--emis-surface);
+  border-color: var(--emis-border);
+  color: var(--emis-text-strong);
+}
+
+/* ============================== Forms ============================== */
+.emis-page-content:not(.content-area--login) .form-label,
+.emis-page-content:not(.content-area--login) .col-form-label {
+  color: var(--emis-text);
+  font-weight: 600;
+}
+
+.emis-page-content:not(.content-area--login) .form-control,
+.emis-page-content:not(.content-area--login) .form-select,
+.emis-page-content:not(.content-area--login) .input-group-text {
+  background-color: var(--emis-input-bg) !important;
+  color: var(--emis-text) !important;
+  border-color: var(--emis-input-border);
+  border-radius: 8px;
+  font-size: 13px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.emis-page-content:not(.content-area--login) .input-group > .form-control,
+.emis-page-content:not(.content-area--login) .input-group > .form-select,
+.emis-page-content:not(.content-area--login) .input-group > .input-group-text {
+  box-shadow: none;
+}
+
+.emis-page-content:not(.content-area--login) .input-group > :not(:first-child):not(.dropdown-menu) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.emis-page-content:not(.content-area--login) .input-group > :not(:last-child):not(.dropdown-menu) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.emis-page-content:not(.content-area--login) .form-control::placeholder {
+  color: var(--emis-placeholder);
+}
+
+.emis-page-content:not(.content-area--login) .form-control:focus,
+.emis-page-content:not(.content-area--login) .form-select:focus {
+  border-color: var(--emis-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--emis-accent) 18%, transparent) !important;
+  outline: none;
+}
+
+.emis-page-content:not(.content-area--login) .form-control:disabled,
+.emis-page-content:not(.content-area--login) .form-control[readonly],
+.emis-page-content:not(.content-area--login) .form-select:disabled {
+  background-color: var(--emis-surface-alt) !important;
+  color: var(--emis-muted) !important;
+}
+
+.emis-page-content:not(.content-area--login) .form-check-input:checked {
+  background-color: var(--emis-accent);
+  border-color: var(--emis-accent);
+}
+
+.emis-page-content:not(.content-area--login) .form-check-input:focus {
+  border-color: var(--emis-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--emis-accent) 18%, transparent);
+}
+
+/* ============================== Buttons ============================== */
+.emis-page-content:not(.content-area--login) .btn-primary {
+  --bs-btn-bg: var(--emis-accent);
+  --bs-btn-border-color: var(--emis-accent);
+  --bs-btn-hover-bg: var(--emis-accent-hover);
+  --bs-btn-hover-border-color: var(--emis-accent-hover);
+  --bs-btn-active-bg: var(--emis-accent-hover);
+  --bs-btn-active-border-color: var(--emis-accent-hover);
+  --bs-btn-disabled-bg: var(--emis-accent);
+  --bs-btn-disabled-border-color: var(--emis-accent);
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  border-radius: 999px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--emis-accent) 28%, transparent);
+}
+
+.emis-page-content:not(.content-area--login) .btn-outline-primary {
+  --bs-btn-color: var(--emis-accent);
+  --bs-btn-border-color: var(--emis-accent);
+  --bs-btn-hover-bg: var(--emis-accent);
+  --bs-btn-hover-border-color: var(--emis-accent);
+  --bs-btn-active-bg: var(--emis-accent);
+  --bs-btn-active-border-color: var(--emis-accent);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+}
+
+.emis-page-content:not(.content-area--login) .btn-success {
+  --bs-btn-bg: var(--emis-success);
+  --bs-btn-border-color: var(--emis-success);
+  --bs-btn-hover-bg: var(--emis-success-hover);
+  --bs-btn-hover-border-color: var(--emis-success-hover);
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.emis-page-content:not(.content-area--login) .text-primary {
+  color: var(--emis-accent) !important;
+}
+
+.emis-page-content:not(.content-area--login) .border-primary {
+  border-color: var(--emis-accent) !important;
+}
+
+/* ============================== Dark theme surfaces ============================== */
+/* Bootstrap colour utilities are !important, so dark mode must answer in kind. */
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(.bg-white, .bg-body, .bg-light:not(.badge), .bg-gradient.bg-light):not(th):not(.mat-mdc-header-row) {
+  background-color: var(--emis-surface) !important;
+  background-image: none !important;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .card :is(.bg-light, .bg-body-tertiary, .bg-body-secondary):not(.badge) {
+  background-color: var(--emis-surface-alt) !important;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .badge.bg-light {
+  background-color: var(--emis-hover) !important;
+  color: var(--emis-text) !important;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(.text-dark, .text-body, .text-black, .text-body-emphasis, h1, h2, h3, h4, h5, h6) {
+  color: var(--emis-text-strong) !important;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(.text-muted, .text-secondary, .text-body-secondary) {
+  color: var(--emis-muted) !important;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .text-primary {
+  color: #60a5fa !important;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .text-success {
+  color: #4ade80 !important;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .text-danger {
+  color: #f87171 !important;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .text-warning {
+  color: #fbbf24 !important;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(.border, .border-top, .border-bottom, .border-start, .border-end, hr):not(.border-primary):not(.border-success):not(.border-danger):not(.border-warning):not(.border-info) {
+  border-color: var(--emis-border) !important;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(.shadow, .shadow-sm, .shadow-lg) {
+  box-shadow: var(--emis-shadow) !important;
+}
+
+/* Native inputs that skip the Bootstrap classes */
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(
+  select,
+  textarea,
+  input[type='text'],
+  input[type='number'],
+  input[type='date'],
+  input[type='email'],
+  input[type='search'],
+  input[type='password'],
+  input[type='tel'],
+  input:not([type])
+) {
+  background-color: var(--emis-input-bg);
+  color: var(--emis-text);
+  border-color: var(--emis-input-border);
+  color-scheme: dark;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) select option {
+  background-color: var(--emis-surface);
+  color: var(--emis-text);
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .form-check-input:not(:checked) {
+  background-color: var(--emis-input-bg);
+  border-color: #475569;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(.btn-light, .btn-outline-light) {
+  --bs-btn-bg: var(--emis-surface-alt);
+  --bs-btn-color: var(--emis-text);
+  --bs-btn-border-color: var(--emis-border);
+  --bs-btn-hover-bg: var(--emis-hover);
+  --bs-btn-hover-color: var(--emis-text-strong);
+  --bs-btn-hover-border-color: var(--emis-border);
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(.btn-outline-secondary, .btn-outline-dark) {
+  --bs-btn-color: var(--emis-text);
+  --bs-btn-border-color: #475569;
+  --bs-btn-hover-bg: var(--emis-hover);
+  --bs-btn-hover-color: var(--emis-text-strong);
+  --bs-btn-hover-border-color: #64748b;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(.list-group-item, .dropdown-menu, .modal-content, .accordion-item, .accordion-button, .nav-tabs .nav-link.active) {
+  background-color: var(--emis-surface);
+  color: var(--emis-text);
+  border-color: var(--emis-border);
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(.modal-header, .modal-footer) {
+  border-color: var(--emis-border);
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .alert-light,
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .alert-secondary {
+  background-color: var(--emis-surface-alt);
+  color: var(--emis-text);
+  border-color: var(--emis-border);
+}
+
+/* Overlay panels (mat-menu / mat-select / autocomplete) render outside the page area */
+html[data-theme='dark'] .cdk-overlay-container :is(.mat-mdc-menu-panel, .mat-mdc-select-panel, .mat-mdc-autocomplete-panel) {
+  --mat-menu-item-label-text-color: var(--emis-text);
+  --mat-menu-item-icon-color: var(--emis-text);
+  --mat-option-label-text-color: var(--emis-text);
+  --mat-option-hover-state-layer-color: rgba(255, 255, 255, 0.06);
+  --mat-option-selected-state-label-text-color: #60a5fa;
+  background-color: var(--emis-surface-alt) !important;
+  color: var(--emis-text);
+  border: 1px solid var(--emis-border);
+}
+
+html[data-theme='dark'] .cdk-overlay-container :is(.mat-mdc-menu-panel, .mat-mdc-select-panel) :is(.text-dark, .text-body) {
+  color: var(--emis-text) !important;
+}
+
+/* Print stays light regardless of theme */
+@media print {
+  .emis-page-content .table > thead > tr > th,
+  .emis-page-content th.mat-mdc-header-cell {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+  }
+}
+
+/* ============================== ng-select (dark) ============================== */
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .ng-select.ng-select-disabled > .ng-select-container {
+  background-color: var(--emis-surface-alt);
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .ng-select .ng-arrow-wrapper .ng-arrow {
+  border-top-color: var(--emis-muted);
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .ng-select.ng-select-multiple .ng-value {
+  background-color: var(--emis-hover) !important;
+  border-color: var(--emis-border) !important;
+}
+
+html[data-theme='dark'] .ng-dropdown-panel {
+  background-color: var(--emis-surface-alt);
+  border-color: var(--emis-border);
+  color: var(--emis-text);
+}
+
+html[data-theme='dark'] .ng-dropdown-panel .ng-dropdown-panel-items .ng-option,
+html[data-theme='dark'] .ng-dropdown-panel .ng-dropdown-header,
+html[data-theme='dark'] .ng-dropdown-panel .ng-dropdown-footer {
+  background-color: var(--emis-surface-alt);
+  color: var(--emis-text);
+  border-color: var(--emis-border);
+}
+
+html[data-theme='dark'] .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--emis-hover);
+  color: var(--emis-text-strong);
+}
+
+html[data-theme='dark'] .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
+html[data-theme='dark'] .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
+  background-color: color-mix(in srgb, var(--emis-accent) 28%, var(--emis-surface-alt));
+  color: #ffffff;
+}
+
+html[data-theme='dark'] .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  color: var(--emis-placeholder);
+}
+
+/* ============================== Links ============================== */
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) a:not(.btn):not(.nav-link):not(.dropdown-item):not(.page-link) {
+  color: #60a5fa;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(.clickable-link, .download-link, .link-primary) {
+  color: #60a5fa !important;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(.clickable-link, .download-link, .link-primary):hover {
+  color: #93c5fd !important;
+}
+
+/* ============================== Radios / checkboxes / tabs ============================== */
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) {
+  --mdc-radio-unselected-icon-color: #94a3b8;
+  --mdc-radio-selected-icon-color: var(--emis-accent);
+  --mdc-radio-selected-focus-icon-color: var(--emis-accent);
+  --mdc-radio-selected-hover-icon-color: var(--emis-accent);
+  --mat-radio-checked-ripple-color: var(--emis-accent);
+  --mdc-checkbox-unselected-icon-color: #94a3b8;
+  --mdc-checkbox-selected-icon-color: var(--emis-accent);
+  --mdc-checkbox-selected-container-color: var(--emis-accent);
+  --mat-tab-header-inactive-label-text-color: var(--emis-muted);
+  --mat-tab-header-active-label-text-color: var(--emis-text-strong);
+  --mdc-tab-indicator-active-indicator-color: var(--emis-accent);
+  --mdc-filled-text-field-container-color: var(--emis-surface-alt);
+  --mdc-filled-text-field-input-text-color: var(--emis-text);
+  --mdc-filled-text-field-label-text-color: var(--emis-muted);
+  --mdc-outlined-text-field-input-text-color: var(--emis-text);
+  --mdc-outlined-text-field-label-text-color: var(--emis-muted);
+  --mdc-outlined-text-field-outline-color: var(--emis-input-border);
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) :is(.mat-mdc-radio-button, .mat-mdc-checkbox, .form-check-label) label,
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .form-check-label,
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) label {
+  color: var(--emis-text);
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .nav-tabs {
+  border-color: var(--emis-border);
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) .nav-tabs .nav-link:not(.active) {
+  color: var(--emis-muted);
+}
+
+/* ============================== Body-level popups ============================== */
+/* Material dialogs */
+html[data-theme='dark'] .cdk-overlay-container .mat-mdc-dialog-surface {
+  --mdc-dialog-container-color: var(--emis-surface);
+  --mdc-dialog-subhead-color: var(--emis-text-strong);
+  --mdc-dialog-supporting-text-color: var(--emis-text);
+  background-color: var(--emis-surface);
+  color: var(--emis-text);
+  border: 1px solid var(--emis-border);
+}
+
+/* SweetAlert2 */
+html[data-theme='dark'] .swal2-popup {
+  background: var(--emis-surface);
+  color: var(--emis-text);
+  border: 1px solid var(--emis-border);
+}
+
+html[data-theme='dark'] :is(.swal2-title, .swal2-html-container) {
+  color: var(--emis-text-strong);
+}
+
+html[data-theme='dark'] :is(.swal2-input, .swal2-textarea, .swal2-select) {
+  background: var(--emis-input-bg);
+  color: var(--emis-text);
+  border-color: var(--emis-input-border);
+}
+
+html[data-theme='dark'] .swal2-icon.swal2-success [class^='swal2-success-circular-line'],
+html[data-theme='dark'] .swal2-icon.swal2-success .swal2-success-fix {
+  background-color: transparent !important;
+}
+
+.swal2-styled.swal2-confirm {
+  border-radius: 999px;
+}
+
+/* Datepicker / calendar overlays */
+html[data-theme='dark'] .cdk-overlay-container .mat-datepicker-content {
+  background-color: var(--emis-surface-alt);
+  color: var(--emis-text);
+}
+
+/* =====================================================================
+ * Supplier-style page layout for legacy department pages
+ * ---------------------------------------------------------------------
+ * Older BME / PO-Cell / Finance / GM Finance / Reports pages use a
+ * `container-fluid` root with a big title card, a filter card and a table
+ * card. These rules give them the Supplier page rhythm without template
+ * changes: compact padding, no duplicate title (the shell header already
+ * shows it), a tight filter card with right-aligned pill buttons, and a
+ * rounded, scrollable table with a sticky accent header.
+ * ===================================================================== */
+
+/* ---------- Page root ---------- */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid {
+  min-height: 0 !important;
+  padding: 8px 12px 12px !important;
+  margin-top: 0 !important;
+  background: transparent !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: var(--emis-text);
+}
+
+/* Outer wrapper card that only groups the page → flatten it */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid > .card:has(> .card) {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* ---------- Duplicate page title (shell header shows it) ---------- */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid > :is(div, header):first-child:has(> :is(h1, h2, h3)):not(:has(form, table, input, select, ng-select, button, img, a, mat-table)),
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid > .card:first-child > .card:first-child:has(> :is(h1, h2, h3)):not(:has(form, table, input, select, ng-select, button, img, a, mat-table)) {
+  display: none !important;
+}
+
+/* ---------- Cards ---------- */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card {
+  margin-bottom: 10px !important;
+  border: 1px solid var(--emis-border) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--emis-shadow) !important;
+}
+
+/* Remove the thick coloured top strip; supplier cards are plain */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card.border-top.border-4 {
+  border-top-width: 1px !important;
+  border-top-color: var(--emis-border) !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card > .card-header {
+  padding: 8px 14px !important;
+  background: transparent !important;
+  border-bottom: 1px solid var(--emis-border) !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card > .card-header :is(h4, h5, h6) {
+  margin: 0;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--emis-muted) !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card > .card-body {
+  padding: 12px 14px !important;
+}
+
+/* Section headings inside filter cards (h6 above each field) */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid form :is(h5, h6) {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  margin-bottom: 6px !important;
+  color: var(--emis-text) !important;
+}
+
+/* ---------- Form rows & gaps ---------- */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid form .row {
+  --bs-gutter-y: 10px;
+  margin-bottom: 0 !important;
+  row-gap: 10px;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid form .row.mb-3 {
+  margin-bottom: 8px !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid :is(.form-label, .col-form-label) {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  margin-bottom: 4px;
+  color: var(--emis-text) !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid :is(.form-control:not(textarea):not(.ng-select), .form-select) {
+  min-height: 34px;
+  font-size: 13px;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .ng-select .ng-select-container {
+  min-height: 34px !important;
+}
+
+/* Field columns separated by vertical rules → no rules, just gaps */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid form .border-end {
+  border-right: none !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid form .text-center:has(ng-select, select, input) {
+  text-align: left !important;
+}
+
+/* ---------- Button rows: right-aligned with even gaps, like the supplier toolbar ---------- */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid :is(.d-flex, .col-12, [class*='col-']):not(td, th, table *, .input-group, .btn-group):has(> .btn + .btn),
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid :is(.d-flex.justify-content-center, .text-center):not(td, th, table *, .input-group, .btn-group):has(> .btn) {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end !important;
+  gap: 8px;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid :is(.d-flex, [class*='col-'], .text-center):not(td, th, table *, .input-group, .btn-group) > .btn {
+  margin: 0 !important;
+}
+
+/* ---------- Buttons: supplier pill buttons ---------- */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .btn:not(.btn-close):not(.btn-link):not(.btn-sm):not(.dropdown-toggle-split) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 5px 16px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1.2;
+  border-radius: 999px !important;
+  transition: filter 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .btn.btn-sm {
+  border-radius: 999px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .btn :is(.bi, i) {
+  margin: 0 !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .btn.btn-lg {
+  min-height: 36px;
+  font-size: 13px !important;
+}
+
+/* Export (outline-success) buttons look like the supplier green Export button */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .btn-outline-success {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--emis-success);
+  --bs-btn-border-color: var(--emis-success);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--emis-success-hover);
+  --bs-btn-hover-border-color: var(--emis-success-hover);
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.28) !important;
+}
+
+/* Secondary / clear buttons → accent outline like the supplier "Clear Filter" */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid :is(.btn-secondary, .btn-outline-secondary, .btn-light) {
+  --bs-btn-color: var(--emis-accent);
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: var(--emis-accent);
+  --bs-btn-hover-color: var(--emis-accent);
+  --bs-btn-hover-bg: color-mix(in srgb, var(--emis-accent) 10%, transparent);
+  --bs-btn-hover-border-color: var(--emis-accent);
+  --bs-btn-active-color: var(--emis-accent);
+  --bs-btn-active-bg: color-mix(in srgb, var(--emis-accent) 16%, transparent);
+  box-shadow: none !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .btn:hover:not(:disabled) {
+  transform: none;
+  filter: brightness(0.96);
+}
+
+/* ---------- Search box + export bar above the table ---------- */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card-body > .d-flex.justify-content-between:has(input) {
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .input-group:has(.bi-search) {
+  max-width: 280px;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .input-group:has(.bi-search) > :is(.form-control, .input-group-text) {
+  min-height: 32px;
+  border-radius: 0 !important;
+  border-color: var(--emis-input-border);
+  box-shadow: none;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .input-group:has(.bi-search) > :first-child {
+  border-radius: 999px 0 0 999px !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .input-group:has(.bi-search) > :last-child {
+  border-radius: 0 999px 999px 0 !important;
+}
+
+/* ---------- Tables: rounded, scrolling, sticky accent header ---------- */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid :is(.table-responsive, .mat-elevation-z8, .table-container):has(table) {
+  max-height: calc(100vh - 230px);
+  overflow: auto !important;
+  margin-top: 0 !important;
+  border-radius: 8px !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid :is(.table-responsive, .mat-elevation-z8, .table-container) :is(.table > thead > tr > th, th.mat-mdc-header-cell) {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid :is(.table, .mat-mdc-table) {
+  margin-bottom: 0 !important;
+}
+
+/* Card that only wraps a table → no extra padding around it */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card:has(> .card-body > :is(.table-responsive, .mat-elevation-z8):only-child) > .card-body,
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card > .card-footer.p-0 {
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* Mobile: full-width buttons and fields like the supplier toolbar */
+@media (max-width: 576px) {
+  .emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid {
+    padding: 8px !important;
+  }
+
+  .emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .input-group:has(.bi-search) {
+    max-width: none;
+  }
+}
+
+/* =====================================================================
+ * Select boxes — ng-select + native <select>, Supplier look
+ * ---------------------------------------------------------------------
+ * The ng-select default theme (angular.json) gives the structure; these
+ * rules give every select the same height, radius, focus ring and dropdown
+ * panel in light and dark theme.
+ * ===================================================================== */
+
+/* ---------- ng-select field ---------- */
+.ng-select .ng-select-container {
+  min-height: 34px;
+  border: 1px solid var(--emis-input-border, #cbd5e1);
+  border-radius: 8px;
+  background-color: var(--emis-input-bg, #ffffff);
+  color: var(--emis-text, #334155);
+  font-size: 13px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ng-select.ng-select-single .ng-select-container {
+  height: 34px;
+}
+
+.ng-select .ng-select-container:hover {
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1);
+}
+
+.ng-select .ng-select-container .ng-value-container {
+  padding-left: 12px;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+  top: 50%;
+  transform: translateY(-50%);
+  padding-left: 12px;
+}
+
+.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: var(--emis-placeholder, #94a3b8);
+}
+
+.ng-select .ng-select-container .ng-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ng-select.ng-select-opened > .ng-select-container {
+  background: var(--emis-input-bg, #ffffff);
+  border-color: var(--emis-accent, #f97316);
+}
+
+.ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container,
+.ng-select.ng-select-opened > .ng-select-container {
+  border-color: var(--emis-accent, #f97316);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--emis-accent, #f97316) 18%, transparent);
+}
+
+.ng-select.ng-select-opened.ng-select-bottom > .ng-select-container {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.ng-select.ng-select-opened.ng-select-top > .ng-select-container {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.ng-select.ng-select-disabled > .ng-select-container {
+  background-color: var(--emis-surface-alt, #f8fafc);
+  cursor: not-allowed;
+}
+
+.ng-select .ng-arrow-wrapper .ng-arrow {
+  border-top-color: var(--emis-muted, #64748b);
+}
+
+.ng-select.ng-select-opened > .ng-select-container .ng-arrow {
+  border-bottom-color: var(--emis-accent, #f97316);
+}
+
+.ng-select .ng-clear-wrapper {
+  color: var(--emis-placeholder, #94a3b8);
+}
+
+.ng-select .ng-clear-wrapper:hover .ng-clear {
+  color: #dc2626;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container {
+  padding-top: 3px;
+  padding-left: 8px;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  margin-bottom: 3px;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--emis-accent, #f97316) 12%, transparent);
+  color: var(--emis-text-strong, #0f172a);
+  font-size: 12px;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.left {
+  border-right-color: color-mix(in srgb, var(--emis-accent, #f97316) 30%, transparent);
+}
+
+/* ng-select carrying .form-control / .form-select: the wrapper must not draw a second box */
+.ng-select.form-control,
+.ng-select.form-select {
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent none !important;
+  box-shadow: none !important;
+}
+
+/* Inside invalid forms */
+.ng-select.ng-invalid.ng-touched .ng-select-container {
+  border-color: #dc2626;
+}
+
+/* ---------- Dropdown panel (appended to <body>) ---------- */
+.ng-dropdown-panel {
+  z-index: 200050 !important; /* above page modals that use z-index 200000 */
+  margin-top: 4px;
+  border: 1px solid var(--emis-border, #e2e8f0) !important;
+  border-radius: 8px;
+  background-color: var(--emis-surface, #ffffff);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12) !important;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.ng-dropdown-panel.ng-select-top {
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  padding: 7px 12px;
+  background-color: var(--emis-surface, #ffffff);
+  color: var(--emis-text, #334155);
+  white-space: normal;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--emis-hover, #f1f5f9);
+  color: var(--emis-text-strong, #0f172a);
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
+  background-color: color-mix(in srgb, var(--emis-accent, #f97316) 14%, var(--emis-surface, #ffffff));
+  color: var(--emis-text-strong, #0f172a);
+  font-weight: 600;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  color: var(--emis-placeholder, #94a3b8);
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup {
+  color: var(--emis-muted, #64748b);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+html[data-theme='dark'] .ng-dropdown-panel {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55) !important;
+}
+
+html[data-theme='dark'] .ng-select .ng-select-container {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Native <select> ---------- */
+/* Light arrow on dark fields — Bootstrap's default arrow is dark-on-dark */
+html[data-theme='dark'] .form-select {
+  --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.emis-page-content:not(.content-area--login) select.form-select,
+.emis-page-content:not(.content-area--login) select.form-control {
+  min-height: 34px;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+/* select.form-control has no arrow in Bootstrap → give it the same one */
+.emis-page-content:not(.content-area--login) select.form-control:not([multiple]):not([size]) {
+  appearance: none;
+  background-image: var(--bs-form-select-bg-img, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"));
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px 10px;
+}
+
+html[data-theme='dark'] .emis-page-content:not(.content-area--login) select.form-control:not([multiple]):not([size]) {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.ng-select .ng-select-container .ng-value-container .ng-input > input {
+  color: var(--emis-text, #334155) !important;
+}
+
+/* =====================================================================
+ * Paginator — shown right after the last table row, above the footer
+ * ---------------------------------------------------------------------
+ * It scrolls with the table (appears when the data ends), stays inside
+ * the visible width on wide tables, and keeps page-size on the left and
+ * range + page buttons on the right.
+ * ===================================================================== */
+.emis-page-content:not(.content-area--login) :is(.table-wrap, .table-responsive, .mat-elevation-z8, .table-container, .grid-scroll) > .mat-mdc-paginator {
+  position: sticky;
+  left: 0;
+  bottom: auto;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.emis-page-content:not(.content-area--login) .mat-mdc-paginator {
+  margin-top: 0;
+  border-top: 1px solid var(--emis-border);
+  border-radius: 0 0 8px 8px;
+  font-size: 12px;
+}
+
+.emis-page-content:not(.content-area--login) .mat-mdc-paginator-container {
+  min-height: 44px;
+  padding: 0 8px 0 12px;
+  gap: 4px 12px;
+}
+
+.emis-page-content:not(.content-area--login) .mat-mdc-paginator-range-actions {
+  flex-wrap: nowrap;
+  gap: 2px;
+}
+
+.emis-page-content:not(.content-area--login) .mat-mdc-paginator-range-actions .mat-mdc-icon-button {
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  border-radius: 999px;
+}
+
+.emis-page-content:not(.content-area--login) .mat-mdc-paginator-range-actions .mat-mdc-icon-button:not([disabled]):hover {
+  background-color: color-mix(in srgb, var(--emis-accent) 12%, transparent);
+}
+
+/* Footer sits below the page with a small gap, never beside the paginator */
+.emis-page-content:not(.content-area--login) > .footer-wrap {
+  padding-top: 6px;
+}
+
+@media (max-width: 576px) {
+  .emis-page-content:not(.content-area--login) .mat-mdc-paginator-container {
+    justify-content: center !important;
+  }
+
+  .emis-page-content:not(.content-area--login) .mat-mdc-paginator-page-size,
+  .emis-page-content:not(.content-area--login) .mat-mdc-paginator-range-actions {
+    margin: 0 !important;
+  }
+}

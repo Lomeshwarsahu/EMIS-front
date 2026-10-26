@@ -44,3 +44,22 @@
 .tracking-wide {
   letter-spacing: 0.5px;
 }
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .style-scrollbar::-webkit-scrollbar-track {
+  background: #0c0e12;
+}
+
+:host-context(html[data-theme='dark']) .style-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+:host-context(html[data-theme='dark']) .style-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .btn-hover-info:hover {
+  background-color: rgba(6, 182, 212, 0.15) !important;
+  border-color: rgba(34, 211, 238, 0.4) !important;
+  color: #22d3ee !important;
+}

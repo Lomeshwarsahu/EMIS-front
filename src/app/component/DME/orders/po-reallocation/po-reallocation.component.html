@@ -56,10 +56,10 @@
         </thead>
         <tbody>
           <tr
-            *ngFor="let row of rows; index as i"
+            *ngFor="let row of rows | slice: pager.start : pager.end; index as i"
             [class.alt-row]="i % 2 === 1"
             [class.row-blocked]="!row.CanReallocate">
-            <td class="text-center">{{ i + 1 }}</td>
+            <td class="text-center">{{ pager.start + i + 1 }}</td>
             <td class="text-center">
               <input type="checkbox" aria-label="Select row" [disabled]="!row.CanReallocate" [(ngModel)]="row.checked" />
             </td>
@@ -102,6 +102,8 @@
           </tr>
         </tbody>
       </table>
+      <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+        [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
     </div>
 
     <div class="realloc-form">
@@ -146,8 +148,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of history; index as i" [class.alt-row]="i % 2 === 1">
-              <td class="text-center">{{ i + 1 }}</td>
+            <tr *ngFor="let row of history | slice: historyPager.start : historyPager.end; index as i" [class.alt-row]="i % 2 === 1">
+              <td class="text-center">{{ historyPager.start + i + 1 }}</td>
               <td>{{ row.PoNo || '—' }}</td>
               <td>{{ row.OldLocation || '—' }}</td>
               <td>{{ row.NewLocation || '—' }}</td>
@@ -164,6 +166,8 @@
             </tr>
           </tbody>
         </table>
+        <mat-paginator *ngIf="history.length" [length]="history.length" [pageIndex]="historyPager.index" [pageSize]="historyPager.size"
+          [pageSizeOptions]="historyPager.sizes" (page)="historyPager.onPage($event)" showFirstLastButtons></mat-paginator>
       </div>
     </div>
   </div>

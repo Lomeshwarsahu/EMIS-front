@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 import { poSupplyDispatchQuery, readPoSupplyDispatchFilters } from '../supplier-transaction-state.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface FinancialYearOption {
   financialYearId: number;
@@ -36,11 +38,12 @@ interface PoDispatchRow {
 @Component({
   selector: 'app-po-supply-dispatch',
   standalone: true,
-  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './po-supply-dispatch.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-dispatch.component.css'],
 })
 export class PoSupplyDispatchComponent implements OnInit {
+  readonly pager = new ListPager();
   loading = false;
   userId = 0;
 
@@ -121,10 +124,12 @@ export class PoSupplyDispatchComponent implements OnInit {
         next: (raw) => {
           this.loading = false;
           const list = Array.isArray(raw) ? raw : [];
+          this.pager.reset();
           this.rows = list.map((row) => this.mapRow(row as Record<string, unknown>));
         },
         error: (err) => {
           this.loading = false;
+          this.pager.reset();
           this.rows = [];
           this.toastr.error(err?.error?.message ?? 'Unable to load dispatch orders.');
         },

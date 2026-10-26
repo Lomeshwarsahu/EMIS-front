@@ -11,6 +11,8 @@ import {
   poSupplyReceiptQuery,
   readPoSupplyReceiptFilters,
 } from '../supplier-transaction-state.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface FinancialYearOption {
   financialYearId: number;
@@ -57,11 +59,12 @@ type PoTypeFilter = 'All' | 'PRI' | 'PD' | 'C';
 @Component({
   selector: 'app-po-supply-receipt',
   standalone: true,
-  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './po-supply-receipt.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-receipt.component.css'],
 })
 export class PoSupplyReceiptComponent implements OnInit {
+  readonly pager = new ListPager();
   loading = false;
   userId = 0;
 
@@ -122,12 +125,14 @@ export class PoSupplyReceiptComponent implements OnInit {
 
   onPoTypeChange(): void {
     this.selectedPoId = 0;
+    this.pager.reset();
     this.rows = [];
     this.loadPoOptions();
   }
 
   onYearChange(): void {
     this.selectedPoId = 0;
+    this.pager.reset();
     this.rows = [];
     this.loadPoOptions();
   }
@@ -140,6 +145,7 @@ export class PoSupplyReceiptComponent implements OnInit {
     this.poType = 'All';
     this.selectedFinancialYearId = 0;
     this.selectedPoId = 0;
+    this.pager.reset();
     this.rows = [];
     this.loadPoOptions();
   }
@@ -191,10 +197,12 @@ export class PoSupplyReceiptComponent implements OnInit {
       next: (raw) => {
         this.loading = false;
         const list = Array.isArray(raw) ? raw : [];
+        this.pager.reset();
         this.rows = list.map((row) => this.mapRow(row as Record<string, unknown>));
       },
       error: (err) => {
         this.loading = false;
+        this.pager.reset();
         this.rows = [];
         this.toastr.error(err?.error?.message ?? 'Unable to load receipt details.');
       },

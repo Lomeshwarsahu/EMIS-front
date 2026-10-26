@@ -3,7 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { DmePageSkeletonComponent } from '../../DME/shared/dme-page-skeleton/dme-page-skeleton.component';
 import { MasterApiService } from '../../../service/master-api.service';
@@ -28,6 +28,9 @@ export class ItemSpecificationComponent implements OnInit {
   selectedCategoryId = 0;
   searchText = '';
   dataSource = new MatTableDataSource<ItemSpecGridDto>([]);
+  @ViewChild('paginator') set paginator(p: MatPaginator | undefined) {
+    this.dataSource.paginator = p ?? null;
+  }
   displayedColumns = ['sno', 'itemCode', 'itemName', 'category', 'action'];
   loading = false;
   editingItemId: number | null = null;

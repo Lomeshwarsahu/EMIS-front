@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { DmePageSkeletonComponent } from '../../component/DME/shared/dme-page-skeleton/dme-page-skeleton.component';
 import { apiErrorMessage } from '../../component/DME/shared/session.util';
 import * as XLSX from 'xlsx';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface MainEquipmentMappedRow {
   PItemName: string;
@@ -21,11 +23,12 @@ interface MainEquipmentMappedRow {
 @Component({
   selector: 'app-main-equipment-mapped-report',
   standalone: true,
-  imports: [CommonModule, DmePageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, DmePageSkeletonComponent],
   templateUrl: './main-equipment-mapped-report.component.html',
   styleUrls: ['./component.css'],
 })
 export class MainEquipmentMappedReportComponent implements OnInit {
+  readonly pager = new ListPager();
   rows: MainEquipmentMappedRow[] = [];
   loading = false;
 
@@ -42,6 +45,7 @@ export class MainEquipmentMappedReportComponent implements OnInit {
     this.loading = true;
     this.http.get<MainEquipmentMappedRow[]>(`${environment.apiUrl}/DMEReports/main-equipment-mapped`).subscribe({
       next: (res) => {
+        this.pager.reset();
         this.rows = Array.isArray(res) ? res : [];
         this.loading = false;
       },

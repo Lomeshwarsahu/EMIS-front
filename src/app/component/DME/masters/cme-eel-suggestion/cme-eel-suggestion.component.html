@@ -32,8 +32,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let row of rows; index as i">
-                    <td class="center">{{ i + 1 }}</td>
+                  <tr *ngFor="let row of rows | slice: pager.start : pager.end; index as i">
+                    <td class="center">{{ pager.start + i + 1 }}</td>
                     <td>{{ row.Name }}</td>
                     <td>{{ row.MobileNo }}</td>
                     <td>{{ row.EmailId }}</td>
@@ -74,6 +74,8 @@
                   </tr>
                 </tbody>
               </table>
+              <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+                [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
             </div>
           </td>
         </tr>

@@ -94,3 +94,36 @@
   color: #065f46;
   font-size: 13px;
 }
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .release-form {
+  background: #0c0e12;
+  border-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) .section-title {
+  background: #141820;
+  color: #f8fafc;
+}
+
+:host-context(html[data-theme='dark']) .form-row label {
+  color: #cbd5e1;
+}
+
+:host-context(html[data-theme='dark']) .field-value {
+  color: #f8fafc;
+}
+
+:host-context(html[data-theme='dark']) .field-value--green {
+  color: #4ade80;
+}
+
+:host-context(html[data-theme='dark']) .complete-panel {
+  border-top-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) .complete-note {
+  background: rgba(22, 163, 74, 0.12);
+  border-color: rgba(74, 222, 128, 0.35);
+  color: #86efac;
+}

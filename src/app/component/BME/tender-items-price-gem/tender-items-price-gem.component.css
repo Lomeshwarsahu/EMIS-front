@@ -161,3 +161,29 @@ tr.detail-row {
 .inner-detail-card {
   width: 100%;
 }
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .custom-link {
+  color: #60a5fa;
+}
+
+:host-context(html[data-theme='dark']) .custom-link:hover {
+  color: #93c5fd;
+}
+
+:host-context(html[data-theme='dark']) .form-control:focus,
+:host-context(html[data-theme='dark']) .form-select:focus {
+  background-color: #0c0e12 !important;
+}
+
+:host-context(html[data-theme='dark']) .element-row:hover {
+  background: #1a2030 !important;
+}
+
+:host-context(html[data-theme='dark']) .element-row:active,
+:host-context(html[data-theme='dark']) .expanded-row {
+  background: #141820 !important;
+}
+
+:host-context(html[data-theme='dark']) .inner-detail-card {
+  border-left-color: #2563eb !important;
+}

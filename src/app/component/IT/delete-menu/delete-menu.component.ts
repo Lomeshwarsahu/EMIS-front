@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { DmePageSkeletonComponent } from '../../DME/shared/dme-page-skeleton/dme-page-skeleton.component';
 import {
@@ -48,6 +48,9 @@ export class DeleteMenuComponent implements OnInit {
   selectedForRemoval: Set<number> = new Set();
 
   gridDataSource = new MatTableDataSource<RoleMenuGridDto>([]);
+  @ViewChild('gridPaginator') set gridPaginator(p: MatPaginator | undefined) {
+    this.gridDataSource.paginator = p ?? null;
+  }
   gridColumns = ['sno', 'roleName', 'menuName', 'noOfSubMenus', 'menuAction', 'subMenuAction', 'renameMenu'];
 
   subMenuDataSource = new MatTableDataSource<SubMenuRoleMappingDto>([]);

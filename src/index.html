@@ -5,7 +5,14 @@
   <script>
     // Splash helpers. First thing in <head> so no stylesheet download can delay it.
     (function () {
-      var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      // splash plays only on the very first visit; afterwards hide it before it can paint
+      var seen = false;
+      try { seen = !!localStorage.getItem('splashShown'); } catch (e) {}
+      // only on the login entry URL (`/`, `/login`): deep links and new tabs (e.g. PO print) open straight away,
+      // even after login's localStorage.clear() has dropped the `splashShown` flag
+      if (!/\/(login\/?)?$/i.test(location.pathname)) seen = true;
+      if (seen) { document.documentElement.classList.add('splash-seen'); return; }
+      var conn =navigator.connection || navigator.mozConnection || navigator.webkitConnection;
       var slowNet = !!conn && (conn.saveData || /(^|-)(2g|3g)$/.test(conn.effectiveType || '') || (conn.downlink && conn.downlink < 1.5));
       var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       // play the splash video only on a good connection, so it never steals bandwidth from the app on a slow one
@@ -93,6 +100,7 @@
     #app-splash.flying .splash-divider { opacity: 0; }
     #app-splash.flying .splash-logo { transition: transform .95s cubic-bezier(.65, 0, .25, 1); }
     #app-splash.splash-hide { opacity: 0; transition: opacity .35s ease; }
+    html.splash-seen #app-splash { display: none; }
 
     @media (prefers-reduced-motion: reduce) {
       #app-splash *, #app-splash .splash-text > * { animation: none !important; opacity: 1; transition: none !important; }

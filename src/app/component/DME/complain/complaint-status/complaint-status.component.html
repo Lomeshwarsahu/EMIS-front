@@ -1,64 +1,99 @@
-<div class="ems-legacy-page">
-  <div class="header-wrap">
-    <span class="header-bar narrow">Complaint Status</span>
-  </div>
+<div class="supplier-po-page">
 
-  <div class="toolbar-row">
-    <label>
-      Status:
-      <select class="legacy-select" [(ngModel)]="status">
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <button
+        *ngIf="rows.length"
+        type="button"
+        class="export-btn"
+        (click)="exportExcel()">
+        Export
+      </button>
+
+      <select
+        aria-label="Status"
+        [(ngModel)]="status"
+        name="complainStatus"
+        (change)="onFilterChange()"
+        [class.is-placeholder]="status === 'Booked'">
         <option value="Booked">Booked</option>
         <option value="Closed">Closed</option>
       </select>
-    </label>
-    <button type="button" class="btn-legacy" (click)="load()" [disabled]="loading">
-      {{ loading ? 'Loading…' : 'Show' }}
-    </button>
-  </div>
 
-  <div class="grid-scroll">
-    <table class="legacy-grid">
-      <thead>
-        <tr>
-          <th>S.no</th>
-          <th>Complain no</th>
-          <th>Item Code</th>
-          <th>Item Name</th>
-          <th>Make No</th>
-          <th>Complain Trouble</th>
-          <th>Complain Date</th>
-          <th>Not Function Date</th>
-          <th>Store Name</th>
-          <th>Department Name</th>
-          <th>Complain Details</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody *ngIf="loaded && rows.length === 0 && !loading">
-        <tr>
-          <td colspan="12" class="grid-empty">No Record found.</td>
-        </tr>
-      </tbody>
-      <tbody *ngIf="loaded && rows.length > 0">
-        <tr *ngFor="let row of rows; let i = index">
-          <td class="center">{{ i + 1 }}</td>
-          <td>{{ row.complaintNo }}</td>
-          <td>{{ row.itemCode }}</td>
-          <td>{{ row.itemName }}</td>
-          <td>{{ row.makeNo }}</td>
-          <td>{{ row.complaintsTroubleshoot }}</td>
-          <td>{{ row.complaintDate }}</td>
-          <td>{{ row.notFunctionDate }}</td>
-          <td>{{ row.storeName }}</td>
-          <td>{{ row.locationName }}</td>
-          <td>{{ row.complaintDetails }}</td>
-          <td>
-            <button type="button" class="grid-link" (click)="edit(row)">
-              {{ row.status === 'Closed' ? 'Show' : 'Edit' }}
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <button
+        type="button"
+        class="show-btn"
+        (click)="load()"
+        [disabled]="loading">
+        {{ loading ? 'Loading…' : 'Show' }}
+      </button>
+
+      <button
+        type="button"
+        class="show-btn clear-btn"
+        *ngIf="hasActiveFilters"
+        (click)="clearFilters()"
+        [disabled]="loading">
+        Clear Filter
+      </button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
+
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="po-grid status-grid">
+        <thead>
+          <tr>
+            <th class="col-sn text-center">S.no</th>
+            <th class="col-complain">Complain no</th>
+            <th class="col-code">Item Code</th>
+            <th class="col-name">Item Name</th>
+            <th class="col-make">Make No</th>
+            <th class="col-trouble">Complain Trouble</th>
+            <th class="col-date text-center">Complain Date</th>
+            <th class="col-date text-center">Not Function Date</th>
+            <th class="col-store">Store Name</th>
+            <th class="col-dept">Department Name</th>
+            <th class="col-details">Complain Details</th>
+            <th class="col-action text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows | slice: pager.start : pager.end; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ pager.start + i + 1 }}</td>
+            <td>{{ row.complaintNo }}</td>
+            <td>{{ row.itemCode }}</td>
+            <td class="wrap-cell">{{ row.itemName }}</td>
+            <td>{{ row.makeNo }}</td>
+            <td class="wrap-cell">{{ row.complaintsTroubleshoot }}</td>
+            <td class="text-center">{{ row.complaintDate }}</td>
+            <td class="text-center">{{ row.notFunctionDate }}</td>
+            <td class="wrap-cell">{{ row.storeName }}</td>
+            <td class="wrap-cell">{{ row.locationName }}</td>
+            <td class="wrap-cell">{{ row.complaintDetails }}</td>
+            <td class="text-center">
+              <button
+                type="button"
+                class="action-badge"
+                [class.action-badge--edit]="row.status !== 'Closed'"
+                [class.action-badge--show]="row.status === 'Closed'"
+                (click)="edit(row)">
+                {{ row.status === 'Closed' ? 'Show' : 'Edit' }}
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="12" class="empty-row">
+              <div class="empty-state">
+                <div style="font-size: 32px; color: #cbd5e1; margin-bottom: 8px;">&#128522;</div>
+                <p>No complaints found. All clear!</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+        [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
+    </div>
   </div>
 </div>

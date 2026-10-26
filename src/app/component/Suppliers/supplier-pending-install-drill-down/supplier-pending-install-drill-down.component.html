@@ -48,8 +48,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of report.rows; let i = index" [class.alt-row]="i % 2 === 1">
-              <td class="text-center">{{ i + 1 }}</td>
+            <tr *ngFor="let row of report.rows | slice: pager.start : pager.end; let i = index" [class.alt-row]="i % 2 === 1">
+              <td class="text-center">{{ pager.start + i + 1 }}</td>
               <td>{{ row.district }}</td>
               <td class="wrap-cell">{{ row.consignee }}</td>
               <td class="text-center">{{ row.poQty }}</td>
@@ -62,6 +62,8 @@
             </tr>
           </tbody>
         </table>
+        <mat-paginator *ngIf="report.rows.length" [length]="report.rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+          [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
       </div>
     </div>
   </ng-container>

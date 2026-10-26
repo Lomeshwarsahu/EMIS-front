@@ -217,3 +217,55 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .receipt-entry-page .header-grid td.deadline-label,
+:host-context(html[data-theme='dark']) .receipt-entry-page .header-grid td.deadline-value,
+:host-context(html[data-theme='dark']) .deadline-inline,
+:host-context(html[data-theme='dark']) .warning-text {
+  color: #f87171;
+}
+
+:host-context(html[data-theme='dark']) .tabs button {
+  background: #141820;
+  border-color: #262b36;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .tabs button.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+:host-context(html[data-theme='dark']) .tab-panel,
+:host-context(html[data-theme='dark']) .upload-row {
+  border-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) label {
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) input,
+:host-context(html[data-theme='dark']) select,
+:host-context(html[data-theme='dark']) textarea {
+  background-color: #0c0e12;
+  border-color: #262b36;
+  color: #e2e8f0;
+  color-scheme: dark;
+}
+
+:host-context(html[data-theme='dark']) .section-title,
+:host-context(html[data-theme='dark']) .link-btn {
+  color: #60a5fa;
+}
+
+:host-context(html[data-theme='dark']) .yes-no-item {
+  background: #141820;
+  border-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) .denied-form .hint-text {
+  color: #94a3b8;
+}
