@@ -9,25 +9,21 @@
 
     <div class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn">
         <div class="card-body p-4 bg-white">
-            <form #mainHeadForm="ngForm" (ngSubmit)="onSaveMainHead(mainHeadForm)" novalidate>
+           <form #mainHeadForm="ngForm" (ngSubmit)="onSaveMainHead(mainHeadForm)" novalidate>
     <div class="row border p-4 rounded-3 shadow-sm bg-white m-1">
         
-        <!-- Header / Title -->
-       <div class="col-12 mb-4 border-bottom pb-2 d-flex justify-content-between align-items-center">
-    <!-- Left Side: Heading -->
-    <h5 class="text-primary fw-bold mb-0">
-        <i class="bi bi-file-earmark-plus me-2"></i>Add New Main Head
-    </h5>
-    
-    <!-- Right Side: SubHead Button -->
-    <!-- <button type="button" class="btn btn-outline-primary btn-sm fw-bold px-3 rounded-pill shadow-sm">
-        <i class="bi bi-plus-circle me-1"></i> Add SubHead
-    </button> -->
-    <button type="button" class="btn btn-outline-primary btn-sm fw-bold px-3 rounded-pill shadow-sm" 
-            data-bs-toggle="modal" data-bs-target="#subHeadModal">
-        <i class="bi bi-plus-circle me-1"></i> Add SubHead
-    </button>
-    </div>
+        <!-- Header / Title (Dynamic) -->
+        <div class="col-12 mb-4 border-bottom pb-2 d-flex justify-content-between align-items-center">
+            <h5 class="text-primary fw-bold mb-0">
+                <i class="bi" [ngClass]="formModel.MHID ? 'bi-pencil-square' : 'bi-file-earmark-plus'"></i> 
+                {{ formModel.MHID ? 'Update Main Head' : 'Add New Main Head' }}
+            </h5>
+            
+            <button type="button" class="btn btn-outline-primary btn-sm fw-bold px-3 rounded-pill shadow-sm" 
+                    data-bs-toggle="modal" data-bs-target="#subHeadModal">
+                <i class="bi bi-plus-circle me-1"></i> Add SubHead
+            </button>
+        </div>
 
         <div class="col-12 col-md-8 mx-auto">
             <!-- 1. Main Head (English) Input -->
@@ -37,49 +33,27 @@
                 </label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control shadow-sm border-primary" placeholder="Enter Main Head in English"
-                           [(ngModel)]="formModel.MainHead_Eng" name="MainHead_Eng" #mainHeadEng="ngModel" required
-                           [ngClass]="{'is-invalid': mainHeadEng.invalid && (mainHeadEng.dirty || mainHeadEng.touched)}">
-                    <div class="invalid-feedback small fw-bold" *ngIf="mainHeadEng.invalid && (mainHeadEng.dirty || mainHeadEng.touched)">
+                        [(ngModel)]="formModel.MainHead_Eng" name="MainHead_Eng" #mainHeadEng="ngModel" required
+                        (ngModelChange)="onEnglishChange($event)"
+                        [ngClass]="{'is-invalid': mainHeadEng.invalid && (mainHeadEng.dirty || mainHeadEng.touched)}">
+                    <div class="invalid-feedback small fw-bold"
+                        *ngIf="mainHeadEng.invalid && (mainHeadEng.dirty || mainHeadEng.touched)">
                         Main Head (English) is required.
                     </div>
                 </div>
             </div>
-
+            
             <!-- 2. Main Head (Hindi) Input -->
-             <div class="row mb-4 align-items-start">
-    <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2">
-        Main Head (Hindi) :
-    </label>
-    <div class="col-sm-8">
-        <input type="text" class="form-control shadow-sm" placeholder="Enter Main Head in Hindi"
-               [(ngModel)]="formModel.MainHead_Hindi" name="MainHead_Hindi" #mainHeadHindi="ngModel" 
-               (keyup)="convertToHindi($event, 'main')"
-               (paste)="preventAction($event, 'Paste')" 
-               (copy)="preventAction($event, 'Copy')" 
-               (cut)="preventAction($event, 'Cut')" 
-               (drop)="preventAction($event, 'Drop')"
-               autocomplete="off">
-    </div>
-</div>
-             <!-- <div class="row mb-4 align-items-start">
-    <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2">
-        Main Head (Hindi) :
-    </label>
-    <div class="col-sm-8">
-        <input type="text" class="form-control shadow-sm" placeholder="Enter Main Head in Hindi"
-               [(ngModel)]="formModel.MainHead_Hindi" name="MainHead_Hindi" #mainHeadHindi="ngModel" 
-               (keyup)="convertToHindi($event, 'main')">
-    </div>
-</div> -->
-            <!-- <div class="row mb-4 align-items-start">
+            <div class="row mb-4 align-items-start">
                 <label class="col-sm-4 col-form-label text-muted fw-semibold small pt-2">
                     Main Head (Hindi) :
                 </label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control shadow-sm" placeholder="Enter Main Head in Hindi"
-                           [(ngModel)]="formModel.MainHead_Hindi" name="MainHead_Hindi" #mainHeadHindi="ngModel" >
+                        [(ngModel)]="formModel.MainHead_Hindi" name="MainHead_Hindi" #mainHeadHindi="ngModel"
+                        autocomplete="off">
                 </div>
-            </div> -->
+            </div>
 
             <!-- 3. IsActive Radio Buttons -->
             <div class="row mb-4 align-items-center">
@@ -99,14 +73,16 @@
             </div>
         </div>
 
-        <!-- Buttons -->
+        <!-- Buttons (Dynamic Save / Update & Reset) -->
         <div class="col-12 mt-3 border-top pt-4 d-flex justify-content-center gap-3">
-            <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm fw-bold d-inline-flex align-items-center" 
+            <button type="submit" class="btn px-5 py-2 rounded-pill shadow-sm fw-bold d-inline-flex align-items-center"
+                    [ngClass]="formModel.MHID ? 'btn-success' : 'btn-primary'"
                     [disabled]="mainHeadForm.invalid">
-                <i class="bi bi-save me-1.5"></i> Save Main Head
+                <i class="bi me-1.5" [ngClass]="formModel.MHID ? 'bi-check2-circle' : 'bi-save'"></i> 
+                {{ formModel.MHID ? 'Update Main Head' : 'Save Main Head' }}
             </button>
             <button type="button" class="btn btn-secondary px-4 py-2 rounded-pill shadow-sm fw-medium d-inline-flex align-items-center" 
-                    (click)="mainHeadForm.resetForm({IsActive: 'Active'})">
+                    (click)="resetForm(mainHeadForm)">
                 <i class="bi bi-arrow-counterclockwise me-1.5"></i> Reset Form
             </button>
         </div>
@@ -166,18 +142,19 @@
                 <label class="form-label text-muted fw-semibold small">Sub Head (Hindi)</label>
                 <input type="text" class="form-control shadow-sm" placeholder="Sub Head in Hindi required." 
                        [(ngModel)]="subHeadFormModel.SubHead_Hindi" name="SubHead_Hindi">
-            </div> -->
+            </div>  (keyup)="convertToHindi($event,'sub')"-->
             <div class="mb-3">
                 <label class="form-label text-muted fw-semibold small">Sub Head (Hindi)</label>
                 <input type="text" class="form-control shadow-sm" placeholder="Sub Head in Hindi required." 
                     [(ngModel)]="subHeadFormModel.SubHead_Hindi" name="SubHead_Hindi"
-                    (keyup)="convertToHindi($event,'sub')"
+                   
                    (paste)="preventAction($event, 'Paste')" 
                (copy)="preventAction($event, 'Copy')" 
                (cut)="preventAction($event, 'Cut')" 
                (drop)="preventAction($event, 'Drop')"
                autocomplete="off">
             </div>
+
             <!-- 4. IsActive Status -->
             <div class="mb-4">
                 <label class="form-label text-muted fw-semibold small d-block">Status <span class="text-danger">*</span></label>
@@ -212,7 +189,7 @@
  <div class="card shadow-sm border-0 rounded-4 overflow-hidden m-1">
     <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center border-bottom gap-3 px-4">
         <h6 class="mb-0 fw-bold text-dark d-flex align-items-center fs-6">
-            <i class="bi bi-layers-half text-success me-2 fs-5"></i> Historic Fund Allocation Streams Ledgers
+            <i class="bi bi-layers-half text-success me-2 fs-5"></i>Main Head and Sub Head Reports
         </h6>
         <div class="input-group input-group-sm" style="max-width: 250px;">
             <span class="input-group-text bg-light border-end-0 text-muted shadow-none"><i class="bi bi-search"></i></span>
@@ -257,7 +234,7 @@
     <ng-container matColumnDef="MainHead_Eng">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> Main Head </th>
         <td mat-cell *matCellDef="let element" class="px-3 small text-secondary"> 
-            {{ element.MainHead_Eng | titlecase }} / {{ element.MainHead_Hindi }} 
+            {{ element.MainHead_Eng}} / {{ element.MainHead_Hindi }} 
         </td>
     </ng-container>
 
@@ -275,6 +252,15 @@
                   [ngClass]="element.IsActive === 'Active' ? 'bg-success-subtle text-success border border-success' : 'bg-danger-subtle text-danger border border-danger'">
                 {{ element.IsActive }}
             </span>
+        </td>
+    </ng-container>
+  <ng-container matColumnDef="editAction">
+        <th mat-header-cell *matHeaderCellDef class="grid-header px-3 text-center"> Edit </th>
+        <td mat-cell *matCellDef="let element" class="px-3 small text-center">
+            <button class="btn btn-sm btn-outline-primary rounded-circle shadow-sm" 
+                    (click)="editRecord(element)" title="Edit Record">
+                <i class="bi bi-pencil-square"></i>
+            </button>
         </td>
     </ng-container>
 
@@ -353,7 +339,7 @@
     </div>
 
     <div class="card-footer bg-white border-top p-0 px-3">
-        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons class="border-0 bg-transparent"></mat-paginator>
+        <mat-paginator #paginator [pageSizeOptions]="[10,15,25,30]" showFirstLastButtons class="border-0 bg-transparent"></mat-paginator>
     </div>
 </div>
 

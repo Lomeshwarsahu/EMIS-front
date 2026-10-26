@@ -15,7 +15,7 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/service/api.service';
 import { CollapseModule } from 'src/app/collapse';
 import { NgForm } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse,HttpClientJsonpModule } from '@angular/common/http';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { MaterialModule } from 'src/app/material-module';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -48,6 +48,7 @@ import Swal from 'sweetalert2'
     MatSelectModule,
     MatOptionModule,
     MatTableExporterModule,
+    HttpClientJsonpModule
   ],
   templateUrl: './main-fund-head-en.component.html',
   styleUrl: './main-fund-head-en.component.css',
@@ -61,7 +62,7 @@ export class MainFundHeadEnComponent {
   bankAccountsList: any[] = [];
 
 
-displayedColumns: string[] = ['expand', 'MHID', 'MainHead_Eng', 'CreatedDate', 'IsActive'];//'sno', 
+displayedColumns: string[] = ['expand', 'MHID', 'MainHead_Eng', 'CreatedDate', 'IsActive','editAction'];//'sno', 
 displayedColumns1: string[] = ['expand', 'sno', 'MHID', 'MainHead_Eng', 'CreatedDate', 'IsActive'];
 expandedElement: any | null = null;
  formModel:any = {
@@ -76,12 +77,10 @@ expandedElement: any | null = null;
     SubHead_Hindi: '',
     IsActive: 'Active'
   };
-
+id:any;
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
-
-
 
 
 
@@ -92,14 +91,14 @@ constructor(
     public toastr: ToastrService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private router: Router,private route: ActivatedRoute
+    private router: Router,private route: ActivatedRoute,private http: HttpClient
   ) {
     // this.dataSource = new MatTableDataSource<any>([]);
   }
 
 
   ngOnInit(): void {
-    this.loadReceiptRecordsGrid(); 
+    this.loadReceiptRecordsGrid(0); 
   }
 
   preventAction(event: any, actionName: string) {
@@ -109,7 +108,7 @@ constructor(
 }
 
 toggleRow(element: any) {
-  if (this.expandedElement === element) {
+  if (this.expandedElement === element) { 
     this.expandedElement = null;
     return;
   }
@@ -122,9 +121,9 @@ toggleRow(element: any) {
     element.isLoadingSubHeads = true; 
     
    
-    this.api.get(`GMFI/GetSubHeadById/${element.MHID}`).subscribe({
+    this.api.get(`GMFI/GetSubHeadById/${element.MHID}`).subscribe({ 
       next: (res: any) => {
-      
+       
         element.subHeads = Array.isArray(res) ? res : [res]; 
         element.isLoadingSubHeads = false;
       },
@@ -133,7 +132,7 @@ toggleRow(element: any) {
         element.subHeads = []; // Error aane par empty array
         element.isLoadingSubHeads = false;
       }
-    });
+    });     
   }
 }
   onSaveMainHead(form: any) {
@@ -145,7 +144,7 @@ toggleRow(element: any) {
 
          console.log(res);
          form.resetForm({ IsActive: 'Active' }); 
-           this.loadReceiptRecordsGrid(); 
+           this.loadReceiptRecordsGrid(0); 
       },
       error: (err) => {
          console.error(err);
@@ -175,7 +174,7 @@ toggleRow(element: any) {
 
         // Form reset karna aur IsActive ko default 'Active' set karna
         form.resetForm({ IsActive: 'Active' });
-
+        this.loadReceiptRecordsGrid(0); 
         // Modal ko close karna
         this.closeModalBtn.nativeElement.click();
 
@@ -193,102 +192,53 @@ toggleRow(element: any) {
     });
   }
 
- 
-
-
-convertToHindi(event: any, fieldType: string) {
-    // Sirf tabhi convert karega jab user 'Space' dabayega
-    if (event.key === ' ' || event.code === 'Space') {
-      
-      // Check karna ki konsa field type ho raha hai
-      let text = '';
-      if (fieldType === 'main') {
-        text = this.formModel.MainHead_Hindi;
-      } else if (fieldType === 'sub') {
-        text = this.subHeadFormModel.SubHead_Hindi;
-      }
-
-      if (!text) return; // Agar text khali hai toh kuch mat karo
-
-      // Text ko words me todna
-      const words = text.split(' ');
-      
-      // Space ke theek pehle wala word nikalna
-      const wordToConvert = words[words.length - 2]; 
-
-      if (wordToConvert && wordToConvert.trim() !== '') {
-        // Check karna ki word pehle se Hindi me toh nahi hai (Devanagari Regex)
-        const isAlreadyHindi = /[\u0900-\u097F]/.test(wordToConvert);
-        
-        if (!isAlreadyHindi) {
-          // Google Input Tools API URL
-          const url = `https://inputtools.google.com/request?text=${wordToConvert}&itc=hi-t-i0-und&num=1&cp=0&cs=1&ie=utf-8&oe=utf-8&app=demopage`;
-
-          fetch(url)
-            .then(response => response.json())
-            .then(data => {
-              if (data[0] === 'SUCCESS') {
-                // Pehla Hindi suggestion nikalna
-                const hindiWord = data[1][0][1][0]; 
-                
-                // Puraane English word ko Hindi word se replace karna
-                words[words.length - 2] = hindiWord;
-                
-                // Naya text banana
-                const newText = words.join(' ');
-
-                // Wapas sahi form model me set karna
-                if (fieldType === 'main') {
-                  this.formModel.MainHead_Hindi = newText;
-                } else if (fieldType === 'sub') {
-                  this.subHeadFormModel.SubHead_Hindi = newText;
-                }
-              }
-            })
-            .catch(error => console.error('Transliteration Error:', error));
-        }
-      }
+onEnglishChange(text: string) {
+    if (!text || text.trim() === '') {
+      this.formModel.MainHead_Hindi = '';
+      return;
     }
-}
 
-convertToHindi1(event: any) {
-    // Sirf tabhi convert karega jab user 'Space' dabayega
-    if (event.key === ' ' || event.code === 'Space') {
-      const text = this.subHeadFormModel.SubHead_Hindi;
-      
-      // Text ko words me todna
-      const words = text.split(' ');
-      
-      // Space ke theek pehle wala word nikalna
-      const wordToConvert = words[words.length - 2]; 
+    const words = text.split(' ');
+    const acronymMap: { [key: string]: string } = {
+      'a': 'ए', 'b': 'बी', 'c': 'सी', 'd': 'डी', 'e': 'ई', 'f': 'एफ', 'g': 'जी',
+      'h': 'एच', 'i': 'आई', 'j': 'जे', 'k': 'के', 'l': 'एल', 'm': 'एम', 'n': 'एन',
+      'o': 'ओ', 'p': 'पी', 'q': 'क्यू', 'r': 'आर', 's': 'एस', 't': 'टी', 'u': 'यू',
+      'v': 'वी', 'w': 'डब्ल्यू', 'x': 'एक्स', 'y': 'वाई', 'z': 'ज़'
+    };
 
-      if (wordToConvert && wordToConvert.trim() !== '') {
-        // Check karna ki word pehle se Hindi me toh nahi hai (Devanagari Regex)
-        const isAlreadyHindi = /[\u0900-\u097F]/.test(wordToConvert);
-        
-        if (!isAlreadyHindi) {
-          // Google Input Tools API URL
-          const url = `https://inputtools.google.com/request?text=${wordToConvert}&itc=hi-t-i0-und&num=1&cp=0&cs=1&ie=utf-8&oe=utf-8&app=demopage`;
+    // Har word ko alag-alag process karenge
+    const processedWordsPromises = words.map(async (word) => {
+      if (!word) return '';
 
-          fetch(url)
-            .then(response => response.json())
-            .then(data => {
-              if (data[0] === 'SUCCESS') {
-                // Pehla Hindi suggestion nikalna
-                const hindiWord = data[1][0][1][0]; 
-                
-                // Puraane English word ko Hindi word se replace karna
-                words[words.length - 2] = hindiWord;
-                
-                // Wapas form model me set karna
-                this.subHeadFormModel.SubHead_Hindi = words.join(' ');
-              }
-            })
-            .catch(error => console.error('Transliteration Error:', error));
+      // 1. Agar word pure uppercase acronym hai (jaise NPCB, CGMSC), toh letter-by-letter spell karein
+      if (word === word.toUpperCase() && /^[A-Z0-9]+$/.test(word)) {
+        let spelled = '';
+        for (let char of word.toLowerCase()) {
+          spelled += acronymMap[char] || char;
         }
+        return spelled;
       }
-    }
-}
+
+      // 2. Normal words ke liye Backend API (Google Transliteration) call karein
+      try {
+        const res: any = await this.api.get(`GMFI/Transliterate?text=${encodeURIComponent(word)}`).toPromise();
+        if (res && res[0] === 'SUCCESS' && res[1] && res[1][0] && res[1][0][1]) {
+          return res[1][0][1][0]; // Jaise 'Fund' ka 'फंड'
+        }
+      } catch (err) {
+        console.error('Transliteration error for word:', word, err);
+      }
+
+      return word; // Agar API fail ho toh original word return karega
+    });
+
+    // Sabhi words convert hone ke baad unhe jod denge
+    Promise.all(processedWordsPromises).then((translatedWords) => {
+      this.formModel.MainHead_Hindi = translatedWords.join(' ');
+    });
+  }
+
+
  
  
 
@@ -312,16 +262,46 @@ convertToHindi1(event: any) {
     }
   }
 
-loadReceiptRecordsGrid() {
-  this.api.get(`GMFI/GetMainHeads`).subscribe({
-    next: (res: any) => {
-      this.dataSource.data = res || [];
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    },
-    error: (err) => console.error(err)
-  });
-}
+  // https://localhost:7036/api/GMFI/GetMainHeadById/2
+  loadReceiptRecordsGridEdit(id:any) {
+    this.api.get(`GMFI/GetMainHeadById/${id}`).subscribe({
+      next: (res: any) => {
+        // Agar API single object degi toh [res] array banayega, agar list degi toh direct bind karega
+        this.dataSource.data = Array.isArray(res) ? res : (res ? [res] : []);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (err) => {
+        console.error("Error fetching records:", err);
+        this.dataSource.data = [];
+      }
+    });
+  }
+
+  loadReceiptRecordsGrid(id:any) {
+    this.api.get(`GMFI/GetMainHeadById/${id}`).subscribe({
+      next: (res: any) => {
+        // Agar API single object degi toh [res] array banayega, agar list degi toh direct bind karega
+        this.dataSource.data = Array.isArray(res) ? res : (res ? [res] : []);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (err) => {
+        console.error("Error fetching records:", err);
+        this.dataSource.data = [];
+      }
+    });
+  }
+// loadReceiptRecordsGrid() {
+//   this.api.get(`GMFI/GetMainHeads`).subscribe({
+//     next: (res: any) => {
+//       this.dataSource.data = res || [];
+//       this.dataSource.paginator = this.paginator;
+//       this.dataSource.sort = this.sort;
+//     },
+//     error: (err) => console.error(err)
+//   });
+// }
 
 
 
@@ -334,4 +314,35 @@ loadReceiptRecordsGrid() {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  editRecord(element: any) {
+    // API se direct data fetch karke form model me bind karna
+    this.api.get(`GMFI/GetMainHeadById/${element.MHID}`).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.formModel = {
+            MHID: res.MHID,
+            MainHead_Eng: res.MainHead_Eng,
+            MainHead_Hindi: res.MainHead_Hindi,
+            IsActive: res.IsActive
+          };
+        }
+      },
+      error: (err) => {
+        console.error("Error fetching record for edit:", err);
+      }
+    });
+  }
+
+  // Reset form function
+  resetForm(form: any) {
+    form.resetForm({ IsActive: 'Active' });
+    this.formModel = {
+      MHID: null,
+      MainHead_Eng: '',
+      MainHead_Hindi: '',
+      IsActive: 'Active'
+    };
+  }
+
 }
