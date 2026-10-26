@@ -97,7 +97,7 @@ export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
     private readonly http: HttpClient,
     private readonly toastr: ToastrService,
     private readonly router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.userId = resolveLoginUserId();
@@ -358,7 +358,8 @@ export class ConsolidatedIndentDmeComponent implements OnInit, OnDestroy {
   }
 
   private loadBudgetHeads(): void {
-    this.http.get<unknown[]>(`${this.orderApi}budget-heads`).subscribe({
+    if (!this.userId) return;
+    this.http.get<unknown[]>(`${this.orderApi}budget-heads?userId=${this.userId}`).subscribe({
       next: (res) => {
         const arr = Array.isArray(res) ? res : [];
         this.budgetHeads = arr.map((item: any) => ({

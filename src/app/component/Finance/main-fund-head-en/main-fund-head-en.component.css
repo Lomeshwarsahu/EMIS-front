@@ -48,3 +48,33 @@ tr.expanded-row td {
 td.p-0 {
     padding: 0 !important;
 }
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .style-scrollbar::-webkit-scrollbar-track {
+  background: #0c0e12;
+}
+
+:host-context(html[data-theme='dark']) .style-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+:host-context(html[data-theme='dark']) .style-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .pink-row-accent {
+  background-color: rgba(244, 63, 94, 0.1) !important;
+}
+
+:host-context(html[data-theme='dark']) .pink-row-accent:hover {
+  background-color: rgba(244, 63, 94, 0.18) !important;
+}
+
+:host-context(html[data-theme='dark']) .text-indigo {
+  color: #a5b4fc;
+}
+
+:host-context(html[data-theme='dark']) .bg-indigo-subtle {
+  background-color: rgba(99, 102, 241, 0.18);
+  border-color: rgba(129, 140, 248, 0.4);
+}

@@ -24,7 +24,8 @@ if (typeof window !== 'undefined' && window.console) {
 
 // Splash screen (index.html): logos open big, then zoom out and fly into their
 // places in the login header while the background blurs away.
-const firstLoad = !sessionStorage.getItem('splashShown');
+// Shown only on the very first visit; index.html hides it on later loads.
+const firstLoad = !document.documentElement.classList.contains('splash-seen');
 const INTRO_MS = 4000; // lets the background video play before the hand-off
 const FLY_MS = 950;
 const splashStart = Date.now();
@@ -61,7 +62,11 @@ function flyTo(el: HTMLElement, target: HTMLElement): void {
 async function hideSplash(): Promise<void> {
   const splash = document.getElementById('app-splash');
   if (!splash) return;
-  sessionStorage.setItem('splashShown', '1');
+  try {
+    localStorage.setItem('splashShown', '1');
+  } catch {
+    // storage blocked: splash will simply play again next time
+  }
   const done = () => splash.remove();
 
   if (!firstLoad) {

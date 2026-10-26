@@ -439,31 +439,51 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
         next: (items) => {
           console.log('[Sidebar Debug] roleId:', roleId, 'items received:', JSON.stringify(items, null, 2));
           if (items && items.length > 0) {
-            // For DME role: merge any static menu sections missing from the API response.
-            // The DB may not have all sub-menus mapped in masSubMenuRole, so sections like
-            // Stock can be absent from the API even though they exist in the static definition.
-            const isDmeOrCategoryRole =
-              ['DME', 'FU', 'PRINCIPAL', 'FDA', 'DHS', 'SEC1', 'CME', 'COLLECTOR', 'DME1'].includes(activeRole) ||
-              ['DME', 'FU', 'PRINCIPAL', 'FDA', 'DHS', 'SEC1', 'CME', 'COLLECTOR', 'DME1'].includes((this.basicAuthentication.getRole().roleName || '').toUpperCase().trim());
-            if (isDmeOrCategoryRole) {
+            const isGmFinance = ['AUGMF', 'GM FINANCE', 'GM Finance', 'GMF'].includes(activeRole);
+            if (isGmFinance) {
               const staticItems = this.menuService.getMenuItems(activeRole);
-              const apiLabels = new Set(items.map((i: any) => (i.label || '').toLowerCase()));
-              const missingStatic = (staticItems || []).filter(
-                (s: any) => s.label && !apiLabels.has(s.label.toLowerCase())
-              );
-              if (missingStatic.length > 0) {
-                console.log('[Sidebar Debug] Merging missing static sections:', missingStatic.map((s: any) => s.label));
-                this.menuItems = [...items, ...missingStatic];
+              const fundsStatic = staticItems.find((s) => (s.label || '').toLowerCase() === 'funds');
+              if (fundsStatic?.submenu?.length) {
+                const merged = items.map((apiItem: any) => {
+                  if ((apiItem.label || '').toLowerCase() === 'funds') {
+                    const existingSubRoutes = new Set(
+                      (apiItem.submenu || []).map((sub: any) => (sub.route || '').toLowerCase())
+                    );
+                    const missingSubs = fundsStatic.submenu!.filter(
+                      (sub: any) => sub.route && !existingSubRoutes.has(sub.route.toLowerCase())
+                    );
+                    if (missingSubs.length > 0) {
+                      return {
+                        ...apiItem,
+                        submenu: [...(apiItem.submenu || []), ...missingSubs],
+                      };
+                    }
+                  }
+                  return apiItem;
+                });
+                this.menuItems = merged;
               } else {
                 this.menuItems = items;
               }
             } else {
+              // For all other roles (including DME Facility), keep sidebar 100% dynamic from DB
               this.menuItems = items;
             }
           } else {
             console.log('[Sidebar Debug] No items returned, falling back to static menu');
             this.fallbackStaticMenu();
           }
+          // Ensure Home is always the first item in the sidebar for all roles
+          const homeIdx = this.menuItems.findIndex(
+            (i) => i.route === '/home' || (i.label || '').trim().toLowerCase() === 'home'
+          );
+          if (homeIdx > 0) {
+            const [homeItem] = this.menuItems.splice(homeIdx, 1);
+            this.menuItems.unshift(homeItem);
+          } else if (homeIdx === -1) {
+            this.menuItems.unshift({ label: 'Home', route: '/home' });
+          }
+
           this.expandActiveParentMenu();
           this.updatePageHeading(this.router.url);
           this.cdr.markForCheck();
@@ -497,6 +517,16 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
       this.menuItems = this.menuService.getMenuItems(currentRole);
     } else {
       this.menuItems = this.menuService.getMenuItems(currentRole);
+    }
+
+    const homeIdx = this.menuItems.findIndex(
+      (i) => i.route === '/home' || (i.label || '').trim().toLowerCase() === 'home'
+    );
+    if (homeIdx > 0) {
+      const [homeItem] = this.menuItems.splice(homeIdx, 1);
+      this.menuItems.unshift(homeItem);
+    } else if (homeIdx === -1) {
+      this.menuItems.unshift({ label: 'Home', route: '/home' });
     }
   }
 

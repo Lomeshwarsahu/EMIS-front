@@ -766,7 +766,7 @@ const routes: Routes = [
     path: 'PlanaTenderD',
     component: PlanaTenderDComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU', 'DME','AUPO','TPOT'] },
+    data: { allowedRoles: ['AU', 'DME', 'AUPO', 'TPOT', 'Facility', 'HealthFacility', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'TenderCoverAObClaimAfter',
@@ -1205,7 +1205,7 @@ const routes: Routes = [
     path: 'tender/plan',
     component: PlanaTenderDComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AU', 'DME'] },
+    data: { allowedRoles: ['AU', 'DME', 'AUPO', 'TPOT', 'Facility', 'HealthFacility', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'tender/evaluation',
@@ -2039,13 +2039,23 @@ const routes: Routes = [
     path: 'MainFundHead',
     component: MainFundHeadEnComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUGMF'] },
+    data: { allowedRoles: ['AUGMF', 'GM FINANCE', 'GM Finance', 'GMF'] },
+  },
+  {
+    path: 'mainfundhead',
+    redirectTo: 'MainFundHead',
+    pathMatch: 'full',
   },
   {
     path: 'OpeningBalance',
     component: OpeningBalanceComponent,
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUGMF'] },
+    data: { allowedRoles: ['AUGMF', 'GM FINANCE', 'GM Finance', 'GMF'] },
+  },
+  {
+    path: 'openingbalance',
+    redirectTo: 'OpeningBalance',
+    pathMatch: 'full',
   },
   {
     path: 'IndentRCPOTenderStatus',

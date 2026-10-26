@@ -54,3 +54,22 @@ h2 {
 .custom-search-box input:focus {
   border-color: #3f51b5; /* Angular Material ka primary color */
 }
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .form-container,
+:host-context(html[data-theme='dark']) .custom-search-box {
+  background-color: #0c0e12;
+}
+
+:host-context(html[data-theme='dark']) h2 {
+  color: #60a5fa;
+}
+
+:host-context(html[data-theme='dark']) .custom-search-box input {
+  background-color: #0c0e12;
+  border-color: #262b36;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .custom-search-box input:focus {
+  border-color: #2563eb;
+}

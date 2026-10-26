@@ -11,6 +11,8 @@ import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
 import { SecureFileService } from '../../../service/secure-file.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface FinancialYearOption {
   financialYearId: number;
@@ -50,11 +52,12 @@ interface SdPaymentMode {
 @Component({
   selector: 'app-po-supply',
   standalone: true,
-  imports: [CommonModule, FormsModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, SupplierPageSkeletonComponent],
   templateUrl: './po-supply.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply.component.css'],
 })
 export class PoSupplyComponent implements OnInit, OnDestroy {
+  readonly pager = new ListPager();
   private readonly secureFile = inject(SecureFileService);
   loading = false;
   userId = 0;
@@ -174,6 +177,7 @@ export class PoSupplyComponent implements OnInit, OnDestroy {
     this.selectedFinancialYearId = this.defaultFinancialYearId;
     this.selectedTenderId = 0;
     this.selectedSdFilter = 'all';
+    this.pager.reset();
     this.restoreFilters = { financialYearId: 0, tenderId: 0 };
     this.router.navigate([], {
       relativeTo: this.route,
@@ -200,10 +204,12 @@ export class PoSupplyComponent implements OnInit, OnDestroy {
         next: (raw) => {
           this.loading = false;
           const list = Array.isArray(raw) ? raw : [];
+          this.pager.reset();
           this.rows = list.map((row: Record<string, unknown>) => this.mapRow(row));
         },
         error: (err) => {
           this.loading = false;
+          this.pager.reset();
           this.rows = [];
           this.toastr.error(err?.error?.message ?? 'Unable to load purchase orders.');
         },

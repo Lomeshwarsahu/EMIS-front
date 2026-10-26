@@ -101,8 +101,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of rows; let i = index" [class.alt-row]="i % 2 === 1">
-            <td class="col-sn">{{ i + 1 }}</td>
+          <tr *ngFor="let row of rows | slice: pager.start : pager.end; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="col-sn">{{ pager.start + i + 1 }}</td>
             <td class="col-tender">{{ row.tenderNo }}</td>
             <td class="col-amt">{{ row.emdAmt }}</td>
             <td class="col-mode">{{ row.emdType }}</td>
@@ -130,6 +130,8 @@
           </tr>
         </tbody>
       </table>
+      <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+        [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 </div>

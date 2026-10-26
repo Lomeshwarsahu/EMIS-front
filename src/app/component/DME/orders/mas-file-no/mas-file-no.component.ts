@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 import { apiErrorMessage } from '../../shared/session.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface FinancialYear {
   Key: number;
@@ -27,11 +29,12 @@ interface MasFileNoRow {
 @Component({
   selector: 'app-mas-file-no',
   standalone: true,
-  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './mas-file-no.component.html',
   styleUrls: ['../../shared/legacy-ems-page.css', './mas-file-no.component.css'],
 })
 export class MasFileNoComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
 
   financialYears: FinancialYear[] = [];
@@ -152,6 +155,7 @@ export class MasFileNoComponent implements OnInit {
     this.loading = true;
     this.http.get<MasFileNoRow[]>(`${this.apiRoot}file-no-list`).subscribe({
       next: (res) => {
+        this.pager.reset();
         this.rows = this.mapRows(res);
         this.loading = false;
       },

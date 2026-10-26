@@ -39,3 +39,15 @@
 .tracking-wide {
   letter-spacing: 0.5px;
 }
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .style-scrollbar::-webkit-scrollbar-track {
+  background: #0c0e12;
+}
+
+:host-context(html[data-theme='dark']) .style-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+:host-context(html[data-theme='dark']) .style-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}

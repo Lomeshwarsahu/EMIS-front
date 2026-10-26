@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 import { apiErrorMessage } from '../../shared/session.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface PoReallocationHeader {
   PoId: number;
@@ -63,11 +65,13 @@ interface HistoryRow {
 @Component({
   selector: 'app-po-reallocation',
   standalone: true,
-  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './po-reallocation.component.html',
   styleUrls: ['../../shared/legacy-ems-page.css', './po-reallocation.component.css'],
 })
 export class PoReallocationComponent implements OnInit {
+  readonly pager = new ListPager();
+  readonly historyPager = new ListPager();
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
 
   get downloadUrl(): string {
@@ -215,6 +219,7 @@ export class PoReallocationComponent implements OnInit {
 
     this.http.get<PoReallocationRow[]>(`${this.apiRoot}po-reallocation/rows?poId=${poId}`).subscribe({
       next: (res) => {
+        this.pager.reset();
         this.rows = (Array.isArray(res) ? res : []).map((r) => ({
           ...r,
           checked: false,
@@ -227,6 +232,7 @@ export class PoReallocationComponent implements OnInit {
 
     this.http.get<HistoryRow[]>(`${this.apiRoot}po-reallocation/history?poId=${poId}`).subscribe({
       next: (res) => {
+        this.historyPager.reset();
         this.history = Array.isArray(res) ? res : [];
       },
       error: (e) => this.toastr.error(apiErrorMessage(e, 'Could not load reallocation history.')),

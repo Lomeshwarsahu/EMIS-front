@@ -7,6 +7,8 @@ import { environment } from '../../../../../environments/environment';
 import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 import { apiErrorMessage, resolveLoginUserId } from '../../shared/session.util';
 import { SecureFileService } from '../../../../service/secure-file.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 type InstallationFileType = 'insReport' | 'insPhoto' | 'waranty' | 'chalan';
 
@@ -41,11 +43,12 @@ interface InstallationReportPage {
 @Component({
   selector: 'app-po-installation-report',
   standalone: true,
-  imports: [CommonModule, DmePageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, DmePageSkeletonComponent],
   templateUrl: './po-installation-report.component.html',
   styleUrls: ['../dme-order-detail.shared.css', './po-installation-report.component.css'],
 })
 export class PoInstallationReportComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly secureFile = inject(SecureFileService);
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
 
@@ -135,6 +138,7 @@ export class PoInstallationReportComponent implements OnInit {
   private loadReport(): void {
     this.loading = true;
     this.loadError = '';
+    this.pager.reset();
     this.page = null;
 
     this.http
@@ -144,6 +148,7 @@ export class PoInstallationReportComponent implements OnInit {
       .subscribe({
         next: (raw) => {
           this.loading = false;
+          this.pager.reset();
           this.page = this.mapPage(raw);
           if (!this.page.rows.length) {
             this.loadError = 'No installation items found for this receipt.';

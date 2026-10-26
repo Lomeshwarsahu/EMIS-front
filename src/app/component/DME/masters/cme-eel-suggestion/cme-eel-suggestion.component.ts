@@ -4,6 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { apiErrorMessage } from '../../shared/session.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface EelSuggestionRow {
   Id: number;
@@ -22,11 +24,12 @@ interface EelSuggestionRow {
 @Component({
   selector: 'app-cme-eel-suggestion',
   standalone: true,
-  imports: [CommonModule],
+  imports: [MatPaginatorModule, CommonModule],
   templateUrl: './cme-eel-suggestion.component.html',
   styleUrls: ['../../shared/legacy-ems-page.css', './cme-eel-suggestion.component.css'],
 })
 export class CmeEelSuggestionComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly apiRoot = `${environment.apiUrl}/DMEMasters/`;
 
   rows: EelSuggestionRow[] = [];
@@ -45,11 +48,13 @@ export class CmeEelSuggestionComponent implements OnInit {
     this.loading = true;
     this.http.get<EelSuggestionRow[]>(`${this.apiRoot}eel-suggestions`).subscribe({
       next: (res) => {
+        this.pager.reset();
         this.rows = this.mapRows(res);
         this.loading = false;
       },
       error: (e) => {
         this.loading = false;
+        this.pager.reset();
         this.rows = [];
         this.toastr.error(apiErrorMessage(e, 'Could not load EEL suggestions.'));
       },

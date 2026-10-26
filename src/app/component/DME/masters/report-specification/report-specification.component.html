@@ -75,9 +75,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of items; index as i" [class.alt-row]="i % 2 === 1">
+          <tr *ngFor="let row of items | slice: pager.start : pager.end; index as i" [class.alt-row]="i % 2 === 1">
             <ng-container *ngIf="editingItemId !== row.ItemId; else editRow">
-              <td class="text-center">{{ i + 1 }}</td>
+              <td class="text-center">{{ pager.start + i + 1 }}</td>
               <td>{{ row.ItemCode || '—' }}</td>
               <td>{{ row.ItemName || '—' }}</td>
               <td>{{ displayCategory(row.EqpCatName) || '—' }}</td>
@@ -99,7 +99,7 @@
               </td>
             </ng-container>
             <ng-template #editRow>
-              <td class="text-center">{{ i + 1 }}</td>
+              <td class="text-center">{{ pager.start + i + 1 }}</td>
               <td>{{ row.ItemCode || '—' }}</td>
               <td>{{ row.ItemName || '—' }}</td>
               <td>{{ displayCategory(row.EqpCatName) || '—' }}</td>
@@ -128,6 +128,8 @@
           </tr>
         </tbody>
       </table>
+      <mat-paginator *ngIf="items.length" [length]="items.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+        [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 </div>

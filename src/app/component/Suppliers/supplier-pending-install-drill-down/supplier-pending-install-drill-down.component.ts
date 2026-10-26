@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
 import { resolveSupplierUserId } from '../supplier-user.util';
 import { SupplierPageSkeletonComponent } from '../supplier-page-skeleton/supplier-page-skeleton.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 export interface PendingInstallDrillDownRow {
   district: string;
@@ -30,7 +32,7 @@ export interface PendingInstallDrillDownReport {
 @Component({
   selector: 'app-supplier-pending-install-drill-down',
   standalone: true,
-  imports: [CommonModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, SupplierPageSkeletonComponent],
   templateUrl: './supplier-pending-install-drill-down.component.html',
   styleUrls: [
     '../supplier-po-pages.shared.css',
@@ -38,6 +40,7 @@ export interface PendingInstallDrillDownReport {
   ],
 })
 export class SupplierPendingInstallDrillDownComponent implements OnInit {
+  readonly pager = new ListPager();
   loading = false;
   userId = 0;
   poId = 0;
@@ -83,6 +86,7 @@ export class SupplierPendingInstallDrillDownComponent implements OnInit {
       printDate: this.formatPrintDate(new Date()),
       rows: [...this.report.rows],
     };
+    this.pager.reset();
     this.report = snapshot;
 
     // Same-window iframe print (legacy printDiv) — no new tab, full data
@@ -177,11 +181,13 @@ export class SupplierPendingInstallDrillDownComponent implements OnInit {
 
     this.loading = true;
     this.loadError = '';
+    this.pager.reset();
     this.report = null;
 
     this.api.getSupplierBalanceStatusDrillDown(this.userId, this.poId).subscribe({
       next: (raw) => {
         this.loading = false;
+        this.pager.reset();
         this.report = this.mapReport(raw as Record<string, unknown>);
         if (!this.report.rows.length && !this.report.poNo) {
           this.loadError = 'No data found for this PO.';

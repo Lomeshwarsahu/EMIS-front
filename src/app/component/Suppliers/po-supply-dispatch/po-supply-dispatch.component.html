@@ -56,8 +56,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of rows; let i = index" [class.supply-not-supplied]="isNotSupplied(row)">
-            <td class="text-center text-slate-500">{{ i + 1 }}</td>
+          <tr *ngFor="let row of rows | slice: pager.start : pager.end; let i = index" [class.supply-not-supplied]="isNotSupplied(row)">
+            <td class="text-center text-slate-500">{{ pager.start + i + 1 }}</td>
             <td>
               <div class="text-xs text-slate-500 mb-1">{{ row.outwardNo }}</div>
               <div class="font-medium text-slate-700">{{ row.poNo }}</div>
@@ -91,6 +91,8 @@
           </tr>
         </tbody>
       </table>
+      <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+        [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 </div>

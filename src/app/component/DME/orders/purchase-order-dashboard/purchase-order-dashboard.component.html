@@ -55,7 +55,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let row of rows; index as i" [class.alt-row]="i % 2 === 1">
-            <td class="text-center">{{ i + 1 }}</td>
+            <td class="text-center">{{ pager.start + i + 1 }}</td>
             <td>
               {{ row.ItemName || '—' }}
               <span class="sub-code" *ngIf="row.Code">{{ row.Code }}</span>
@@ -118,6 +118,8 @@
           </tr>
         </tbody>
       </table>
+      <mat-paginator *ngIf="totalCount" [length]="totalCount" [pageIndex]="pager.index" [pageSize]="pager.size"
+        [pageSizeOptions]="pager.sizes" (page)="onPageChange($event)" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 </div>

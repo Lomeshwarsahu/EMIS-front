@@ -793,23 +793,6 @@ export class MenuServiceService {
           ],
         },
         {
-          label: 'Tender',
-          route: '',
-          submenu: [
-            { label: 'Plan a Tender', route: '/tender/plan' },
-            { label: 'Evaluation A', route: '/tender/evaluation' },
-            {
-              label: 'Claim-Object Preparation',
-              route: '/tender/claim-object',
-            },
-            {
-              label: 'Gem-Price EAcceptance',
-              route: '/tender/gem-price-acceptance',
-            },
-            { label: 'Gem-Price Entry', route: '/tender/plan' },
-          ],
-        },
-        {
           label: 'Indents',
           route: '',
           submenu: [
@@ -1363,6 +1346,17 @@ export class MenuServiceService {
       items: [
         { label: 'Home', route: '/home' },
         {
+          label: 'Funds',
+          route: '',
+          submenu: [
+            { label: 'Add Funds', route: '/NewFundMaster' },
+            { label: 'Fund Map', route: '/FundMap' },
+            { label: 'Fund Receipt Entry', route: '/BudgentEntry' },
+            { label: 'Main Fund Head', route: '/MainFundHead' },
+            { label: 'Opening Balance', route: '/OpeningBalance' },
+          ],
+        },
+        {
           label: 'Vendor Registration Completed',
           route: '/VendorRegistrationCompleted',
         },
@@ -1769,6 +1763,9 @@ export class MenuServiceService {
       PRINCIPAL: 'DME',
       FDA: 'DME',
       FACILITY: 'DME',
+      'DME FACILITY': 'DME',
+      HEALTHFACILITY: 'DME',
+      'HEALTH FACILITY': 'DME',
       MEDICAL: 'DME',
       'MEDICAL COLLEGE': 'DME',
       SUP: 'Suppliers',

@@ -11,6 +11,8 @@ import {
   resolveLoginAuthorityId,
   resolveLoginUserId,
 } from '../../shared/session.util';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface FinancialYearOption {
   FinancialYearId: number;
@@ -52,16 +54,18 @@ interface PoReceiptDeskRow {
 @Component({
   selector: 'app-purchase-order-receipts',
   standalone: true,
-  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './purchase-order-receipts.component.html',
   styleUrls: ['./purchase-order-receipts.component.css'],
 })
 export class PurchaseOrderReceiptsComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
 
   financialYears: FinancialYearOption[] = [];
   itemOptions: PoEquipmentOption[] = [];
   rows: PoReceiptDeskRow[] = [];
+  totalCount = 0;
 
   selectedFinancialYearId = 0;
   selectedItemCode = '0';
@@ -97,12 +101,21 @@ export class PurchaseOrderReceiptsComponent implements OnInit {
     this.loadDesk();
   }
 
-  loadDesk(): void {
+  onPageChange(e: PageEvent): void {
+    this.pager.onPage(e);
+    this.loadDesk(false);
+  }
+
+  /** Server-side paging: API returns only the current page (with batches) plus `totalCount`. */
+  loadDesk(resetPage = true): void {
     if (!this.userId) {
       this.toastr.warning('Please login again — user id missing.');
       return;
     }
 
+    if (resetPage) {
+      this.pager.reset();
+    }
     this.loading = true;
     const authQ = this.authorityId ? `&authorityId=${encodeURIComponent(this.authorityId)}` : '';
     const yearQ = this.selectedFinancialYearId > 0 ? `&financialYearId=${this.selectedFinancialYearId}` : '';
@@ -112,17 +125,20 @@ export class PurchaseOrderReceiptsComponent implements OnInit {
         : '';
 
     this.http
-      .get<PoReceiptDeskRow[]>(
-        `${this.apiRoot}po-receipt-desk?userId=${this.userId}${authQ}${yearQ}${itemQ}`,
+      .get<{ Items?: unknown; items?: unknown; TotalCount?: number; totalCount?: number }>(
+        `${this.apiRoot}po-receipt-desk?userId=${this.userId}${authQ}${yearQ}${itemQ}` +
+          `&page=${this.pager.index + 1}&pageSize=${this.pager.size}`,
       )
       .subscribe({
         next: (res) => {
-          this.rows = this.mapRows(res);
+          this.rows = this.mapRows(res?.Items ?? res?.items);
+          this.totalCount = Number(res?.TotalCount ?? res?.totalCount ?? 0);
           this.loading = false;
         },
         error: (e) => {
           this.loading = false;
           this.rows = [];
+          this.totalCount = 0;
           this.toastr.error(apiErrorMessage(e, 'Could not load PO receipt desk.'));
         },
       });

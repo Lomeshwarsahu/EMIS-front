@@ -104,3 +104,19 @@
 ::ng-deep .mat-mdc-paginator {
     font-family: inherit;
 }
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .card {
+  border-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) .hover-add-btn:hover {
+  background-color: #1d4ed8 !important;
+}
+
+:host-context(html[data-theme='dark']) .row-hover-effect:hover {
+  background-color: #1a2030 !important;
+}
+
+:host-context(html[data-theme='dark']) ::ng-deep .ng-select.custom-select .ng-select-container {
+  border-color: #262b36 !important;
+}

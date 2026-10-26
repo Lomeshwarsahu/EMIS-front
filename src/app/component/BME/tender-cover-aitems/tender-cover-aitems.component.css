@@ -94,3 +94,34 @@
         text-align: center;
     }
 }
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .custom-participation-table .mat-header-cell {
+  background-color: #2563eb !important;
+  border-color: #1d4ed8 !important;
+}
+
+:host-context(html[data-theme='dark']) .custom-participation-table .mat-cell {
+  color: #e2e8f0;
+  border-color: #262b36 !important;
+}
+
+:host-context(html[data-theme='dark']) .custom-participation-table .mat-row:nth-child(odd) {
+  background-color: #0c0e12;
+}
+
+:host-context(html[data-theme='dark']) .custom-participation-table .mat-row:nth-child(even) {
+  background-color: #141820;
+}
+
+:host-context(html[data-theme='dark']) .row-hover-effect:hover {
+  background-color: #1a2030 !important;
+}
+
+:host-context(html[data-theme='dark']) .custom-check {
+  border-color: #475569;
+}
+
+:host-context(html[data-theme='dark']) .custom-check:checked {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}

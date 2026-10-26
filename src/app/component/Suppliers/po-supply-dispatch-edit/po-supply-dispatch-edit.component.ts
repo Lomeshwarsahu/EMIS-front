@@ -11,6 +11,8 @@ import {
   poSupplyDispatchQuery,
   readPoSupplyDispatchFilters,
 } from '../supplier-transaction-state.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface DispatchEditBatch {
   issueId: number;
@@ -44,11 +46,12 @@ interface DispatchEditRow {
 @Component({
   selector: 'app-po-supply-dispatch-edit',
   standalone: true,
-  imports: [CommonModule, SupplierPageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, SupplierPageSkeletonComponent],
   templateUrl: './po-supply-dispatch-edit.component.html',
   styleUrls: ['../supplier-po-pages.shared.css', './po-supply-dispatch-edit.component.css'],
 })
 export class PoSupplyDispatchEditComponent implements OnInit {
+  readonly pager = new ListPager();
   loading = false;
   userId = 0;
   poId = 0;
@@ -97,12 +100,14 @@ export class PoSupplyDispatchEditComponent implements OnInit {
         this.poNo = String(data['poNo'] ?? data['PoNo'] ?? '');
         this.poDate = String(data['poDate'] ?? data['PoDate'] ?? '');
         const rowsRaw = data['rows'] ?? data['Rows'] ?? [];
+        this.pager.reset();
         this.rows = Array.isArray(rowsRaw)
           ? rowsRaw.map((row) => this.mapRow(row as Record<string, unknown>))
           : [];
       },
       error: (err) => {
         this.loading = false;
+        this.pager.reset();
         this.rows = [];
         this.toastr.error(err?.error?.message ?? 'Unable to load dispatch equipment desk.');
       },

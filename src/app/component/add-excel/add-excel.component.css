@@ -49,3 +49,27 @@
 .custom-brown-table .mat-column-select {
     text-align: center;
 }
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .custom-design-container {
+  background-color: #0c0e12;
+  border-color: #262b36;
+}
+
+:host-context(html[data-theme='dark']) .custom-brown-table thead th {
+  background-color: #2563eb !important;
+}
+
+:host-context(html[data-theme='dark']) .custom-brown-table td {
+  color: #e2e8f0;
+  border-color: #262b36 !important;
+}
+
+:host-context(html[data-theme='dark']) .table-input {
+  background-color: #0c0e12;
+  border-color: #262b36;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .custom-brown-table tr:hover {
+  background-color: #1a2030 !important;
+}

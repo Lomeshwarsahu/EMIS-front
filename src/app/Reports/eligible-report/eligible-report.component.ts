@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { DmePageSkeletonComponent } from '../../component/DME/shared/dme-page-skeleton/dme-page-skeleton.component';
 import { apiErrorMessage } from '../../component/DME/shared/session.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface YearOption {
   Key: number;
@@ -48,11 +50,13 @@ interface EligibleDetailRow {
 @Component({
   selector: 'app-eligible-report',
   standalone: true,
-  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './eligible-report.component.html',
   styleUrls: ['./component.css'],
 })
 export class EligibleReportComponent implements OnInit {
+  readonly pager = new ListPager();
+  readonly detailPager = new ListPager();
   private readonly apiRoot = `${environment.apiUrl}/DMEReports/`;
 
   financialYears: YearOption[] = [];
@@ -84,6 +88,7 @@ export class EligibleReportComponent implements OnInit {
     this.loading = true;
     this.http.get<EligibleSummaryRow[]>(`${this.apiRoot}eligible-summary`).subscribe({
       next: (res) => {
+        this.pager.reset();
         this.summaryRows = this.mapSummary(res);
         this.view = 'summary';
         this.loading = false;
@@ -112,6 +117,7 @@ export class EligibleReportComponent implements OnInit {
       .get<EligibleDetailRow[]>(`${this.apiRoot}eligible-detail`, { params })
       .subscribe({
         next: (res) => {
+          this.detailPager.reset();
           this.detailRows = this.mapDetail(res);
           this.view = 'detail';
           this.loading = false;

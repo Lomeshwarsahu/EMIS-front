@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { DmePageSkeletonComponent } from '../../DME/shared/dme-page-skeleton/dme-page-skeleton.component';
 import { MasterApiService } from '../../../service/master-api.service';
@@ -35,6 +35,9 @@ export class DhsFacilityUsersLocationsComponent implements OnInit {
   selectedDistrictId = 0;
   selectedFacilityTypeId = 0;
   dataSource = new MatTableDataSource<DHSFacilityGridDto>([]);
+  @ViewChild('paginator') set paginator(p: MatPaginator | undefined) {
+    this.dataSource.paginator = p ?? null;
+  }
   displayedColumns = ['sno', 'locationName', 'district', 'emailId', 'userId', 'action'];
 
   @ViewChild('sort') sort!: MatSort;

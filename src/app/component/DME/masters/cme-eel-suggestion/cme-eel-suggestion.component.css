@@ -31,3 +31,14 @@
 .eel-page .legacy-grid td {
   vertical-align: top;
 }
+
+/* Dark theme — matches the unified EMIS / supplier palette */
+:host-context(html[data-theme='dark']) .btn-export {
+  background: #0c0e12;
+  border-color: #2563eb;
+  color: #60a5fa;
+}
+
+:host-context(html[data-theme='dark']) .btn-export:hover {
+  background: #1a2030;
+}

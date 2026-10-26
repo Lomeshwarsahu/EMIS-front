@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 import { apiErrorMessage } from '../../shared/session.util';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListPager } from 'src/app/helper/list-pager';
 
 interface PoAmendmentHeader {
   PoId: number;
@@ -44,11 +46,12 @@ interface PoAmendmentHistoryRow {
 @Component({
   selector: 'app-po-amendment',
   standalone: true,
-  imports: [CommonModule, FormsModule, DmePageSkeletonComponent],
+  imports: [MatPaginatorModule, CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './po-amendment.component.html',
   styleUrls: ['../../shared/legacy-ems-page.css', './po-amendment.component.css'],
 })
 export class PoAmendmentComponent implements OnInit {
+  readonly pager = new ListPager();
   private readonly apiRoot = `${environment.apiUrl}/DMEOrder/`;
 
   get downloadUrl(): string {
@@ -179,6 +182,7 @@ export class PoAmendmentComponent implements OnInit {
 
     this.http.get<PoAmendmentHistoryRow[]>(`${this.apiRoot}po-amendment/history?poId=${poId}`).subscribe({
       next: (res) => {
+        this.pager.reset();
         this.history = Array.isArray(res) ? res : [];
       },
       error: (e) => this.toastr.error(apiErrorMessage(e, 'Could not load amendment history.')),
