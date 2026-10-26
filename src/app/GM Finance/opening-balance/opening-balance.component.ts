@@ -330,16 +330,22 @@ onDownloadFileStream(filePath: string) {
       return;
     }
 
-    // 1. अपनी C# API का बेस URL यहाँ डालें (Live सर्वर पर इसे लाइव डोमेन से बदल दें)
-    const apiBaseUrl = 'https://localhost:7036'; 
-
-    // 2. पूरा URL बनाना (e.g., https://localhost:7036/Uploads/FundReceipts/FileName.pdf)
-    // अगर filePath में पहले से '/' नहीं है, तो उसे जोड़ लें
-    const finalPath = filePath.startsWith('/') ? filePath : '/' + filePath;
-    const fullUrl = apiBaseUrl + finalPath;
-
-    // 3. PDF को नए टैब में ओपन करना (ब्राउज़र अपने आप PDF व्यूअर में दिखा देगा)
-    window.open(fullUrl, '_blank');
+    // Fetched through the API (with the login token), so it works on any server — no hard-coded host
+    this.api
+      .get(`GMFI/GetFundReceiptFile?filePath=${encodeURIComponent(filePath)}`, { responseType: 'blob' })
+      .subscribe({
+        next: (res: any) => {
+          const blob = res as Blob;
+          if (!blob || blob.size === 0) {
+            this.toastr.warning('Document not found for this record!', 'Warning');
+            return;
+          }
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, '_blank');
+          setTimeout(() => window.URL.revokeObjectURL(url), 60_000);
+        },
+        error: () => this.toastr.error('Could not open the document.', 'Error'),
+      });
   }
   // PDF Download Logic
   // onDownloadFileStream(filePath: string) {
