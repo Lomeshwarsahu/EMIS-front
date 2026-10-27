@@ -11,15 +11,17 @@
       // only on the login entry URL (`/`, `/login`): deep links and new tabs (e.g. PO print) open straight away,
       // even after login's localStorage.clear() has dropped the `splashShown` flag
       if (!/\/(login\/?)?$/i.test(location.pathname)) seen = true;
-      if (seen) { document.documentElement.classList.add('splash-seen'); return; }
-      var conn =navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      // weak network: skip the splash entirely and open login directly.
+      // ponytail: relies on the Network Information API (Chrome/Edge/Android); Safari/Firefox don't expose it, so there the splash always plays
+      var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
       var slowNet = !!conn && (conn.saveData || /(^|-)(2g|3g)$/.test(conn.effectiveType || '') || (conn.downlink && conn.downlink < 1.5));
+      if (slowNet) seen = true;
+      if (seen) { document.documentElement.classList.add('splash-seen'); return; }
       var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      // play the splash video only on a good connection, so it never steals bandwidth from the app on a slow one
       (function startVideo() {
         var video = document.querySelector('#app-splash .splash-video');
         if (!video) return document.readyState === 'complete' ? undefined : setTimeout(startVideo, 30); // body not parsed yet
-        if (slowNet || reduceMotion) return;           // poster image only
+        if (reduceMotion) return;                       // poster image only
         video.src = video.getAttribute('data-src');
         var p = video.play();
         if (p && p.catch) p.catch(function () {});
