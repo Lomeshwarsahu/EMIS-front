@@ -24,11 +24,6 @@
         var p = video.play();
         if (p && p.catch) p.catch(function () {});
       })();
-      // still loading after 6 s: tell the user it is the network, not a hang
-      setTimeout(function () {
-        var splash = document.getElementById('app-splash');
-        if (splash) splash.classList.add('is-slow');
-      }, 6000);
     })();
   </script>
   <title>EMSA</title>
@@ -82,14 +77,6 @@
     #app-splash .splash-text p { margin: 6px 0 0; color: #334155; font-weight: 600; font-size: clamp(.8rem, 3.4vw, 1rem); line-height: 1.4; animation-delay: 1.05s; }
     #app-splash .splash-flag { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; transition: opacity .6s ease;
       background: linear-gradient(90deg, #ff9933 0 33.33%, #ffffff 33.33% 66.66%, #138808 66.66% 100%); }
-    #app-splash .splash-text .splash-slow { display: none; margin-top: 14px; font-size: .85rem; font-weight: 600; color: #b45309; animation-delay: 0s; }
-    #app-splash.is-slow .splash-text .splash-slow { display: block; }
-    #app-splash.is-slow .splash-text::after {
-      content: ''; display: block; width: 160px; height: 4px; margin: 12px auto 0; border-radius: 4px;
-      background: linear-gradient(90deg, rgba(22, 51, 122, .15) 0%, #16337a 50%, rgba(22, 51, 122, .15) 100%) 0 0 / 200% 100%;
-      animation: splash-load 1.2s linear infinite;
-    }
-    @keyframes splash-load { to { background-position: -200% 0; } }
     @keyframes splash-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
     /* Hand-off state (set by main.ts) */
@@ -98,7 +85,7 @@
     #app-splash.flying .splash-text { opacity: 0; transform: translateY(12px); }
     #app-splash.flying .splash-flag,
     #app-splash.flying .splash-divider { opacity: 0; }
-    #app-splash.flying .splash-logo { transition: transform .95s cubic-bezier(.65, 0, .25, 1); }
+    #app-splash.flying .splash-logo { transition: transform .65s cubic-bezier(.65, 0, .25, 1); }
     #app-splash.splash-hide { opacity: 0; transition: opacity .35s ease; }
     html.splash-seen #app-splash { display: none; }
 
@@ -125,7 +112,6 @@
       <div class="splash-text">
         <h1>EMIS</h1>
         <p>Equipment Management Information System</p>
-        <p class="splash-slow">Loading, please wait&hellip; your connection seems slow.</p>
       </div>
     </div>
     <div class="splash-flag"></div>

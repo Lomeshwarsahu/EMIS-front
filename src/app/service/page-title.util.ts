@@ -82,6 +82,7 @@ const EXTRA_ROUTE_TITLES: Record<string, string> = {
   '/transaction/po-supply-dispatch-report': 'Dispatch Details',
   '/transaction/po-supply-installation-print': 'Installation Report Print',
   '/transaction/po-supply-po-print': 'Purchase Order Print',
+  '/indents/annual-indent': 'Annual Indent & Approval',
   '/indents/annual-indent-items': 'Add Indent Items',
   '/indents/annual-indent-report': 'Annual Indent Report',
 };

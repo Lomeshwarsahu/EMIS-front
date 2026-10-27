@@ -26,8 +26,8 @@ if (typeof window !== 'undefined' && window.console) {
 // places in the login header while the background blurs away.
 // Shown only on the very first visit; index.html hides it on later loads.
 const firstLoad = !document.documentElement.classList.contains('splash-seen');
-const INTRO_MS = 4000; // lets the background video play before the hand-off
-const FLY_MS = 950;
+const INTRO_MS = 1800; // logos + title finish animating (~1.7 s), then hand off straight to login
+const FLY_MS = 650;
 const splashStart = Date.now();
 const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -75,7 +75,7 @@ async function hideSplash(): Promise<void> {
   }
 
   await wait(Math.max(0, INTRO_MS - (Date.now() - splashStart)));
-  const targets = await findHeaderLogos(1500);
+  const targets = await findHeaderLogos(800);
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (!targets || reduceMotion) {
