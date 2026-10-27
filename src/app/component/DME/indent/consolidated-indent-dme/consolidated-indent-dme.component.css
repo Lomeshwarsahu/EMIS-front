@@ -358,7 +358,7 @@ mat-paginator {
 }
 
 /* Modal styles */
-.modal-backdrop {
+.indent-modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -368,7 +368,7 @@ mat-paginator {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 10050; /* above header/sidebar, same as other EMIS modals */
   padding: 16px;
 }
 

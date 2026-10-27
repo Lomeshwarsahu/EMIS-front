@@ -240,14 +240,14 @@
 }
 
 /* Modal Form Panel */
-.modal-backdrop {
+.release-modal-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 10050; /* above header/sidebar, same as other EMIS modals */
   padding: 16px;
 }
 
