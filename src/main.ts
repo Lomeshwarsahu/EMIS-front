@@ -62,11 +62,8 @@ function flyTo(el: HTMLElement, target: HTMLElement): void {
 async function hideSplash(): Promise<void> {
   const splash = document.getElementById('app-splash');
   if (!splash) return;
-  try {
-    localStorage.setItem('splashShown', '1');
-  } catch {
-    // storage blocked: splash will simply play again next time
-  }
+  // cookie, not localStorage: login/logout call localStorage.clear(), which made the splash replay every time
+  document.cookie = 'splashShown=1; max-age=31536000; path=/; SameSite=Lax';
   const done = () => splash.remove();
 
   if (!firstLoad) {

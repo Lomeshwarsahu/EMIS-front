@@ -5,11 +5,11 @@
   <script>
     // Splash helpers. First thing in <head> so no stylesheet download can delay it.
     (function () {
-      // splash plays only on the very first visit; afterwards hide it before it can paint
-      var seen = false;
-      try { seen = !!localStorage.getItem('splashShown'); } catch (e) {}
-      // only on the login entry URL (`/`, `/login`): deep links and new tabs (e.g. PO print) open straight away,
-      // even after login's localStorage.clear() has dropped the `splashShown` flag
+      // splash plays only once per browser; afterwards hide it before it can paint.
+      // The flag is a cookie (set in main.ts) because login/logout call localStorage.clear(), which used to replay it.
+      var seen = /(?:^|;\s*)splashShown=1/.test(document.cookie);
+      try { seen = seen || !!localStorage.getItem('splashShown'); } catch (e) {}
+      // only on the login entry URL (`/`, `/login`): deep links and new tabs (e.g. PO print) open straight away
       if (!/\/(login\/?)?$/i.test(location.pathname)) seen = true;
       // weak network: skip the splash entirely and open login directly.
       // ponytail: relies on the Network Information API (Chrome/Edge/Android); Safari/Firefox don't expose it, so there the splash always plays
@@ -103,7 +103,7 @@
     <div class="splash-bg">
       <!-- src is set by the inline script below only on a good connection (poster image otherwise) -->
       <video class="splash-video" data-src="assets/videos/splash.mp4" poster="assets/videos/splash-poster.jpg"
-        muted playsinline loop preload="none" aria-hidden="true"></video>
+        muted playsinline preload="none" aria-hidden="true"></video>
     </div>
     <div class="splash-stage">
       <div class="splash-logos intro">
