@@ -1,235 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/auth/login/login.component';
-import { SupplierLoginComponent } from './component/auth/supplier-login/supplier-login.component';
-import { ParticularSupplierAddComponent } from './component/Suppliers/particular-supplier-add/particular-supplier-add.component';
-import { SupplierGstEntryComponent } from './component/Suppliers/supplier-gst-entry/supplier-gst-entry.component';
-import { PoSupplyComponent } from './component/Suppliers/po-supply/po-supply.component';
-import { PoSupplyDispatchComponent } from './component/Suppliers/po-supply-dispatch/po-supply-dispatch.component';
-import { PoSupplyDispatchEditComponent } from './component/Suppliers/po-supply-dispatch-edit/po-supply-dispatch-edit.component';
-import { PoSupplyDispatchEntryComponent } from './component/Suppliers/po-supply-dispatch-entry/po-supply-dispatch-entry.component';
-import { PoSupplyDispatchReportComponent } from './component/Suppliers/po-supply-dispatch-report/po-supply-dispatch-report.component';
-import { SupplierPoSdDetailComponent } from './component/Suppliers/supplier-po-sd-detail/supplier-po-sd-detail.component';
-import { SupplierPoApplyExtensionComponent } from './component/Suppliers/supplier-po-apply-extension/supplier-po-apply-extension.component';
-import { PoSupplyReceiptComponent } from './component/Suppliers/po-supply-receipt/po-supply-receipt.component';
-import { PoSupplyReceiptEntryComponent } from './component/Suppliers/po-supply-receipt-entry/po-supply-receipt-entry.component';
-import { PoSupplyInstallationReportComponent } from './component/Suppliers/po-supply-installation-report/po-supply-installation-report.component';
-import { PoSupplyInstallationPrintComponent } from './component/Suppliers/po-supply-installation-print/po-supply-installation-print.component';
-import { PoSupplyPoPrintComponent } from './component/Suppliers/po-supply-po-print/po-supply-po-print.component';
-import { SupplierRcDetailReportComponent } from './component/Suppliers/supplier-rc-detail-report/supplier-rc-detail-report.component';
-import { SupplierAcceptedReportComponent } from './component/Suppliers/supplier-accepted-report/supplier-accepted-report.component';
-import { SupplierReceiptComplainComponent } from './component/Suppliers/supplier-receipt-complain/supplier-receipt-complain.component';
-import { SupplierEmdDepositComponent } from './component/Suppliers/supplier-emd-deposit/supplier-emd-deposit.component';
-import { SupplierPaymentReportComponent } from './component/Suppliers/supplier-payment-report/supplier-payment-report.component';
-import { SupplierSanctionReportComponent } from './component/Suppliers/supplier-sanction-report/supplier-sanction-report.component';
-import { SupplierPendingReceiptInstallationComponent } from './component/Suppliers/supplier-pending-receipt-installation/supplier-pending-receipt-installation.component';
-import { SupplierPendingInstallDrillDownComponent } from './component/Suppliers/supplier-pending-install-drill-down/supplier-pending-install-drill-down.component';
 import { LogoutComponent } from './component/auth/logout/logout.component';
 import { RouteGuardService } from './service/authentication/route-guard.service';
-import { OtpComponent } from './component/auth/otp/otp.component';
 import { Registration } from './component/auth/registration/registration';
-import { GenerationFileNonastiComponent } from './component/generation-file-nonasti/generation-file-nonasti.component';
-import { FileMRCDashbordComponent } from './component/file-mrcdashbord/file-mrcdashbord.component';
-import { InstallationDetailsComponent } from './component/installation-details/installation-details.component';
-import { ExtensionHODetailComponent } from './component/extension-hodetail/extension-hodetail.component';
-import { ExtensionHOEntryComponent } from './component/extension-hoentry/extension-hoentry.component';
-import { ItemWiseDetailPOCellComponent } from './component/item-wise-detail-pocell/item-wise-detail-pocell.component';
-import { ItemWiseDetailPOCellByPOidComponent } from './component/item-wise-detail-pocell-by-poid/item-wise-detail-pocell-by-poid.component';
-import { IndentPOSummaryDirwiseComponent } from './component/indent-posummary-dirwise/indent-posummary-dirwise.component';
-import { DistrictWisePODetailComponent } from './component/district-wise-podetail/district-wise-podetail.component';
-import { LandingPageComponent } from './component/landing-page/landing-page.component';
-import { RCDetailReportComponent } from './component/rcdetail-report/rcdetail-report.component';
-import { AcceptedReortComponent } from './component/accepted-reort/accepted-reort.component';
-import { IndentFromFacilitiesComponent } from './component/indent-from-facilities/indent-from-facilities.component';
-import { ComplainReportBMEComponent } from './component/complain-report-bme/complain-report-bme.component';
-import { FacilityAuthPOValuePOCellComponent } from './component/facility-auth-povalue-pocell/facility-auth-povalue-pocell.component';
-import { POSummaryDrillDwnQtyPOWiseComponent } from './component/posummary-drill-dwn-qty-powise/posummary-drill-dwn-qty-powise.component';
-import { POPaidReportComponent } from './component/popaid-report/popaid-report.component';
-import { ChequeWisePaymentRComponent } from './component/cheque-wise-payment-r/cheque-wise-payment-r.component';
-import { POSummaryReportComponent } from './component/posummary-report/posummary-report.component';
-import { POSummaryDrillDwnQtyComponent } from './component/posummary-drill-dwn-qty/posummary-drill-dwn-qty.component';
-import { TendersStatusComponent } from './component/tenders-status/tenders-status.component';
-import { PORecdsummaryComponent } from './component/porecdsummary/porecdsummary.component';
-import { TenterStatusItemWiseComponent } from './component/tenter-status-item-wise/tenter-status-item-wise.component';
-import { POSummaryDrillDwnQtyReagentComponent } from './component/posummary-drill-dwn-qty-reagent/posummary-drill-dwn-qty-reagent.component';
-import { MastterSupplierDashComponent } from './component/BME/mastter-supplier-dash/mastter-supplier-dash.component';
-import { ItemsBMEComponent } from './component/BME/items-bme/items-bme.component';
-import { MapitemsEithTypeComponent } from './component/BME/mapitems-eith-type/mapitems-eith-type.component';
-import { MapitemswithTypeUpdateComponent } from './component/BME/mapitemswith-type-update/mapitemswith-type-update.component';
-import { MapitemswithMainitemTypeRepoComponent } from './component/BME/mapitemswith-mainitem-type-repo/mapitemswith-mainitem-type-repo.component';
-import { EMSRCDashbordComponent } from './component/BME/emsrcdashbord/emsrcdashbord.component';
-import { EMSNEWRCComponent } from './component/BME/emsnewrc/emsnewrc.component';
-import { PlanaTenderDComponent } from './component/BME/plana-tender-d/plana-tender-d.component';
-import { TenderStatusUpdateComponent } from './component/BME/tender-status-update/tender-status-update.component';
-import { AddRTenderItemsComponent } from './component/BME/add-rtender-items/add-rtender-items.component';
-import { ConsigeeInformationComponent } from './component/DME/consigee-information/consigee-information.component';
-import { ReportSpecificationComponent } from './component/DME/masters/report-specification/report-specification.component';
-import { CmeEelSuggestionComponent } from './component/DME/masters/cme-eel-suggestion/cme-eel-suggestion.component';
-import { StockReportComponent } from './component/DME/stock/stock-report/stock-report.component';
-import { OpeningStockEntryComponent } from './component/DME/stock/opening-stock-entry/opening-stock-entry.component';
-import { NewOpeningStockEntryComponent } from './component/DME/stock/new-opening-stock-entry/new-opening-stock-entry.component';
-import { PurchaseOrderDashboardComponent } from './component/DME/orders/purchase-order-dashboard/purchase-order-dashboard.component';
-import { PurchaseOrderReceiptsComponent } from './component/DME/orders/purchase-order-receipts/purchase-order-receipts.component';
-import { PoReceiptEntryComponent } from './component/DME/orders/po-receipt-entry/po-receipt-entry.component';
-import { PoInstallationReportComponent } from './component/DME/orders/po-installation-report/po-installation-report.component';
-import { PoPrintComponent } from './component/DME/orders/po-print/po-print.component';
-import { DmeFacHeadsComponent } from './component/DME/indent/dme-fac-heads/dme-fac-heads.component';
-import { ConsolidatedIndentDmeComponent } from './component/DME/indent/consolidated-indent-dme/consolidated-indent-dme.component';
-import { DmeFacAddIndentComponent } from './component/DME/indent/dme-fac-add-indent/dme-fac-add-indent.component';
-import { DmeFacIndentReportComponent } from './component/DME/indent/dme-fac-indent-report/dme-fac-indent-report.component';
-import { CmcDetailComponent } from './component/DME/reports/cmc-detail/cmc-detail.component';
-import { FacilityComplainStoreComponent } from './component/DME/complain/facility-complain-store/facility-complain-store.component';
-import { ChangePasswordComponent } from './component/DME/orders/change-password/change-password.component';
-import { ProgressCategoryComponent } from './component/DME/stock/progress-category/progress-category.component';
-import { FacilityReceiptsComponent } from './component/DME/stock/facility-receipts/facility-receipts.component';
-import { NodalInformationComponent } from './component/DME/stock/nodal-information/nodal-information.component';
-import { MasFileNoComponent } from './component/DME/orders/mas-file-no/mas-file-no.component';
-import { NodalProgressComponent } from './component/DME/stock/nodal-progress/nodal-progress.component';
-import { EligibleReportComponent } from './Reports/eligible-report/eligible-report.component';
-import { PoReallocationComponent } from './component/DME/orders/po-reallocation/po-reallocation.component';
-import { PoAmendmentComponent } from './component/DME/orders/po-amendment/po-amendment.component';
-import { WithheldReleaseComponent } from './component/DME/orders/withheld-release/withheld-release.component';
-import { PaymentLetterComponent } from './component/DME/orders/payment-letter/payment-letter.component';
-import { MainEquipmentMappedReportComponent } from './Reports/main-equipment-mapped-report/main-equipment-mapped-report.component';
-import { ComplaintStatusComponent } from './component/DME/complain/complaint-status/complaint-status.component';
-import { ComplaintStatusEditComponent } from './component/DME/complain/complaint-status-edit/complaint-status-edit.component';
-import { ComplaintStatusFacilityComponent } from './component/DME/complain/complaint-status-facility/complaint-status-facility.component';
-import { ComplaintStatusFacilityEditComponent } from './component/DME/complain/complaint-status-facility-edit/complaint-status-facility-edit.component';
-import { ComplainCmhoComponent } from './component/DME/complain/complain-cmho/complain-cmho.component';
-import { TenderCoverAComponent } from './component/BME/tender-cover-a/tender-cover-a.component';
-import { TenderCoverAObClaimComponent } from './tender-cover-aob-claim/tender-cover-aob-claim.component';
-import { TenderItemsPriceGEMComponent } from './component/BME/tender-items-price-gem/tender-items-price-gem.component';
-import { TenderDetailsPriceEntryGEMComponent } from './component/BME/tender-details-price-entry-gem/tender-details-price-entry-gem.component';
-import { ConsolidatedIndentPOCellComponent } from './component/BME/consolidated-indent-pocell/consolidated-indent-pocell.component';
-import { MasFacilityUsersComponent } from './component/PO-Cell/mas-facility-users/mas-facility-users.component';
-import { ProgramMasterComponent } from './component/PO-Cell/program-master/program-master.component';
-import { EMSPODashboardComponent } from './component/PO-Cell/emspodashboard/emspodashboard.component';
-import { EMSNEWPOComponent } from './component/PO-Cell/emsnewpo/emsnewpo.component';
-import { RCExtendComponent } from './component/PO-Cell/rcextend/rcextend.component';
-import { AppliedPoExtensionComponent } from './component/PO-Cell/applied-po-extension/applied-po-extension.component';
-import { ConsolidatedIndentDHSPOComponent } from './component/PO-Cell/consolidated-indent-dhs-po/consolidated-indent-dhs-po.component';
-import { IndentWiseItemRemarksComponent } from './component/PO-Cell/indent-wise-item-remarks/indent-wise-item-remarks.component';
-import { IndentEditDHSPOComponent } from './component/PO-Cell/indent-edit-dhs-po/indent-edit-dhs-po.component';
-import { DHSindentAddBulkConsigneePOComponent } from './component/PO-Cell/dhsindent-add-bulk-consignee-po/dhsindent-add-bulk-consignee-po.component';
-import { TermsconditionsComponent } from './component/PO-Cell/termsconditions/termsconditions.component';
-import { RDLCTenderSummaryComponent } from './component/PO-Cell/rdlctender-summary/rdlctender-summary.component';
-import { EditReceivedAndInstallationDateComponent } from './GM Finance/edit-received-and-installation-date/edit-received-and-installation-date.component';
-import { SuppliersComponent } from './GM Finance/suppliers/suppliers.component';
-import { SupplierBankAccountsComponent } from './GM Finance/supplier-bank-accounts/supplier-bank-accounts.component';
-import { SupplierGSTentryComponent } from './GM Finance/supplier-gstentry/supplier-gstentry.component';
-import { CgmscBankAccountsComponent } from './GM Finance/cgmsc-bank-accounts/cgmsc-bank-accounts.component';
-import { NewFundMasterComponent } from './GM Finance/new-fund-master/new-fund-master.component';
-import { FundMapComponent } from './GM Finance/fund-map/fund-map.component';
-import { BudgentEntryComponent } from './GM Finance/budgent-entry/budgent-entry.component';
-import { BudgetDetailsProvisionalComponent } from './GM Finance/budget-details-provisional/budget-details-provisional.component';
-import { IndentRCPOTenderStatusComponent } from './Reports/indent-rc-po-tender-status/indent-rc-po-tender-status.component';
-import { UnpaidPOSComponent } from './Reports/unpaid-pos/unpaid-pos.component';
-import { POReportGMFComponent } from './Reports/poreport-gmf/poreport-gmf.component';
-import { InvoiceDetailComponent } from './Reports/invoice-detail/invoice-detail.component';
-import { TDSdataReportComponent } from './Reports/tdsdata-report/tdsdata-report.component';
-import { PaymentsCPReport20perComponent } from './Reports/payments-cpreport20per/payments-cpreport20per.component';
-import { FileMRCDashboardFINFileComponent } from './GM Finance/file-mrcdashboard-finfile/file-mrcdashboard-finfile.component';
-import { SanctionComponent } from './GM Finance/sanction/sanction.component';
-import { EmdRefundTenderwiseComponent } from './component/Finance/emd-refund-tenderwise/emd-refund-tenderwise.component';
-import { SdReleaseFinanceComponent } from './component/Finance/sd-release-finance/sd-release-finance.component';
-import { AddSubMenuComponent } from './component/IT/add-sub-menu/add-sub-menu.component';
-import { EmdFileApprovalComponent } from './component/emd-file-approval/emd-file-approval.component';
-import { LogoVerifiedHoComponent } from './component/logo-verified-ho/logo-verified-ho.component';
-import { SiteNotReadyUploadComponent } from './component/site-not-ready-upload/site-not-ready-upload.component';
-import { InvoicesBySoComponent } from './component/invoices-by-so/invoices-by-so.component';
-import { PoReportNewComponent } from './component/po-report-new/po-report-new.component';
-import { PoDetailsRdlcComponent } from './component/po-details-rdlc/po-details-rdlc.component';
-import { PendingInstallDrilldownComponent } from './component/pending-install-drilldown/pending-install-drilldown.component';
-import { AddRoleInScreenComponent } from './component/IT/add-role-in-screen/add-role-in-screen.component';
-import { DeleteMenuComponent } from './component/IT/delete-menu/delete-menu.component';
-import { MasterSupplierDashComponent } from './component/Tender Cell/master-supplier-dash/master-supplier-dash.component';
-import { ConsolidatedIndentCGMSCComponent } from './component/Tender Cell/consolidated-indent-cgmsc/consolidated-indent-cgmsc.component';
-import { TenderCoverAObClaimAfterComponent } from './component/Tender Cell/tender-cover-aob-claim-after/tender-cover-aob-claim-after.component';
-import { PerformanceCertificateComponent } from './Performance/performance-certificate/performance-certificate.component';
-import { Performace20ConsigneeComponent } from './Performance/performace20-consignee/performace20-consignee.component';
-import { PerformanceCertificateFinComponent } from './Performance/performance-certificate-fin/performance-certificate-fin.component';
-import { EmisPerf20RdlcComponent } from './Performance/emis-perf20-rdlc/emis-perf20-rdlc.component';
-import { Payment20ChequePrepComponent } from './Performance/payment20-cheque-prep/payment20-cheque-prep.component';
-import { SanctionNotesheetComponent } from './Performance/sanction-notesheet/sanction-notesheet.component';
-import { StoreHomeComponent } from './component/Master/store-home/store-home.component';
-import { DhsAddFacilityComponent } from './component/Master/dhs-add-facility/dhs-add-facility.component';
-import { DhsFacilityUsersLocationsComponent } from './component/Master/dhs-facility-users-locations/dhs-facility-users-locations.component';
-import { HealthFacilityDetailsComponent } from './component/Master/health-facility-details/health-facility-details.component';
-import { ItemSpecificationComponent } from './component/Master/item-specification/item-specification.component';
-import { MasFacilityUsersLocationsComponent } from './component/Master/mas-facility-users-locations/mas-facility-users-locations.component';
-import { MasterSupplierAddComponent } from './component/Master/master-supplier-add/master-supplier-add.component';
-import { TenderCoverAitemsComponent } from './component/BME/tender-cover-aitems/tender-cover-aitems.component';
-import { CoverAitemsReportsComponent } from './component/BME/cover-aitems-reports/cover-aitems-reports.component';
-  import { IndentPoTenderStatusComponent } from './Reports/indent-po-tender-status/indent-po-tender-status.component';
-import { IndentPoTenderStatusSummaryComponent } from './Reports/indent-po-tender-status-summary/indent-po-tender-status-summary.component';
-import { IndentPoTenderStatusDrilldownComponent } from './Reports/indent-po-tender-status-drilldown/indent-po-tender-status-drilldown.component';
-import { IndentPoTenderSummaryComponent } from './Reports/indent-po-tender-summary/indent-po-tender-summary.component';
-import { IndentPoTenderSummaryDrilldownComponent } from './Reports/indent-po-tender-summary-drilldown/indent-po-tender-summary-drilldown.component';
-import { CmhoPoSummaryComponent } from './Reports/cmho-po-summary/cmho-po-summary.component';
-import { CmhoPoSummaryDrilldownComponent } from './Reports/cmho-po-summary-drilldown/cmho-po-summary-drilldown.component';
-import { PoSummaryDirectorateComponent } from './Reports/po-summary-directorate/po-summary-directorate.component';
-import { PoSummaryDirectorateDrilldownComponent } from './Reports/po-summary-directorate-drilldown/po-summary-directorate-drilldown.component';
-import { PoSummaryConsigneeHoComponent } from './Reports/po-summary-consignee-ho/po-summary-consignee-ho.component';
-import { TenderLiveStatusComponent } from './Reports/tender-live-status/tender-live-status.component';
-import { TenderLiveStatusDrilldownComponent } from './Reports/tender-live-status-drilldown/tender-live-status-drilldown.component';
-import { BalanceStatusDhsComponent } from './Reports/balance-status-dhs/balance-status-dhs.component';
-import { BalanceStatusPocellComponent } from './Reports/balance-status-pocell/balance-status-pocell.component';
-import { OpeningStockSummaryComponent } from './Reports/opening-stock-summary/opening-stock-summary.component';
-import { OpeningStockDrilldownComponent } from './Reports/opening-stock-drilldown/opening-stock-drilldown.component';
-import { PaymentsCpreportIgmComponent } from './Reports/payments-cpreport-igm/payments-cpreport-igm.component';
-import { PopaidReportIgmComponent } from './Reports/popaid-report-igm/popaid-report-igm.component';
-import { EmdDepositeReportComponent } from './Reports/emd-deposite-report/emd-deposite-report.component';
-import { EquipmentTagReportComponent } from './Reports/equipment-tag-report/equipment-tag-report.component';
-import { TenderWisePoDetailsComponent } from './Reports/tender-wise-po-details/tender-wise-po-details.component';
-import { TenderStatusItemWiseComponent } from './Reports/tender-status-item-wise/tender-status-item-wise.component';
-import { DispatchDetailComponent } from './Reports/dispatch-detail/dispatch-detail.component';
-import { PendingPoSupplierWiseComponent } from './Reports/pending-po-supplier-wise/pending-po-supplier-wise.component';
-import { ReceiptPendingCmhoComponent } from './Reports/receipt-pending-cmho/receipt-pending-cmho.component';
-import { ReportIndentPoDetailsComponent } from './Reports/report-indent-po-details/report-indent-po-details.component';
-import { EelSuggestionReportComponent } from './Reports/eel-suggestion-report/eel-suggestion-report.component';
-import { FacStockCovidItemsBmeComponent } from './Reports/fac-stock-covid-items-bme/fac-stock-covid-items-bme.component';
-import { BalanceSupplierwiseComponent } from './Reports/balance-supplierwise/balance-supplierwise.component';
-import { IndentReportPocellComponent } from './Reports/indent-report-pocell/indent-report-pocell.component';
-import { PendingInstallDrilldownDhsComponent } from './Reports/pending-install-drilldown-dhs/pending-install-drilldown-dhs.component';
-import { PendingInstallDrilldownPocellComponent } from './Reports/pending-install-drilldown-pocell/pending-install-drilldown-pocell.component';
-import { RdlcDhsPendingComponent } from './Reports/rdlc-dhs-pending/rdlc-dhs-pending.component';
-import { CoverAItemsReportsComponent } from './Reports/cover-a-items-reports/cover-a-items-reports.component';
-import { PaymentsCpreportComponent } from './Reports/payments-cpreport/payments-cpreport.component';
-import { PoReceiptSummaryComponent } from './Reports/po-receipt-summary/po-receipt-summary.component';
-import { SanctionsRdlcComponent } from './Reports/sanctions-rdlc/sanctions-rdlc.component';
-import { BalanceStatusSupplierComponent } from './Reports/balance-status-supplier/balance-status-supplier.component';
-import { ItemWiseDetailComponent } from './Reports/item-wise-detail/item-wise-detail.component';
-import { ItemWiseDetailPOCellComponent as ReportsItemWiseDetailPOCellComponent } from './Reports/item-wise-detail-pocell/item-wise-detail-pocell.component';
-import { ItemWiseDetailPOQtyComponent } from './Reports/item-wise-detail-poqty/item-wise-detail-poqty.component';
-import { ItemWiseDetailPOQtyPOCellComponent } from './Reports/item-wise-detail-poqty-pocell/item-wise-detail-poqty-pocell.component';
-import { ComplainReportBmeComponent } from './Reports/complain-report-bme/complain-report-bme.component';
-import { DistrictWisePoDetailComponent } from './Reports/district-wise-po-detail/district-wise-po-detail.component';
-import { EmdRefundReportComponent } from './Reports/emd-refund-report/emd-refund-report.component';
-import { PoPaidReportComponent } from './Reports/po-paid-report/po-paid-report.component';
-import { PaymentReportComponent } from './Reports/payment-report/payment-report.component';
-import { TenderStatusComponent } from './Reports/tender-status/tender-status.component';
-import { PoSummaryComponent } from './Reports/po-summary/po-summary.component';
-import { PoSummaryDrilldownQtyComponent } from './Reports/po-summary-drilldown-qty/po-summary-drilldown-qty.component';
-import { PoSummaryDrilldownQtyPowiseComponent } from './Reports/po-summary-drilldown-qty-powise/po-summary-drilldown-qty-powise.component';
-import { PoSummaryDrilldownQtyReagentComponent } from './Reports/po-summary-drilldown-qty-reagent/po-summary-drilldown-qty-reagent.component';
-import { IndentPoSummaryDirwiseComponent } from './Reports/indent-po-summary-dirwise/indent-po-summary-dirwise.component';
-import { MasFacilityUsersLocationsmasterComponent } from './component/mas-facility-users-locationsmaster/mas-facility-users-locationsmaster.component';
-import { MainFundHeadEnComponent } from './component/Finance/main-fund-head-en/main-fund-head-en.component';
-import { OpeningBalanceComponent } from './GM Finance/opening-balance/opening-balance.component';
 // import { POSupplyHOComponent } from './component/PO-Cell/po-supply-ho/po-supply-ho.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'supplier-login', component: SupplierLoginComponent },
-  { path: 'MasFacilityUsersLocationsmaster', component: MasFacilityUsersLocationsmasterComponent},
+  { path: 'supplier-login', loadComponent: () => import('./component/auth/supplier-login/supplier-login.component').then(m => m.SupplierLoginComponent) },
+  { path: 'MasFacilityUsersLocationsmaster', loadComponent: () => import('./component/mas-facility-users-locationsmaster/mas-facility-users-locationsmaster.component').then(m => m.MasFacilityUsersLocationsmasterComponent)},
 
   { path: 'LoginEmsSup', redirectTo: 'supplier-login', pathMatch: 'full' },
 
   {
     path: 'masters/particular-supplier-add',
-    component: ParticularSupplierAddComponent,
+    loadComponent: () => import('./component/Suppliers/particular-supplier-add/particular-supplier-add.component').then(m => m.ParticularSupplierAddComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -241,7 +28,7 @@ const routes: Routes = [
     
   {
     path: 'masters/supplier-gst-entry',
-    component: SupplierGstEntryComponent,
+    loadComponent: () => import('./component/Suppliers/supplier-gst-entry/supplier-gst-entry.component').then(m => m.SupplierGstEntryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -252,7 +39,7 @@ const routes: Routes = [
   },
   {
     path: 'orders/po-supply',
-    component: PoSupplyComponent,
+    loadComponent: () => import('./component/Suppliers/po-supply/po-supply.component').then(m => m.PoSupplyComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -263,7 +50,7 @@ const routes: Routes = [
   },
   {
     path: 'orders/po-supply-sd-detail',
-    component: SupplierPoSdDetailComponent,
+    loadComponent: () => import('./component/Suppliers/supplier-po-sd-detail/supplier-po-sd-detail.component').then(m => m.SupplierPoSdDetailComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -274,7 +61,7 @@ const routes: Routes = [
   },
   {
     path: 'orders/po-supply-apply-extension',
-    component: SupplierPoApplyExtensionComponent,
+    loadComponent: () => import('./component/Suppliers/supplier-po-apply-extension/supplier-po-apply-extension.component').then(m => m.SupplierPoApplyExtensionComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -285,19 +72,19 @@ const routes: Routes = [
   },
   {
     path: 'transaction/po-supply-dispatch',
-    component: PoSupplyDispatchComponent,
+    loadComponent: () => import('./component/Suppliers/po-supply-dispatch/po-supply-dispatch.component').then(m => m.PoSupplyDispatchComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
   {
     path: 'transaction/po-supply-dispatch-edit',
-    component: PoSupplyDispatchEditComponent,
+    loadComponent: () => import('./component/Suppliers/po-supply-dispatch-edit/po-supply-dispatch-edit.component').then(m => m.PoSupplyDispatchEditComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
   {
     path: 'transaction/po-supply-dispatch-entry',
-    component: PoSupplyDispatchEntryComponent,
+    loadComponent: () => import('./component/Suppliers/po-supply-dispatch-entry/po-supply-dispatch-entry.component').then(m => m.PoSupplyDispatchEntryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -308,7 +95,7 @@ const routes: Routes = [
   },
   {
     path: 'transaction/po-supply-dispatch-report',
-    component: PoSupplyDispatchReportComponent,
+    loadComponent: () => import('./component/Suppliers/po-supply-dispatch-report/po-supply-dispatch-report.component').then(m => m.PoSupplyDispatchReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP', 'AUPO'] },
   },
@@ -329,13 +116,13 @@ const routes: Routes = [
   },
   {
     path: 'transaction/po-supply-receipt',
-    component: PoSupplyReceiptComponent,
+    loadComponent: () => import('./component/Suppliers/po-supply-receipt/po-supply-receipt.component').then(m => m.PoSupplyReceiptComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
   {
     path: 'transaction/po-supply-receipt-entry',
-    component: PoSupplyReceiptEntryComponent,
+    loadComponent: () => import('./component/Suppliers/po-supply-receipt-entry/po-supply-receipt-entry.component').then(m => m.PoSupplyReceiptEntryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -347,7 +134,7 @@ const routes: Routes = [
 
   {
     path: 'transaction/po-supply-installation-report',
-    component: PoSupplyInstallationReportComponent,
+    loadComponent: () => import('./component/Suppliers/po-supply-installation-report/po-supply-installation-report.component').then(m => m.PoSupplyInstallationReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -358,13 +145,13 @@ const routes: Routes = [
   },
   {
     path: 'transaction/po-supply-installation-print',
-    component: PoSupplyInstallationPrintComponent,
+    loadComponent: () => import('./component/Suppliers/po-supply-installation-print/po-supply-installation-print.component').then(m => m.PoSupplyInstallationPrintComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
   {
     path: 'transaction/po-supply-po-print',
-    component: PoSupplyPoPrintComponent,
+    loadComponent: () => import('./component/Suppliers/po-supply-po-print/po-supply-po-print.component').then(m => m.PoSupplyPoPrintComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -380,7 +167,7 @@ const routes: Routes = [
   },
   {
     path: 'contracts/rc-detail-report-supplier',
-    component: SupplierRcDetailReportComponent,
+    loadComponent: () => import('./component/Suppliers/supplier-rc-detail-report/supplier-rc-detail-report.component').then(m => m.SupplierRcDetailReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -391,7 +178,7 @@ const routes: Routes = [
   },
   {
     path: 'contracts/accepted-report-supplier',
-    component: SupplierAcceptedReportComponent,
+    loadComponent: () => import('./component/Suppliers/supplier-accepted-report/supplier-accepted-report.component').then(m => m.SupplierAcceptedReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -402,7 +189,7 @@ const routes: Routes = [
   },
   {
     path: 'complain/receipt-complain-supplier',
-    component: SupplierReceiptComplainComponent,
+    loadComponent: () => import('./component/Suppliers/supplier-receipt-complain/supplier-receipt-complain.component').then(m => m.SupplierReceiptComplainComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -413,7 +200,7 @@ const routes: Routes = [
   },
   {
     path: 'emd-refund/emd-deposit',
-    component: SupplierEmdDepositComponent,
+    loadComponent: () => import('./component/Suppliers/supplier-emd-deposit/supplier-emd-deposit.component').then(m => m.SupplierEmdDepositComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -424,7 +211,7 @@ const routes: Routes = [
   },
   {
     path: 'reports/supplier-payment-report',
-    component: SupplierPaymentReportComponent,
+    loadComponent: () => import('./component/Suppliers/supplier-payment-report/supplier-payment-report.component').then(m => m.SupplierPaymentReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -435,7 +222,7 @@ const routes: Routes = [
   },
   {
     path: 'reports/sanction-report',
-    component: SupplierSanctionReportComponent,
+    loadComponent: () => import('./component/Suppliers/supplier-sanction-report/supplier-sanction-report.component').then(m => m.SupplierSanctionReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -451,13 +238,13 @@ const routes: Routes = [
   },
   {
     path: 'reports/pending-receipt-installation',
-    component: SupplierPendingReceiptInstallationComponent,
+    loadComponent: () => import('./component/Suppliers/supplier-pending-receipt-installation/supplier-pending-receipt-installation.component').then(m => m.SupplierPendingReceiptInstallationComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
   {
     path: 'reports/pending-install-drill-down',
-    component: SupplierPendingInstallDrillDownComponent,
+    loadComponent: () => import('./component/Suppliers/supplier-pending-install-drill-down/supplier-pending-install-drill-down.component').then(m => m.SupplierPendingInstallDrillDownComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SUP'] },
   },
@@ -472,82 +259,82 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'Registration', component: Registration },
-  { path: 'otp', component: OtpComponent },
+  { path: 'otp', loadComponent: () => import('./component/auth/otp/otp.component').then(m => m.OtpComponent) },
   // {path:'GenerationFileNonasti',component:GenerationFileNonastiComponent},//
   // {path:'FileMRCDashbord',component:FileMRCDashbordComponent},//
   {
     path: 'InstallationDetails',
-    component: InstallationDetailsComponent,
+    loadComponent: () => import('./component/installation-details/installation-details.component').then(m => m.InstallationDetailsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'bme' },
   },
   {
     path: 'InstallationDetailsBME',
-    component: InstallationDetailsComponent,
+    loadComponent: () => import('./component/installation-details/installation-details.component').then(m => m.InstallationDetailsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'bme' },
   },
   {
     path: 'InstallationDetailsDEO',
-    component: InstallationDetailsComponent,
+    loadComponent: () => import('./component/installation-details/installation-details.component').then(m => m.InstallationDetailsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'deo' },
   },
   {
     path: 'InstallationDetailsDEONew',
-    component: InstallationDetailsComponent,
+    loadComponent: () => import('./component/installation-details/installation-details.component').then(m => m.InstallationDetailsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'deonew' },
   },
   {
     path: 'InstallationDetailsFINCTRL',
-    component: InstallationDetailsComponent,
+    loadComponent: () => import('./component/installation-details/installation-details.component').then(m => m.InstallationDetailsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'finctrl' },
   },
   {
     path: 'InstallationDetailsGMT',
-    component: InstallationDetailsComponent,
+    loadComponent: () => import('./component/installation-details/installation-details.component').then(m => m.InstallationDetailsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','TPOT','BME','AD'], variant: 'gmt' },
   },
   // {path:'ExtensionHODetail',component:ExtensionHODetailComponent},//
-  { path: 'ExtensionHOEntry', component: ExtensionHOEntryComponent },
+  { path: 'ExtensionHOEntry', loadComponent: () => import('./component/extension-hoentry/extension-hoentry.component').then(m => m.ExtensionHOEntryComponent) },
   // {path:'ItemWiseDetailPOCell',component:ItemWiseDetailPOCellComponent},//
   {
     path: 'ItemWiseDetailPOCellByPOid',
-    component: ItemWiseDetailPOCellByPOidComponent,
+    loadComponent: () => import('./component/item-wise-detail-pocell-by-poid/item-wise-detail-pocell-by-poid.component').then(m => m.ItemWiseDetailPOCellByPOidComponent),
   },
   // {path:'IndentPOSummaryDirwise',component:IndentPOSummaryDirwiseComponent},//
   // {path:'DistrictWisePODetail',component:DistrictWisePODetailComponent},//
-  {path:'TenderCoverAitems',component:TenderCoverAitemsComponent},
+  {path:'TenderCoverAitems',loadComponent: () => import('./component/BME/tender-cover-aitems/tender-cover-aitems.component').then(m => m.TenderCoverAitemsComponent)},
   {
     path: 'POSummaryDrillDwnQtyPOWise',
-    component: POSummaryDrillDwnQtyPOWiseComponent,
+    loadComponent: () => import('./component/posummary-drill-dwn-qty-powise/posummary-drill-dwn-qty-powise.component').then(m => m.POSummaryDrillDwnQtyPOWiseComponent),
   },
-  { path: 'POSummaryDrillDwnQty', component: POSummaryDrillDwnQtyComponent },
-  { path: 'EMSNEWPO', component: EMSNEWPOComponent },
+  { path: 'POSummaryDrillDwnQty', loadComponent: () => import('./component/posummary-drill-dwn-qty/posummary-drill-dwn-qty.component').then(m => m.POSummaryDrillDwnQtyComponent) },
+  { path: 'EMSNEWPO', loadComponent: () => import('./component/PO-Cell/emsnewpo/emsnewpo.component').then(m => m.EMSNEWPOComponent) },
   {
     path: 'IndentEditDHSPO',
-    component: IndentEditDHSPOComponent,
+    loadComponent: () => import('./component/PO-Cell/indent-edit-dhs-po/indent-edit-dhs-po.component').then(m => m.IndentEditDHSPOComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUPO', 'TPOT', 'AD', 'AU'] },
   },
-  { path: 'SupplierBankAccounts', component: SupplierBankAccountsComponent },
-  { path: 'SupplierGSTentry', component: SupplierGSTentryComponent },
-  { path: 'BudgetDetailsProvisional', component: BudgetDetailsProvisionalComponent },
-  { path: 'Sanction', component: SanctionComponent },
-  { path: 'CoverAitemsReports', component: CoverAitemsReportsComponent },
+  { path: 'SupplierBankAccounts', loadComponent: () => import('./GM Finance/supplier-bank-accounts/supplier-bank-accounts.component').then(m => m.SupplierBankAccountsComponent) },
+  { path: 'SupplierGSTentry', loadComponent: () => import('./GM Finance/supplier-gstentry/supplier-gstentry.component').then(m => m.SupplierGSTentryComponent) },
+  { path: 'BudgetDetailsProvisional', loadComponent: () => import('./GM Finance/budget-details-provisional/budget-details-provisional.component').then(m => m.BudgetDetailsProvisionalComponent) },
+  { path: 'Sanction', loadComponent: () => import('./GM Finance/sanction/sanction.component').then(m => m.SanctionComponent) },
+  { path: 'CoverAitemsReports', loadComponent: () => import('./component/BME/cover-aitems-reports/cover-aitems-reports.component').then(m => m.CoverAitemsReportsComponent) },
 
   {
     path: 'TenderStatusUpdate',
-    component: TenderStatusUpdateComponent,
+    loadComponent: () => import('./component/BME/tender-status-update/tender-status-update.component').then(m => m.TenderStatusUpdateComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME'] },
   },
   {
     path: 'AddRTenderItems',
-    component: AddRTenderItemsComponent,
+    loadComponent: () => import('./component/BME/add-rtender-items/add-rtender-items.component').then(m => m.AddRTenderItemsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME'] },
   },
@@ -560,7 +347,7 @@ const routes: Routes = [
   // { path: 'welcome', component: HomeComponent },
   {
     path: 'welcome',
-    component: LandingPageComponent,
+    loadComponent: () => import('./component/landing-page/landing-page.component').then(m => m.LandingPageComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: [
@@ -590,7 +377,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: HomeComponent,
+    loadComponent: () => import('./component/home/home.component').then(m => m.HomeComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: [
@@ -620,73 +407,73 @@ const routes: Routes = [
   // { path: 'welcome', component: HomeComponent, canActivate: [RouteGuardService],data: { allowedRoles: ['Suppliers','SEC1','DHS','CME','DME1','Collector','Warehouse','SE','HO_Infra','Division','DM PO','SSO','Logi Cell']} },
   {
     path: 'GenerationFileNonasti',
-    component: GenerationFileNonastiComponent,
+    loadComponent: () => import('./component/generation-file-nonasti/generation-file-nonasti.component').then(m => m.GenerationFileNonastiComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO'] },
   },
   {
     path: 'MasterSupplierDash',
-    component: MasterSupplierDashComponent,
+    loadComponent: () => import('./component/Tender Cell/master-supplier-dash/master-supplier-dash.component').then(m => m.MasterSupplierDashComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPOT'] },
   },
   {
     path: 'FileMRCDashbord',
-    component: FileMRCDashbordComponent,
+    loadComponent: () => import('./component/file-mrcdashbord/file-mrcdashbord.component').then(m => m.FileMRCDashbordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO'], variant: 'dm' },
   },
   {
     path: 'FileMRCDashboardFIN',
-    component: FileMRCDashbordComponent,
+    loadComponent: () => import('./component/file-mrcdashbord/file-mrcdashbord.component').then(m => m.FileMRCDashbordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD','FIN'], variant: 'fin' },
   },
   {
     path: 'FileMRCDashboardGM',
-    component: FileMRCDashbordComponent,
+    loadComponent: () => import('./component/file-mrcdashbord/file-mrcdashbord.component').then(m => m.FileMRCDashbordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['GM','AD'], variant: 'gm' },
   },
   {
     path: 'FileMRCDashboardIGM',
-    component: FileMRCDashbordComponent,
+    loadComponent: () => import('./component/file-mrcdashbord/file-mrcdashbord.component').then(m => m.FileMRCDashbordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['IGM','AD'], variant: 'igm' },
   },
   {
     path: 'FileMRCDashboardFINFile',
-    component: FileMRCDashbordComponent,
+    loadComponent: () => import('./component/file-mrcdashbord/file-mrcdashbord.component').then(m => m.FileMRCDashbordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['FIN','AD'], variant: 'fin-file' },
   },
   {
     path: 'FileMRCDashboardFINFile_Ver1',
-    component: FileMRCDashbordComponent,
+    loadComponent: () => import('./component/file-mrcdashbord/file-mrcdashbord.component').then(m => m.FileMRCDashbordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['FIN','AD'], variant: 'fin-file-v1' },
   },
   {
     path: 'FileMRCDashboardGMNew',
-    component: FileMRCDashbordComponent,
+    loadComponent: () => import('./component/file-mrcdashbord/file-mrcdashbord.component').then(m => m.FileMRCDashbordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['GM','AD'], variant: 'gm-new' },
   },
   {
     path: 'FileMRCDashboardIGMMov',
-    component: FileMRCDashbordComponent,
+    loadComponent: () => import('./component/file-mrcdashbord/file-mrcdashbord.component').then(m => m.FileMRCDashbordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['IGM','AD'], variant: 'igm-mov' },
   },
   {
     path: 'FileMRCDashboardIGMMovAudit',
-    component: FileMRCDashbordComponent,
+    loadComponent: () => import('./component/file-mrcdashbord/file-mrcdashbord.component').then(m => m.FileMRCDashbordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['IGM','AD'], variant: 'igm-mov-audit' },
   },
   {
     path: 'FileMRCDashboardIGMMovBME',
-    component: FileMRCDashbordComponent,
+    loadComponent: () => import('./component/file-mrcdashbord/file-mrcdashbord.component').then(m => m.FileMRCDashbordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['BME','AD'], variant: 'igm-mov-bme' },
   },
@@ -694,113 +481,113 @@ const routes: Routes = [
   {
     // path: 'ExtensionHODetail',
     path: 'POSupplyHO',
-    component: ExtensionHODetailComponent,
+    loadComponent: () => import('./component/extension-hodetail/extension-hodetail.component').then(m => m.ExtensionHODetailComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO','AUPO'] },
   },
 
   {
     path: 'ItemWiseDetailPOCell',
-    component: ItemWiseDetailPOCellComponent,
+    loadComponent: () => import('./component/item-wise-detail-pocell/item-wise-detail-pocell.component').then(m => m.ItemWiseDetailPOCellComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO'] },
   },
 
   {
     path: 'IndentPOSummaryDirwise',
-    component: IndentPOSummaryDirwiseComponent,
+    loadComponent: () => import('./component/indent-posummary-dirwise/indent-posummary-dirwise.component').then(m => m.IndentPOSummaryDirwiseComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO'] },
   },
 
   {
     path: 'DistrictWisePODetail',
-    component: DistrictWisePODetailComponent,
+    loadComponent: () => import('./component/district-wise-podetail/district-wise-podetail.component').then(m => m.DistrictWisePODetailComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO','AUGMF'] },
   },
   // BME
   {
     path: 'MastterSupplierDash',
-    component: MastterSupplierDashComponent,
+    loadComponent: () => import('./component/BME/mastter-supplier-dash/mastter-supplier-dash.component').then(m => m.MastterSupplierDashComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME'] },
   },
   {
     path: 'ItemsBME',
-    component: ItemsBMEComponent,
+    loadComponent: () => import('./component/BME/items-bme/items-bme.component').then(m => m.ItemsBMEComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME', 'AUPO'] },
   },
   {
     path: 'MapitemsEithType',
-    component: MapitemsEithTypeComponent,
+    loadComponent: () => import('./component/BME/mapitems-eith-type/mapitems-eith-type.component').then(m => m.MapitemsEithTypeComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME'] },
   },
   {
     path: 'MapitemswithTypeUpdate',
-    component: MapitemswithTypeUpdateComponent,
+    loadComponent: () => import('./component/BME/mapitemswith-type-update/mapitemswith-type-update.component').then(m => m.MapitemswithTypeUpdateComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME'] },
   },
   {
     path: 'MapitemswithMainitemTypeRepo',
-    component: MapitemswithMainitemTypeRepoComponent,
+    loadComponent: () => import('./component/BME/mapitemswith-mainitem-type-repo/mapitemswith-mainitem-type-repo.component').then(m => m.MapitemswithMainitemTypeRepoComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME'] },
   },
   {
     path: 'EMSRCDashbord',
-    component: EMSRCDashbordComponent,
+    loadComponent: () => import('./component/BME/emsrcdashbord/emsrcdashbord.component').then(m => m.EMSRCDashbordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME'] },
   },
   {
     path: 'EMSNEWRC',
-    component: EMSNEWRCComponent,
+    loadComponent: () => import('./component/BME/emsnewrc/emsnewrc.component').then(m => m.EMSNEWRCComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME'] },
   },
   {
     path: 'PlanaTenderD',
-    component: PlanaTenderDComponent,
+    loadComponent: () => import('./component/BME/plana-tender-d/plana-tender-d.component').then(m => m.PlanaTenderDComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME', 'AUPO', 'TPOT', 'Facility', 'HealthFacility', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'TenderCoverAObClaimAfter',
-    component: TenderCoverAObClaimAfterComponent,
+    loadComponent: () => import('./component/Tender Cell/tender-cover-aob-claim-after/tender-cover-aob-claim-after.component').then(m => m.TenderCoverAObClaimAfterComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPOT'] },
   },
   {
     path: 'TenderCoverA',
-    component: TenderCoverAComponent,
+    loadComponent: () => import('./component/BME/tender-cover-a/tender-cover-a.component').then(m => m.TenderCoverAComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU','TPOT'] },
   },
   {
     path: 'TenderCoverAObClaim',
-    component: TenderCoverAObClaimComponent,
+    loadComponent: () => import('./tender-cover-aob-claim/tender-cover-aob-claim.component').then(m => m.TenderCoverAObClaimComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU','TPOT'] },
   },
   {
     path: 'TenderItemsPriceGEM',
-    component: TenderItemsPriceGEMComponent,
+    loadComponent: () => import('./component/BME/tender-items-price-gem/tender-items-price-gem.component').then(m => m.TenderItemsPriceGEMComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU'] },
   },
   {
     path: 'TenderDetailsPriceEntryGEM',
-    component: TenderDetailsPriceEntryGEMComponent,
+    loadComponent: () => import('./component/BME/tender-details-price-entry-gem/tender-details-price-entry-gem.component').then(m => m.TenderDetailsPriceEntryGEMComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU'] },
   },
   {
     path: 'ConsolidatedIndentPOCell',
-    component: ConsolidatedIndentPOCellComponent,
+    loadComponent: () => import('./component/BME/consolidated-indent-pocell/consolidated-indent-pocell.component').then(m => m.ConsolidatedIndentPOCellComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU','AUPO','TPOT'] },
   },
@@ -808,7 +595,7 @@ const routes: Routes = [
   // {path:'MasFacilityUsers',component:MasFacilityUsersComponent, canActivate:[RouteGuardService], data:{ allowedRoles:['AU'] }},
   {
     path: 'MasFacilityUsers',
-    component: MasFacilityUsersComponent,
+    loadComponent: () => import('./component/PO-Cell/mas-facility-users/mas-facility-users.component').then(m => m.MasFacilityUsersComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO'],
@@ -818,7 +605,7 @@ const routes: Routes = [
   },
   {
     path: 'DHSindentAddBulkConsigneePO',
-    component: DHSindentAddBulkConsigneePOComponent,
+    loadComponent: () => import('./component/PO-Cell/dhsindent-add-bulk-consignee-po/dhsindent-add-bulk-consignee-po.component').then(m => m.DHSindentAddBulkConsigneePOComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO'],
@@ -828,7 +615,7 @@ const routes: Routes = [
   },
   {
     path: 'Termsconditions',
-    component: TermsconditionsComponent,
+    loadComponent: () => import('./component/PO-Cell/termsconditions/termsconditions.component').then(m => m.TermsconditionsComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO'],
@@ -838,7 +625,7 @@ const routes: Routes = [
   },
   {
     path: 'RDLCTenderSummary',
-    component: RDLCTenderSummaryComponent,
+    loadComponent: () => import('./component/PO-Cell/rdlctender-summary/rdlctender-summary.component').then(m => m.RDLCTenderSummaryComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO'],
@@ -848,7 +635,7 @@ const routes: Routes = [
   },
   {
     path: 'ProgramMaster',
-    component: ProgramMasterComponent,
+    loadComponent: () => import('./component/PO-Cell/program-master/program-master.component').then(m => m.ProgramMasterComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO'],
@@ -858,7 +645,7 @@ const routes: Routes = [
   },
   {
     path: 'RCExtend',
-    component: RCExtendComponent,
+    loadComponent: () => import('./component/PO-Cell/rcextend/rcextend.component').then(m => m.RCExtendComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO'],
@@ -868,7 +655,7 @@ const routes: Routes = [
   },
   {
     path: 'AppliedPoExtension',
-    component: AppliedPoExtensionComponent,
+    loadComponent: () => import('./component/PO-Cell/applied-po-extension/applied-po-extension.component').then(m => m.AppliedPoExtensionComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO'],
@@ -878,7 +665,7 @@ const routes: Routes = [
   },
   {
     path: 'EMSPODashboard',
-    component: EMSPODashboardComponent,
+    loadComponent: () => import('./component/PO-Cell/emspodashboard/emspodashboard.component').then(m => m.EMSPODashboardComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO'],
@@ -888,7 +675,7 @@ const routes: Routes = [
   },
   {
     path: 'ConsolidatedIndentDHSPO',
-    component: ConsolidatedIndentDHSPOComponent,
+    loadComponent: () => import('./component/PO-Cell/consolidated-indent-dhs-po/consolidated-indent-dhs-po.component').then(m => m.ConsolidatedIndentDHSPOComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO','TPOT'],
@@ -898,7 +685,7 @@ const routes: Routes = [
   },
   {
     path: 'ConsolidatedIndentCGMSC',
-    component: ConsolidatedIndentCGMSCComponent,
+    loadComponent: () => import('./component/Tender Cell/consolidated-indent-cgmsc/consolidated-indent-cgmsc.component').then(m => m.ConsolidatedIndentCGMSCComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['TPOT'],
@@ -906,7 +693,7 @@ const routes: Routes = [
   },
   {
     path: 'IndentWiseItemRemarks',
-    component: IndentWiseItemRemarksComponent,
+    loadComponent: () => import('./component/PO-Cell/indent-wise-item-remarks/indent-wise-item-remarks.component').then(m => m.IndentWiseItemRemarksComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: ['AUPO'],
@@ -917,73 +704,73 @@ const routes: Routes = [
   // MD logins
   {
     path: 'RCDetailReport',
-    component: RCDetailReportComponent,
+    loadComponent: () => import('./component/rcdetail-report/rcdetail-report.component').then(m => m.RCDetailReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME','AUPO'] },
   },
   {
     path: 'AcceptedReort',
-    component: AcceptedReortComponent,
+    loadComponent: () => import('./component/accepted-reort/accepted-reort.component').then(m => m.AcceptedReortComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD','AUPO'] },
   },
   {
     path: 'IndentFromFacilities',
-    component: IndentFromFacilitiesComponent,
+    loadComponent: () => import('./component/indent-from-facilities/indent-from-facilities.component').then(m => m.IndentFromFacilitiesComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'ComplainReportBME',
-    component: ComplainReportBMEComponent,
+    loadComponent: () => import('./component/complain-report-bme/complain-report-bme.component').then(m => m.ComplainReportBMEComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'POPaidReport',
-    component: POPaidReportComponent,
+    loadComponent: () => import('./component/popaid-report/popaid-report.component').then(m => m.POPaidReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'FPOPaidReport',
-    component: POPaidReportComponent,
+    loadComponent: () => import('./component/popaid-report/popaid-report.component').then(m => m.POPaidReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'ChequeWisePaymentReport',
-    component: ChequeWisePaymentRComponent,
+    loadComponent: () => import('./component/cheque-wise-payment-r/cheque-wise-payment-r.component').then(m => m.ChequeWisePaymentRComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'POSummaryReport',
-    component: POSummaryReportComponent,
+    loadComponent: () => import('./component/posummary-report/posummary-report.component').then(m => m.POSummaryReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'TendersStatus',
-    component: TendersStatusComponent,
+    loadComponent: () => import('./component/tenders-status/tenders-status.component').then(m => m.TendersStatusComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'PORecdsummary',
-    component: PORecdsummaryComponent,
+    loadComponent: () => import('./component/porecdsummary/porecdsummary.component').then(m => m.PORecdsummaryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'TenterStatusItemWise',
-    component: TenterStatusItemWiseComponent,
+    loadComponent: () => import('./component/tenter-status-item-wise/tenter-status-item-wise.component').then(m => m.TenterStatusItemWiseComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'POSummaryDrillDwnQtyReagent',
-    component: POSummaryDrillDwnQtyReagentComponent,
+    loadComponent: () => import('./component/posummary-drill-dwn-qty-reagent/posummary-drill-dwn-qty-reagent.component').then(m => m.POSummaryDrillDwnQtyReagentComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
@@ -991,7 +778,7 @@ const routes: Routes = [
   // EMS sidebar-aligned routes (Masters / Stock / Orders / …)
   {
     path: 'masters/store-home',
-    component: StoreHomeComponent,
+    loadComponent: () => import('./component/Master/store-home/store-home.component').then(m => m.StoreHomeComponent),
     canActivate: [RouteGuardService],
     data: {
       allowedRoles: [
@@ -1023,229 +810,229 @@ const routes: Routes = [
   },
   {
     path: 'masters/consignee-information',
-    component: ConsigeeInformationComponent,
+    loadComponent: () => import('./component/DME/consigee-information/consigee-information.component').then(m => m.ConsigeeInformationComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'masters/report-specification',
-    component: ReportSpecificationComponent,
+    loadComponent: () => import('./component/DME/masters/report-specification/report-specification.component').then(m => m.ReportSpecificationComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'masters/cme-eel-suggestion',
-    component: CmeEelSuggestionComponent,
+    loadComponent: () => import('./component/DME/masters/cme-eel-suggestion/cme-eel-suggestion.component').then(m => m.CmeEelSuggestionComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'masters/supplier',
-    component: MastterSupplierDashComponent,
+    loadComponent: () => import('./component/BME/mastter-supplier-dash/mastter-supplier-dash.component').then(m => m.MastterSupplierDashComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME','TPOT'] },
   },
   {
     path: 'masters/items',
-    component: ItemsBMEComponent,
+    loadComponent: () => import('./component/BME/items-bme/items-bme.component').then(m => m.ItemsBMEComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME','TPOT'] },
   },
   {
     path: 'masters/map-items',
-    component: MapitemsEithTypeComponent,
+    loadComponent: () => import('./component/BME/mapitems-eith-type/mapitems-eith-type.component').then(m => m.MapitemsEithTypeComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME','TPOT'] },
   },
   {
     path: 'masters/map-items-update',
-    component: MapitemswithTypeUpdateComponent,
+    loadComponent: () => import('./component/BME/mapitemswith-type-update/mapitemswith-type-update.component').then(m => m.MapitemswithTypeUpdateComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME','TPOT'] },
   },
   {
     path: 'masters/map-items-report',
-    component: MapitemswithMainitemTypeRepoComponent,
+    loadComponent: () => import('./component/BME/mapitemswith-mainitem-type-repo/mapitemswith-mainitem-type-repo.component').then(m => m.MapitemswithMainitemTypeRepoComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME','TPOT'] },
   },
   {
     path: 'stock/covid-stock-report',
-    component: StockReportComponent,
+    loadComponent: () => import('./component/DME/stock/stock-report/stock-report.component').then(m => m.StockReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'stock/opening-stock-entry',
-    component: OpeningStockEntryComponent,
+    loadComponent: () => import('./component/DME/stock/opening-stock-entry/opening-stock-entry.component').then(m => m.OpeningStockEntryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'stock/new-opening-stock-entry',
-    component: NewOpeningStockEntryComponent,
+    loadComponent: () => import('./component/DME/stock/new-opening-stock-entry/new-opening-stock-entry.component').then(m => m.NewOpeningStockEntryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'stock/progress-category',
-    component: ProgressCategoryComponent,
+    loadComponent: () => import('./component/DME/stock/progress-category/progress-category.component').then(m => m.ProgressCategoryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'stock/facility-receipts',
-    component: FacilityReceiptsComponent,
+    loadComponent: () => import('./component/DME/stock/facility-receipts/facility-receipts.component').then(m => m.FacilityReceiptsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'stock/nodal-information',
-    component: NodalInformationComponent,
+    loadComponent: () => import('./component/DME/stock/nodal-information/nodal-information.component').then(m => m.NodalInformationComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'orders/mas-file-no',
-    component: MasFileNoComponent,
+    loadComponent: () => import('./component/DME/orders/mas-file-no/mas-file-no.component').then(m => m.MasFileNoComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'orders/po-reallocation',
-    component: PoReallocationComponent,
+    loadComponent: () => import('./component/DME/orders/po-reallocation/po-reallocation.component').then(m => m.PoReallocationComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'orders/po-amendment',
-    component: PoAmendmentComponent,
+    loadComponent: () => import('./component/DME/orders/po-amendment/po-amendment.component').then(m => m.PoAmendmentComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'orders/withheld-release',
-    component: WithheldReleaseComponent,
+    loadComponent: () => import('./component/DME/orders/withheld-release/withheld-release.component').then(m => m.WithheldReleaseComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'payment-letter',
-    component: PaymentLetterComponent,
+    loadComponent: () => import('./component/DME/orders/payment-letter/payment-letter.component').then(m => m.PaymentLetterComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'stock/nodal-progress',
-    component: NodalProgressComponent,
+    loadComponent: () => import('./component/DME/stock/nodal-progress/nodal-progress.component').then(m => m.NodalProgressComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'reports/eligible-report',
-    component: EligibleReportComponent,
+    loadComponent: () => import('./Reports/eligible-report/eligible-report.component').then(m => m.EligibleReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/main-equipment-mapped',
-    component: MainEquipmentMappedReportComponent,
+    loadComponent: () => import('./Reports/main-equipment-mapped-report/main-equipment-mapped-report.component').then(m => m.MainEquipmentMappedReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'orders/purchase-order-dashboard',
-    component: PurchaseOrderDashboardComponent,
+    loadComponent: () => import('./component/DME/orders/purchase-order-dashboard/purchase-order-dashboard.component').then(m => m.PurchaseOrderDashboardComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'AUPO'] },
   },
   {
     path: 'orders/purchase-order-receipts',
-    component: PurchaseOrderReceiptsComponent,
+    loadComponent: () => import('./component/DME/orders/purchase-order-receipts/purchase-order-receipts.component').then(m => m.PurchaseOrderReceiptsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'orders/po-receipt-entry',
-    component: PoReceiptEntryComponent,
+    loadComponent: () => import('./component/DME/orders/po-receipt-entry/po-receipt-entry.component').then(m => m.PoReceiptEntryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'orders/po-installation-report',
-    component: PoInstallationReportComponent,
+    loadComponent: () => import('./component/DME/orders/po-installation-report/po-installation-report.component').then(m => m.PoInstallationReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'orders/po-print',
-    component: PoPrintComponent,
+    loadComponent: () => import('./component/DME/orders/po-print/po-print.component').then(m => m.PoPrintComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'AUPO'] },
   },
   {
     path: 'contracts/dashboard',
-    component: EMSRCDashbordComponent,
+    loadComponent: () => import('./component/BME/emsrcdashbord/emsrcdashbord.component').then(m => m.EMSRCDashbordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME','AUPO'] },
   },
   {
     path: 'contracts/new-rc',
-    component: EMSNEWRCComponent,
+    loadComponent: () => import('./component/BME/emsnewrc/emsnewrc.component').then(m => m.EMSNEWRCComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME','AUPO'] },
   },
   {
     path: 'contracts/rc-detail-report',
-    component: RCDetailReportComponent,
+    loadComponent: () => import('./component/rcdetail-report/rcdetail-report.component').then(m => m.RCDetailReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME','AU', 'TPO', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'tender/plan',
-    component: PlanaTenderDComponent,
+    loadComponent: () => import('./component/BME/plana-tender-d/plana-tender-d.component').then(m => m.PlanaTenderDComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME', 'AUPO', 'TPOT', 'Facility', 'HealthFacility', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'tender/evaluation',
-    component: TenderStatusUpdateComponent,
+    loadComponent: () => import('./component/BME/tender-status-update/tender-status-update.component').then(m => m.TenderStatusUpdateComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME'] },
   },
   {
     path: 'tender/claim-object',
-    component: AddRTenderItemsComponent,
+    loadComponent: () => import('./component/BME/add-rtender-items/add-rtender-items.component').then(m => m.AddRTenderItemsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME'] },
   },
   {
     path: 'tender/gem-price-acceptance',
-    component: TendersStatusComponent,
+    loadComponent: () => import('./component/tenders-status/tenders-status.component').then(m => m.TendersStatusComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'indents/budget-heads',
-    component: DmeFacHeadsComponent,
+    loadComponent: () => import('./component/DME/indent/dme-fac-heads/dme-fac-heads.component').then(m => m.DmeFacHeadsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'indents/annual-indent',
-    component: ConsolidatedIndentDmeComponent,
+    loadComponent: () => import('./component/DME/indent/consolidated-indent-dme/consolidated-indent-dme.component').then(m => m.ConsolidatedIndentDmeComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'indents/annual-indent-items',
-    component: DmeFacAddIndentComponent,
+    loadComponent: () => import('./component/DME/indent/dme-fac-add-indent/dme-fac-add-indent.component').then(m => m.DmeFacAddIndentComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'indents/annual-indent-report',
-    component: DmeFacIndentReportComponent,
+    loadComponent: () => import('./component/DME/indent/dme-fac-indent-report/dme-fac-indent-report.component').then(m => m.DmeFacIndentReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
@@ -1266,67 +1053,67 @@ const routes: Routes = [
   },
   {
     path: 'indents/from-facilities',
-    component: IndentFromFacilitiesComponent,
+    loadComponent: () => import('./component/indent-from-facilities/indent-from-facilities.component').then(m => m.IndentFromFacilitiesComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'finance/year-wise-po-abstract',
-    component: FacilityAuthPOValuePOCellComponent,
+    loadComponent: () => import('./component/facility-auth-povalue-pocell/facility-auth-povalue-pocell.component').then(m => m.FacilityAuthPOValuePOCellComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME','AUPO','AUGMF'] },
   },
   {
     path: 'finance/po-wise-payment',
-    component: POPaidReportComponent,
+    loadComponent: () => import('./component/popaid-report/popaid-report.component').then(m => m.POPaidReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME','AUPO','AUGMF'] },
   },
   {
     path: 'finance/cheque-wise-payment',
-    component: ChequeWisePaymentRComponent,
+    loadComponent: () => import('./component/cheque-wise-payment-r/cheque-wise-payment-r.component').then(m => m.ChequeWisePaymentRComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME','AUGMF'] },
   },
   {
     path: 'complain/facility-store',
-    component: FacilityComplainStoreComponent,
+    loadComponent: () => import('./component/DME/complain/facility-complain-store/facility-complain-store.component').then(m => m.FacilityComplainStoreComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'complain/complaint-status',
-    component: ComplaintStatusComponent,
+    loadComponent: () => import('./component/DME/complain/complaint-status/complaint-status.component').then(m => m.ComplaintStatusComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'complain/complaint-status-edit/:compId',
-    component: ComplaintStatusEditComponent,
+    loadComponent: () => import('./component/DME/complain/complaint-status-edit/complaint-status-edit.component').then(m => m.ComplaintStatusEditComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'complain/complaint-status-facility',
-    component: ComplaintStatusFacilityComponent,
+    loadComponent: () => import('./component/DME/complain/complaint-status-facility/complaint-status-facility.component').then(m => m.ComplaintStatusFacilityComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'complain/complaint-status-facility-edit/:compId',
-    component: ComplaintStatusFacilityEditComponent,
+    loadComponent: () => import('./component/DME/complain/complaint-status-facility-edit/complaint-status-facility-edit.component').then(m => m.ComplaintStatusFacilityEditComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'complain/complain-cmho',
-    component: ComplainCmhoComponent,
+    loadComponent: () => import('./component/DME/complain/complain-cmho/complain-cmho.component').then(m => m.ComplainCmhoComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'FU', 'PRINCIPAL', 'FDA'] },
   },
   {
     path: 'change-password',
-    component: ChangePasswordComponent,
+    loadComponent: () => import('./component/DME/orders/change-password/change-password.component').then(m => m.ChangePasswordComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AU', 'TPO', 'AUPO', 'FU', 'PRINCIPAL', 'FDA', 'SUP'] },
   },
@@ -1356,349 +1143,349 @@ const routes: Routes = [
   },
   {
     path: 'complain/report',
-    component: ComplainReportBMEComponent,
+    loadComponent: () => import('./component/complain-report-bme/complain-report-bme.component').then(m => m.ComplainReportBMEComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'reports/cmc-detail',
-    component: CmcDetailComponent,
+    loadComponent: () => import('./component/DME/reports/cmc-detail/cmc-detail.component').then(m => m.CmcDetailComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'reports/eel-specification',
-    component: ReportSpecificationComponent,
+    loadComponent: () => import('./component/DME/masters/report-specification/report-specification.component').then(m => m.ReportSpecificationComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME'] },
   },
   {
     path: 'reports/po-summary',
-    component: POSummaryReportComponent,
+    loadComponent: () => import('./component/posummary-report/posummary-report.component').then(m => m.POSummaryReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'reports/po-wise-payment',
-    component: POPaidReportComponent,
+    loadComponent: () => import('./component/popaid-report/popaid-report.component').then(m => m.POPaidReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'reports/tenders-status',
-    component: TendersStatusComponent,
+    loadComponent: () => import('./component/tenders-status/tenders-status.component').then(m => m.TendersStatusComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME','AUGMF'] },
   },
   {
     path: 'reports/po-receipts-summary',
-    component: PORecdsummaryComponent,
+    loadComponent: () => import('./component/porecdsummary/porecdsummary.component').then(m => m.PORecdsummaryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'reports/tender-item-status',
-    component: TenterStatusItemWiseComponent,
+    loadComponent: () => import('./component/tenter-status-item-wise/tenter-status-item-wise.component').then(m => m.TenterStatusItemWiseComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'reports/reagent-po',
-    component: POSummaryDrillDwnQtyReagentComponent,
+    loadComponent: () => import('./component/posummary-drill-dwn-qty-reagent/posummary-drill-dwn-qty-reagent.component').then(m => m.POSummaryDrillDwnQtyReagentComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME'] },
   },
   {
     path: 'reports/cmho-po-summary',
-    component: CmhoPoSummaryComponent,
+    loadComponent: () => import('./Reports/cmho-po-summary/cmho-po-summary.component').then(m => m.CmhoPoSummaryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/cmho-po-summary-drilldown',
-    component: CmhoPoSummaryDrilldownComponent,
+    loadComponent: () => import('./Reports/cmho-po-summary-drilldown/cmho-po-summary-drilldown.component').then(m => m.CmhoPoSummaryDrilldownComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/po-summary-directorate',
-    component: PoSummaryDirectorateComponent,
+    loadComponent: () => import('./Reports/po-summary-directorate/po-summary-directorate.component').then(m => m.PoSummaryDirectorateComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/po-summary-directorate-drilldown',
-    component: PoSummaryDirectorateDrilldownComponent,
+    loadComponent: () => import('./Reports/po-summary-directorate-drilldown/po-summary-directorate-drilldown.component').then(m => m.PoSummaryDirectorateDrilldownComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/po-summary-consignee-ho',
-    component: PoSummaryConsigneeHoComponent,
+    loadComponent: () => import('./Reports/po-summary-consignee-ho/po-summary-consignee-ho.component').then(m => m.PoSummaryConsigneeHoComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/tender-live-status',
-    component: TenderLiveStatusComponent,
+    loadComponent: () => import('./Reports/tender-live-status/tender-live-status.component').then(m => m.TenderLiveStatusComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/tender-live-status-drilldown',
-    component: TenderLiveStatusDrilldownComponent,
+    loadComponent: () => import('./Reports/tender-live-status-drilldown/tender-live-status-drilldown.component').then(m => m.TenderLiveStatusDrilldownComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/balance-status-dhs',
-    component: BalanceStatusDhsComponent,
+    loadComponent: () => import('./Reports/balance-status-dhs/balance-status-dhs.component').then(m => m.BalanceStatusDhsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/balance-status-pocell',
-    component: BalanceStatusPocellComponent,
+    loadComponent: () => import('./Reports/balance-status-pocell/balance-status-pocell.component').then(m => m.BalanceStatusPocellComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/opening-stock-summary',
-    component: OpeningStockSummaryComponent,
+    loadComponent: () => import('./Reports/opening-stock-summary/opening-stock-summary.component').then(m => m.OpeningStockSummaryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/opening-stock-drilldown',
-    component: OpeningStockDrilldownComponent,
+    loadComponent: () => import('./Reports/opening-stock-drilldown/opening-stock-drilldown.component').then(m => m.OpeningStockDrilldownComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/payments-cpreport-igm',
-    component: PaymentsCpreportIgmComponent,
+    loadComponent: () => import('./Reports/payments-cpreport-igm/payments-cpreport-igm.component').then(m => m.PaymentsCpreportIgmComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/popaid-report-igm',
-    component: PopaidReportIgmComponent,
+    loadComponent: () => import('./Reports/popaid-report-igm/popaid-report-igm.component').then(m => m.PopaidReportIgmComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/emd-deposite-report',
-    component: EmdDepositeReportComponent,
+    loadComponent: () => import('./Reports/emd-deposite-report/emd-deposite-report.component').then(m => m.EmdDepositeReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/equipment-tag-report',
-    component: EquipmentTagReportComponent,
+    loadComponent: () => import('./Reports/equipment-tag-report/equipment-tag-report.component').then(m => m.EquipmentTagReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/tender-wise-po-details',
-    component: TenderWisePoDetailsComponent,
+    loadComponent: () => import('./Reports/tender-wise-po-details/tender-wise-po-details.component').then(m => m.TenderWisePoDetailsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/tender-status-item-wise',
-    component: TenderStatusItemWiseComponent,
+    loadComponent: () => import('./Reports/tender-status-item-wise/tender-status-item-wise.component').then(m => m.TenderStatusItemWiseComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/dispatch-detail',
-    component: DispatchDetailComponent,
+    loadComponent: () => import('./Reports/dispatch-detail/dispatch-detail.component').then(m => m.DispatchDetailComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/pending-po-supplier-wise',
-    component: PendingPoSupplierWiseComponent,
+    loadComponent: () => import('./Reports/pending-po-supplier-wise/pending-po-supplier-wise.component').then(m => m.PendingPoSupplierWiseComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/receipt-pending-cmho',
-    component: ReceiptPendingCmhoComponent,
+    loadComponent: () => import('./Reports/receipt-pending-cmho/receipt-pending-cmho.component').then(m => m.ReceiptPendingCmhoComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/report-indent-po-details',
-    component: ReportIndentPoDetailsComponent,
+    loadComponent: () => import('./Reports/report-indent-po-details/report-indent-po-details.component').then(m => m.ReportIndentPoDetailsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/eel-suggestion-report',
-    component: EelSuggestionReportComponent,
+    loadComponent: () => import('./Reports/eel-suggestion-report/eel-suggestion-report.component').then(m => m.EelSuggestionReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/fac-stock-covid-items-bme',
-    component: FacStockCovidItemsBmeComponent,
+    loadComponent: () => import('./Reports/fac-stock-covid-items-bme/fac-stock-covid-items-bme.component').then(m => m.FacStockCovidItemsBmeComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/balance-supplierwise',
-    component: BalanceSupplierwiseComponent,
+    loadComponent: () => import('./Reports/balance-supplierwise/balance-supplierwise.component').then(m => m.BalanceSupplierwiseComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/indent-report-pocell',
-    component: IndentReportPocellComponent,
+    loadComponent: () => import('./Reports/indent-report-pocell/indent-report-pocell.component').then(m => m.IndentReportPocellComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/pending-install-drilldown-dhs',
-    component: PendingInstallDrilldownDhsComponent,
+    loadComponent: () => import('./Reports/pending-install-drilldown-dhs/pending-install-drilldown-dhs.component').then(m => m.PendingInstallDrilldownDhsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/pending-install-drilldown-pocell',
-    component: PendingInstallDrilldownPocellComponent,
+    loadComponent: () => import('./Reports/pending-install-drilldown-pocell/pending-install-drilldown-pocell.component').then(m => m.PendingInstallDrilldownPocellComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/rdlc-dhs-pending',
-    component: RdlcDhsPendingComponent,
+    loadComponent: () => import('./Reports/rdlc-dhs-pending/rdlc-dhs-pending.component').then(m => m.RdlcDhsPendingComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/cover-a-items-reports',
-    component: CoverAItemsReportsComponent,
+    loadComponent: () => import('./Reports/cover-a-items-reports/cover-a-items-reports.component').then(m => m.CoverAItemsReportsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/item-wise-detail',
-    component: ItemWiseDetailComponent,
+    loadComponent: () => import('./Reports/item-wise-detail/item-wise-detail.component').then(m => m.ItemWiseDetailComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/item-wise-detail-pocell',
-    component: ReportsItemWiseDetailPOCellComponent,
+    loadComponent: () => import('./Reports/item-wise-detail-pocell/item-wise-detail-pocell.component').then(m => m.ItemWiseDetailPOCellComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/item-wise-detail-poqty',
-    component: ItemWiseDetailPOQtyComponent,
+    loadComponent: () => import('./Reports/item-wise-detail-poqty/item-wise-detail-poqty.component').then(m => m.ItemWiseDetailPOQtyComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/item-wise-detail-poqty-pocell',
-    component: ItemWiseDetailPOQtyPOCellComponent,
+    loadComponent: () => import('./Reports/item-wise-detail-poqty-pocell/item-wise-detail-poqty-pocell.component').then(m => m.ItemWiseDetailPOQtyPOCellComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/complain-report-bme',
-    component: ComplainReportBmeComponent,
+    loadComponent: () => import('./Reports/complain-report-bme/complain-report-bme.component').then(m => m.ComplainReportBmeComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/district-wise-po-detail',
-    component: DistrictWisePoDetailComponent,
+    loadComponent: () => import('./Reports/district-wise-po-detail/district-wise-po-detail.component').then(m => m.DistrictWisePoDetailComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/emd-refund-report',
-    component: EmdRefundReportComponent,
+    loadComponent: () => import('./Reports/emd-refund-report/emd-refund-report.component').then(m => m.EmdRefundReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/po-paid-report',
-    component: PoPaidReportComponent,
+    loadComponent: () => import('./Reports/po-paid-report/po-paid-report.component').then(m => m.PoPaidReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/payment-report',
-    component: PaymentReportComponent,
+    loadComponent: () => import('./Reports/payment-report/payment-report.component').then(m => m.PaymentReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/tender-status',
-    component: TenderStatusComponent,
+    loadComponent: () => import('./Reports/tender-status/tender-status.component').then(m => m.TenderStatusComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/po-summary',
-    component: PoSummaryComponent,
+    loadComponent: () => import('./Reports/po-summary/po-summary.component').then(m => m.PoSummaryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME', 'CMHO', 'Store', 'FU', 'Facility', 'HealthFacility', 'DHS', 'AYUSH'] },
   },
   {
     path: 'reports/po-summary-drilldown-qty',
-    component: PoSummaryDrilldownQtyComponent,
+    loadComponent: () => import('./Reports/po-summary-drilldown-qty/po-summary-drilldown-qty.component').then(m => m.PoSummaryDrilldownQtyComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/po-summary-drilldown-qty-powise',
-    component: PoSummaryDrilldownQtyPowiseComponent,
+    loadComponent: () => import('./Reports/po-summary-drilldown-qty-powise/po-summary-drilldown-qty-powise.component').then(m => m.PoSummaryDrilldownQtyPowiseComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/po-summary-drilldown-qty-reagent',
-    component: PoSummaryDrilldownQtyReagentComponent,
+    loadComponent: () => import('./Reports/po-summary-drilldown-qty-reagent/po-summary-drilldown-qty-reagent.component').then(m => m.PoSummaryDrilldownQtyReagentComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/indent-po-summary-dirwise',
-    component: IndentPoSummaryDirwiseComponent,
+    loadComponent: () => import('./Reports/indent-po-summary-dirwise/indent-po-summary-dirwise.component').then(m => m.IndentPoSummaryDirwiseComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/cover-a-items-reports',
-    component: CoverAItemsReportsComponent,
+    loadComponent: () => import('./Reports/cover-a-items-reports/cover-a-items-reports.component').then(m => m.CoverAItemsReportsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/payments-cpreport',
-    component: PaymentsCpreportComponent,
+    loadComponent: () => import('./Reports/payments-cpreport/payments-cpreport.component').then(m => m.PaymentsCpreportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/po-receipt-summary',
-    component: PoReceiptSummaryComponent,
+    loadComponent: () => import('./Reports/po-receipt-summary/po-receipt-summary.component').then(m => m.PoReceiptSummaryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/sanctions-rdlc',
-    component: SanctionsRdlcComponent,
+    loadComponent: () => import('./Reports/sanctions-rdlc/sanctions-rdlc.component').then(m => m.SanctionsRdlcComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'reports/balance-status-supplier',
-    component: BalanceStatusSupplierComponent,
+    loadComponent: () => import('./Reports/balance-status-supplier/balance-status-supplier.component').then(m => m.BalanceStatusSupplierComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
@@ -1972,19 +1759,19 @@ const routes: Routes = [
 // 
   {
     path: 'EMDRefundTenderwise',
-    component: EmdRefundTenderwiseComponent,
+    loadComponent: () => import('./component/Finance/emd-refund-tenderwise/emd-refund-tenderwise.component').then(m => m.EmdRefundTenderwiseComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'CGMSC', 'AD'] },
   },
   {
     path: 'emd-refund/tenderwise',
-    component: EmdRefundTenderwiseComponent,
+    loadComponent: () => import('./component/Finance/emd-refund-tenderwise/emd-refund-tenderwise.component').then(m => m.EmdRefundTenderwiseComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'CGMSC', 'AD'] },
   },
   {
     path: 'SDReleaseFInance',
-    component: SdReleaseFinanceComponent,
+    loadComponent: () => import('./component/Finance/sd-release-finance/sd-release-finance.component').then(m => m.SdReleaseFinanceComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'CGMSC', 'AD'] },
   },
@@ -1995,49 +1782,49 @@ const routes: Routes = [
   },
   {
     path: 'emd-refund/sd-release-finance',
-    component: SdReleaseFinanceComponent,
+    loadComponent: () => import('./component/Finance/sd-release-finance/sd-release-finance.component').then(m => m.SdReleaseFinanceComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'CGMSC', 'AD'] },
   },
   {
     path: 'EditReceivedAndInstallationDate',
-    component: EditReceivedAndInstallationDateComponent,
+    loadComponent: () => import('./GM Finance/edit-received-and-installation-date/edit-received-and-installation-date.component').then(m => m.EditReceivedAndInstallationDateComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
   {
     path: 'Supplier',
-    component: SuppliersComponent,
+    loadComponent: () => import('./GM Finance/suppliers/suppliers.component').then(m => m.SuppliersComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
   {
     path: 'CgmscBankAccounts',
-    component: CgmscBankAccountsComponent,
+    loadComponent: () => import('./GM Finance/cgmsc-bank-accounts/cgmsc-bank-accounts.component').then(m => m.CgmscBankAccountsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
   {
     path: 'NewFundMaster',
-    component: NewFundMasterComponent,
+    loadComponent: () => import('./GM Finance/new-fund-master/new-fund-master.component').then(m => m.NewFundMasterComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
   {
     path: 'FundMap',
-    component: FundMapComponent,
+    loadComponent: () => import('./GM Finance/fund-map/fund-map.component').then(m => m.FundMapComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
   {
     path: 'BudgentEntry',
-    component: BudgentEntryComponent,
+    loadComponent: () => import('./GM Finance/budgent-entry/budgent-entry.component').then(m => m.BudgentEntryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
   {
     path: 'MainFundHead',
-    component: MainFundHeadEnComponent,
+    loadComponent: () => import('./component/Finance/main-fund-head-en/main-fund-head-en.component').then(m => m.MainFundHeadEnComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'GM FINANCE', 'GM Finance', 'GMF'] },
   },
@@ -2048,7 +1835,7 @@ const routes: Routes = [
   },
   {
     path: 'OpeningBalance',
-    component: OpeningBalanceComponent,
+    loadComponent: () => import('./GM Finance/opening-balance/opening-balance.component').then(m => m.OpeningBalanceComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'GM FINANCE', 'GM Finance', 'GMF'] },
   },
@@ -2059,73 +1846,73 @@ const routes: Routes = [
   },
   {
     path: 'IndentRCPOTenderStatus',
-    component: IndentRCPOTenderStatusComponent,
+    loadComponent: () => import('./Reports/indent-rc-po-tender-status/indent-rc-po-tender-status.component').then(m => m.IndentRCPOTenderStatusComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
   {
     path: 'UnpaidPOS',
-    component: UnpaidPOSComponent,
+    loadComponent: () => import('./Reports/unpaid-pos/unpaid-pos.component').then(m => m.UnpaidPOSComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
   {
     path: 'POReportGMF',
-    component: POReportGMFComponent,
+    loadComponent: () => import('./Reports/poreport-gmf/poreport-gmf.component').then(m => m.POReportGMFComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
   {
     path: 'InvoiceDetail',
-    component: InvoiceDetailComponent,
+    loadComponent: () => import('./Reports/invoice-detail/invoice-detail.component').then(m => m.InvoiceDetailComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AUPO', 'AU'] },
   },
   {
     path: 'TDSdataReport',
-    component: TDSdataReportComponent,
+    loadComponent: () => import('./Reports/tdsdata-report/tdsdata-report.component').then(m => m.TDSdataReportComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AUPO', 'AU'] },
   },
   {
     path: 'PaymentsCPReport20per',
-    component: PaymentsCPReport20perComponent,
+    loadComponent: () => import('./Reports/payments-cpreport20per/payments-cpreport20per.component').then(m => m.PaymentsCPReport20perComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AUPO', 'AU'] },
   },
   {
     path: 'reports/payments-cpreport20per',
-    component: PaymentsCPReport20perComponent,
+    loadComponent: () => import('./Reports/payments-cpreport20per/payments-cpreport20per.component').then(m => m.PaymentsCPReport20perComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME', 'AUGMF', 'AUPO', 'AU'] },
   },
   {
     path: 'FileMRCDashboardFINFile',
-    component: FileMRCDashboardFINFileComponent,
+    loadComponent: () => import('./GM Finance/file-mrcdashboard-finfile/file-mrcdashboard-finfile.component').then(m => m.FileMRCDashboardFINFileComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'AU'] },
   },
   {
     path: 'PerformanceCertificate',
-    component: PerformanceCertificateComponent,
+    loadComponent: () => import('./Performance/performance-certificate/performance-certificate.component').then(m => m.PerformanceCertificateComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
   {
     path: 'performance/emis-perf20-rdlc',
-    component: EmisPerf20RdlcComponent,
+    loadComponent: () => import('./Performance/emis-perf20-rdlc/emis-perf20-rdlc.component').then(m => m.EmisPerf20RdlcComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'performance/payment20-cheque-prep',
-    component: Payment20ChequePrepComponent,
+    loadComponent: () => import('./Performance/payment20-cheque-prep/payment20-cheque-prep.component').then(m => m.Payment20ChequePrepComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
   {
     path: 'performance/sanction-notesheet',
-    component: SanctionNotesheetComponent,
+    loadComponent: () => import('./Performance/sanction-notesheet/sanction-notesheet.component').then(m => m.SanctionNotesheetComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
@@ -2134,7 +1921,7 @@ const routes: Routes = [
 //#region Master Module
   {
     path: 'masters/dhs-facility-users-locations',
-    component: DhsFacilityUsersLocationsComponent,
+    loadComponent: () => import('./component/Master/dhs-facility-users-locations/dhs-facility-users-locations.component').then(m => m.DhsFacilityUsersLocationsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME', 'DHS', 'FU', 'Facility', 'CMHO', 'Store', 'AYUSH', 'AU', 'AUPO', 'AUGMF'] },
   },
@@ -2145,7 +1932,7 @@ const routes: Routes = [
   },
   {
     path: 'masters/dhs-add-facility',
-    component: DhsAddFacilityComponent,
+    loadComponent: () => import('./component/Master/dhs-add-facility/dhs-add-facility.component').then(m => m.DhsAddFacilityComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME', 'DHS', 'FU', 'Facility', 'CMHO', 'Store', 'AYUSH', 'AU', 'AUPO', 'AUGMF'] },
   },
@@ -2156,7 +1943,7 @@ const routes: Routes = [
   },
   {
     path: 'masters/health-facility-details',
-    component: HealthFacilityDetailsComponent,
+    loadComponent: () => import('./component/Master/health-facility-details/health-facility-details.component').then(m => m.HealthFacilityDetailsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'DME', 'DHS', 'FU', 'Facility', 'CMHO', 'Store', 'AYUSH', 'AU', 'AUPO', 'AUGMF'] },
   },
@@ -2167,7 +1954,7 @@ const routes: Routes = [
   },
   {
     path: 'masters/item-specification',
-    component: ItemSpecificationComponent,
+    loadComponent: () => import('./component/Master/item-specification/item-specification.component').then(m => m.ItemSpecificationComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['DME', 'AD', 'DHS', 'FU', 'Facility', 'CMHO', 'Store', 'AYUSH', 'AU', 'AUPO', 'AUGMF'] },
   },
@@ -2178,7 +1965,7 @@ const routes: Routes = [
   },
   {
     path: 'masters/mas-facility-users-locations',
-    component: MasFacilityUsersLocationsComponent,
+    loadComponent: () => import('./component/Master/mas-facility-users-locations/mas-facility-users-locations.component').then(m => m.MasFacilityUsersLocationsComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUPO', 'AD', 'DME', 'DHS', 'FU', 'Facility', 'CMHO', 'Store', 'AYUSH', 'AU', 'AUGMF'] },
   },
@@ -2189,7 +1976,7 @@ const routes: Routes = [
   },
   {
     path: 'masters/master-supplier-add',
-    component: MasterSupplierAddComponent,
+    loadComponent: () => import('./component/Master/master-supplier-add/master-supplier-add.component').then(m => m.MasterSupplierAddComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO', 'AD', 'DME', 'DHS', 'FU', 'Facility', 'CMHO', 'Store', 'AYUSH', 'AU', 'AUPO', 'AUGMF'] },
   },
@@ -2205,13 +1992,13 @@ const routes: Routes = [
   },
   {
     path: 'PerformanceCertificate',
-    component: PerformanceCertificateComponent,
+    loadComponent: () => import('./Performance/performance-certificate/performance-certificate.component').then(m => m.PerformanceCertificateComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF'] },
   },
   {
     path: 'performance/performace20-consignee',
-    component: Performace20ConsigneeComponent,
+    loadComponent: () => import('./Performance/performace20-consignee/performace20-consignee.component').then(m => m.Performace20ConsigneeComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
@@ -2222,7 +2009,7 @@ const routes: Routes = [
   },
   {
     path: 'performance/performance-certificate-fin',
-    component: PerformanceCertificateFinComponent,
+    loadComponent: () => import('./Performance/performance-certificate-fin/performance-certificate-fin.component').then(m => m.PerformanceCertificateFinComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AD', 'AUGMF', 'AU', 'TPO', 'AUPO', 'DME'] },
   },
@@ -2236,19 +2023,19 @@ const routes: Routes = [
   //#region IT Module
   {
     path: 'IT/add-sub-menu',
-    component: AddSubMenuComponent,
+    loadComponent: () => import('./component/IT/add-sub-menu/add-sub-menu.component').then(m => m.AddSubMenuComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SEC1', 'AD'] },
   },
   {
     path: 'IT/add-role-in-screen',
-    component: AddRoleInScreenComponent,
+    loadComponent: () => import('./component/IT/add-role-in-screen/add-role-in-screen.component').then(m => m.AddRoleInScreenComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SEC1', 'AD'] },
   },
   {
     path: 'IT/delete-menu',
-    component: DeleteMenuComponent,
+    loadComponent: () => import('./component/IT/delete-menu/delete-menu.component').then(m => m.DeleteMenuComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['SEC1', 'AD'] },
   },
@@ -2257,31 +2044,31 @@ const routes: Routes = [
   //#region File Movement — EMD File Approval (5 variants)
   {
     path: 'EMDFileApprovalBME',
-    component: EmdFileApprovalComponent,
+    loadComponent: () => import('./component/emd-file-approval/emd-file-approval.component').then(m => m.EmdFileApprovalComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['BME','AD'], variant: 'bme' },
   },
   {
     path: 'EMDFileApprovalBankletter',
-    component: EmdFileApprovalComponent,
+    loadComponent: () => import('./component/emd-file-approval/emd-file-approval.component').then(m => m.EmdFileApprovalComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF','AD'], variant: 'bankletter' },
   },
   {
     path: 'EMDFileApprovalGMF',
-    component: EmdFileApprovalComponent,
+    loadComponent: () => import('./component/emd-file-approval/emd-file-approval.component').then(m => m.EmdFileApprovalComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF','AD'], variant: 'gmf' },
   },
   {
     path: 'EMDFileApprovalGMFsanction',
-    component: EmdFileApprovalComponent,
+    loadComponent: () => import('./component/emd-file-approval/emd-file-approval.component').then(m => m.EmdFileApprovalComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF','AD'], variant: 'gmfsanction' },
   },
   {
     path: 'EMDFileApprovalGMT',
-    component: EmdFileApprovalComponent,
+    loadComponent: () => import('./component/emd-file-approval/emd-file-approval.component').then(m => m.EmdFileApprovalComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUPO','AD'], variant: 'gmt' },
   },
@@ -2295,38 +2082,38 @@ const routes: Routes = [
   //#region File Movement — Others
   {
     path: 'LogoVerifiedHO',
-    component: LogoVerifiedHoComponent,
+    loadComponent: () => import('./component/logo-verified-ho/logo-verified-ho.component').then(m => m.LogoVerifiedHoComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF','AU','AD'] },
   },
   {
     path: 'SiteNotReadyDocUpload',
-    component: SiteNotReadyUploadComponent,
+    loadComponent: () => import('./component/site-not-ready-upload/site-not-ready-upload.component').then(m => m.SiteNotReadyUploadComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF','AU','AD'] },
   },
   {
     path: 'InvoicesBySO',
-    component: InvoicesBySoComponent,
+    loadComponent: () => import('./component/invoices-by-so/invoices-by-so.component').then(m => m.InvoicesBySoComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF','AU','AD'] },
   },
   {
     path: 'PoReportNew',
-    component: PoReportNewComponent,
+    loadComponent: () => import('./component/po-report-new/po-report-new.component').then(m => m.PoReportNewComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF','AU','AD'] },
   },
   //#region File Movement — Remaining 2 pages
   {
     path: 'PODetailsRDLC',
-    component: PoDetailsRdlcComponent,
+    loadComponent: () => import('./component/po-details-rdlc/po-details-rdlc.component').then(m => m.PoDetailsRdlcComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','BME','AD'] },
   },
   {
     path: 'PendingInstallDrillDown',
-    component: PendingInstallDrilldownComponent,
+    loadComponent: () => import('./component/pending-install-drilldown/pending-install-drilldown.component').then(m => m.PendingInstallDrilldownComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['TPO','AUGMF','AU','DME','AUPO','BME','AD'] },
   },
@@ -2335,31 +2122,31 @@ const routes: Routes = [
   //#region Reports — Indent/PO/Tender Status (5 pages)
   {
     path: 'reports/indent-po-tender-status',
-    component: IndentPoTenderStatusComponent,
+    loadComponent: () => import('./Reports/indent-po-tender-status/indent-po-tender-status.component').then(m => m.IndentPoTenderStatusComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
   },
   {
     path: 'reports/indent-po-tender-status-summary',
-    component: IndentPoTenderStatusSummaryComponent,
+    loadComponent: () => import('./Reports/indent-po-tender-status-summary/indent-po-tender-status-summary.component').then(m => m.IndentPoTenderStatusSummaryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
   },
   {
     path: 'reports/indent-po-tender-status-drilldown',
-    component: IndentPoTenderStatusDrilldownComponent,
+    loadComponent: () => import('./Reports/indent-po-tender-status-drilldown/indent-po-tender-status-drilldown.component').then(m => m.IndentPoTenderStatusDrilldownComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
   },
   {
     path: 'reports/indent-po-tender-summary',
-    component: IndentPoTenderSummaryComponent,
+    loadComponent: () => import('./Reports/indent-po-tender-summary/indent-po-tender-summary.component').then(m => m.IndentPoTenderSummaryComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
   },
   {
     path: 'reports/indent-po-tender-summary-drilldown',
-    component: IndentPoTenderSummaryDrilldownComponent,
+    loadComponent: () => import('./Reports/indent-po-tender-summary-drilldown/indent-po-tender-summary-drilldown.component').then(m => m.IndentPoTenderSummaryDrilldownComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AUGMF', 'AU', 'TPO', 'AUPO', 'AD', 'DME'] },
   },
