@@ -57,12 +57,58 @@ function waitForSplashVideo(): Promise<void> {
 
 const splashVideoComplete = waitForSplashVideo();
 
+const FLY_MS = 650;
+const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+// Login header logos: [left = govt, right = CGMSC]. Polls briefly because the login view renders after bootstrap.
+async function findHeaderLogos(): Promise<HTMLElement[] | null> {
+  for (let t = 0; t < 800; t += 50) {
+    const left = document.querySelector<HTMLElement>('.gov-header .gov-logo:not(.gov-logo--wide)');
+    const right = document.querySelector<HTMLElement>('.gov-header .gov-logo--wide');
+    if (left && right && left.getBoundingClientRect().width && right.getBoundingClientRect().width) return [left, right];
+    await wait(50);
+  }
+  return null;
+}
+
+// Zoom each splash logo into the exact spot of its login-header twin (transform-origin is 0 0 in index.html).
+function flyTo(logo: HTMLElement, target: HTMLElement): void {
+  const from = logo.getBoundingClientRect();
+  const to = target.getBoundingClientRect();
+  const scale = to.height / from.height;
+  logo.style.transition = `transform ${FLY_MS}ms cubic-bezier(.65, 0, .35, 1)`;
+  logo.style.transform = `translate(${to.left - from.left}px, ${to.top - from.top}px) scale(${scale})`;
+}
+
 async function hideSplash(): Promise<void> {
   await splashVideoComplete;
   const splash = document.getElementById('app-splash');
   if (!splash) return;
   // Keep this cookie because login/logout clear localStorage.
   document.cookie = 'splashShown=1; max-age=31536000; path=/; SameSite=Lax';
+
+  const targets = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? null : await findHeaderLogos();
+  const bg = splash.querySelector<HTMLElement>('.splash-bg');
+  const blur = splash.querySelector<HTMLElement>('.splash-blur');
+  if (bg) { bg.style.transition = `opacity ${FLY_MS}ms ease`; bg.style.opacity = '0'; }
+  if (blur) { blur.style.backdropFilter = 'blur(0)'; blur.style.setProperty('-webkit-backdrop-filter', 'blur(0)'); }
+
+  if (targets) {
+    splash.querySelectorAll<HTMLElement>('.splash-divider, .splash-text, .splash-flag')
+      .forEach((el) => (el.style.opacity = '0'));
+    // Hide the real header logos until the flying copies land on them.
+    targets.forEach((t) => (t.style.visibility = 'hidden'));
+    splash.querySelectorAll<HTMLElement>('.splash-logo').forEach((logo) => {
+      flyTo(logo, targets[logo.dataset['target'] === 'right' ? 1 : 0]);
+    });
+    await wait(FLY_MS);
+    targets.forEach((t) => (t.style.visibility = ''));
+  } else {
+    // Other routes / reduced motion: plain fade.
+    splash.style.transition = 'opacity .4s ease';
+    splash.style.opacity = '0';
+    await wait(400);
+  }
   splash.remove();
 }
 
