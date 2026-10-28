@@ -24,7 +24,10 @@
         if (reduceMotion) return;                       // poster image only
         video.src = video.getAttribute('data-src');
         var p = video.play();
-        if (p && p.catch) p.catch(function () {});
+        if (p && p.catch) p.catch(function () {
+          video.dataset.splashComplete = 'true';
+          video.dispatchEvent(new Event('splashcomplete'));
+        });
       })();
     })();
   </script>
@@ -40,10 +43,7 @@
   <meta name="theme-color" content="#1976d2">
   <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5hW2eQFDDSAYfngDFdtVp4TFa47SKwjM"></script> -->
   <style>
-    /* Splash screen (logic in main.ts):
-       1. both logos open big together as one group (fits any screen width)
-       2. they zoom out and fly into their places in the login header
-       3. the background video blurs and fades away, revealing the login page */
+    /* The splash is removed immediately after video playback and app startup. */
     #app-splash { position: fixed; inset: 0; z-index: 99999; pointer-events: none; font-family: 'Segoe UI', Roboto, sans-serif; }
     #app-splash .splash-bg {
       position: absolute; inset: 0; overflow: hidden;
@@ -81,14 +81,6 @@
       background: linear-gradient(90deg, #ff9933 0 33.33%, #ffffff 33.33% 66.66%, #138808 66.66% 100%); }
     @keyframes splash-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
-    /* Hand-off state (set by main.ts) */
-    #app-splash.flying .splash-bg { opacity: 0; }
-    #app-splash.flying .splash-blur { backdrop-filter: blur(0); -webkit-backdrop-filter: blur(0); }
-    #app-splash.flying .splash-text { opacity: 0; transform: translateY(12px); }
-    #app-splash.flying .splash-flag,
-    #app-splash.flying .splash-divider { opacity: 0; }
-    #app-splash.flying .splash-logo { transition: transform .65s cubic-bezier(.65, 0, .25, 1); }
-    #app-splash.splash-hide { opacity: 0; transition: opacity .35s ease; }
     html.splash-seen #app-splash { display: none; }
 
     @media (prefers-reduced-motion: reduce) {
@@ -101,7 +93,7 @@
     <!-- blur sits under the video: it only blurs the login page once the video fades out -->
     <div class="splash-blur"></div>
     <div class="splash-bg">
-      <!-- src is set by the inline script below only on a good connection (poster image otherwise) -->
+      <!-- src is set by the head script only on a good connection -->
       <video class="splash-video" data-src="assets/videos/splash.mp4" poster="assets/videos/splash-poster.jpg"
         muted playsinline preload="none" aria-hidden="true"></video>
     </div>

@@ -22,78 +22,48 @@ if (typeof window !== 'undefined' && window.console) {
   window.console.trace = noop;
 }
 
-// Splash screen (index.html): logos open big, then zoom out and fly into their
-// places in the login header while the background blurs away.
-// Shown only on the very first visit; index.html hides it on later loads.
-const firstLoad = !document.documentElement.classList.contains('splash-seen');
-const INTRO_MS = 1800; // logos + title finish animating (~1.7 s), then hand off straight to login
-const FLY_MS = 650;
-const splashStart = Date.now();
-const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
-
-/** Waits (max `timeoutMs`) for the login header logos to be laid out. */
-async function findHeaderLogos(timeoutMs: number): Promise<HTMLElement[] | null> {
-  const end = Date.now() + timeoutMs;
-  while (Date.now() < end) {
-    const logos = Array.from(document.querySelectorAll<HTMLElement>('.gov-header .gov-logo'));
-    if (logos.length >= 2 && logos.every((el) => el.getBoundingClientRect().height > 0)) return logos;
-    await wait(50);
+// Prepare the login page while the first-visit splash video plays.
+// Remove the splash as soon as both the video and Angular are ready.
+function waitForSplashVideo(): Promise<void> {
+  const video = document.querySelector<HTMLVideoElement>('#app-splash .splash-video');
+  if (document.documentElement.classList.contains('splash-seen') || !video ||
+      video.ended || video.error || video.dataset['splashComplete'] === 'true' ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return Promise.resolve();
   }
-  return null;
+
+  return new Promise<void>((resolve) => {
+    // Skip unavailable or stalled playback instead of leaving the user waiting.
+    let timer: ReturnType<typeof setTimeout>;
+    const done = () => {
+      clearTimeout(timer);
+      video.removeEventListener('ended', done);
+      video.removeEventListener('error', done);
+      video.removeEventListener('splashcomplete', done);
+      video.removeEventListener('timeupdate', resetTimeout);
+      resolve();
+    };
+    const resetTimeout = () => {
+      clearTimeout(timer);
+      timer = setTimeout(done, 3000);
+    };
+    video.addEventListener('ended', done);
+    video.addEventListener('error', done);
+    video.addEventListener('splashcomplete', done);
+    video.addEventListener('timeupdate', resetTimeout);
+    resetTimeout();
+  });
 }
 
-/** Moves `el` (no transform applied) onto `target`'s rendered image box. */
-function flyTo(el: HTMLElement, target: HTMLElement): void {
-  const from = el.getBoundingClientRect();
-  const to = target.getBoundingClientRect();
-  const img = target as HTMLImageElement;
-  // object-fit: contain — use the actually drawn image size inside the target box
-  const ratio = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : to.width / to.height;
-  const drawnW = Math.min(to.width, to.height * ratio);
-  const drawnH = drawnW / ratio;
-  const scale = drawnW / from.width;
-  // transform-origin is top-left, so move the top-left corner onto the drawn image's top-left
-  const dx = to.left + (to.width - drawnW) / 2 - from.left;
-  const dy = to.top + (to.height - drawnH) / 2 - from.top;
-  el.style.transformOrigin = '0 0';
-  el.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
-}
+const splashVideoComplete = waitForSplashVideo();
 
 async function hideSplash(): Promise<void> {
+  await splashVideoComplete;
   const splash = document.getElementById('app-splash');
   if (!splash) return;
-  // cookie, not localStorage: login/logout call localStorage.clear(), which made the splash replay every time
+  // Keep this cookie because login/logout clear localStorage.
   document.cookie = 'splashShown=1; max-age=31536000; path=/; SameSite=Lax';
-  const done = () => splash.remove();
-
-  if (!firstLoad) {
-    done();
-    return;
-  }
-
-  await wait(Math.max(0, INTRO_MS - (Date.now() - splashStart)));
-  const targets = await findHeaderLogos(800);
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!targets || reduceMotion) {
-    // Not on the login page (or reduced motion): plain fade out.
-    splash.classList.add('splash-hide');
-    await wait(400);
-    done();
-    return;
-  }
-
-  const [leftTarget, rightTarget] = targets;
-  const logos = Array.from(splash.querySelectorAll<HTMLElement>('.splash-logo'));
-  targets.forEach((t) => (t.style.visibility = 'hidden'));
-  splash.querySelector('.splash-logos')?.classList.remove('intro');
-  void splash.offsetWidth; // apply the no-animation state before measuring
-  splash.classList.add('flying');
-  logos.forEach((el) => flyTo(el, el.dataset['target'] === 'left' ? leftTarget : rightTarget));
-
-  await wait(FLY_MS + 50);
-  targets.forEach((t) => (t.style.visibility = ''));
-  done();
+  splash.remove();
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)
