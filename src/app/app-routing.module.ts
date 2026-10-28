@@ -338,6 +338,43 @@ const routes: Routes = [
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU', 'DME'] },
   },
+  // Plan a Tender row actions (legacy tender_details_1.aspx)
+  {
+    path: 'AddExcel',
+    loadComponent: () => import('./component/add-excel/add-excel.component').then(m => m.AddExcelComponent),
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AU', 'DME'] },
+  },
+  {
+    path: 'CovAaddRemuvie',
+    loadComponent: () => import('./component/cov-aadd-remuvie/cov-aadd-remuvie.component').then(m => m.CovAaddRemuvieComponent),
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AU', 'DME'] },
+  },
+  {
+    path: 'CovAItemsEntry',
+    loadComponent: () => import('./component/BME/cov-aitems-entry/cov-aitems-entry.component').then(m => m.CovAItemsEntryComponent),
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AU', 'DME'] },
+  },
+  {
+    path: 'AddLeavy',
+    loadComponent: () => import('./component/BME/add-leavy/add-leavy.component').then(m => m.AddLeavyComponent),
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AU', 'DME'] },
+  },
+  {
+    path: 'AddTenderCon',
+    loadComponent: () => import('./component/BME/add-tender-con/add-tender-con.component').then(m => m.AddTenderConComponent),
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AU', 'DME'] },
+  },
+  {
+    path: 'TenderStatusRemark',
+    loadComponent: () => import('./component/BME/tender-status-remark/tender-status-remark.component').then(m => m.TenderStatusRemarkComponent),
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AU', 'DME'] },
+  },
 
   {
     path: 'logout',
@@ -568,10 +605,22 @@ const routes: Routes = [
     data: { allowedRoles: ['AU','TPOT'] },
   },
   {
+    path: 'TenderCoverAObClaimAfterB',
+    loadComponent: () => import('./component/Tender Cell/tender-cover-aob-claim-after-b/tender-cover-aob-claim-after-b.component').then(m => m.TenderCoverAObClaimAfterBComponent),
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['TPOT', 'TPO', 'AU', 'DME'] },
+  },
+  {
     path: 'TenderCoverAObClaim',
     loadComponent: () => import('./tender-cover-aob-claim/tender-cover-aob-claim.component').then(m => m.TenderCoverAObClaimComponent),
     canActivate: [RouteGuardService],
     data: { allowedRoles: ['AU','TPOT'] },
+  },
+  {
+    path: 'TenderItemsPriceAR',
+    loadComponent: () => import('./component/BME/tender-items-price-gem/tender-items-price-gem.component').then(m => m.TenderItemsPriceGEMComponent),
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AU', 'TPOT', 'AUPO'], mode: 'AR' },
   },
   {
     path: 'TenderItemsPriceGEM',

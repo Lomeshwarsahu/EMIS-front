@@ -1,322 +1,147 @@
-import { CommonModule, Location } from '@angular/common';
-import { Component } from '@angular/core';
-import { ChangeDetectorRef, ViewChild } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/service/api.service';
-import { CollapseModule } from 'src/app/collapse';
-import { NgForm } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
-import { MatTableExporterModule } from 'mat-table-exporter';
-import { MaterialModule } from 'src/app/material-module';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
-declare var bootstrap: any;
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MatOptionModule } from '@angular/material/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTabsModule } from '@angular/material/tabs';
-import {
-  TenderLinkedItemDto,
-  TenderSupplierParticipationDto,
-} from 'src/app/Model/models';
 
+// Legacy: EMSRole/Tender/TenderCoverAObClaim.aspx ("Equipment Cell: Claim Object Prepartion",
+// sidebar: Tender -> Claim-Object Preparation)
 @Component({
   selector: 'app-tender-cover-aob-claim',
   standalone: true,
-  imports: [
-    NgSelectModule,
-    CommonModule,
-    FormsModule,
-    CollapseModule,
-    NgbCollapseModule,
-    ReactiveFormsModule,
-    MatTabsModule,
-    MaterialModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatTableModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatTableExporterModule,
-  ],
+  imports: [CommonModule, FormsModule, NgSelectModule],
   templateUrl: './tender-cover-aob-claim.component.html',
-  styleUrl: './tender-cover-aob-claim.component.css',
+  styleUrls: ['../component/Suppliers/supplier-po-pages.shared.css', '../component/BME/tender-subpage.shared.css'],
 })
-export class TenderCoverAObClaimComponent {
-  //#region  lomesh
-  TenderList: any[] = [];
-  Eligiblitylist: any[] = [];
-  selectedTenderId: any;
-  show: boolean = false;
-  selectedStatus: any;
-  Remarks: any;
-  IsEligibleB: any;
+export class TenderCoverAObClaimComponent implements OnInit {
+  tenderList: any[] = [];
+  tenderId: number | null = null;
+  shown = false;
+  header: any = null;
+  bidders: any[] = [];
+  pendingSuppliers = 0;
+  eligibilityList: any[] = [];
 
-  tenderNo: string | null = null;
-  TenderDetails: any = {};
-  itemsDtails: any;
+  objStartDate = '';
+  objEndDate = '';
 
-  item_id: any;
-
-  dispatchData: TenderSupplierParticipationDto[] = [];
-  dataSource!: MatTableDataSource<TenderSupplierParticipationDto>;
-  @ViewChild('paginator') paginator!: MatPaginator;
-  @ViewChild('sort') sort!: MatSort;
-  displayedColumns: string[] = [
-    'sno',
-    'SupplierName',
-    'ReqEMDAMt',
-    'SubmittedEMDAMT',
-    'Emd',
-    'TpAmount',
-    'EmdDocType',
-    'EmdDocNo',
-    'Remark',
-    'PItems',
-    'IsEligibleB',
-    'Remarksclarification',
-    'ADDItems',
-    'Action',
-  ];
   constructor(
-    private spinner: NgxSpinnerService,
     private api: ApiService,
-    public toastr: ToastrService,
-    private fb: FormBuilder,
-    private cdr: ChangeDetectorRef,
     private router: Router,
-    private route: ActivatedRoute,
-    private location: Location,
-  ) {
-    this.dataSource = new MatTableDataSource<TenderSupplierParticipationDto>(
-      [],
-    );
-  }
+    private spinner: NgxSpinnerService,
+    public toastr: ToastrService,
+  ) {}
+
   ngOnInit(): void {
-    this.GetTenderList1();
-    this.GetItemEligibility1();
-
-    //  this.GETMASDOCUMENTTYPEList();
+    // Legacy FillCovATender(): Get_TendersStatus("2", "Under Prep") -> Cover A tenders with tech + finance evaluation done
+    this.api.get('Tendercell/GetTendersStatus?stid=2&undOBClaim=Under%20Prep').subscribe({
+      next: (res: any) => (this.tenderList = res || []),
+      error: () => (this.tenderList = []),
+    });
+    // Legacy BindEligiblity(): masEligiblity
+    this.api.get('BME/GetEligiblity').subscribe({
+      next: (res: any) => (this.eligibilityList = res || []),
+      error: (err: any) => console.log('Error fetching eligibility list:', err),
+    });
   }
 
-  GetTenderList1() {
+  // Legacy btnSave_Click ("Show")
+  show() {
+    if (!this.tenderId) {
+      this.toastr.warning('---Select Tender---');
+      return;
+    }
+    this.load();
+  }
+
+  private load() {
     this.spinner.show();
-    // https://localhost:7036/api/BME/GetTenderList1/1
-    this.api.get('BME/GetTenderList1/3').subscribe({
+    this.api.get(`Tendercell/GetObjClaimPrep/${this.tenderId}`).subscribe({
       next: (res: any) => {
-        this.TenderList = res;
         this.spinner.hide();
-        // console.log('Tenders Loaded:', this.TenderList);
+        this.header = res?.Header || null;
+        this.pendingSuppliers = res?.PendingSuppliers || 0;
+        // Each row keeps its own eligibility / remark (legacy ddlEli / txtReason per row)
+        this.bidders = (res?.Bidders || []).map((b: any) => ({
+          ...b,
+          editEligibility: b.ObjEligibility || '0',
+          editRemarks: b.ObjRemarks || '',
+        }));
+        this.shown = true;
       },
       error: (err: any) => {
         this.spinner.hide();
-        console.error('Error:', err);
+        this.toastr.error(err?.error?.message || 'Failed to load');
       },
     });
-  }
-  onTenderChange(values: any) {
-    // debugger;
-    //  "Tenderid": 680,
-    // "Tenderno": "GEM/2025/B/6375542 (FOR DH GPM) ,OpenDT-29/04/2026"
-    const tid = values.Tenderid;
-    this.fetchTenderDetails(tid);
-  }
-  // https://localhost:7036/api/BME/GetTenderStatus/680
-  fetchTenderDetails(tenderNo: any) {
-    this.show = true;
-    this.api.get(`BME/GetTenderStatus/${tenderNo}`).subscribe({
-      next: (res: any) => {
-        const data = Array.isArray(res) ? res[0] : res;
-        if (data) {
-          this.TenderDetails = {
-            ...data,
-            TenderDate: this.formatDate(data.TenderDate),
-            EndDate: this.formatDate(data.EndDate),
-            // cover_a: this.formatDate(data.cover_a),
-            // cover_b: this.formatDate(data.cover_b),
-            // cover_c: this.formatDate(data.cover_c),
-            // cover_Demo: this.formatDate(data.cover_Demo),
-            // cover_Demo2: this.formatDate(data.cover_Demo2),
-            // cover_Demo3: this.formatDate(data.cover_Demo3),
-          };
-          console.log('Final Mapped Data:', this.TenderDetails);
-          this.GetLinkedItems(tenderNo);
-        }
-      },
-      error: (err: any) => console.log('Error:', err),
-    });
-  }
-  goBack() {
-    this.location.back();
-  }
-  formatDate(dateStr: string) {
-    if (!dateStr || dateStr.includes('-')) return dateStr;
-    const parts = dateStr.split('/');
-    if (parts.length === 3) {
-      return `${parts[2]}-${parts[1]}-${parts[0]}`;
-    }
-    return '';
   }
 
-  GetLinkedItems(tid: any) {
-    // https://localhost:7036/api/BME/GetSupplierParticipationDetails/680/0
-    try {
-      this.spinner.show();
-      this.api.get(`BME/GetSupplierParticipationDetails/${tid}/${1}`).subscribe(
-        (res: any) => {
-          this.dispatchData = res.map(
-            (item: TenderSupplierParticipationDto, index: number) => ({
-              ...item,
-              sno: index + 1,
-            }),
-          );
-          console.log('itemwisedetail=:', this.dispatchData);
-          this.dataSource.data = this.dispatchData;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          this.cdr.detectChanges();
+  // Legacy btnaccepted_Click ("Action"), shown only when the bidder has participated items
+  saveRow(b: any) {
+    const eli = b.editEligibility;
+    const remarks = (b.editRemarks || '').trim();
+    if (!eli || eli === '0') return void this.toastr.warning('Please select Eligibility');
+    if (eli === 'N' && !remarks) return void this.toastr.warning('Please Enter Rejection Remark for Not Eligible');
+    if (eli === 'C' && !remarks) return void this.toastr.warning('Please Enter Clarification Remarks');
+
+    this.spinner.show();
+    this.api
+      .post1('Tendercell/UpdateObjClaimPrep', {
+        TenderId: b.TenderId,
+        SchStatusDid: b.SchStatusDid,
+        Eligibility: eli,
+        Remarks: remarks,
+      })
+      .subscribe({
+        next: (res: any) => {
           this.spinner.hide();
+          this.toastr.success(res?.message || 'Object Claim Updated Successfully');
+          this.load();
         },
-        (error: { message: any }) => {
+        error: (err: any) => {
           this.spinner.hide();
-          console.log('Error fetching data:', JSON.stringify(error.message));
-          // alert(`Error fetching data: ${JSON.stringify(error.message)}`);
+          this.toastr.error(err?.error?.message || 'Update failed');
         },
-      );
-    } catch (err: any) {
-      this.spinner.hide();
-
-      console.log(err);
-      // throw err;
-    }
+      });
   }
 
-  applyTextFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  GetItemEligibility1() {
-    // https://localhost:7036/api/BME/GetEligiblity
-    this.api.get(`BME/GetEligiblity`).subscribe({
-      next: (res: any) => {
-        this.Eligiblitylist = res;
-        console.log('Final Mapped Data:', this.Eligiblitylist);
-      },
-      error: (err: any) => console.log('Error:', err),
-    });
-  }
-  onStatusChange(item: any) {
-    this.item_id = item.item_id;
-    // console.log(item.item_id);
-    // console.log(item.item_name);
-  }
-
-  updateRowStatus(element: any) {
-    //  debugger;
-    const data = localStorage.getItem('loginData');
-    if (data) {
-      const user = JSON.parse(data);
-      var roleid = user.roleid;
-      var user_id = user.user_id;
-      // console.log(user.username);
-      // console.log(user.roleid);
-      // console.log(user.user_id);
-    }
-
-    if (element.IsEligibleB === 'N' && !element.Remark) {
-      alert('Please Enter Rejection Remark');
-      return;
-    }
-
-    const payload = {
-      SchStatusDid: element.SchStatusDid,
-      SchemeId: element.TenderId,
-      Eligibility: this.IsEligibleB,
-      Remarks: this.Remarks,
-      RoleId: roleid,
-      UserId: user_id,
-    };
-
-    this.api.post1('BME/UpdateEligibility', payload).subscribe({
-      next: (res: any) => {
-        // alert(res.message);
-        this.toastr.success(res.message);
-      },
-      error: (err) => {
-        alert(err.error?.message || 'Error updating status');
-      },
+  // Legacy "Participated Items" -> CoverAitemsReports.aspx
+  openParticipatedItems(b: any) {
+    this.router.navigate(['/CoverAitemsReports'], {
+      queryParams: { tid: b.TenderId, sid: b.SupplierId, ssdid: b.SchStatusDid, Sname: b.SupplierName },
     });
   }
 
-  addItemToTender(element: any) {
-    const supplierId = element.SupplierId;
-    const tenderId = element.TenderId;
-    const SchStatusDid = element.SchStatusDid;
-    const SupplierName = element.SupplierName;
-    this.router.navigate(['/TenderCoverAitems'], {
-      queryParams: {
-        sid: supplierId,
-        tid: tenderId,
-        ssdid: SchStatusDid,
-        Sname: SupplierName,
-      },
-    });
+  // Legacy btnFreezCovA_Click ("Freeze for Object Claim Upload")
+  freeze() {
+    if (!this.objStartDate) return void this.toastr.warning('Enter Objection Claim Start Date');
+    if (!this.objEndDate) return void this.toastr.warning('Enter Objection Claim End Date');
 
-    // const url = this.router.serializeUrl(
-    //   this.router.createUrlTree(['/CovAItemsEntry'], { queryParams: { sid: supplierId, tid: tenderId,ssdid:SchStatusDid } })
-    // );
-
-    // window.open(url, '_blank');
+    this.spinner.show();
+    this.api
+      .post1('Tendercell/FreezeObjClaim', {
+        TenderId: this.tenderId,
+        StartDate: this.objStartDate,
+        EndDate: this.objEndDate,
+      })
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          this.toastr.success(res?.message || 'Object Claim Uploaded Successfully');
+          // The tender moves to status 7 and leaves this list (legacy re-binds the dropdown on next load)
+          this.shown = false;
+          this.tenderId = null;
+          this.objStartDate = '';
+          this.objEndDate = '';
+          this.ngOnInit();
+        },
+        error: (err: any) => {
+          this.spinner.hide();
+          this.toastr.error(err?.error?.message || 'Object Claim Not Saved Successfully');
+        },
+      });
   }
-// isExpansionDetailRow = (i: number, row: any) => row.detailRow === true;
-// toggleDetails(element: any) {
-//     this.expandedElement = this.expandedElement === element ? null : element;
-//     if (this.expandedElement) {
-//       this.GetHodReplyList(element.Convid);
-//     }
-//   }
-// toggleDetails1(row: any, Convid: any) {
-//   if (this.expandedElement === row) {
-//     this.expandedElement = null;
-
-//     this.dataSource.data = this.dataSource.data.filter(r => !r.detailRow);
-//     return;
-//   }
-
-//   this.expandedElement = row;
-
-//   const updatedRows: any[] = [];
-
-//   this.dataSource.data.forEach(r => {
-//     updatedRows.push(r);
-
-//     if (r === row) {
-//       updatedRows.push({
-//         detailRow: true,
-//         data: row
-//       });
-//     }
-//   });
-
-//   this.dataSource.data = updatedRows;
-
-//   this.GetHodReplyList(Convid);
-// }
-
-  //#endregion
 }

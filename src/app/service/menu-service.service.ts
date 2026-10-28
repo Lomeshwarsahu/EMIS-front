@@ -147,7 +147,7 @@ export class MenuServiceService {
           { label: 'Technical Sanction', route: '/TechnicalSanction' },
           {
             label: 'Monitoring with Geographic Coordinate',
-            route: 'DivisionProgress',
+            route: '/DivisionProgress',
           },
           { label: 'Handover', route: '/Handover' },
 
@@ -367,7 +367,7 @@ export class MenuServiceService {
           label: 'Indents',
           route: '',
           submenu: [
-            { label: 'Add Indent DME', route: 'ConsolidatedIndentPOCell' },
+            { label: 'Add Indent DME', route: '/ConsolidatedIndentPOCell' },
             // { label: 'Indent From Facilities', route: '/indents/from-facilities' }
           ],
         },
@@ -438,7 +438,7 @@ export class MenuServiceService {
             { label: 'Health Facility Users', route: '/MasFacilityUsers' },
             // { label: 'Add Facility Location', route: '/MasFacilityUsersLocations' },
             { label: 'Add New Items', route: '/ItemsBME' },
-            { label: 'Program Master', route: 'ProgramMaster' },
+            { label: 'Program Master', route: '/ProgramMaster' },
             // { label: 'Mapping to Main items', route: '/masters/map-items' },
             // { label: 'Update Mapping to Main items', route: '/masters/map-items-update' },
             // { label: 'Main Equipment Mapped Report', route: '/masters/map-items-report' },
@@ -458,7 +458,7 @@ export class MenuServiceService {
           label: 'Contracts',
           route: '',
           submenu: [
-            { label: 'Contract Dashboard', route: 'contracts/dashboard' },
+            { label: 'Contract Dashboard', route: '/contracts/dashboard' },
             { label: 'New Contract', route: '/contracts/new-rc' },
             { label: 'RC Extension', route: '/RCExtend' },
             { label: 'PO Extension', route: '/AppliedPoExtension' },
@@ -484,7 +484,7 @@ export class MenuServiceService {
           label: 'Indents',
           route: '',
           submenu: [
-            { label: 'Add Indent DME', route: 'ConsolidatedIndentPOCell' },
+            { label: 'Add Indent DME', route: '/ConsolidatedIndentPOCell' },
             { label: 'Add Indent', route: '/ConsolidatedIndentDHSPO' },
             { label: 'Indent Item Wise Remarks', route: '/IndentWiseItemRemarks' }
           ],
@@ -540,7 +540,7 @@ export class MenuServiceService {
             { label: 'Suppliers Accounts/GST', route: '/Supplier' },
             { label: 'CGMSCL Bank Accounts', route: '/CgmscBankAccounts' },
             // { label: 'Add New Items', route: '/ItemsBME' },
-            // { label: 'Program Master', route: 'ProgramMaster' },
+            // { label: 'Program Master', route: '/ProgramMaster' },
             // { label: 'Mapping to Main items', route: '/masters/map-items' },
             // { label: 'Update Mapping to Main items', route: '/masters/map-items-update' },
             // { label: 'Main Equipment Mapped Report', route: '/masters/map-items-report' },
@@ -569,7 +569,7 @@ export class MenuServiceService {
           label: 'Reports',
           route: '',
           submenu: [
-            { label: 'Tenders Status', route: 'reports/tenders-status' },
+            { label: 'Tenders Status', route: '/reports/tenders-status' },
             { label: 'Indent/RC/PO Tender Status', route: '/IndentRCPOTenderStatus' },
             { label: 'Indent/PO/Tender Status', route: '/reports/indent-po-tender-status' },
             { label: 'Indent/PO/Tender Status Summary', route: '/reports/indent-po-tender-status-summary' },
@@ -578,7 +578,7 @@ export class MenuServiceService {
         
             { label: 'District wise PO Details', route: '/DistrictWisePODetail' },
             
-            { label: 'PO Report Year Wise', route: 'POReportGMF' },
+            { label: 'PO Report Year Wise', route: '/POReportGMF' },
           ],
         },
         // {
@@ -594,7 +594,7 @@ export class MenuServiceService {
         //   label: 'Contracts',
         //   route: '',
         //   submenu: [
-        //     { label: 'Contract Dashboard', route: 'contracts/dashboard' },
+        //     { label: 'Contract Dashboard', route: '/contracts/dashboard' },
         //     { label: 'New Contract', route: '/contracts/new-rc' },
         //     { label: 'RC Extension', route: '/RCExtend' },
         //     { label: 'PO Extension', route: '/AppliedPoExtension' },
@@ -620,7 +620,7 @@ export class MenuServiceService {
         //   label: 'Indents',
         //   route: '',
         //   submenu: [
-        //     { label: 'Add Indent DME', route: 'ConsolidatedIndentPOCell' },
+        //     { label: 'Add Indent DME', route: '/ConsolidatedIndentPOCell' },
         //     { label: 'Add Indent', route: '/ConsolidatedIndentDHSPO' },
         //     { label: 'Indent Item Wise Remarks', route: '/IndentWiseItemRemarks' }
         //   ],
@@ -1017,6 +1017,10 @@ export class MenuServiceService {
               label: 'Finalization of Cover A',
               route: '/TenderCoverAObClaimAfter',
             },
+            {
+              label: 'Finalization of Cover B',
+              route: '/TenderCoverAObClaimAfterB',
+            },
             { label: 'Gem-Price Entry', route: '/TenderDetailsPriceEntryGEM' },
           ],
         },
@@ -1024,7 +1028,7 @@ export class MenuServiceService {
           label: 'Indents',
           route: '',
           submenu: [
-            { label: 'Add Indent DME', route: 'ConsolidatedIndentPOCell' },
+            { label: 'Add Indent DME', route: '/ConsolidatedIndentPOCell' },
               { label: 'Add Indent', route: '/ConsolidatedIndentDHSPO' },
                { label: 'Approve Indent-CME', route: '/ConsolidatedIndentCGMSC'},
        
@@ -1220,7 +1224,7 @@ export class MenuServiceService {
 
           { label: 'Land Issues', route: '/LandIssue' },
           { label: 'Technical Sanction', route: '/TechnicalSanction' },
-          { label: 'Handover', route: 'Handover' },
+          { label: 'Handover', route: '/Handover' },
 
           { label: 'Engineer-Works', route: '/EngineerWorks' },
           { label: 'Payment', route: '/PriceEvaluation' },

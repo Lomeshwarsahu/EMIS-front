@@ -1,0 +1,140 @@
+<div class="supplier-po-page">
+  <div class="detail-section wide">
+    <div class="detail-form-card">
+      <table class="detail-form-table">
+        <tbody>
+          <tr>
+            <td class="label-col">Select Tender <span class="req">*</span></td>
+            <td class="value-col">
+              <ng-select
+                class="item-select"
+                appendTo="body"
+                [items]="tenderList"
+                bindLabel="Name"
+                bindValue="TenderId"
+                placeholder="---Select Tender---"
+                [(ngModel)]="tenderId"
+                name="tender">
+              </ng-select>
+            </td>
+          </tr>
+          <tr class="form-actions-row">
+            <td colspan="2">
+              <button type="button" class="show-btn" (click)="show()">Show</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-container *ngIf="shown && header">
+      <div class="detail-header-card section-gap">
+        <div class="detail-header-grid cols-3">
+          <div class="detail-header-item"><span class="label">Tender No</span><span class="value">{{ header.TenderNo }}</span></div>
+          <div class="detail-header-item"><span class="label">Tender Date</span><span class="value">{{ header.TenderDate }}</span></div>
+          <div class="detail-header-item"><span class="label">Status</span><span class="value">{{ header.Status }}</span></div>
+          <div class="detail-header-item"><span class="label">Cover B Date</span><span class="value">{{ header.CoverB || '—' }}</span></div>
+        </div>
+      </div>
+
+      <div class="datagrid section-gap">
+        <div class="table-wrap">
+          <table class="po-grid">
+            <thead>
+              <tr>
+                <th class="text-center">S.No</th>
+                <th class="text-start">Supplier</th>
+                <th class="text-center">Eligible Items</th>
+                <th class="text-center">No of Items Eligible For C</th>
+                <th class="text-center">No of Items Not Eligible For C</th>
+                <th class="text-center">Item Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let b of bidders; let i = index" [class.row-done]="rowDone(b)" [class.row-pending]="!rowDone(b)">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-start wrap-cell">{{ b.SupplierName }}</td>
+                <td class="text-center">{{ b.EligibleItems }}</td>
+                <td class="text-center">{{ b.EligibleForC }}</td>
+                <td class="text-center">{{ b.NotEligibleForC }}</td>
+                <td class="text-center">
+                  <button type="button" class="show-btn small" (click)="openItems(b)">Item</button>
+                </td>
+              </tr>
+              <tr *ngIf="!bidders.length">
+                <td colspan="6" class="empty-row">No Cover A eligible bidders for this tender.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Item Action popup (legacy mpe) -->
+      <div class="detail-form-card section-gap" *ngIf="popupBidder">
+        <h3 class="section-title">Tender Ref: {{ header.TenderNo }} &nbsp;|&nbsp; Bidder: {{ popupBidder.SupplierName }}</h3>
+        <div class="datagrid">
+          <div class="table-wrap">
+            <table class="po-grid">
+              <thead>
+                <tr>
+                  <th class="text-center">S.no</th>
+                  <th class="text-start">Code</th>
+                  <th class="text-start">Quoted Item Name</th>
+                  <th class="text-center">Eligible<br>(uncheck to make Not Eligible)</th>
+                  <th class="text-start">Non Eligibility Remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let it of popupItems; let i = index">
+                  <td class="text-center">{{ i + 1 }}</td>
+                  <td class="text-start">{{ it.ItemCode }}</td>
+                  <td class="text-start wrap-cell">{{ it.ItemName }}</td>
+                  <td class="text-center">
+                    <input type="checkbox" [attr.aria-label]="'Eligible ' + it.ItemCode" [(ngModel)]="it.Eligible" [name]="'eli' + i">
+                  </td>
+                  <td class="text-start">
+                    <select class="cell-input wide" [attr.aria-label]="'Remarks ' + it.ItemCode" [(ngModel)]="it.DemoRemarksId" [name]="'rem' + i" [disabled]="it.Eligible">
+                      <option [ngValue]="0">Select</option>
+                      <option *ngFor="let r of remarksList" [ngValue]="r.Id">{{ r.Remarks }}</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="popup-actions">
+          <button type="button" class="show-btn" (click)="updateItems()">Update (Checked: Eligible, Not Checked: Not Eligible)</button>
+          <button type="button" class="show-btn secondary-btn" (click)="closePopup()">Close</button>
+        </div>
+      </div>
+
+      <!-- Freeze (legacy tblFeezPriceBid, only when no item is pending) -->
+      <div class="pending-banner section-gap" *ngIf="pending">Pending Cover B for item {{ pending }}</div>
+      <div class="detail-form-card section-gap" *ngIf="!pending && bidders.length">
+        <h3 class="section-title">Freeze Cover B Shortlisting</h3>
+        <table class="detail-form-table">
+          <tbody>
+            <tr>
+              <td class="label-col">Price Bid Date <span class="req">*</span></td>
+              <td class="value-col">
+                <input type="date" aria-label="Price Bid Date" [(ngModel)]="priceBidDate" name="priceBidDate">
+                <span class="hint">Must be on or after the Cover B date.</span>
+              </td>
+              <td class="label-col">Demo for Bulk <span class="req">*</span></td>
+              <td class="value-col">
+                <input #demoFileInput type="file" aria-label="Demo for Bulk" accept=".pdf" (change)="onDemoFileSelected($event)">
+                <span class="hint">.pdf only, max 1 MB</span>
+              </td>
+            </tr>
+            <tr class="form-actions-row">
+              <td colspan="4">
+                <button type="button" class="show-btn" (click)="freeze()">Freeze Cover B Shortlisting</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+  </div>
+</div>

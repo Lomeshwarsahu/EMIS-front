@@ -551,3 +551,194 @@ th.mat-table-sticky-end {
 ::ng-deep .modal-backdrop {
   z-index: 10050 !important;
 }
+
+/* Legacy tender_details_1.aspx legend + row colours */
+.tender-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-swatch {
+  width: 28px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.legend-swatch.row-link-items { background: #ff99cc; }
+.legend-swatch.row-price-pending { background: #ffccff; }
+.legend-swatch.row-ar-pending { background: #99ccff; }
+.legend-swatch.row-completed { background: #99ffcc; }
+
+.tender-grid tr.row-link-items td { background: rgba(255, 153, 204, 0.35); }
+.tender-grid tr.row-price-pending td { background: rgba(255, 204, 255, 0.45); }
+.tender-grid tr.row-ar-pending td { background: rgba(153, 204, 255, 0.4); }
+.tender-grid tr.row-cancelled td { background: rgba(148, 163, 184, 0.3); }
+
+.status-radios {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.status-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.search-panel {
+  margin-top: 6px;
+}
+
+.search-label {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.date-stack div {
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+.link-count {
+  border: none;
+  background: none;
+  color: var(--accent, #2563eb);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Legacy-layout alignment fixes: multi-line headers (they contain <br>), wrapping tender no / description */
+.tender-grid {
+  min-width: 1900px;
+}
+
+.tender-grid th {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  vertical-align: middle !important;
+}
+
+.tender-grid td.col-tender,
+.tender-grid td.col-desc {
+  white-space: normal !important;
+  word-break: break-word;
+}
+
+.col-tender {
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+}
+
+.col-action {
+  width: 115px;
+  min-width: 115px;
+  max-width: 115px;
+}
+
+.tender-grid td.col-action .action-btn {
+  min-width: 84px;
+  justify-content: center;
+}
+
+/* Toolbar: filters on the left, actions on the right */
+.table-toolbar.filters {
+  align-items: center;
+  gap: 10px;
+}
+
+.table-toolbar .status-radios {
+  padding: 4px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #fff;
+  min-height: 30px;
+}
+
+.table-toolbar .new-tender-btn {
+  margin-left: auto;
+}
+
+:host-context(html[data-theme='dark']) .table-toolbar .status-radios {
+  background: #0c0e12;
+  border-color: #262b36;
+}
+
+@media (max-width: 720px) {
+  .table-toolbar .new-tender-btn {
+    margin-left: 0;
+  }
+}
+
+/* Fit the grid in the screen height: legend, toolbars and paginator keep their size, the table scrolls */
+.tender-legend,
+.search-panel,
+.datagrid mat-paginator {
+  flex-shrink: 0;
+}
+
+.supplier-po-page > .datagrid {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Compact Plan a Tender grid: no fixed column widths. Columns size to their data; Tender No and Description
+   take the spare width and wrap when long. Overrides the fixed widths above. */
+.tender-grid {
+  table-layout: auto !important;
+  min-width: 100% !important;
+  width: max-content !important;
+}
+
+.tender-grid th,
+.tender-grid td {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  padding: 6px 8px !important;
+}
+
+.tender-grid td {
+  white-space: nowrap !important;
+}
+
+.tender-grid td.col-tender {
+  min-width: 150px !important;
+  max-width: 220px !important;
+  white-space: normal !important;
+}
+
+.tender-grid td.col-desc {
+  min-width: 220px !important;
+  max-width: 360px !important;
+  white-space: normal !important;
+}
+
+.tender-grid td.col-action .action-btn {
+  min-width: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.tender-grid td:not(.col-desc):not(.col-tender) {
+  width: 1% !important;
+}

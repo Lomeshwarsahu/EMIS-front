@@ -17,7 +17,7 @@ import { MaterialModule } from 'src/app/material-module';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
@@ -52,7 +52,7 @@ declare var bootstrap: any;
 })
 export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
   Type = [
-    { Value: 0, T_name: 'All Types' },
+    { Value: 0, T_name: 'All' },
     { Value: 1, T_name: 'Live' },
     { Value: 2, T_name: 'Cover-A' },
     { Value: 3, T_name: 'Cover-B' },
@@ -74,10 +74,8 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
     searchText: '',
   };
 
-  selectedYearId: any;
-  Typeid = 0;
   yearlist: any = [];
-  financial_year_id = 19;
+  showSearch = false;
   dispatchData: any[] = [];
   dataSource!: MatTableDataSource<any>;
   loading = false;
@@ -94,13 +92,13 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
     'CStatus',
     'TenderDate',
     'NosItemsBid',
-    'TenderDescription',
     'UpdateStatus',
     'AddTenderItem',
     'UpdateExcel',
     'AddBidder',
     'AddBidItem',
     'AddLeavy',
+    'TenderDescription',
     'AddnewHOD',
     'actions',
   ];
@@ -122,13 +120,27 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private router: Router,
+    private route: ActivatedRoute,
   ) {
     this.dataSource = new MatTableDataSource<any>([]);
   }
 
   ngOnInit() {
     this.Getyear();
-    this.GetTenderDashboardReports(19, 0);
+    // Legacy: ?tenderid=<id> opens the grid on that tender's financial year, otherwise year 19
+    const tenderId = Number(this.route.snapshot.queryParamMap.get('tenderid'));
+    if (tenderId > 0) {
+      this.api.get(`BME/GetTenderDetailsById/${tenderId}`).subscribe({
+        next: (res: any) => {
+          const data = Array.isArray(res) ? res[0] : res;
+          this.filterData.financialYearId = data?.FINANCIAL_YEAR_ID || 19;
+          this.loadGrid();
+        },
+        error: () => this.loadGrid(),
+      });
+    } else {
+      this.loadGrid();
+    }
   }
 
   ngAfterViewInit() {
@@ -153,41 +165,41 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
     document.body.classList.remove('emis-modal-open');
   }
 
-  get hasActiveFilters(): boolean {
-    return (this.filterData.typeId !== 0 && this.filterData.typeId !== null) || this.filterData.financialYearId !== 19;
+  toggleSearch() {
+    this.showSearch = !this.showSearch;
+    if (!this.showSearch) {
+      this.filterData.categoryId = null;
+      this.filterData.searchText = '';
+    }
   }
 
-  onFilterChange() {
-    this.GetTenderDashboardReports(this.filterData.financialYearId || 19, this.filterData.typeId || 0);
+  // Legacy btnShow_Click: search (Code/Name/Tender + text) across all years, else year + status
+  onSubmitFilter() {
+    this.loadGrid();
   }
 
-  applyFilter() {
-    if (this.filterData.searchText) {
-      this.dataSource.filter = this.filterData.searchText.trim().toLowerCase();
+  private loadGrid() {
+    const search = (this.filterData.searchText || '').trim();
+    if (this.showSearch && this.filterData.categoryId && search) {
+      this.GetTenderDashboardReports(0, 0, this.filterData.categoryId, search);
     } else {
-      this.dataSource.filter = '';
+      this.GetTenderDashboardReports(this.filterData.financialYearId || 0, this.filterData.typeId || 0);
     }
   }
 
-  onSubmitFilter(form?: any) {
-    if (form && form.invalid) {
-      return;
-    }
-    this.GetTenderDashboardReports(this.filterData.financialYearId || 19, this.filterData.typeId || 0);
-  }
+  // Legacy GVDetail_RowDataBound row colours
+  rowClass(row: any): string {
+    const statusId = Number(row.CsId) || 1;
+    const total = Number(row.TotalItems) || 0;
+    const notFound = Number(row.NosNotFound) || 0;
+    const found = Number(row.FoundItems) || 0;
+    const decided = (Number(row.Accept) || 0) + (Number(row.Reject) || 0);
 
-  onResetFilter(form?: any) {
-    if (form && form.resetForm) {
-      form.resetForm();
-    }
-    this.filterData = {
-      financialYearId: 19,
-      typeId: 0,
-      categoryId: null,
-      searchText: '',
-    };
-    this.dataSource.filter = '';
-    this.GetTenderDashboardReports(19, 0);
+    if (statusId === 6) return 'row-cancelled';
+    if (total === 0) return 'row-link-items';
+    if (statusId === 5 && notFound === 0 && total !== notFound + found) return 'row-price-pending';
+    if (statusId === 5 && notFound > 0 && found !== decided) return 'row-ar-pending';
+    return '';
   }
 
   Getyear() {
@@ -201,11 +213,15 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  GetTenderDashboardReports(fid: any, tyid: any) {
+  GetTenderDashboardReports(fid: any, tyid: any, searchBy?: string, searchText?: string) {
     this.loading = true;
     this.spinner.show();
 
-    this.api.get(`BME/GetTenderDashboardReports/${fid}/${tyid}`).subscribe({
+    let url = `BME/GetTenderDashboardReports/${fid}/${tyid}`;
+    if (searchBy && searchText) {
+      url += `?searchBy=${encodeURIComponent(searchBy)}&searchText=${encodeURIComponent(searchText)}`;
+    }
+    this.api.get(url).subscribe({
       next: (res: any) => {
         this.loading = false;
         this.spinner.hide();
@@ -223,14 +239,9 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loading = false;
         this.spinner.hide();
         console.log('Error fetching items data:', err);
-        this.toastr.error('Failed to load items.', 'Error');
+        this.toastr.error('Failed to load tenders.', 'Error');
       },
     });
-  }
-
-  applyTextFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   exportToExcel() {
@@ -252,9 +263,37 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // Legacy tender_details_1.aspx row buttons. Checks come from GetTenderActionChecks (Tender.cs).
+  private withTenderChecks(tenderId: any, onOk: (checks: any) => void) {
+    this.spinner.show();
+    this.api.get(`BME/GetTenderActionChecks/${tenderId}`).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        onOk(res || {});
+      },
+      error: () => {
+        this.spinner.hide();
+        this.toastr.error('Unable to verify tender status. Please try again.');
+      },
+    });
+  }
+
   opennewpage(tender_no: any) {
-    this.router.navigate(['/TenderStatusUpdate'], {
-      queryParams: { tender_no: tender_no },
+    this.withTenderChecks(tender_no, (checks) => {
+      if (checks.CoverAItemsPending) {
+        this.toastr.warning('Item Entry is Pending Cover A Supplier for this Tender');
+        return;
+      }
+      this.router.navigate(['/TenderStatusUpdate'], {
+        queryParams: { tender_no: tender_no },
+      });
+    });
+  }
+
+  // Legacy "Tendered Items" count link -> AddExcel.aspx
+  openTenderedItems(element: any) {
+    this.router.navigate(['/AddExcel'], {
+      queryParams: { tender_no: element.TenderId },
     });
   }
 
@@ -264,20 +303,41 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  // Legacy "Upload Excel" -> AddExcel.aspx?tenderid=
   openAddRExcel(tender_no: any) {
     this.router.navigate(['/AddExcel'], {
       queryParams: { tender_no: tender_no },
     });
   }
 
-  openCovAaddRemuvie(tender_no: any) {
+  openCovAaddRemuvie(element: any) {
+    if (Number(element.CsId) !== 2) {
+      this.toastr.warning('It will Works only When Status is Cover A');
+      return;
+    }
     this.router.navigate(['/CovAaddRemuvie'], {
-      queryParams: { tender_no: tender_no },
+      queryParams: { tender_no: element.TenderId },
     });
   }
 
-  OpenCovAItemsEntry(tender_no: any) {
-    this.router.navigate(['/CovAItemsEntry'], {
+  OpenCovAItemsEntry(element: any) {
+    if (Number(element.CsId) !== 2) {
+      this.toastr.warning('It will Works only When Status is Cover A');
+      return;
+    }
+    this.withTenderChecks(element.TenderId, (checks) => {
+      if (!checks.HasBidder) {
+        this.toastr.warning('Please Add Bidder First');
+        return;
+      }
+      this.router.navigate(['/CovAItemsEntry'], {
+        queryParams: { tender_no: element.TenderId },
+      });
+    });
+  }
+
+  OpenTenderStatusRemark(tender_no: any) {
+    this.router.navigate(['/TenderStatusRemark'], {
       queryParams: { tender_no: tender_no },
     });
   }
@@ -329,11 +389,11 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
         this.toastr.success(res.message);
         form.resetForm();
         this.closeModal();
-        this.GetTenderDashboardReports(19, 0);
+        this.loadGrid();
       },
-      error: () => {
+      error: (err: any) => {
         this.spinner.hide();
-        this.toastr.error('Error occurred while saving.');
+        this.toastr.error(err?.error?.message || 'Error occurred while saving.');
       },
     });
   }

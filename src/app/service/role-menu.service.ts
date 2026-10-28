@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -384,15 +385,15 @@ const ROUTE_MAP: Record<string, string> = {
   '/tender/tender_details_priceentry.aspx': '/TenderDetailsPriceEntryGEM',
   '/tender/addexcel.aspx': '/tender/plan',
   '/tender/tender_details_1.aspx': '/tender/plan',
-  '/tender/tendercoveraobclaimafterb.aspx': '/TenderCoverAObClaim',
+  '/tender/tendercoveraobclaimafterb.aspx': '/TenderCoverAObClaimAfterB',
   '/tender/covaitemsentry.aspx': '/TenderCoverAitems',
-  '/tender/tendercoveraobclaimafter.aspx': '/TenderCoverAObClaim',
+  '/tender/tendercoveraobclaimafter.aspx': '/TenderCoverAObClaimAfter',
   '/tender/tendercoveraitems.aspx': '/TenderCoverAitems',
   '/tender/tenderitemspricegem.aspx': '/TenderItemsPriceGEM',
   '/tender/addleavy.aspx': '/tender/plan',
   '/tender/tender_details_priceentryonly.aspx': '/TenderDetailsPriceEntryGEM',
   '/tender/rdlctendersummary.aspx': '/RDLCTenderSummary',
-  '/tender/tenderitemspricear.aspx': '/TenderItemsPriceGEM',
+  '/tender/tenderitemspricear.aspx': '/TenderItemsPriceAR',
 
   '/contract/emsnewrc.aspx': '/contracts/new-rc',
   '/contract/applied_po_extension.aspx': '/AppliedPoExtension',
@@ -585,7 +586,23 @@ export class RoleMenuService {
   private readonly api = `${environment.apiUrl}/IT`;
   private sidebarTreeCache = new Map<number, Observable<any>>();
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly router: Router,
+  ) {}
+
+  // Fallback routes from mapLegacyRoute are lower-cased (e.g. /generationfilenonasti) but Angular paths are
+  // case-sensitive (GenerationFileNonasti), so match them against the router config ignoring case.
+  private resolveRoute(route: string): string {
+    const mapped = mapLegacyRoute(route);
+    if (!mapped) return mapped;
+    const [pathPart, rest] = mapped.split(/(?=[?#])/);
+    const path = pathPart.replace(/^\/+/, '');
+    const configPaths = this.router.config.map((r) => r.path ?? '');
+    if (configPaths.includes(path)) return mapped;
+    const match = configPaths.find((p) => p.toLowerCase() === path.toLowerCase());
+    return match !== undefined ? '/' + match + (rest || '') : mapped;
+  }
 
   clearSidebarCache(): void {
     this.sidebarTreeCache.clear();
@@ -671,14 +688,14 @@ export class RoleMenuService {
               ? rawSubmenu
                   .map((sub: any) => ({
                     label: sub.label || sub.Label || '',
-                    route: mapLegacyRoute(sub.route || sub.Route || ''),
+                    route: this.resolveRoute(sub.route || sub.Route || ''),
                   }))
                   .filter((sub) => sub.route !== '/home' && sub.route !== '/' && sub.route !== '/welcome')
               : undefined;
 
             return {
               label,
-              route: mapLegacyRoute(rawRoute),
+              route: this.resolveRoute(rawRoute),
               submenu: submenu && submenu.length > 0 ? submenu : undefined,
             };
           })

@@ -1,8 +1,49 @@
 <div class="supplier-po-page">
 
+  <!-- Legend (legacy tender_details_1.aspx row colours) -->
+  <div class="tender-legend">
+    <span class="legend-item"><span class="legend-swatch row-link-items"></span>Link Items in Tender</span>
+    <span class="legend-item"><span class="legend-swatch row-price-pending"></span>Price Not Entered</span>
+    <span class="legend-item"><span class="legend-swatch row-ar-pending"></span>Pending Accept/Reject</span>
+    <span class="legend-item"><span class="legend-swatch row-completed"></span>Tender Completed</span>
+  </div>
+
   <div class="datagrid">
     <div class="table-toolbar filters filters--compact">
-      <!-- Export Excel -->
+      <!-- Financial Year -->
+      <select
+        aria-label="Financial Year"
+        class="year-select"
+        [(ngModel)]="filterData.financialYearId"
+        name="FinancialYearId">
+        <option [ngValue]="0">Select Fin Year</option>
+        <option *ngFor="let y of yearlist" [ngValue]="y.financial_year_id">{{ y.year }}</option>
+      </select>
+
+      <!-- Status (legacy rbcheck: none selected = all except Cancelled) -->
+      <div class="status-radios" role="radiogroup" aria-label="Tender Status">
+        <label *ngFor="let t of Type" class="status-radio">
+          <input type="radio" name="statusCheck" [value]="t.Value" [(ngModel)]="filterData.typeId">
+          {{ t.T_name }}
+        </label>
+      </div>
+
+      <button type="button" class="show-btn clear-btn" (click)="toggleSearch()">
+        {{ showSearch ? 'Hide Search' : 'Show Search' }}
+      </button>
+
+      <button type="button" class="show-btn" (click)="onSubmitFilter()" [disabled]="loading">
+        {{ loading ? 'Loading…' : 'Show' }}
+      </button>
+
+      <button
+        type="button"
+        class="show-btn new-tender-btn"
+        data-bs-toggle="modal"
+        data-bs-target="#SendModall">
+        Generate New Tender
+      </button>
+
       <button
         *ngIf="dispatchData.length"
         type="button"
@@ -10,82 +51,25 @@
         (click)="exportToExcel()">
         Export Excel
       </button>
+    </div>
 
-      <!-- Financial Year Select -->
-      <select
-        aria-label="Financial Year"
-        class="year-select"
-        [(ngModel)]="filterData.financialYearId"
-        name="FinancialYearId"
-        (change)="onFilterChange()">
-        <option *ngFor="let y of yearlist" [ngValue]="y.financial_year_id">{{ y.year }}</option>
-      </select>
-
-      <!-- Type Select -->
-      <select
-        aria-label="Select Type"
-        class="type-select"
-        [(ngModel)]="filterData.typeId"
-        name="TypeId"
-        (change)="onFilterChange()">
-        <option *ngFor="let t of Type" [ngValue]="t.Value">{{ t.T_name }}</option>
-      </select>
-
-      <!-- Category Select (conditional) -->
-      <select
-        *ngIf="filterData.typeId && filterData.typeId !== 0"
-        aria-label="Category"
-        class="category-select"
-        [(ngModel)]="filterData.categoryId"
-        name="CategoryId">
-        <option [ngValue]="null">Select Category</option>
-        <option *ngFor="let c of Category" [ngValue]="c.Value">{{ c.C_name }}</option>
-      </select>
-
-      <!-- Filter Search Input (conditional) -->
+    <!-- Search panel (legacy Panel1: Search By Code / Name / Tender) -->
+    <div class="table-toolbar filters filters--compact search-panel" *ngIf="showSearch">
+      <span class="search-label">Search By</span>
+      <div class="status-radios" role="radiogroup" aria-label="Search By">
+        <label *ngFor="let c of Category" class="status-radio">
+          <input type="radio" name="searchBy" [value]="c.Value" [(ngModel)]="filterData.categoryId">
+          {{ c.C_name }}
+        </label>
+      </div>
       <input
-        *ngIf="filterData.typeId && filterData.typeId !== 0"
         type="text"
         class="toolbar-input"
-        placeholder="Type to search..."
+        aria-label="Type to Search"
+        placeholder="Type to Search"
         [(ngModel)]="filterData.searchText"
         name="SearchText"
-        (input)="applyFilter()">
-
-      <!-- Show Button -->
-      <button
-        type="button"
-        class="show-btn"
-        (click)="onSubmitFilter()"
-        [disabled]="loading">
-        {{ loading ? 'Loading…' : 'Show' }}
-      </button>
-
-      <!-- Reset Filter Button -->
-      <button
-        type="button"
-        class="show-btn clear-btn"
-        *ngIf="hasActiveFilters"
-        (click)="onResetFilter()"
-        [disabled]="loading">
-        Reset
-      </button>
-
-      <!-- Generate New Tender Button -->
-      <button
-        type="button"
-        class="show-btn new-tender-btn"
-        data-bs-toggle="modal"
-        data-bs-target="#SendModall">
-        + New Tender
-      </button>
-
-      <!-- Quick Filter for Table -->
-      <input
-        type="text"
-        class="toolbar-input quick-search"
-        placeholder="Quick search..."
-        (keyup)="applyTextFilter($event)">
+        (keyup.enter)="onSubmitFilter()">
     </div>
 
     <!-- Skeleton Loader -->
@@ -96,150 +80,122 @@
       <table class="po-grid tender-grid" mat-table matTableExporter
         [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
 
-        <!-- S.No Column -->
         <ng-container matColumnDef="sno" sticky>
-          <th mat-header-cell *matHeaderCellDef class="text-center col-sn">S.No</th>
+          <th mat-header-cell *matHeaderCellDef class="text-center col-sn">S.no</th>
           <td mat-cell *matCellDef="let element" class="text-center col-sn font-medium">{{ element.sno }}</td>
         </ng-container>
 
-        <!-- Tender No Column -->
         <ng-container matColumnDef="TenderNo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-start col-tender">Tender No.</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-start col-tender">Tender No</th>
           <td mat-cell *matCellDef="let element" class="text-start col-tender font-medium">
             <span class="tender-no-text">{{ element.TenderNo }}</span>
           </td>
         </ng-container>
 
-        <!-- Total Items Column -->
         <ng-container matColumnDef="TotalItems">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center col-items">Total Items</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center col-items">Tendered Items</th>
           <td mat-cell *matCellDef="let element" class="text-center col-items">
-            <span class="badge-count">{{ element.TotalItems }}</span>
+            <button type="button" class="link-count" (click)="openTenderedItems(element)">{{ element.TotalItems }}</button>
           </td>
         </ng-container>
 
-        <!-- Total Value Column -->
         <ng-container matColumnDef="TotalValue">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-end col-value">Total Value</th>
-          <td mat-cell *matCellDef="let element" class="text-end col-value font-medium val-green">₹ {{ element.TotalValue | number:'1.2-2' }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-end col-value">Value(in Cr)</th>
+          <td mat-cell *matCellDef="let element" class="text-end col-value font-medium">{{ element.TotalValue }}</td>
         </ng-container>
 
-        <!-- Status Column -->
         <ng-container matColumnDef="CStatus">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center col-status">Status</th>
           <td mat-cell *matCellDef="let element" class="text-center col-status">
-            <span class="badge-status">{{ element.CStatus || 'N/A' }}</span>
+            <span class="badge-status" *ngIf="element.CStatus">{{ element.CStatus }}</span>
           </td>
         </ng-container>
 
-        <!-- Tender Date Column -->
         <ng-container matColumnDef="TenderDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center col-date">Tender Date</th>
-          <td mat-cell *matCellDef="let element" class="text-center col-date">{{ element.TenderDate || '—' }}</td>
+          <th mat-header-cell *matHeaderCellDef class="text-center col-date">Date Live &amp;<br>Cover A/B/Dem/C</th>
+          <td mat-cell *matCellDef="let element" class="text-center col-date date-stack">
+            <div>{{ element.TenderDate }}</div>
+            <div>{{ element.CoverA }}</div>
+            <div>{{ element.CoverB }}</div>
+            <div>{{ element.CoverDemo }}</div>
+            <div>{{ element.CoverC }}</div>
+          </td>
         </ng-container>
 
-        <!-- Items Bid Column -->
         <ng-container matColumnDef="NosItemsBid">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center col-bid">Items Bid</th>
-          <td mat-cell *matCellDef="let element" class="text-center col-bid font-medium">{{ element.NosItemsBid }}</td>
+          <th mat-header-cell *matHeaderCellDef class="text-center col-bid">Cov A Bidder<br>/No of items</th>
+          <td mat-cell *matCellDef="let element" class="text-center col-bid font-medium">
+            <div>{{ element.NosBidder }}</div>
+            <div>{{ element.NosItemsBid }}</div>
+          </td>
         </ng-container>
 
-        <!-- Description Column -->
-        <ng-container matColumnDef="TenderDescription">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-start col-desc">Description</th>
-          <td mat-cell *matCellDef="let element" class="text-start col-desc wrap-cell">{{ element.TenderDescription || '—' }}</td>
-        </ng-container>
-
-        <!-- Update Status Action -->
         <ng-container matColumnDef="UpdateStatus">
-          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Update Status</th>
+          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Update<br>Status</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--blue" (click)="opennewpage(element.TenderId)">
-              Status
-            </button>
+            <button type="button" class="action-btn action-btn--blue" (click)="opennewpage(element.TenderId)">Edit</button>
           </td>
         </ng-container>
 
-        <!-- Add Item Action -->
         <ng-container matColumnDef="AddTenderItem">
-          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Item</th>
+          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Tender<br>Item</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--indigo" (click)="openAddRTenderItems(element.TenderId)">
-              Add Item
-            </button>
+            <button type="button" class="action-btn action-btn--indigo" (click)="openAddRTenderItems(element.TenderId)">Add Item</button>
           </td>
         </ng-container>
 
-        <!-- Update Excel Action -->
         <ng-container matColumnDef="UpdateExcel">
-          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Update Excel</th>
+          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Upload Excel<br>(tender items)</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--green" (click)="openAddRExcel(element.TenderId)">
-              Excel
-            </button>
+            <button type="button" class="action-btn action-btn--green" (click)="openAddRExcel(element.TenderId)">Upload</button>
           </td>
         </ng-container>
 
-        <!-- Add Bidder Action -->
         <ng-container matColumnDef="AddBidder">
           <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Bidder</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--amber" (click)="openCovAaddRemuvie(element.TenderId)">
-              Bidder
-            </button>
+            <button type="button" class="action-btn action-btn--amber" (click)="openCovAaddRemuvie(element)">Add Participants</button>
           </td>
         </ng-container>
 
-        <!-- Add Bid Item Action -->
         <ng-container matColumnDef="AddBidItem">
-          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Bid Item</th>
+          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Bid Items</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--slate" (click)="OpenCovAItemsEntry(element.TenderId)">
-              Bid Item
-            </button>
+            <button type="button" class="action-btn action-btn--slate" (click)="OpenCovAItemsEntry(element)">Add Items</button>
           </td>
         </ng-container>
 
-        <!-- Add Leavy Action -->
         <ng-container matColumnDef="AddLeavy">
-          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Penalty</th>
+          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Leavy/<br>Penalty</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--rose" (click)="OpenAddLeavy(element.TenderId)">
-              Penalty
-            </button>
+            <button type="button" class="action-btn action-btn--rose" (click)="OpenAddLeavy(element.TenderId)">Add Leavy</button>
           </td>
         </ng-container>
 
-        <!-- Add HOD Action -->
+        <ng-container matColumnDef="TenderDescription">
+          <th mat-header-cell *matHeaderCellDef class="text-start col-desc">Description</th>
+          <td mat-cell *matCellDef="let element" class="text-start col-desc wrap-cell">{{ element.TenderDescription }}</td>
+        </ng-container>
+
         <ng-container matColumnDef="AddnewHOD">
-          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add HOD</th>
+          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Conversation<br>With HOD(DHS/DME/Ayush)</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--purple" (click)="OpenAddTenderCon(element.TenderId)">
-              HOD
-            </button>
+            <button type="button" class="action-btn action-btn--purple" (click)="OpenAddTenderCon(element.TenderId)">Add New</button>
           </td>
         </ng-container>
 
-        <!-- Actions Column -->
-        <ng-container matColumnDef="actions" stickyEnd>
+        <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef class="text-center col-action">Tender Status</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--slate">
-              Add Status
-            </button>
+            <button type="button" class="action-btn action-btn--slate" (click)="OpenTenderStatusRemark(element.TenderId)">Add Status</button>
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [class.alt-row]="i % 2 === 1"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="rowClass(row)"></tr>
 
         <tr class="mat-row" *matNoDataRow>
-          <td colspan="16" class="empty-row">
-            <div class="empty-state">
-              <div style="font-size: 32px; color: #cbd5e1; margin-bottom: 8px;">&#128522;</div>
-              <p>No records found. All clear!</p>
-            </div>
-          </td>
+          <td [attr.colspan]="displayedColumns.length" class="empty-row">No Record Found</td>
         </tr>
       </table>
     </div>

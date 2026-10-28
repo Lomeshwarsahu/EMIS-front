@@ -1,0 +1,219 @@
+/* Shared layout bits for Plan a Tender sub-pages (used with Suppliers/supplier-po-pages.shared.css) */
+.section-gap {
+  margin-top: 14px;
+}
+
+.detail-form-card + .detail-form-card,
+.detail-header-card + .detail-form-card {
+  margin-top: 12px;
+}
+
+.detail-form-card .section-title {
+  margin-top: 10px;
+}
+
+.detail-form-table textarea,
+.detail-form-table select {
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fff;
+  color: inherit;
+}
+
+.detail-form-table textarea {
+  max-width: 560px;
+  resize: vertical;
+}
+
+.item-select {
+  width: 100%;
+  max-width: 560px;
+}
+
+.cell-input {
+  width: 110px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 13px;
+  text-align: right;
+  background: #fff;
+  color: inherit;
+}
+
+.cell-input.wide {
+  width: 160px;
+  text-align: left;
+}
+
+.show-btn.small {
+  min-height: 28px;
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+.link-btn-plain {
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--page-accent, #2563eb);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.rc-valid {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.rc-invalid {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.req {
+  color: #dc2626;
+}
+
+.hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.po-grid th.text-start,
+.po-grid td.text-start {
+  text-align: left;
+}
+
+.po-grid th.text-end,
+.po-grid td.text-end {
+  text-align: right;
+}
+
+.po-grid th.text-center,
+.po-grid td.text-center {
+  text-align: center;
+}
+
+:host-context(html[data-theme='dark']) .detail-form-table textarea,
+:host-context(html[data-theme='dark']) .detail-form-table select,
+:host-context(html[data-theme='dark']) .cell-input {
+  background: #0f131a;
+  border-color: #2b3240;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) .hint {
+  color: #94a3b8;
+}
+
+@media (max-width: 720px) {
+  .detail-form-table td.label-col,
+  .detail-form-table td.value-col {
+    display: block;
+    width: 100%;
+  }
+}
+
+.upload-result {
+  margin: 4px 16px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reply-cell {
+  padding: 8px 16px 12px;
+  background: #f8fafc;
+}
+
+.reply-grid {
+  width: 100%;
+}
+
+:host-context(html[data-theme='dark']) .reply-cell {
+  background: #10141b;
+}
+
+/* Keep sub-pages inside the screen height: the page itself stays fixed (shared :host / .supplier-po-page are
+   overflow: hidden), the section scrolls, and each table scrolls inside its own box with a sticky header. */
+.supplier-po-page > .detail-section {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  overflow-y: auto;
+  margin-bottom: 0;
+  padding-bottom: 12px;
+}
+
+.detail-section .datagrid {
+  flex: none;
+}
+
+.detail-section .table-wrap {
+  flex: none;
+  max-height: min(60vh, calc(100vh - 260px));
+}
+
+.detail-section .po-grid thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* Cover B shortlisting rows (legacy LightGreen / LightPink) */
+.po-grid tbody tr.row-done td {
+  background: rgba(134, 239, 172, 0.35);
+}
+
+.po-grid tbody tr.row-pending td {
+  background: rgba(251, 182, 206, 0.35);
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 16px 6px;
+}
+
+/* Compact grids: short columns (numbers, dates, buttons) take only their content width; text columns
+   (.wrap-cell: names, descriptions, remarks) take the remaining space and wrap when the text is long. */
+.po-grid {
+  table-layout: auto;
+}
+
+.po-grid th {
+  white-space: normal;
+}
+
+.po-grid td {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.po-grid td.wrap-cell {
+  width: auto;
+  white-space: normal;
+  min-width: 180px;
+  word-break: break-word;
+}
+
+.po-grid td.empty-row,
+.po-grid td.reply-cell {
+  width: auto;
+  white-space: normal;
+}

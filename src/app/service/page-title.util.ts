@@ -11,6 +11,18 @@ const EXTRA_ROUTE_TITLES: Record<string, string> = {
   '/dashboard': 'Dashboard',
   '/change-password': 'Change Password',
 
+  // Plan a Tender row actions (legacy page headings)
+  '/TenderStatusUpdate': 'Tender Status Update',
+  '/AddRTenderItems': 'Add/Remove Items from Tender',
+  '/AddExcel': 'Add Items In Tender',
+  '/CovAaddRemuvie': 'Add Bidder (Cover A Participants)',
+  '/CovAItemsEntry': 'Tender Participation Details',
+  '/AddLeavy': 'Add Leavy / Penalty',
+  '/AddTenderCon': 'Add Conversation With HOD (DHS/DME/Ayush)',
+  '/TenderStatusRemark': 'Tender Status',
+  '/TenderCoverAObClaimAfterB': 'Finalization of Cover B',
+  '/TenderItemsPriceAR': 'Price Accept / Reject',
+
   // DME / Orders
   '/orders/po-supply': 'Purchase Orders Desk',
   '/orders/purchase-order-dashboard': 'Purchase Orders Desk',
