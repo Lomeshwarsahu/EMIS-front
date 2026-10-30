@@ -1,23 +1,18 @@
-<div class="ems-legacy-page">
-  <div class="header-wrap">
-    <span class="header-bar narrow">Complaint Status</span>
-  </div>
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Complaint Status</h2>
 
-  <div class="toolbar-row">
-    <label>
-      Status:
-      <select class="legacy-select" [(ngModel)]="status">
+
+  <div class="datagrid">
+  <div class="table-toolbar filters">
+    <select aria-label="Status" [(ngModel)]="status">
         <option value="Booked">Booked</option>
         <option value="Closed">Closed</option>
       </select>
-    </label>
-    <button type="button" class="btn-legacy" (click)="load()" [disabled]="loading">
-      {{ loading ? 'Loading…' : 'Show' }}
-    </button>
+    <button type="button" class="show-btn" (click)="load()" [disabled]="loading">{{ loading ? 'Loading…' : 'Show Data' }}</button>
   </div>
 
-  <div class="grid-scroll">
-    <table class="legacy-grid">
+  <div class="table-wrap">
+    <table class="po-grid">
       <thead>
         <tr>
           <th>S.no</th>
@@ -71,5 +66,6 @@
     </table>
     <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
       [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
+  </div>
   </div>
 </div>

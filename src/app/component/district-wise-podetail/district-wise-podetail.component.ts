@@ -64,7 +64,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableExporterModule,
   ],
   templateUrl: './district-wise-podetail.component.html',
-  styleUrl: './district-wise-podetail.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './district-wise-podetail.component.css'],
 })
 export class DistrictWisePODetailComponent {
 Yearlist: any = {};

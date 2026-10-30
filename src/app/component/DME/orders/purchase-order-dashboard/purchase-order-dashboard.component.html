@@ -28,9 +28,7 @@
         type="button"
         class="clear-btn"
         (click)="clearFilters()"
-        [disabled]="loading">
-        Clear Filter
-      </button>
+        [disabled]="loading">Clear Filter</button>
     </div>
 
     <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />

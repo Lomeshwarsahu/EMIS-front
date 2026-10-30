@@ -63,7 +63,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableExporterModule,
   ],
   templateUrl: './consolidated-indent-dhs-po.component.html',
-  styleUrl: './consolidated-indent-dhs-po.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './consolidated-indent-dhs-po.component.css'],
 })
 export class ConsolidatedIndentDHSPOComponent {
 Yearlist: any = {};

@@ -275,7 +275,8 @@ const ROUTE_MAP: Record<string, string> = {
   '/reports/posummaryconsigneeho.aspx': '/reports/po-summary-consignee-ho', 
   '/reports/tenderstatusitemwise.aspx': '/tender/evaluation',
   '/reports/rdlc_dhspending.aspx': '/reports/rdlc-dhs-pending',
-  '/reports/tenderstatus.aspx': '/tender/evaluation',
+  // Reports/TenderStatus.aspx is the year/status report, not the per-tender update form at /tender/evaluation.
+  '/reports/tenderstatus.aspx': '/reports/tender-status',
   '/reports/complainreportbme.aspx': '/reports/complain-report-bme',
   '/reports/indentposummarydirwise.aspx': '/reports/indent-po-summary-dirwise',
   '/reports/balancestatusdhs.aspx': '/reports/balance-status-dhs',
@@ -695,6 +696,9 @@ export class RoleMenuService {
                     route: this.resolveRoute(sub.route || sub.Route || ''),
                   }))
                   .filter((sub) => sub.route !== '/home' && sub.route !== '/' && sub.route !== '/welcome')
+                  // Several legacy links can map to one Angular page (e.g. PO-Cell "Extension Entry" and
+                  // "Extension Entry - HO" both → /POSupplyHO); keep only the first so the page is listed once.
+                  .filter((sub, idx, all) => all.findIndex((s) => s.route === sub.route) === idx)
               : undefined;
 
             return {

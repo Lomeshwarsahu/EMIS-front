@@ -6,6 +6,16 @@
   border-radius: 8px;
 }
 
+.dialog-head {
+  position: relative;
+}
+
+.dialog-head .btn-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 h2 {
   text-align: center;
   color: #3f51b5; /* Primary Material Color */
@@ -72,4 +82,11 @@ h2 {
 
 :host-context(html[data-theme='dark']) .custom-search-box input:focus {
   border-color: #2563eb;
+}
+
+/* Popup mode: drop page margins so the form fills the dialog */
+:host-context(.mat-mdc-dialog-container) .form-container {
+  margin: 0;
+  max-width: none;
+  box-shadow: none;
 }

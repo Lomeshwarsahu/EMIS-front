@@ -25,7 +25,7 @@ interface MainEquipmentMappedRow {
   standalone: true,
   imports: [MatPaginatorModule, CommonModule, DmePageSkeletonComponent],
   templateUrl: './main-equipment-mapped-report.component.html',
-  styleUrls: ['./component.css'],
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './component.css'],
 })
 export class MainEquipmentMappedReportComponent implements OnInit {
   readonly pager = new ListPager();

@@ -62,7 +62,7 @@ import { POReceiptDTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './porecdsummary.component.html',
-  styleUrl: './porecdsummary.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './porecdsummary.component.css'],
 })
 export class PORecdsummaryComponent {
   ItemsList: any[] = [];

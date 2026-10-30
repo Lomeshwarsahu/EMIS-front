@@ -5,7 +5,7 @@
             <h2 class="fw-bold text-primary mb-1">Supplier Management</h2>
             <p class="text-muted mb-0 fs-6">Manage MAS supplier information and pricing details</p>
         </div>
-        <button *ngIf="!show!" class="btn btn-primary shadow-sm" (click)="showinput()">
+        <button *ngIf="!show!" class="btn shadow-sm add-btn" (click)="showinput()">
             <i class="bi bi-plus-circle me-2"></i>Add New Supplier
         </button>
     </div>
@@ -110,7 +110,7 @@
                 </div>
 
                 <div>
-                    <button class="btn btn-outline-success shadow-sm" mat-button [matMenuTriggerFor]="exportMenu">
+                    <button class="btn shadow-sm export-btn" mat-button [matMenuTriggerFor]="exportMenu">
                         <i class="bi bi-file-earmark-excel me-1"></i> Export
                     </button>
                     <mat-menu #exportMenu="matMenu">

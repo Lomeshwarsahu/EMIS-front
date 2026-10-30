@@ -15,14 +15,21 @@
 
       <button
         type="button"
-        class="show-btn accent-btn"
-        (click)="showForm = !showForm">
-        {{ showForm ? 'Hide Form' : 'Add New' }}
+        class="add-btn"
+        (click)="showForm = true">
+        + Add New
       </button>
     </div>
 
     <!-- Add form -->
-    <div class="form-card" *ngIf="showForm && selectedMenuId">
+    <div class="emis-modal-backdrop" *ngIf="showForm && selectedMenuId" (click)="showForm = false"></div>
+  <div class="emis-modal emis-modal--sm" *ngIf="showForm && selectedMenuId" role="dialog" aria-modal="true" aria-label="Add Sub Menu">
+    <div class="emis-modal-header">
+      <h5>Add Sub Menu</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="showForm = false"></button>
+    </div>
+    <div class="emis-modal-body">
+      <div class="form-card">
       <div class="form-grid">
      
         <label class="field">
@@ -58,6 +65,8 @@
         </button>
       </div>
     </div>
+    </div>
+  </div>
 
     <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="5" />
 

@@ -1,22 +1,13 @@
-<div class="ems-legacy-page eel-page">
-  <div class="header-wrap">
-    <span class="header-bar">EEL Suggestion Report</span>
-  </div>
+<div class="supplier-po-page eel-page">
+  <h2 class="page-title wide">EEL Suggestion Report</h2>
 
   <div class="datagrid">
-    <table class="panel-table">
-      <tbody>
-        <tr>
-          <td>
-            <button type="button" class="btn-export" (click)="exportExcel()" title="Export to Excel">
-              Export
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="table-wrap">
-              <table class="legacy-grid">
+    <div class="table-toolbar filters">
+      <button type="button" class="export-btn" (click)="exportExcel()" title="Export to Excel">Export Excel</button>
+    </div>
+
+    <div class="table-wrap">
+              <table class="po-grid">
                 <thead>
                   <tr>
                     <th>S.no</th>
@@ -77,9 +68,5 @@
               <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
                 [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </div>

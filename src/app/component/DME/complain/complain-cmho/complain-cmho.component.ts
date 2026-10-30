@@ -33,7 +33,7 @@ interface ComplainStatusRow {
   standalone: true,
   imports: [MatPaginatorModule, CommonModule, FormsModule],
   templateUrl: './complain-cmho.component.html',
-  styleUrls: ['./complain-cmho.component.css'],
+  styleUrls: ['../../../Suppliers/supplier-po-pages.shared.css', './complain-cmho.component.css'],
 })
 export class ComplainCmhoComponent implements OnInit {
   readonly pager = new ListPager();

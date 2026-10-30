@@ -18,11 +18,8 @@ import { ActivatedRoute } from '@angular/router';
   <h2 class="page-title">Pending Installation Drill Down</h2>
   <div class="datagrid">
     <div class="filters--compact">
-      <div class="filter-section">
-        <span class="filter-label">PO ID</span>
-        <input type="text" [(ngModel)]="poId" placeholder="Enter PO ID" style="min-width:180px">
-      </div>
-      <button type="button" class="show-btn" (click)="loadGrid()">Show</button>
+      <input placeholder="PO ID" aria-label="PO ID" type="text" [(ngModel)]="poId" style="min-width:180px">
+      <button type="button" class="show-btn" (click)="loadGrid()">Show Data</button>
       <div class="info-badges" *ngIf="totalCount > 0">
         <span class="badge">Total: {{ totalCount }} rows</span>
       </div>

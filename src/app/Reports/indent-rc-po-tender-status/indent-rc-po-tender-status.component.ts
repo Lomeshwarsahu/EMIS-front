@@ -63,7 +63,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableExporterModule,
   ],
   templateUrl: './indent-rc-po-tender-status.component.html',
-  styleUrl: './indent-rc-po-tender-status.component.css',
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './indent-rc-po-tender-status.component.css'],
 })
 export class IndentRCPOTenderStatusComponent {
 

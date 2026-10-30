@@ -52,13 +52,11 @@
         type="button"
         class="clear-btn"
         (click)="clearFilters()"
-        [disabled]="loading">
-        Clear Filter
-      </button>
+        [disabled]="loading">Clear Filter</button>
 
       <button
         type="button"
-        class="show-btn accent-btn"
+        class="export-btn"
         (click)="exportExcel()"
         [disabled]="loading || !dataSource.data.length">
         Export

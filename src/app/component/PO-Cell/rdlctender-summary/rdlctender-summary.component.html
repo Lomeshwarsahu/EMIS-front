@@ -1,41 +1,14 @@
-<section class="container-fluid py-4 animate__animated animate__fadeIn">
-    
-    <div class="card p-4 mb-4 shadow-sm text-center bg-gradient bg-light border-0 rounded-3">
-        <h2 class="fw-bold text-primary mb-2 tracking-tight">
-            <i class="bi bi-file-earmark-text-fill me-2"></i>Tender Status Matrix Report
-        </h2>
-        <p class="text-muted mb-0 fs-6">
-            Comprehensive multi-stage lifecycle analysis tracking system for active procurement and rate contracts.
-        </p>
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Tender Status Matrix Report</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <input type="text" class="toolbar-search" placeholder="Search..." aria-label="Search" (keyup)="applyTextFilter($event)" />
+      <button type="button" class="export-btn" (click)="exporter.exportTable('xlsx')">Export Excel</button>
     </div>
 
-    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
-
-        <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center border-bottom gap-3 px-4">
-            <div class="d-flex align-items-center">
-                <h5 class="mb-0 fw-bold text-dark d-flex align-items-center fs-6">
-                    <i class="bi bi-table text-success me-2 fs-5"></i> Active Tender Progress Registry
-                </h5>
-            </div>
-
-            <div class="d-flex align-items-center flex-wrap gap-2">
-                <div class="input-group input-group-sm" style="min-width: 260px; max-width: 300px;">
-                    <span class="input-group-text bg-light border-end-0 text-muted shadow-none">
-                        <i class="bi bi-search"></i>
-                    </span>
-                    <input type="text" class="form-control border-start-0 shadow-none bg-light"
-                           placeholder="Search dynamic metrics..." (keyup)="applyTextFilter($event)">
-                </div>
-                
-                <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-semibold d-inline-flex align-items-center shadow-none"
-                        (click)="exporter.exportTable('xlsx')">
-                    <i class="bi bi-file-earmark-spreadsheet me-1.5"></i> Export Excel
-                </button>
-            </div>
-        </div>
-
-        <div class="table-responsive style-scrollbar w-100" style="max-height: 65vh; overflow-y: auto;">
-            <table class="table table-hover align-middle mb-0 text-nowrap w-100" mat-table matTableExporter
+    <div class="table-wrap">
+      <table class="po-grid" mat-table matTableExporter
                 [dataSource]="dataSource" #exporter="matTableExporter" matSort>
 
                 <ng-container matColumnDef="sno">
@@ -238,11 +211,7 @@
                     </td>
                 </tr>
             </table>
-        </div>
-
-        <div class="card-footer bg-white border-top p-0 px-3">
-            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons
-                class="border-0 bg-transparent"></mat-paginator>
-        </div>
     </div>
-</section>
+    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons class="border-0 bg-transparent"></mat-paginator>
+  </div>
+</div>

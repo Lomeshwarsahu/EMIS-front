@@ -60,7 +60,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTableExporterModule,
   ],
   templateUrl: './emspodashboard.component.html',
-  styleUrl: './emspodashboard.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './emspodashboard.component.css'],
 })
 export class EMSPODashboardComponent {
 mappingForm!: FormGroup; 

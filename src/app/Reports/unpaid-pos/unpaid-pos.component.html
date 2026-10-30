@@ -1,78 +1,22 @@
-<section class="container-fluid">
-    <div class="card">
-        <div class="card p-4 mb-4 shadow-sm text-center bg-light border-0 rounded-3">
-            <h2 class="fw-bold text-primary mb-2">Unpaid PO Status</h2>
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Unpaid PO Status</h2>
 
-            <p class="text-muted mb-0 fs-6">View detailed of selected valus and purchase orders</p>
-        </div>
-        <div class="card shadow-lg p-2 border-0 bg-white rounded ">
-            <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-light"
-                style="height: auto; overflow: hidden; position: relative;">
-                <div class="mb-0 Fon-family" style="text-align: justify;">
-                    <form class="p-2" #filterForm="ngForm" (ngSubmit)="Getitemwisedetail()">
-                        <div class="card shadow-sm p-3 mt-1">
-                            <div class="row g-3 justify-content-center">
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <ng-select [items]="Yearlist" bindLabel="year" bindValue="financial_year_id" appendTo="body" [(ngModel)]="selecteditem" name="selecteditem" placeholder="Select year" (change)="onSelectedItem($event)"> </ng-select>
+      <label class="date-pill"><span>From</span><input aria-label="From date" [(ngModel)]="fromdate" type="date" name="fromdate" /></label>
+      <label class="date-pill"><span>To</span><input aria-label="To date" [(ngModel)]="todate" type="date" name="todate" /></label>
+      <button type="button" class="show-btn" (click)="Getitemwisedetail()">Show Data</button>
+      <input type="text" class="toolbar-search" placeholder="Search..." aria-label="Search" (keyup)="applyTextFilter($event)" />
+      <button type="button" class="export-btn" (click)="exporter.exportTable('xlsx')">Export Excel</button>
+    </div>
 
-                                <div class="col-md-3 mx-auto text-center">
-                                    <label class="form-label fw-semibold">Select PO Financial Year <span
-                                            class="text-danger">*</span></label>
-                                    <ng-select [items]="Yearlist" bindLabel="year" bindValue="financial_year_id"
-                                        class="form-control" appendTo="body" [(ngModel)]="selecteditem"
-                                        name="selecteditem" placeholder="Select year" (change)="onSelectedItem($event)">
-                                    </ng-select>
-                                </div>
-
-                                <div class="col-md-3 mx-auto text-center">
-                                    <label class="form-label fw-semibold">From Date</label>
-                                    <input class="form-control font-monospace fw-bold" [(ngModel)]="fromdate"
-                                        type="date" name="fromdate" />
-                                </div>
-
-                                <div class="col-md-3 mx-auto text-center">
-                                    <label class="form-label fw-semibold">To Date</label>
-                                    <input class="form-control font-monospace fw-bold" [(ngModel)]="todate" type="date"
-                                        name="todate" />
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div
-                                    class="col-12 d-flex flex-wrap justify-content-center pt-3 border-top gap-2 gap-md-3 mt-4 mt-md-5 px-2">
-                                    <button type="submit" [disabled]="filterForm.invalid"
-                                        class="btn btn-primary px-3 px-md-5 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-search me-2"></i> <span>Show Data</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                  
-                </div>
-            </div>
-        </div>
-        <!-- data table -->
-        <div class="card shadow-sm border border-light-subtle rounded-3 overflow-hidden m-3">
-
-            <div
-                class="card-header bg-light border-bottom border-light-subtle d-flex justify-content-between align-items-center py-3 px-4">
-                <h5 class="card-title text-dark fw-bold mb-0 d-flex align-items-center">
-                    <i class="bi bi-file-earmark-spreadsheet text-primary me-2"></i> Indent Consolidation Summary
-                </h5>
-                <div class="card-actions">
-                    <button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-semibold"
-                        (click)="exporter.exportTable('xlsx')">
-                        <i class="bi bi-download me-1"></i> Export Excel
-                    </button>
-                </div>
-            </div>
-
-            <div class="table-responsive w-100 style-scrollbar" style="max-height: 60vh; overflow-y: auto;">
-                <table class="table table-hover align-middle mb-0 text-nowrap w-100" mat-table matTableExporter
+    <div class="table-wrap">
+      <table class="po-grid" mat-table matTableExporter
                     [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
 
                     <ng-container matColumnDef="sno">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">
                             S.No </th>
                         <td mat-cell *matCellDef="let element; let i = index"
                             class="text-center fw-medium text-muted px-3">
@@ -81,21 +25,21 @@
                     </ng-container>
 
                     <ng-container matColumnDef="po_no">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header px-3">PO No</th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-3">PO No</th>
                         <td mat-cell *matCellDef="let element" class="fw-bold text-primary px-3">
                             {{element.po_no || '-'}}
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="podate">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header px-3">PO Date </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-3">PO Date </th>
                         <td mat-cell *matCellDef="let element" class="fw-medium text-dark-emphasis px-3">
                             {{element.podate || '-'}}
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="POQTY">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">PO
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">PO
                             QTY</th>
                         <td mat-cell *matCellDef="let element" class="text-center text-muted px-3">
                             {{element.POQTY || '-'}}
@@ -105,7 +49,7 @@
 
 
                     <ng-container matColumnDef="facility_aut_name">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">
                             Facility </th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-secondary px-3">
                             {{element.facility_aut_name }}
@@ -113,35 +57,35 @@
                     </ng-container>
 
                     <ng-container matColumnDef="Supplier">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">
                             Supplier</th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-muted px-3">
                             {{element.Supplier}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="item_code_as_per_tender">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">
                             Item Code</th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-muted px-3">
                             {{element.item_code_as_per_tender}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="itemname">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">
                             Item </th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-muted px-3">
                             {{element.itemname}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="POValue">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> PO
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3"> PO
                             Value</th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-muted px-3">
                             {{element.POValue}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="Liability">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">
                             Liability</th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-muted px-3">
                             {{element.Liability}}
@@ -149,49 +93,49 @@
                     </ng-container>
 
                     <ng-container matColumnDef="potype">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> PO
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3"> PO
                             Type</th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-muted px-3">
                             {{element.potype}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="SupplierDispatch">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">
                             Supplier Dispatch</th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-muted px-3">
                             {{element.SupplierDispatch}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="receiptQTY">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">
                             Receipt QTY</th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-muted px-3">
                             {{element.receiptQTY}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="fitunfit">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">Fit
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">Fit
                             Unfit</th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-muted px-3">
                             {{element.fitunfit}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="EQtype">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">EQ
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">EQ
                             Type</th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-muted px-3">
                             {{element.EQtype}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="ReasonName">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">
                             Reason Name</th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-muted px-3">
                             {{element.ReasonName}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="cancellationdays">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center px-3">
                             Cancellation Days</th>
                         <td mat-cell *matCellDef="let element" class="text-center fw-bold text-muted px-3">
                             {{element.cancellationdays}}
@@ -213,17 +157,10 @@
                         </td>
                     </tr>
                 </table>
-            </div>
-
-            <div class="card-footer bg-white border-top border-light-subtle p-0">
-                <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons
-                    class="border-0"></mat-paginator>
-            </div>
-        </div>
-
     </div>
-
-</section>
+    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons class="border-0"></mat-paginator>
+  </div>
+</div>
 
 <div class="modal fade rounded" id="SendModall" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-hidden="true">

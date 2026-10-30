@@ -64,7 +64,7 @@
       MatTableExporterModule,
     ],
   templateUrl: './cheque-wise-payment-r.component.html',
-  styleUrl: './cheque-wise-payment-r.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './cheque-wise-payment-r.component.css'],
 })
 export class ChequeWisePaymentRComponent {
 

@@ -23,15 +23,13 @@
 
       <button
         type="button"
-        class="show-btn clear-btn"
+        class="clear-btn"
         *ngIf="hasActiveFilters()"
-        (click)="clearFilters()">
-        Clear Filter
-      </button>
+        (click)="clearFilters()">Clear Filter</button>
 
       <button
         type="button"
-        class="show-btn btn-add"
+        class="btn-add add-btn"
         (click)="addRow()"
         [disabled]="loading || saving">
         + Add Entry

@@ -3,14 +3,10 @@
 
   <div class="datagrid">
     <div class="table-toolbar filters">
-      <mat-radio-group [(ngModel)]="poType" name="poType">
-        <mat-radio-button value="All">All</mat-radio-button>
-        <mat-radio-button value="Normal">Normal</mat-radio-button>
-        <mat-radio-button value="Covid">Covid</mat-radio-button>
-      </mat-radio-group>
+      <select aria-label="Type" [(ngModel)]="poType" ><option value="All">All</option><option value="Normal">Normal</option><option value="Covid">Covid</option></select>
 
-      <input type="date" [(ngModel)]="fromDate" name="fromDate" placeholder="From Date" />
-      <input type="date" [(ngModel)]="toDate" name="toDate" placeholder="To Date" />
+      <label class="date-pill"><span>From</span><input aria-label="From date" type="date" [(ngModel)]="fromDate" name="fromDate" /></label>
+      <label class="date-pill"><span>To</span><input aria-label="To date" type="date" [(ngModel)]="toDate" name="toDate" /></label>
 
       <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
       <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export Excel</button>

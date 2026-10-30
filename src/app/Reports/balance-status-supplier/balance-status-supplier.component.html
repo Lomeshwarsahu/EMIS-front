@@ -3,14 +3,8 @@
 
   <div class="datagrid">
     <div class="table-toolbar filters">
-      <div class="filter-section">
-        <span class="filter-label">Balance Type</span>
-        <mat-radio-group [(ngModel)]="balanceType" (change)="loadData()">
-          <mat-radio-button value="R">Receipt Pending</mat-radio-button>
-          <mat-radio-button value="I">Installation Pending</mat-radio-button>
-        </mat-radio-group>
-      </div>
-      <button type="button" class="show-btn" (click)="loadData()">Show</button>
+      <label class="date-pill field-pill"><span>Balance Type</span><select aria-label="Balance Type" [(ngModel)]="balanceType" (change)="loadData()"><option value="R">Receipt Pending</option><option value="I">Installation Pending</option></select></label>
+      <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
       <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export Excel</button>
     </div>
 

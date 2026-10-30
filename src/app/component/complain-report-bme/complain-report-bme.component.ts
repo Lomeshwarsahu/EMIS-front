@@ -62,7 +62,7 @@ import { ComplaintDTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './complain-report-bme.component.html',
-  styleUrls: ['../DME/shared/legacy-ems-page.css', './complain-report-bme.component.css'],
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', '../DME/shared/legacy-ems-page.css', './complain-report-bme.component.css'],
 })
 export class ComplainReportBMEComponent {
 Status:any;

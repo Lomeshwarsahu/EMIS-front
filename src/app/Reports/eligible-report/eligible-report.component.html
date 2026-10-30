@@ -1,9 +1,8 @@
-<div class="report-page">
-  <div class="report-header">
-    <h2>Eligible Consignee for Purchase-Order</h2>
-  </div>
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Eligible Consignee for Purchase-Order</h2>
 
-  <div class="filters-row">
+  <div class="datagrid">
+  <div class="table-toolbar filters">
     <select
       aria-label="Select Financial Year"
       [(ngModel)]="selectedYear"
@@ -25,18 +24,14 @@
       [class.is-placeholder]="selectedItem === '0'">
       <option *ngFor="let it of items" [ngValue]="it.ItemCode">{{ it.ItemName }}</option>
     </select>
-    <button type="button" class="btn btn--small btn--primary" (click)="showDetail()">
-      Show Details
-    </button>
-    <button type="button" class="btn btn--small" (click)="showSummary()">
-      Show Summary (Directorate wise)
-    </button>
+    <button type="button" class="show-btn" (click)="showDetail()">Show Data</button>
+    <button type="button" class="show-btn" (click)="showSummary()">Show Summary (Directorate wise)</button>
   </div>
 
   <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="8" />
 
   <div class="table-wrap" *ngIf="!loading && view === 'summary'">
-    <table class="report-grid">
+    <table class="po-grid">
       <thead>
         <tr>
           <th class="text-center">S.No</th>
@@ -62,7 +57,7 @@
   </div>
 
   <div class="table-wrap" *ngIf="!loading && view === 'detail'">
-    <table class="report-grid">
+    <table class="po-grid">
       <thead>
         <tr>
           <th class="text-center">S.No</th>
@@ -99,5 +94,6 @@
     </table>
     <mat-paginator *ngIf="detailRows.length" [length]="detailRows.length" [pageIndex]="detailPager.index" [pageSize]="detailPager.size"
       [pageSizeOptions]="detailPager.sizes" (page)="detailPager.onPage($event)" showFirstLastButtons></mat-paginator>
+  </div>
   </div>
 </div>

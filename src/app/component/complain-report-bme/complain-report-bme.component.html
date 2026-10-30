@@ -1,32 +1,15 @@
-<div class="ems-legacy-page">
-  <div class="header-wrap">
-    <span class="header-bar narrow">Receipt Complain Report</span>
-  </div>
+<div class="supplier-po-page">
 
-  <div class="toolbar-row">
-    <div class="radio-group" role="radiogroup" aria-label="Status">
-      <label>
-        <input type="radio" name="CategoryType" value="Booked" [(ngModel)]="CategoryType" (change)="onCategoryChange()" />
-        Booked
-      </label>
-      <label>
-        <input type="radio" name="CategoryType" value="Closed" [(ngModel)]="CategoryType" (change)="onCategoryChange()" />
-        Closed
-      </label>
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <select aria-label="Category Type" [(ngModel)]="CategoryType" name="CategoryType" (change)="onCategoryChange()"><option value="Booked">Booked</option><option value="Closed">Closed</option></select>
+      <button type="button" class="show-btn" (click)="GetIndentConsolidation()">Show Data</button>
+      <input type="text" class="toolbar-search" placeholder="Search..." aria-label="Search" (keyup)="applyTextFilter($event)" />
+      <button type="button" class="export-btn" (click)="exporter.exportTable('xlsx', { fileName: 'ComplainReport', sheet: 'ComplainReport', Props: { Author: 'cgmsc' } })">Export Excel</button>
     </div>
-    <button type="button" class="btn-legacy" (click)="GetIndentConsolidation()">Show</button>
 
-    <span class="toolbar-spacer"></span>
-
-    <input type="text" class="legacy-input toolbar-search" placeholder="Search" aria-label="Search complaints" (keyup)="applyTextFilter($event)" />
-    <button type="button" class="btn-legacy"
-      (click)="exporter.exportTable('xlsx', { fileName: 'ComplainReport', sheet: 'ComplainReport', Props: { Author: 'cgmsc' } })">
-      Export Excel
-    </button>
-  </div>
-
-  <div class="grid-scroll">
-    <table class="legacy-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter"
+    <div class="table-wrap">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter"
       matSort #sort="matSort">
 
       <ng-container matColumnDef="sno">
@@ -90,6 +73,7 @@
         </td>
       </tr>
     </table>
+    </div>
+    <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
   </div>
-  <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
 </div>

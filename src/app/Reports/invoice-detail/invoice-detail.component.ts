@@ -64,7 +64,7 @@
       MatTableExporterModule,
     ],
   templateUrl: './invoice-detail.component.html',
-  styleUrl: './invoice-detail.component.css',
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './invoice-detail.component.css'],
 })
 export class InvoiceDetailComponent {
 

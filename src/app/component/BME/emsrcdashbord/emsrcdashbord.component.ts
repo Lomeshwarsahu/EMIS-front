@@ -60,7 +60,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTableExporterModule,
   ],
   templateUrl: './emsrcdashbord.component.html',
-  styleUrl: './emsrcdashbord.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './emsrcdashbord.component.css'],
 })
 export class EMSRCDashbordComponent {
 mappingForm!: FormGroup; 
@@ -242,7 +242,8 @@ GetSuppliersByTenderId(event: any) {
 
 
  AddnewRC() {
-  this.router.navigate(['/EMSNEWRC']);
+  // Same form as sidebar "New Contract" — use its route so that menu item is highlighted.
+  this.router.navigate(['/contracts/new-rc']);
 }
   // ==========================================
   // Submit Logic (API Call)

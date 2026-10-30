@@ -63,7 +63,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableExporterModule,
   ],
   templateUrl: './unpaid-pos.component.html',
-  styleUrl: './unpaid-pos.component.css',
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './unpaid-pos.component.css'],
 })
 export class UnpaidPOSComponent {
 

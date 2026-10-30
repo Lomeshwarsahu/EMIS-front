@@ -18,20 +18,7 @@
         <option *ngFor="let dst of Districtslist" [ngValue]="dst.DP_DistrictID">{{ dst.DBStart_Name_En }}</option>
       </select>
 
-      <div class="radio-group">
-        <label>
-          <input type="radio" name="searchBy" [(ngModel)]="searchBy" value="" />
-          All
-        </label>
-        <label>
-          <input type="radio" name="searchBy" [(ngModel)]="searchBy" value="NR" />
-          Not Received (NR)
-        </label>
-        <label>
-          <input type="radio" name="searchBy" [(ngModel)]="searchBy" value="IN" />
-          Installation Complete (IN)
-        </label>
-      </div>
+      <select aria-label="Type" [(ngModel)]="searchBy" name="searchBy"><option value="">All</option><option value="NR">Not Received (NR)</option><option value="IN">Installation Complete (IN)</option></select>
 
       <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
       <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!dispatchData.length">Export Excel</button>

@@ -53,7 +53,7 @@ import { ChequePaymentSummaryDTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './tdsdata-report.component.html',
-  styleUrl: './tdsdata-report.component.css',
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './tdsdata-report.component.css'],
 })
 export class TDSdataReportComponent {
   Fromdt: any;

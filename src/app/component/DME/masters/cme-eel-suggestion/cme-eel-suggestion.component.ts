@@ -26,7 +26,7 @@ interface EelSuggestionRow {
   standalone: true,
   imports: [MatPaginatorModule, CommonModule],
   templateUrl: './cme-eel-suggestion.component.html',
-  styleUrls: ['../../shared/legacy-ems-page.css', './cme-eel-suggestion.component.css'],
+  styleUrls: ['../../../Suppliers/supplier-po-pages.shared.css', '../../shared/legacy-ems-page.css', './cme-eel-suggestion.component.css'],
 })
 export class CmeEelSuggestionComponent implements OnInit {
   readonly pager = new ListPager();

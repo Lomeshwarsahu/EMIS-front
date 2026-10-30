@@ -18,11 +18,8 @@ import { ActivatedRoute } from '@angular/router';
   <h2 class="page-title">Logo Verified (HO)</h2>
   <div class="datagrid">
     <div class="filters--compact">
-      <div class="filter-section">
-        <span class="filter-label">PO / Receipt ID</span>
-        <input type="text" [(ngModel)]="receiptId" placeholder="Enter PO ID" style="min-width:180px">
-      </div>
-      <button type="button" class="show-btn" (click)="loadBatches()">Show</button>
+      <input placeholder="PO / Receipt ID" aria-label="PO / Receipt ID" type="text" [(ngModel)]="receiptId" style="min-width:180px">
+      <button type="button" class="show-btn" (click)="loadBatches()">Show Data</button>
     </div>
     <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="5" [cols]="8" />
     <div class="table-wrap" *ngIf="!loading">

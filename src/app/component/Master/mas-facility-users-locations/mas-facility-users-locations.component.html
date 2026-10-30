@@ -21,13 +21,20 @@
         <option *ngFor="let d of districts" [ngValue]="d.DP_DistrictID">{{ d.DBStart_Name_En }}</option>
       </select>
 
-      <button type="button" class="show-btn accent-btn" (click)="loadGrid()" [disabled]="loading">Show</button>
-      <button type="button" class="show-btn" (click)="showForm = !showForm">
-        {{ showForm ? 'Hide Form' : 'Add Location' }}
+      <button type="button" class="show-btn" (click)="loadGrid()" [disabled]="loading">Show Data</button>
+      <button type="button" class="add-btn" (click)="showForm = true">
+        + Add Location
       </button>
     </div>
 
-    <div class="form-card" *ngIf="showForm">
+    <div class="emis-modal-backdrop" *ngIf="showForm" (click)="showForm = false"></div>
+  <div class="emis-modal" *ngIf="showForm" role="dialog" aria-modal="true" aria-label="Add Location">
+    <div class="emis-modal-header">
+      <h5>Add Location</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="showForm = false"></button>
+    </div>
+    <div class="emis-modal-body">
+      <div class="form-card">
       <div class="form-grid">
         <label class="field">
           <span class="field-label">Location Name <em>*</em></span>
@@ -64,6 +71,8 @@
         </button>
       </div>
     </div>
+    </div>
+  </div>
 
     <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="5" />
 

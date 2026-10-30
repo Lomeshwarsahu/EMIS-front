@@ -28,17 +28,13 @@
         type="button"
         class="show-btn"
         [disabled]="loading"
-        (click)="loadGrid()">
-        Show Details
-      </button>
+        (click)="loadGrid()">Show Data</button>
 
       <button
         type="button"
-        class="show-btn clear-btn"
+        class="clear-btn"
         *ngIf="hasActiveFilters()"
-        (click)="clearFilters()">
-        Clear Filter
-      </button>
+        (click)="clearFilters()">Clear Filter</button>
     </div>
 
     <!-- Skeleton Loading -->

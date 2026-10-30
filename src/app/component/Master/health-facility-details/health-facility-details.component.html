@@ -40,11 +40,9 @@
 
       <button
         type="button"
-        class="show-btn clear-btn"
+        class="clear-btn"
         *ngIf="hasActiveFilters()"
-        (click)="clearFilters()">
-        Clear Filter
-      </button>
+        (click)="clearFilters()">Clear Filter</button>
 
       <button
         type="button"
@@ -147,7 +145,7 @@
           <td mat-cell *matCellDef="let row" class="text-center action-cell">
             <button
               *ngIf="row.NodleId === 0 || !row.NodleId"
-              class="show-btn btn-add"
+              class="btn-add add-btn"
               (click)="saveNodle(row)"
             >
               Add

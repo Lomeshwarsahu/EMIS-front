@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { ChangeDetectorRef, ViewChild } from '@angular/core';
 import {
   FormBuilder,
@@ -25,7 +25,7 @@ import {  MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 declare var bootstrap: any;
 import { MatOptionModule } from '@angular/material/core';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
@@ -68,8 +68,19 @@ export class MasFacilityUsersLocationsmasterComponent {
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
+    @Optional() private dialogRef: MatDialogRef<MasFacilityUsersLocationsmasterComponent> | null,
+    @Optional() @Inject(MAT_DIALOG_DATA) public dialogData: { fid?: any; did?: any } | null,
   ) {
  
+  }
+
+  /** True when opened as a popup from Health Facility Users. */
+  get isDialog(): boolean {
+    return !!this.dialogRef;
+  }
+
+  close(saved = false): void {
+    this.dialogRef?.close(saved);
   }
   ngOnInit(): void {
     this.locationForm = this.fb.group({
@@ -89,7 +100,12 @@ export class MasFacilityUsersLocationsmasterComponent {
       facilityTypeId: [''],
     });
 
-    this.route.queryParams.subscribe((params) => {
+    if (this.dialogData) {
+      this.locationForm.patchValue({
+        facilityTypeId: this.dialogData.fid?.toString() || '',
+        did: this.dialogData.did?.toString() || '',
+      });
+    } else this.route.queryParams.subscribe((params) => {
       const urlFid = params['fid'];
       const urlDid = params['did'];
 
@@ -162,6 +178,7 @@ export class MasFacilityUsersLocationsmasterComponent {
             },
           );
           this.locationForm.reset({ dpDistrictId: '0' }); 
+          if (this.isDialog) this.close(true);
         },
         error: (err) => {
           console.log(err);

@@ -531,11 +531,7 @@ const routes: Routes = [
     loadComponent: () => import('./component/BME/emsrcdashbord/emsrcdashbord.component').then(m => m.EMSRCDashbordComponent),
     canActivate: [RouteGuardService],
   },
-  {
-    path: 'EMSNEWRC',
-    loadComponent: () => import('./component/BME/emsnewrc/emsnewrc.component').then(m => m.EMSNEWRCComponent),
-    canActivate: [RouteGuardService],
-  },
+  { path: 'EMSNEWRC', redirectTo: 'contracts/new-rc', pathMatch: 'full' },
   {
     path: 'PlanaTenderD',
     loadComponent: () => import('./component/BME/plana-tender-d/plana-tender-d.component').then(m => m.PlanaTenderDComponent),

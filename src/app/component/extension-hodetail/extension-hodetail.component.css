@@ -220,3 +220,14 @@
 :host-context(html[data-theme='dark']) .download-link:hover {
   color: #93c5fd;
 }
+
+/* Supplier filter in the table's top-right toolbar */
+.filter-field {
+  flex: 1 1 220px;
+  max-width: 320px;
+}
+
+.supplier-select {
+  min-width: 320px;
+  max-width: 420px;
+}

@@ -1,44 +1,7 @@
-.eel-page .header-bar {
-  width: 90%;
-  max-width: 1000px;
-}
-
-.btn-export {
-  background: #fff;
-  border: 1px solid #4d67a0;
-  color: #4d67a0;
-  padding: 4px 12px;
-  font-size: 12px;
-  cursor: pointer;
-  border-radius: 2px;
-}
-
-.btn-export:hover {
-  background: #f1f4fa;
-}
-
-.table-wrap {
-  flex: 1 1 auto;
-  min-height: max(500px, calc(100vh - 220px));
-  height: 100%;
-  overflow: auto;
-}
-
-.eel-page .legacy-grid {
+.eel-page .po-grid {
   min-width: 1000px;
 }
 
-.eel-page .legacy-grid td {
+.eel-page .po-grid td {
   vertical-align: top;
-}
-
-/* Dark theme — matches the unified EMIS / supplier palette */
-:host-context(html[data-theme='dark']) .btn-export {
-  background: #0c0e12;
-  border-color: #2563eb;
-  color: #60a5fa;
-}
-
-:host-context(html[data-theme='dark']) .btn-export:hover {
-  background: #1a2030;
 }

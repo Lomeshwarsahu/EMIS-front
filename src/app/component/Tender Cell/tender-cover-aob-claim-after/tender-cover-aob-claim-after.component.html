@@ -1,27 +1,8 @@
-<section class="container-fluid bg-light min-vh-100 py-4 px-lg-5">
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Final Cover A Summary after Claim objection</h2>
 
-    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
-        <div>
-            <h2 class="fw-bold text-primary mb-1">
-                <i class="bi bi-box-seam me-2"></i>Final Cover A Summary after Claim objection
-            </h2>
-            <p class="text-muted mb-0 small">Add or remove items specifically for this tender.</p>
-        </div>
-        <button class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm" (click)="goBack()">
-            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
-        </button>
-    </div>
-     <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden text-center d-flex justify-content-between align-items-center">
-           <div class="col-12 col-md-6 mb-3">
-            <label class="form-label fw-bold small text-muted mb-2">Select Tender Claim Objection Finished</label>
-            <ng-select class="border-2 rounded shadow-none form-control" appendTo="body" [items]="TenderList"
-                bindLabel="Name" bindValue="TenderId" placeholder="Search & Select Tender" name="TenderId"
-                [(ngModel)]="selectedTenderId" (change)="onTenderChange($event)">
-            </ng-select>
-        </div>
-    </div> 
-    
-    <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden    "  *ngIf="show!">
+  <div class="entry-card">
+<div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden    "  *ngIf="show!">
         <div class="card-header bg-white py-3 border-bottom-0">
             <h6 class="fw-bold text-secondary mb-0">
                 <i class="bi bi-info-circle-fill text-primary me-2"></i>Tender Reference
@@ -55,11 +36,18 @@
                 </tbody>
             </table>
         </div>
-    </div> 
-    <div class="card shadow-sm border-0 rounded-4 overflow-hidden animate__animated animate__fadeIn" *ngIf="show!">
+    </div>
+  </div>
 
-        <div class="table-responsive custom-table-height">
-            <table class="table table-hover align-middle mb-0" mat-table matTableExporter [dataSource]="dataSource"
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <ng-select class="border-2 shadow-none" appendTo="body" [items]="TenderList" bindLabel="Name" bindValue="TenderId" placeholder="Search & Select Tender" name="TenderId" [(ngModel)]="selectedTenderId" (change)="onTenderChange($event)"> </ng-select>
+      <input type="text" class="toolbar-search" placeholder="Search..." aria-label="Search" (keyup)="applyTextFilter($event)" />
+      <button type="button" class="show-btn" (click)="goBack()">Back to Dashboard</button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource"
                 #exporter="matTableExporter" matSort #sort="matSort">
                 <ng-container matColumnDef="sno">
                     <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center py-3"
@@ -130,14 +118,7 @@
                         </select>
                     </td>
                 </ng-container>
-                <!-- <ng-container matColumnDef="IsEligibleB">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Eligible</th>
-                    <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> 
-                        <ng-select class="form-control table-input" [items]="Eligiblitylist" bindLabel="Eligiblity" bindValue="id" [(ngModel)]="selectedStatus">
-                        </ng-select>
-                       
-                    </td>
-                </ng-container> -->
+                
                 <ng-container matColumnDef="Remarksclarification">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Final Remarks After Object claim</th>
                     <td mat-cell *matCellDef="let element" class="fw-medium text-dark"> 
@@ -156,25 +137,14 @@
         </a>
     </td>
 </ng-container>
-                <!-- <ng-container matColumnDef="PItems">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white text-center">PItems</th>
-                    <td mat-cell *matCellDef="let element" class="fw-medium text-center"> 
-                           <a (click)="OpenCoverAitemsReports(element)" class="custom-link text-decoration-none">
-                            {{element.PItems}}
-                        </a>
-                     
-                    </td>
-                </ng-container> -->
+                
                   <ng-container matColumnDef="ADDItems">
                     <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center"> Add Items </th>
                     <td mat-cell *matCellDef="let element" class="text-center">
                            <a   (click)="addItemToTender(element)" class="custom-link"   role="button"  data-bs-toggle="modal" data-bs-target="#SendModall">
                          Add
                         </a>
-                         <!-- <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm"
-                            (click)="addItemToTender(element)">
-                            <i class="bi bi-plus-circle me-1"></i>Add
-                        </button> -->
+                         
 
                       
                   
@@ -200,23 +170,16 @@
                     </td>
                 </tr>
             </table>
-        </div>
-
-        <div class="bg-light border-top">
-            <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons
-                class="bg-transparent"></mat-paginator>
-        </div>
-    </div> 
-</section>
-
-
-
+    </div>
+    <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons class="bg-transparent"></mat-paginator>
+  </div>
+</div>
 
 <div class="modal fade rounded" id="SendModall" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
         <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
 
-            <!-- Modal Header -->
+            
             <div class="modal-header bg-success text-white py-3 px-4 border-0">
                 <h5 class="modal-title d-flex align-items-center fs-6 fs-md-5">
                     <i class="bi bi-plus-circle me-2"></i>Quoted Items: Eligible/Not Eligible Action
@@ -224,13 +187,13 @@
                 <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <!-- Modal Body -->
+            
             <div class="modal-body p-3 p-md-4 bg-light">
                 <div class="card shadow-sm border-0 rounded-4 overflow-hidden" *ngIf="show">
-               <!-- Top Title (Centered) -->
+               
         <h4 class="text-center mb-3 fw-bold text-dark">Quoted Items: Eligible/Not Eligible Action After Final Summary Sheet of COVER A</h4>
         
-        <!-- Bidder and Tender Ref in One Line -->
+        
         <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-3 shadow-sm mb-3">
             <div>
                 <span class="fw-bold text-muted">Bidder:</span> 
@@ -242,11 +205,11 @@
             </div>
         </div>
               
-                    <!-- Table Responsive Container -->
+                    
                     <div class="table-responsive">
                         <table mat-table matTableExporter [dataSource]="dataSource1" #exporter="matTableExporter" matSort #sort1="matSort" class="table table-hover align-middle mb-0">
                             
-                            <!-- S.No Column -->
+                            
                             <ng-container matColumnDef="sno">
                                 <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center py-3" style="width: 70px;"> S.No </th>
                                 <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold"> 
@@ -254,7 +217,7 @@
                                 </td>
                             </ng-container>
 
-                            <!-- Code Column -->
+                            
                             <ng-container matColumnDef="ItemCodeAsPerTender">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Code</th>
                                 <td mat-cell *matCellDef="let element">
@@ -264,7 +227,7 @@
                                 </td>
                             </ng-container>
 
-                            <!-- Item Name Column -->
+                            
                             <ng-container matColumnDef="ItemName">
                                 <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-start">Quoted Item Name</th>
                                 <td mat-cell *matCellDef="let element" class="text-start text-success fw-bold">
@@ -272,7 +235,7 @@
                                 </td>
                             </ng-container>
 
-                            <!-- Checkbox Column -->
+                            
                             <ng-container matColumnDef="uncheck">
                                 <th mat-header-cell *matHeaderCellDef class="bg-dark text-white text-center" style="width: 120px;">Eligible Status</th>
                                 <td mat-cell *matCellDef="let element" class="text-center">
@@ -280,7 +243,7 @@
                                 </td>
                             </ng-container>
 
-                            <!-- Remarks Column -->
+                            
                             <ng-container matColumnDef="remark">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-dark text-white">Remarks</th>
                                 <td mat-cell *matCellDef="let element"> 
@@ -288,11 +251,11 @@
                                 </td>
                             </ng-container>
 
-                            <!-- Table Rows -->
+                            
                             <tr mat-header-row *matHeaderRowDef="displayedColumns1" class="sticky-top"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns1;" class="row-hover-effect"></tr>
 
-                            <!-- No Data Row -->
+                            
                             <tr *matNoDataRow>
                                 <td class="text-center py-5 text-muted" colspan="5">
                                     <i class="bi bi-inbox fs-1 d-block mb-2"></i>
@@ -302,14 +265,14 @@
                         </table>
                     </div>
 
-                    <!-- Action Button Footer inside Card -->
+                    
                     <div class="p-3 bg-white border-top text-end">
                         <button type="button" class="btn btn-success px-4 shadow-sm" (click)="updateTenderItems()">
                             <i class="bi bi-save me-1"></i> Update
                         </button>
                     </div>
 
-                    <!-- Paginator -->
+                    
                     <div class="bg-light border-top">
                         <mat-paginator #paginator1 [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons class="bg-transparent"></mat-paginator>
                     </div>
@@ -319,4 +282,3 @@
         </div>
     </div>
 </div>
-

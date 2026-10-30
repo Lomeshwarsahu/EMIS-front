@@ -62,7 +62,7 @@ import { PaymentPOWiseDTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './popaid-report.component.html',
-  styleUrl: './popaid-report.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './popaid-report.component.css'],
 })
 export class POPaidReportComponent {
       Fromdt: any;

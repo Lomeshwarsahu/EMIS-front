@@ -7,7 +7,7 @@
 
   <div class="datagrid">
     <div class="table-toolbar filters filters--compact">
-      <button type="button" class="show-btn" [matMenuTriggerFor]="exportMenu">Export</button>
+      <button type="button" class="export-btn" [matMenuTriggerFor]="exportMenu">Export</button>
       <mat-menu #exportMenu="matMenu">
         <button mat-menu-item
           (click)="exporter.exportTable('xlsx', { fileName: 'Performace20Consignee', sheet: 'Consignee' })">Excel</button>
@@ -53,7 +53,7 @@
 
     <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="7" />
 
-    <div class="table-wrap" *ngIf="!loading">
+    <div class="table-wrap" [hidden]="loading">
       <table class="it-grid" mat-table matTableExporter [dataSource]="dataSource"
         #exporter="matTableExporter" matSort #sort="matSort">
 

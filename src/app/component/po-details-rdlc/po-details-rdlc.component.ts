@@ -18,11 +18,8 @@ import { openPrintWindow } from 'src/app/helper/print-window';
 <div class="it-page" style="--page-accent:#059669">
   <h2 class="page-title">PO Details Report</h2>
   <div class="filters--compact">
-    <div class="filter-section">
-      <span class="filter-label">PO ID</span>
-      <input type="text" [(ngModel)]="poNoId" placeholder="Enter PO ID" style="min-width:180px">
-    </div>
-    <button type="button" class="show-btn" (click)="loadData()">Show</button>
+    <input placeholder="PO ID" aria-label="PO ID" type="text" [(ngModel)]="poNoId" style="min-width:180px">
+    <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
     <button type="button" class="show-btn" style="background:#dc2626" (click)="downloadReport()" *ngIf="items.length">Download Report</button>
   </div>
   <div class="tabs-wrap" *ngIf="!loading">

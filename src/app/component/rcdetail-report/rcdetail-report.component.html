@@ -12,64 +12,20 @@
         <option *ngFor="let t of Tenterlist" [ngValue]="t.tender_id">{{ t.tender_no }}</option>
       </select>
 
-      <div class="radio-group" role="radiogroup" aria-label="Category" *ngIf="!isCmho">
-        <label>
-          <input
-            type="radio"
-            name="CategoryType"
-            value="E"
-            [(ngModel)]="CategoryType"
-            (ngModelChange)="onFilterChange(true)"
-            [disabled]="loading" />
-          Equipment
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="CategoryType"
-            value="R"
-            [(ngModel)]="CategoryType"
-            (ngModelChange)="onFilterChange(true)"
-            [disabled]="loading" />
-          Reagent
-        </label>
-      </div>
+      <select aria-label="Category" *ngIf="!isCmho" [(ngModel)]="CategoryType" name="CategoryType" (ngModelChange)="onFilterChange(true)" [disabled]="loading"><option value="E">Equipment</option><option value="R">Reagent</option></select>
 
-      <div class="radio-group" role="radiogroup" aria-label="RC Type" *ngIf="!isCmho">
-        <label>
-          <input
-            type="radio"
-            name="RcType"
-            value="R"
-            [(ngModel)]="RcType"
-            (ngModelChange)="onFilterChange(true)"
-            [disabled]="loading" />
-          Current RC Valid
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="RcType"
-            value="D"
-            [(ngModel)]="RcType"
-            (ngModelChange)="onFilterChange(true)"
-            [disabled]="loading" />
-          Expired / Previous RC
-        </label>
-      </div>
+      <select aria-label="RC Type" *ngIf="!isCmho" [(ngModel)]="RcType" name="RcType" (ngModelChange)="onFilterChange(true)" [disabled]="loading"><option value="R">Current RC Valid</option><option value="D">Expired / Previous RC</option></select>
 
       <button
         *ngIf="hasActiveFilter"
         type="button"
         class="clear-btn"
         (click)="clearFilters()"
-        [disabled]="loading">
-        Clear Filter
-      </button>
+        [disabled]="loading">Clear Filter</button>
 
       <button
         type="button"
-        class="show-btn accent-btn"
+        class="export-btn"
         (click)="exportExcel()"
         [disabled]="loading || !dataSource.data.length">
         Export

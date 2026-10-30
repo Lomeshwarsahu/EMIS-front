@@ -62,7 +62,7 @@ import { IndentItemSummaryDTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './posummary-report.component.html',
-  styleUrl: './posummary-report.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './posummary-report.component.css'],
 })
 export class POSummaryReportComponent {
  ItemsList: any[] = [];

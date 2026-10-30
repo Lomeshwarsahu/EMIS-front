@@ -62,7 +62,7 @@ import { FacilityReportDTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './facility-auth-povalue-pocell.component.html',
-  styleUrl: './facility-auth-povalue-pocell.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './facility-auth-povalue-pocell.component.css'],
 })
 export class FacilityAuthPOValuePOCellComponent {
     yearlist: any[] = [];

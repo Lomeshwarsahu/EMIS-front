@@ -1,70 +1,23 @@
-<div class="it-page" [style.--page-accent]="config.accent">
+<div class="it-page">
   <h2 class="page-title">{{ config.title }}</h2>
 
   <div class="datagrid">
     <div class="filters--compact">
-      <div class="filter-section">
-        <span class="filter-label">PO Type</span>
-        <div class="radio-group">
-          <label class="radio-pill" [class.active]="poType === 'All'">
-            <input type="radio" name="poType" value="All" [(ngModel)]="poType" [disabled]="loading"> All PO
-          </label>
-          <label class="radio-pill" [class.active]="poType === 'NP'">
-            <input type="radio" name="poType" value="NP" [(ngModel)]="poType" [disabled]="loading"> Normal PO
-          </label>
-          <label class="radio-pill" [class.active]="poType === 'CP'">
-            <input type="radio" name="poType" value="CP" [(ngModel)]="poType" [disabled]="loading"> Covid PO
-          </label>
-        </div>
-      </div>
+      <label class="date-pill field-pill"><span>PO Type</span><select aria-label="PO Type" [(ngModel)]="poType" name="poType" [disabled]="loading"><option value="All">All PO</option><option value="NP">Normal PO</option><option value="CP">Covid PO</option></select></label>
 
-      <div class="filter-section">
-        <span class="filter-label">Payment</span>
-        <div class="radio-group">
-          <label class="radio-pill" [class.active]="paymentType === 'All'">
-            <input type="radio" name="paymentType" value="All" [(ngModel)]="paymentType" [disabled]="loading"> All
-          </label>
-          <label class="radio-pill" [class.active]="paymentType === 'FP'">
-            <input type="radio" name="paymentType" value="FP" [(ngModel)]="paymentType" [disabled]="loading"> Fit For
-            Payment
-          </label>
-          <label class="radio-pill" [class.active]="paymentType === 'NFP'">
-            <input type="radio" name="paymentType" value="NFP" [(ngModel)]="paymentType" [disabled]="loading"> Not Fit
-          </label>
-        </div>
-      </div>
+      <label class="date-pill field-pill"><span>Payment</span><select aria-label="Payment" [(ngModel)]="paymentType" name="paymentType" [disabled]="loading"><option value="All">All</option><option value="FP">Fit For Payment</option><option value="NFP">Not Fit</option></select></label>
 
-      <div class="filter-section" *ngIf="config.showEquipmentFilter">
-        <span class="filter-label">Equipment</span>
-        <div class="radio-group">
-          <label class="radio-pill" [class.active]="equipmentType === '0'">
-            <input type="radio" name="eqType" value="0" [(ngModel)]="equipmentType" [disabled]="loading"> All
-          </label>
-          <label class="radio-pill" [class.active]="equipmentType === '1'">
-            <input type="radio" name="eqType" value="1" [(ngModel)]="equipmentType" [disabled]="loading"> Equipment
-          </label>
-          <label class="radio-pill" [class.active]="equipmentType === '2'">
-            <input type="radio" name="eqType" value="2" [(ngModel)]="equipmentType" [disabled]="loading"> Reagent
-          </label>
-        </div>
-      </div>
+      <label class="date-pill field-pill" *ngIf="config.showEquipmentFilter"><span>Equipment</span><select aria-label="Equipment" [(ngModel)]="equipmentType" name="eqType" [disabled]="loading"><option value="0">All</option><option value="1">Equipment</option><option value="2">Reagent</option></select></label>
 
-      <div class="filter-section">
-        <span class="filter-label">Desk</span>
-        <label class="checkbox-pill">
-          <input type="checkbox" [(ngModel)]="onlyMyDesk" [disabled]="loading"> Only My Desk
-        </label>
-      </div>
+      <label class="checkbox-pill"> <input type="checkbox" [(ngModel)]="onlyMyDesk" [disabled]="loading"> Only My Desk </label>
 
-      <button type="button" class="show-btn" [disabled]="loading" (click)="loadGrid()">Show Details</button>
+      <button type="button" class="show-btn" [disabled]="loading" (click)="loadGrid()">Show Data</button>
+      <input type="text" class="toolbar-search" placeholder="Search..." aria-label="Search" (keyup)="applyFilter($event)" />
     </div>
 
     <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="10" [cols]="6" />
 
     <div class="table-wrap" *ngIf="!loading">
-      <div class="toolbar-row">
-        <input type="text" class="search-input" placeholder="Search" (keyup)="applyFilter($event)">
-      </div>
 
       <table mat-table [dataSource]="dataSource" matSort #sort="matSort" class="it-grid">
         <ng-container matColumnDef="sno">

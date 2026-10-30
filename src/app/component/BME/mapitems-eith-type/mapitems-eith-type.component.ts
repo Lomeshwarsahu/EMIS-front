@@ -62,7 +62,7 @@ import {UnmappedItemDTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './mapitems-eith-type.component.html',
-  styleUrl: './mapitems-eith-type.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './mapitems-eith-type.component.css'],
 })
 export class MapitemsEithTypeComponent {
 mappingForm!: FormGroup; 

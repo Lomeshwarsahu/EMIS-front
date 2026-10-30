@@ -66,7 +66,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableExporterModule,
   ],
   templateUrl: './termsconditions.component.html',
-  styleUrl: './termsconditions.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './termsconditions.component.css'],
 })
 export class TermsconditionsComponent {
   termsConditionsData: any[] = [];

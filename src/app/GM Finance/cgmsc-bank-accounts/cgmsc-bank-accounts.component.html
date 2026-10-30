@@ -1,21 +1,16 @@
-<section class="container-fluid bg-light min-vh-100 py-4">
+<div class="supplier-po-page">
+  <h2 class="page-title wide">CGMSC Bank Detail Master</h2>
 
-    <div class="card p-4 mb-4 shadow-sm text-center bg-gradient bg-light border-0 rounded-4 m-2">
-        <h2 class="fw-bold text-primary mb-1 tracking-tight">
-            <i class="bi bi-shield-shaded me-2"></i>CGMSC Bank Detail Master
-        </h2>
-        <p class="text-muted mb-0 fs-6">Manage corporation proprietary bank cash balance settlement channels registries.</p>
+  <div class="emis-modal-backdrop" *ngIf="showEntryForm" (click)="closeEntryForm()"></div>
+  <div class="emis-modal" *ngIf="showEntryForm" role="dialog" aria-modal="true" aria-label="Add / Modify Bank Account">
+    <div class="emis-modal-header">
+      <h5>Add / Modify Bank Account</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeEntryForm()"></button>
     </div>
-
-    <div class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn m-2">
+    <div class="emis-modal-body">
+<div class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn m-2">
         <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
-            <ul class="nav nav-tabs border-bottom-0" role="tablist">
-                <li class="nav-item">
-                    <button class="nav-link fw-bold fs-6 px-4 py-2 bg-transparent active border-0 border-bottom border-primary border-3 text-primary" type="button">
-                        <i class="bi bi-folder-plus me-2"></i>Add / Modify Bank Accounts
-                    </button>
-                </li>
-            </ul>
+            
         </div>
 
         <div class="card-body p-4 bg-light bg-opacity-50">
@@ -120,20 +115,18 @@
             </form>
         </div>
     </div>
+  
+    </div>
+  </div>
 
-    <div class="card shadow-sm border-0 rounded-4 overflow-hidden m-2 animate__animated animate__fadeInUp">
-        <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center border-bottom gap-3 px-4">
-            <h6 class="mb-0 fw-bold text-dark d-flex align-items-center fs-6">
-                <i class="bi bi-list-check text-success me-2 fs-5"></i> Monitored Clearing Repositories
-            </h6>
-            <div class="input-group input-group-sm" style="max-width: 250px;">
-                <span class="input-group-text bg-light border-end-0 text-muted shadow-none"><i class="bi bi-search"></i></span>
-                <input type="text" class="form-control border-start-0 shadow-none bg-light" placeholder="Filter bank parameters..." (keyup)="applyTextFilter($event)">
-            </div>
-        </div>
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <input type="text" class="toolbar-search" placeholder="Search..." aria-label="Search" (keyup)="applyTextFilter($event)" />
+      <button type="button" class="add-btn" (click)="openEntryForm()">+ Add Bank Account</button>
+    </div>
 
-        <div class="table-responsive style-scrollbar w-100" style="max-height: 45vh; overflow-y: auto;">
-            <table class="table table-hover align-middle mb-0 text-nowrap w-100" mat-table [dataSource]="dataSource" matSort #sort="matSort">
+    <div class="table-wrap">
+      <table class="po-grid" mat-table [dataSource]="dataSource" matSort #sort="matSort">
                 
                 <ng-container matColumnDef="sno">
                     <th mat-header-cell *matHeaderCellDef class="grid-header text-center" style="width: 70px;"> S.No </th>
@@ -187,10 +180,7 @@
                     </td>
                 </tr>
             </table>
-        </div>
-
-        <div class="card-footer bg-white border-top p-0 px-3">
-            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="border-0 bg-transparent"></mat-paginator>
-        </div>
     </div>
-</section>
+    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="border-0 bg-transparent"></mat-paginator>
+  </div>
+</div>

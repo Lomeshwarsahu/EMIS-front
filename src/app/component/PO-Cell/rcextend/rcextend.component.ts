@@ -62,7 +62,7 @@ import { ContractGridDetailDTO, TenderSupplierDataDTO } from 'src/app/Model/mode
     MatTableExporterModule,
   ],
   templateUrl: './rcextend.component.html',
-  styleUrl: './rcextend.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './rcextend.component.css'],
 })
 export class RCExtendComponent {
   Tenterlist: any[] = [];
@@ -146,7 +146,12 @@ isSupplierDisabled: boolean = false;
   }
 
   onSelectedItem(tenders: any) {
-    this.Tenderid = tenders.Tenderid;
+    this.Tenderid = tenders?.Tenderid ?? null;
+    if (!this.Tenderid) {
+      this.Supplierlist = [];
+      this.AwardOfContractId = null;
+      return;
+    }
     this.GetContractsByTender();
 
   //    if (this.Tenderid) {
@@ -157,7 +162,7 @@ isSupplierDisabled: boolean = false;
   // }
   }
   onSelectedItem1(supplier: any) {
-    this.AwardOfContractId = supplier.AwardOfContractId;
+    this.AwardOfContractId = supplier?.AwardOfContractId ?? null;
   //     if (this.supplier_id) {
   //   this.isTenderDisabled = true;
   //   this.Tenderid = 0; // reset tender

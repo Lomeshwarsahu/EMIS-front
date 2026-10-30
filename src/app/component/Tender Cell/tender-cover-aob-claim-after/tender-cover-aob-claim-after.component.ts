@@ -55,7 +55,7 @@ import {
     MatTableExporterModule,
   ],
   templateUrl: './tender-cover-aob-claim-after.component.html',
-  styleUrl: './tender-cover-aob-claim-after.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './tender-cover-aob-claim-after.component.css'],
 })
 export class TenderCoverAObClaimAfterComponent {
   //#region  lomesh

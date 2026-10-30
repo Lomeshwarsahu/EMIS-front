@@ -3,15 +3,8 @@
 
   <div class="datagrid">
     <div class="table-toolbar filters">
-      <div class="filter-section">
-        <span class="filter-label">PO Type</span>
-        <mat-radio-group [(ngModel)]="poType">
-          <mat-radio-button value="All">All</mat-radio-button>
-          <mat-radio-button value="NP">Normal</mat-radio-button>
-          <mat-radio-button value="CP">Covid</mat-radio-button>
-        </mat-radio-group>
-      </div>
-      <button type="button" class="show-btn" (click)="loadData()">Show</button>
+      <label class="date-pill field-pill"><span>PO Type</span><select aria-label="PO Type" [(ngModel)]="poType" ><option value="All">All</option><option value="NP">Normal</option><option value="CP">Covid</option></select></label>
+      <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
       <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!paymentData.length">Export Excel</button>
     </div>
 

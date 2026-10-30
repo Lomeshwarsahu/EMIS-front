@@ -99,7 +99,7 @@
         <div class="tab-pane fade show active" id="cgmscl" role="tabpanel" aria-labelledby="cgmscl-tab">
           <form #cgmsclForm="ngForm" (ngSubmit)="cgmsclForm.valid && handleCgmsclLogin1()">
             <div class="mb-3">
-              <label for="emailid" class="form-label">Select User</label>
+              <label class="form-label">Select User</label>
               <div class="filter-field d-flex gap-4 align-items-center">
 
                 <div class="form-check">
@@ -132,12 +132,12 @@
             <!-- Administrator -->
             <ng-container *ngIf="selectedStatus == '0'">
               <div class="mb-3">
-                <label for="emailid" class="form-label">User Administrator</label>
+                <label for="user-administrator" class="form-label">User Administrator</label>
                 <div class="input-group">
                   <span class="input-group-text bg-light">
                     <i class="fas fa-user"></i>
                   </span>
-                  <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
+                  <ng-select labelForId="user-administrator" [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
                     (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
                     [placeholder]="!emailid ? 'Choose Administrator User' : ''" [searchable]="true" [clearable]="true"
                     [appendTo]="'body'" required class="form-control">
@@ -188,12 +188,12 @@
             <!-- Directorate -->
             <ng-container *ngIf="selectedStatus == '1'">
               <div class="mb-3">
-                <label for="emailid" class="form-label">User Directorate</label>
+                <label for="user-directorate" class="form-label">User Directorate</label>
                 <div class="input-group">
                   <span class="input-group-text bg-light">
                     <i class="fas fa-user"></i>
                   </span>
-                  <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
+                  <ng-select labelForId="user-directorate" [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
                     (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
                     [placeholder]="!emailid ? 'Select Directorate User' : ''" [searchable]="true" [clearable]="true"
                     [appendTo]="'body'" required class="form-control">
@@ -244,12 +244,12 @@
             <!-- CGMSC -->
             <ng-container *ngIf="selectedStatus == '2'">
               <div class="mb-3">
-                <label for="emailid" class="form-label">User CGMSC</label>
+                <label for="user-cgmsc" class="form-label">User CGMSC</label>
                 <div class="input-group">
                   <span class="input-group-text bg-light">
                     <i class="fas fa-user"></i>
                   </span>
-                  <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
+                  <ng-select labelForId="user-cgmsc" [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
                     (change)="onUserChangeCgmscl($event)" name="user_id" #emailidField="ngModel"
                     [placeholder]="!emailid ? 'Choose CGMSC User' : ''" [searchable]="true" [clearable]="true"
                     [appendTo]="'body'" required class="form-control">
@@ -441,12 +441,12 @@
             <!-- CMHO-Store -->
             <ng-container *ngIf="selectedStatusDHS == '1'">
               <div class="mb-3">
-                <label for="dhs_select_user" class="form-label">User CMHO-Store</label>
+                <label for="user-cmho-store" class="form-label">User CMHO-Store</label>
                 <div class="input-group">
                   <span class="input-group-text bg-light">
                     <i class="fas fa-user"></i>
                   </span>
-                  <ng-select [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
+                  <ng-select labelForId="user-cmho-store" [items]="userdatas" bindLabel="user_name" bindValue="user_id" [(ngModel)]="emailid"
                     (change)="onUserChangeCgmscl($event)" name="dhs_select_user" #dhsCmhoField="ngModel"
                     [placeholder]="!emailid ? 'Select CMHO-Store User' : ''" [searchable]="true"
                     [clearable]="true" [appendTo]="'body'" required class="form-control">

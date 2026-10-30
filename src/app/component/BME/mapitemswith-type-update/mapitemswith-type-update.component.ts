@@ -60,7 +60,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTableExporterModule,
   ],
   templateUrl: './mapitemswith-type-update.component.html',
-  styleUrl: './mapitemswith-type-update.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './mapitemswith-type-update.component.css'],
 })
 export class MapitemswithTypeUpdateComponent {
 mappingForm!: FormGroup; 

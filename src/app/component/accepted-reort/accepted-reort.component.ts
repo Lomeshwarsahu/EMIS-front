@@ -62,7 +62,7 @@ import { TenderSupplierDataDTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './accepted-reort.component.html',
-  styleUrl: './accepted-reort.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './accepted-reort.component.css'],
 })
 export class AcceptedReortComponent {
   Tenterlist: any[] = [];
@@ -145,7 +145,7 @@ isSupplierDisabled: boolean = false;
   }
 
   onSelectedItem(tenders: any) {
-    this.tender_id = tenders.tender_id;
+    this.tender_id = tenders?.tender_id ?? null;
      if (this.tender_id) {
     this.isSupplierDisabled = true;
     this.supplier_id = 0; // reset supplier
@@ -154,7 +154,7 @@ isSupplierDisabled: boolean = false;
   }
   }
   onSelectedItem1(supplier: any) {
-    this.supplier_id = supplier.supplier_id;
+    this.supplier_id = supplier?.supplier_id ?? null;
       if (this.supplier_id) {
     this.isTenderDisabled = true;
     this.tender_id = 0; // reset tender

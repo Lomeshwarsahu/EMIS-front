@@ -2,7 +2,8 @@ import { Component, OnInit, HostListener, DoCheck, ChangeDetectorRef, OnDestroy 
 import { MatDrawerMode } from '@angular/material/sidenav';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { MenuServiceService } from './service/menu-service.service';
 import { BasicAuthenticationService } from './service/authentication/basic-authentication.service';
@@ -30,6 +31,8 @@ import {
 
 export class AppComponent implements OnInit, DoCheck, OnDestroy {
   private readonly destroy$ = new Subject<void>();
+  /** Driven by NgxSpinnerService; shows the skeleton overlay instead of the old full-screen spinner. */
+  pageLoading = false;
   isMobile = false;
   drawerMode: MatDrawerMode = 'side';
   isDrawerOpen = true;
@@ -53,9 +56,9 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
 
   @HostListener('window:beforeinstallprompt', ['$event'])
   onbeforeinstallprompt(e: Event) {
-    // Prevent the mini-infobar from appearing on mobile
-    e.preventDefault();
-    // Stash the event so it can be triggered later.
+    // No in-app "Install" button is rendered, so let the browser show its own install banner
+    // (calling preventDefault() without a later prompt() just hides it and logs a console warning).
+    // Stash the event so addToHomeScreen() can still trigger it if a button is added later.
     this.deferredPrompt = e;
     // Update UI notify the user they can install the PWA
     this.showButton = true;
@@ -181,8 +184,20 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     public readonly themeService: ThemeService,
     private readonly notificationService: NotificationService,
     private readonly roleMenuService: RoleMenuService,
+    private readonly spinner: NgxSpinnerService,
   ) {
     this.applyDrawerLayout(window.innerWidth <= 991.98, true);
+    this.spinner
+      .getSpinner('primary')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((s) => {
+        this.pageLoading = !!s.show;
+        this.cdr.markForCheck();
+      });
+    // A page that leaves without calling hide() must not keep the skeleton on the next page.
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((e) => {
+      if (e instanceof NavigationStart && this.pageLoading) this.spinner.hide();
+    });
   }
 
   onSidebarCollapsedChange(collapsed: boolean): void {

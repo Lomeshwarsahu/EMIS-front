@@ -32,9 +32,7 @@
         {{ showSearch ? 'Hide Search' : 'Show Search' }}
       </button>
 
-      <button type="button" class="show-btn" (click)="onSubmitFilter()" [disabled]="loading">
-        {{ loading ? 'Loading…' : 'Show' }}
-      </button>
+      <button type="button" class="show-btn" (click)="onSubmitFilter()" [disabled]="loading">{{ loading ? 'Loading…' : 'Show Data' }}</button>
 
       <button
         type="button"
@@ -140,7 +138,7 @@
         <ng-container matColumnDef="AddTenderItem">
           <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Tender<br>Item</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--indigo" (click)="openAddRTenderItems(element.TenderId)">Add Item</button>
+            <button type="button" class="action-btn action-btn--indigo add-btn" (click)="openAddRTenderItems(element.TenderId)">Add Item</button>
           </td>
         </ng-container>
 
@@ -154,21 +152,21 @@
         <ng-container matColumnDef="AddBidder">
           <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Bidder</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--amber" (click)="openCovAaddRemuvie(element)">Add Participants</button>
+            <button type="button" class="action-btn action-btn--amber add-btn" (click)="openCovAaddRemuvie(element)">Add Participants</button>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="AddBidItem">
           <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Bid Items</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--slate" (click)="OpenCovAItemsEntry(element)">Add Items</button>
+            <button type="button" class="action-btn action-btn--slate add-btn" (click)="OpenCovAItemsEntry(element)">Add Items</button>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="AddLeavy">
           <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Leavy/<br>Penalty</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--rose" (click)="OpenAddLeavy(element.TenderId)">Add Leavy</button>
+            <button type="button" class="action-btn action-btn--rose add-btn" (click)="OpenAddLeavy(element.TenderId)">Add Leavy</button>
           </td>
         </ng-container>
 
@@ -180,14 +178,14 @@
         <ng-container matColumnDef="AddnewHOD">
           <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Conversation<br>With HOD(DHS/DME/Ayush)</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--purple" (click)="OpenAddTenderCon(element.TenderId)">Add New</button>
+            <button type="button" class="action-btn action-btn--purple add-btn" (click)="OpenAddTenderCon(element.TenderId)">Add New</button>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef class="text-center col-action">Tender Status</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--slate" (click)="OpenTenderStatusRemark(element.TenderId)">Add Status</button>
+            <button type="button" class="action-btn action-btn--slate add-btn" (click)="OpenTenderStatusRemark(element.TenderId)">Add Status</button>
           </td>
         </ng-container>
 

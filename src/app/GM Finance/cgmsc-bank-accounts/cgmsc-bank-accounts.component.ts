@@ -51,9 +51,23 @@ import Swal from 'sweetalert2';
     MatTableExporterModule,
   ],
   templateUrl: './cgmsc-bank-accounts.component.html',
-  styleUrl: './cgmsc-bank-accounts.component.css',
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './cgmsc-bank-accounts.component.css'],
 })
 export class CgmscBankAccountsComponent {
+  /** Add/Edit form is shown as a popup from the toolbar button. */
+  showEntryForm = false;
+
+  openEntryForm(): void {
+    this.showEntryForm = true;
+  }
+
+  closeEntryForm(): void {
+    this.showEntryForm = false;
+    // Closing an unsaved Edit must not leave the next "Add" in edit mode.
+    this.isEditMode = false;
+    this.accountFormModel = { bankid: 0, accountno: '', accountname: '', bankname: '', branch: '', ifsccode: '', remarks: '' };
+  }
+
 isEditMode: boolean = false;
 
   displayedColumns: string[] = ['sno', 'Accountno',
@@ -137,6 +151,7 @@ ngOnInit(): void {
     this.api.post1('GMFI/SaveOrUpdateAccount', payload).subscribe({
       next: (res: any) => {
         this.toastr.success(res.message || 'Records synchronized.');
+        this.showEntryForm = false;
         this.onResetForm(form);
         this.loadCorporateBankGrid();
       },
@@ -149,6 +164,7 @@ ngOnInit(): void {
 
   editRowElement(row: any) {
     this.isEditMode = true;
+    this.showEntryForm = true;
     this.accountFormModel = {
       bankid: row.Bankid,
       accountno: row.Accountno,

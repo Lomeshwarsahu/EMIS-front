@@ -52,7 +52,7 @@
                         (keyup)="applyTextFilter($event)">
                 </div>
                 <div>
-                    <button class="btn btn-outline-success shadow-sm" mat-button [matMenuTriggerFor]="exportMenu">
+                    <button class="btn shadow-sm export-btn" mat-button [matMenuTriggerFor]="exportMenu">
                         <i class="bi bi-file-earmark-excel me-1"></i> Export
                     </button>
                     <mat-menu #exportMenu="matMenu">

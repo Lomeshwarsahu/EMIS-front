@@ -35,7 +35,8 @@ import { Router } from '@angular/router';
 declare var bootstrap: any;
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatOptionModule } from '@angular/material/core';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MasFacilityUsersLocationsmasterComponent } from '../../mas-facility-users-locationsmaster/mas-facility-users-locationsmaster.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 
@@ -60,7 +61,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTableExporterModule,
   ],
   templateUrl: './mas-facility-users.component.html',
-  styleUrl: './mas-facility-users.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './mas-facility-users.component.css'],
 })
 export class MasFacilityUsersComponent {
 
@@ -85,7 +86,8 @@ mappingForm!: FormGroup;
     public toastr: ToastrService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {
     this.dataSource = new MatTableDataSource<any>([]);
     
@@ -138,9 +140,15 @@ mappingForm!: FormGroup;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 AddLocation(fid:any,did:any){
-// MasFacilityUsersLocations
-    this.router.navigate(['/MasFacilityUsersLocationsmaster'], {
-      queryParams: { fid: fid,did:did },
+    const ref = this.dialog.open(MasFacilityUsersLocationsmasterComponent, {
+      width: '820px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      data: { fid: fid, did: did },
+    });
+    ref.afterClosed().subscribe((saved) => {
+      if (saved) this.GetEquipmentIte();
     });
 }
 MakeUserID(){

@@ -29,9 +29,7 @@
         type="button"
         class="show-btn"
         [disabled]="loading"
-        (click)="loadGrid()">
-        Show
-      </button>
+        (click)="loadGrid()">Show Data</button>
     </div>
 
     <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="5" />
@@ -74,7 +72,7 @@
             <button
               *ngIf="!row.UserId || row.UserId === 0"
               type="button"
-              class="show-btn"
+              class="add-btn"
               (click)="addFacility(row.LocationId)">
               Add
             </button>

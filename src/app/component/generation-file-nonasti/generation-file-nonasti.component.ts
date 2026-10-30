@@ -24,33 +24,14 @@ import { DmePageSkeletonComponent } from '../DME/shared/dme-page-skeleton/dme-pa
   <!-- Search Section -->
   <div class="card-section">
     <div class="filters--compact">
-      <div class="filter-section">
-        <span class="filter-label">Search Mode</span>
-        <div class="radio-group">
-          <label class="radio-pill" [class.active]="searchMode==='po'">
-            <input type="radio" name="mode" value="po" [(ngModel)]="searchMode" /> PO No
-          </label>
-          <label class="radio-pill" [class.active]="searchMode==='outward'">
-            <input type="radio" name="mode" value="outward" [(ngModel)]="searchMode" /> Outward + Year
-          </label>
-        </div>
-      </div>
-      <div class="filter-section" *ngIf="searchMode==='po'">
-        <span class="filter-label">Type PO No</span>
-        <input type="text" class="pill-input" placeholder="e.g. EQP/1000/..." [(ngModel)]="poNo" />
-      </div>
+      <label class="date-pill field-pill"><span>Search Mode</span><select aria-label="Search Mode" [(ngModel)]="searchMode" name="mode" ><option value="po">PO No</option><option value="outward">Outward + Year</option></select></label>
+      <input *ngIf="searchMode==='po'" placeholder="Type PO No" aria-label="Type PO No" type="text" class="pill-input" [(ngModel)]="poNo" />
       <ng-container *ngIf="searchMode==='outward'">
-        <div class="filter-section">
-          <span class="filter-label">Outward No</span>
-          <input type="text" class="pill-input" placeholder="Outward No" [(ngModel)]="outwardNo" />
-        </div>
-        <div class="filter-section">
-          <span class="filter-label">Financial Year</span>
-          <select [(ngModel)]="selectedYear" class="pill-select">
+        <input placeholder="Outward No" aria-label="Outward No" type="text" class="pill-input" [(ngModel)]="outwardNo" />
+        <label class="date-pill field-pill"><span>Financial Year</span><select aria-label="Financial Year" [(ngModel)]="selectedYear" class="pill-select">
             <option [ngValue]="null">Select Year</option>
             <option *ngFor="let y of yearList" [ngValue]="y">{{ y.year }}</option>
-          </select>
-        </div>
+          </select></label>
       </ng-container>
       <button type="button" class="show-btn" (click)="search()">Show File No</button>
     </div>

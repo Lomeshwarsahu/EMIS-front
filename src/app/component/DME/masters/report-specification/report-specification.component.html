@@ -31,7 +31,7 @@
         <button type="button" class="show-btn" (click)="showAllItems()" [disabled]="loading">
           {{ loading ? 'Loading…' : 'Show All' }}
         </button>
-        <button type="button" class="ghost-btn" (click)="clearAll()" [disabled]="loading">Clear</button>
+        <button type="button" class="clear-btn" (click)="clearAll()" [disabled]="loading">Clear Filter</button>
       </div>
 
       <div class="summary-bar" *ngIf="summary">

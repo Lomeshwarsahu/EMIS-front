@@ -3,19 +3,16 @@
 
   <div class="datagrid">
     <div class="table-toolbar filters">
-      <div class="filter-section">
-        <span class="filter-label">Item</span>
-        <ng-select
+      <ng-select placeholder="Item" aria-label="Item"
           [(ngModel)]="selectedItem"
           [items]="itemList"
           bindValue="item_id"
           bindLabel="item_name"
-          placeholder="Select Item"
+         
           class="filter-select"
         >
         </ng-select>
-        <button type="button" class="btn btn-primary btn-sm" (click)="loadData()">Show</button>
-      </div>
+        <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
       <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!reportData.length">Export Excel</button>
     </div>
 

@@ -1,5 +1,8 @@
 <div class="form-container mat-elevation-z4">
-  <h2>Add New Location</h2>
+  <div class="dialog-head">
+    <h2>Add New Location</h2>
+    <button *ngIf="isDialog" type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+  </div>
 
   <form [formGroup]="locationForm" (ngSubmit)="onSubmit()">
     
@@ -117,7 +120,8 @@
 
     <!-- Actions -->
     <div class="action-buttons">
-      <button mat-raised-button color="warn" type="button" (click)="locationForm.reset({ dpDistrictId: '0' })">Clear</button>
+      <button *ngIf="isDialog" mat-stroked-button type="button" (click)="close()">Cancel</button>
+      <button mat-raised-button color="warn" type="button" (click)="locationForm.reset({ dpDistrictId: '0', did: dialogData?.did?.toString() || '', facilityTypeId: dialogData?.fid?.toString() || '' })">Clear</button>
       <button mat-raised-button color="primary" type="submit" [disabled]="locationForm.invalid">Save Location</button>
     </div>
 

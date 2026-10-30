@@ -63,7 +63,7 @@ import { ExtensionEHODTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './extension-hodetail.component.html',
-  styleUrl: './extension-hodetail.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './extension-hodetail.component.css'],
 })
 export class ExtensionHODetailComponent {
   dispatchData: ExtensionEHODTO[] = [];
@@ -120,8 +120,7 @@ export class ExtensionHODetailComponent {
     });
   }
   onSelectSupplier(supplier: any) {
-    console.log('Selected Supplier ID:', supplier.supplier_id);
-    this.supplierid = supplier.supplier_id;
+    this.supplierid = supplier?.supplier_id;
     // const selectedSupplierObj = this.Supplierlist.find(s => s.supplier_id === supplier);
     // console.log('Selected Supplier Object:', selectedSupplierObj);
   }

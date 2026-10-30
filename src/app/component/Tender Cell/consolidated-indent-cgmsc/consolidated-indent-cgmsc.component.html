@@ -49,18 +49,16 @@
                             </div>
 
                             <!-- <div class="d-flex justify-content-center mt-3">
-                                <button type="submit" class="btn btn-primary"
-                                    (click)=" Getitemwisedetail()">Show</button>
+                                <button type="submit" class="show-btn"
+                                    (click)=" Getitemwisedetail()">Show Data</button>
                             </div> -->
                              <div class="row">
                     <div
                         class="col-12 d-flex flex-wrap justify-content-center pt-3 border-top gap-2 gap-md-3 mt-4 mt-md-5 px-2">
 
                         <button type="submit"
-                            class="btn btn-primary px-3 px-md-5 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center"
-                           (click)=" Getitemwisedetail(0,0)">
-                            <i class="bi bi-search me-2"></i> <span>Show Data</span>
-                        </button>
+                            class="show-btn px-md-5"
+                           (click)=" Getitemwisedetail(0,0)">Show Data</button>
 
                         <!-- <button type="button"
                             class="btn btn-outline-secondary px-3 px-md-4 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center"
@@ -69,7 +67,7 @@
                         </button> -->
 
                         <!-- <button type="button"
-                            class="btn btn-outline-success px-3 px-md-4 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center"
+                            class="btn px-3 px-md-4 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center add-btn"
                             data-bs-toggle="modal" data-bs-target="#SendModall">
                             <i class="bi bi-plus-circle-fill me-2"></i> <span>New Indent</span>
                         </button> -->
@@ -89,7 +87,7 @@
       <i class="bi bi-file-earmark-spreadsheet text-primary me-2"></i> Indent Consolidation Summary
     </h5>
     <div class="card-actions">
-      <button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-semibold" (click)="exporter.exportTable('xlsx')">
+      <button class="btn btn-sm rounded-pill px-3 fw-semibold export-btn" (click)="exporter.exportTable('xlsx')">
         <i class="bi bi-download me-1"></i> Export Excel
       </button>
     </div>
@@ -179,7 +177,7 @@
            <ng-container matColumnDef="AddItem">
         <th mat-header-cell *matHeaderCellDef class="table-header text-center px-3"> Add Item </th>
         <td mat-cell *matCellDef="let element" class="text-center px-3"> 
-          <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold shadow-none transition-all" (click)="GetitemFulldetail(element.IndentConsolidationId)">
+          <button type="button" class="btn btn-sm rounded-pill px-3 fw-semibold shadow-none transition-all add-btn" (click)="GetitemFulldetail(element.IndentConsolidationId)">
             <i class="bi bi-plus-circle me-1"></i> Add Item
           </button>
         </td>
@@ -230,7 +228,7 @@
 
                                     <div class="export-menu-container m-2">
 
-                                        <button type="button" class="btn border rounded btn-outline-secondary"
+                                        <button type="button" class="btn border rounded export-btn"
                                             mat-button [matMenuTriggerFor]="exportMenu">Export</button>
                                         <mat-menu #exportMenu="matMenu">
                                             <button mat-menu-item

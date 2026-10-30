@@ -24,18 +24,14 @@
         type="button"
         class="show-btn"
         (click)="load()"
-        [disabled]="loading">
-        {{ loading ? 'Loading…' : 'Show' }}
-      </button>
+        [disabled]="loading">{{ loading ? 'Loading…' : 'Show Data' }}</button>
 
       <button
         type="button"
-        class="show-btn clear-btn"
+        class="clear-btn"
         *ngIf="hasActiveFilters"
         (click)="clearFilters()"
-        [disabled]="loading">
-        Clear Filter
-      </button>
+        [disabled]="loading">Clear Filter</button>
     </div>
 
     <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />

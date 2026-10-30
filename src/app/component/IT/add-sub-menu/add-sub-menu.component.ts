@@ -33,7 +33,7 @@ import {
 export class AddSubMenuComponent implements OnInit {
   loading = false;
   saving = false;
-  showForm = true;
+  showForm = false;
   menus: MenuDto[] = [];
   subMenus: SubMenuDto[] = [];
   dataSource = new MatTableDataSource<SubMenuDto>([]);

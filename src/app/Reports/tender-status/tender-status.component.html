@@ -3,21 +3,10 @@
 
   <div class="datagrid">
     <div class="table-toolbar filters">
-      <div class="filter-section">
-        <span class="filter-label">Financial Year</span>
-        <ng-select [(ngModel)]="yearId" [items]="financialYears" bindValue="financial_year_id" bindLabel="year" placeholder="Select Year" class="filter-select"></ng-select>
-      </div>
-      <div class="filter-section">
-        <span class="filter-label">Status</span>
-        <mat-radio-group [(ngModel)]="statusId" (change)="loadData()">
-          <mat-radio-button *ngFor="let opt of statusOptions" [value]="opt.value">{{ opt.label }}</mat-radio-button>
-        </mat-radio-group>
-      </div>
-      <div class="filter-section">
-        <span class="filter-label">Search</span>
-        <input type="text" [(ngModel)]="searchText" (input)="applyTextFilter($event)" placeholder="Search..." class="form-control filter-search" />
-      </div>
-      <button type="button" class="show-btn" (click)="loadData()">Show</button>
+      <ng-select placeholder="Financial Year" aria-label="Financial Year" [(ngModel)]="yearId" [items]="financialYears" bindValue="financial_year_id" bindLabel="year" class="filter-select"></ng-select>
+      <label class="date-pill field-pill"><span>Status</span><select aria-label="Status" [(ngModel)]="statusId" (change)="loadData()"><option *ngFor="let opt of statusOptions" [ngValue]="opt.value">{{ opt.label }}</option></select></label>
+      <input placeholder="Search" aria-label="Search" type="text" [(ngModel)]="searchText" (input)="applyTextFilter($event)" class="filter-search" />
+      <button type="button" class="show-btn" (click)="loadData()">Show Data</button>
       <button type="button" class="export-btn" (click)="exportToExcel()" [disabled]="!tenderData.length">Export Excel</button>
     </div>
 

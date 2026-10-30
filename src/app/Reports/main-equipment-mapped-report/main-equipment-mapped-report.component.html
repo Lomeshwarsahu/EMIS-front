@@ -3,10 +3,8 @@
     Main Equipment Mapped Report — items mapped to their main equipment type.
   </div>
 
-  <div class="table-toolbar">
-    <button type="button" class="btn btn--primary" [disabled]="!rows.length" (click)="exportExcel()">
-      Export to Excel
-    </button>
+  <div class="table-toolbar filters">
+    <button type="button" class="export-btn" [disabled]="!rows.length" (click)="exportExcel()">Export Excel</button>
   </div>
 
   <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="8" />

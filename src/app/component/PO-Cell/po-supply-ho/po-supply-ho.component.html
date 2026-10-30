@@ -33,7 +33,7 @@
                             </div> -->
                         </div>
                         <div class="d-flex justify-content-center mt-3">
-                            <button type="submit" class="btn btn-primary mt-3 me-2" (click)="GETExtensionEHODetails()">Show</button>
+                            <button type="submit" class="show-btn" (click)="GETExtensionEHODetails()">Show Data</button>
                             <!-- <button type="submit" class="btn btn-primary mt-3 ">Cancel</button> -->
 
                         </div>
@@ -59,7 +59,7 @@
     
                   <div class="export-menu-container m-2">
     
-                    <button type="button" class="btn border rounded btn-outline-secondary" mat-button
+                    <button type="button" class="btn border rounded export-btn" mat-button
                       [matMenuTriggerFor]="exportMenu">Export</button>
                     <mat-menu #exportMenu="matMenu">
                       <button mat-menu-item

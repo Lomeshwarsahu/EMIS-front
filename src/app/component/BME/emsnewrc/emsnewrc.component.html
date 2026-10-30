@@ -60,9 +60,7 @@
             
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-primary px-4 shadow-sm me-3" >
-                                        <i class="bi bi-search me-2"></i> Show
-                                    </button>
+                                    <button type="submit" class="show-btn" >Show Data</button>
                                     <button type="button" class="btn btn-success px-4 shadow-sm">
                                         <i class="bi bi-plus-circle me-2"></i>Reset
                                     </button>
@@ -174,7 +172,7 @@
         <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
             <ul class="nav nav-tabs border-bottom-0" id="contractTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link fw-bold fs-6 px-4 py-2 bg-transparent"
+                    <button class="nav-link fw-bold fs-6 px-4 py-2 bg-transparent add-btn"
                         [ngClass]="activeTab === 1 ? 'active border-0 border-bottom border-primary border-3 text-primary' : 'border-0 text-muted hover-text-primary'"
                         (click)="switchTab(1)" type="button">
                         <i class="bi bi-box-seam me-2"></i>Add Equipments
@@ -555,7 +553,7 @@
                         (keyup)="applyTextFilter($event)">
                 </div>
                 <div>
-                    <button class="btn btn-outline-success shadow-sm" mat-button [matMenuTriggerFor]="exportMenu">
+                    <button class="btn shadow-sm export-btn" mat-button [matMenuTriggerFor]="exportMenu">
                         <i class="bi bi-file-earmark-excel me-1"></i> Export
                     </button>
                     <mat-menu #exportMenu="matMenu">

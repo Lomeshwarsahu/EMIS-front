@@ -53,9 +53,20 @@ import Swal from 'sweetalert2'
     MatTableExporterModule,
   ],
   templateUrl: './budgent-entry.component.html',
-  styleUrl: './budgent-entry.component.css',
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './budgent-entry.component.css'],
 })
 export class BudgentEntryComponent {
+  /** Add/Edit form is shown as a popup from the toolbar button. */
+  showEntryForm = false;
+
+  openEntryForm(): void {
+    this.showEntryForm = true;
+  }
+
+  closeEntryForm(): void {
+    this.showEntryForm = false;
+  }
+
 
   // Selection dropdown matrices caches arrays
   directorateList: any[] = [];
@@ -296,6 +307,7 @@ constructor(
       next: (res: any) => {
         this.spinner.hide();
         Swal.fire('Saved!', res.message || 'Saved Successfully', 'success');
+        this.showEntryForm = false;
         this.onCancelClearForm(form);
         this.loadReceiptRecordsGrid(this.formModel.directorateId ? this.formModel.directorateId : 0);
       },

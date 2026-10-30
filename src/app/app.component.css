@@ -584,6 +584,21 @@
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
+  position: relative;
+}
+
+/* Skeleton shown while a page has spinner.show() active (replaces the "Please wait..." overlay) */
+.page-skeleton-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  padding: 16px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+:host-context(html[data-theme='dark']) .page-skeleton-overlay {
+  background: #0c0e12;
 }
 
 .content-area--login {

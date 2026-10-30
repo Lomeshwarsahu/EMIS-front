@@ -62,7 +62,7 @@ import { PoExtensionReportDto, TenderSupplierDataDTO } from 'src/app/Model/model
     MatTableExporterModule,
   ],
   templateUrl: './applied-po-extension.component.html',
-  styleUrl: './applied-po-extension.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './applied-po-extension.component.css'],
 })
 export class AppliedPoExtensionComponent {
   Tenterlist: any[] = [];

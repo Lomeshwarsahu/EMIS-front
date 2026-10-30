@@ -7,6 +7,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { DmePageSkeletonComponent } from '../../DME/shared/dme-page-skeleton/dme-page-skeleton.component';
 import { MasterApiService } from '../../../service/master-api.service';
+import { SecureFileService } from '../../../service/secure-file.service';
+import { environment } from 'src/environments/environment';
 import { EqpCategoryDto, ItemSpecGridDto } from '../../../Model/models';
 
 @Component({
@@ -31,7 +33,7 @@ export class ItemSpecificationComponent implements OnInit {
   @ViewChild('paginator') set paginator(p: MatPaginator | undefined) {
     this.dataSource.paginator = p ?? null;
   }
-  displayedColumns = ['sno', 'itemCode', 'itemName', 'category', 'action'];
+  displayedColumns = ['sno', 'itemCode', 'itemName', 'category', 'specification', 'action'];
   loading = false;
   editingItemId: number | null = null;
   selectedFile: File | null = null;
@@ -42,6 +44,7 @@ export class ItemSpecificationComponent implements OnInit {
   constructor(
     private readonly api: MasterApiService,
     private readonly toastr: ToastrService,
+    private readonly secureFile: SecureFileService,
   ) {}
 
   ngOnInit(): void {
@@ -129,6 +132,10 @@ export class ItemSpecificationComponent implements OnInit {
   }
 
   downloadFile(itemId: number): void {
-    window.open('/Specification/' + itemId + '.pdf');
+    // Files live on the API server, not the Angular host — fetch with auth via the API.
+    this.secureFile.openInNewTab(
+      `${environment.apiUrl}/ReportSpecification/items/${itemId}/download`,
+      `${itemId}.pdf`,
+    );
   }
 }

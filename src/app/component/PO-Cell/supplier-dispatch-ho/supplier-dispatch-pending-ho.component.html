@@ -15,7 +15,7 @@
         [clearable]="true"
         style="min-width: 420px">
       </ng-select>
-      <button type="button" class="show-btn" (click)="show()" [disabled]="loading">Show</button>
+      <button type="button" class="show-btn" (click)="show()" [disabled]="loading">Show Data</button>
     </div>
 
     <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="11" />

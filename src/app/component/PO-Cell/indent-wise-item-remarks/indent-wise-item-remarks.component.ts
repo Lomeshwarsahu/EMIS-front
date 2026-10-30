@@ -63,7 +63,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableExporterModule,
   ],
   templateUrl: './indent-wise-item-remarks.component.html',
-  styleUrl: './indent-wise-item-remarks.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './indent-wise-item-remarks.component.css'],
 })
 export class IndentWiseItemRemarksComponent {
 

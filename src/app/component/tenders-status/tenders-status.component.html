@@ -161,9 +161,7 @@
                                 
                                 
                                     <div class="d-flex justify-content-center mt-3">
-                                        <button type="submit" class="btn btn-primary" (click)="GetTenderSupplierData()">
-                                            Show Details
-                                        </button>
+                                        <button type="submit" class="show-btn" (click)="GetTenderSupplierData()">Show Data</button>
                                     </div>
                                     <!-- [disabled]="fileForm.invalid" -->
                                 </div>
@@ -192,7 +190,7 @@
 
                                     <div class="export-menu-container m-2">
 
-                                        <button type="button" class="btn border rounded btn-outline-secondary"
+                                        <button type="button" class="btn border rounded export-btn"
                                             mat-button [matMenuTriggerFor]="exportMenu">Export</button>
                                         <mat-menu #exportMenu="matMenu">
                                             <button mat-menu-item

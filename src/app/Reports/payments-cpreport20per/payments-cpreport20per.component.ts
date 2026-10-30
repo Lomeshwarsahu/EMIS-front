@@ -64,7 +64,7 @@
       MatTableExporterModule,
     ],
   templateUrl: './payments-cpreport20per.component.html',
-  styleUrl: './payments-cpreport20per.component.css',
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './payments-cpreport20per.component.css'],
 })
 export class PaymentsCPReport20perComponent {
 

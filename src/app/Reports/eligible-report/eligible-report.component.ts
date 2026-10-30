@@ -52,7 +52,7 @@ interface EligibleDetailRow {
   standalone: true,
   imports: [MatPaginatorModule, CommonModule, FormsModule, DmePageSkeletonComponent],
   templateUrl: './eligible-report.component.html',
-  styleUrls: ['./component.css'],
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './component.css'],
 })
 export class EligibleReportComponent implements OnInit {
   readonly pager = new ListPager();

@@ -18,10 +18,7 @@ import { ActivatedRoute } from '@angular/router';
   <h2 class="page-title">Invoices by Supply Order</h2>
   <div class="datagrid">
     <div class="filters--compact" *ngIf="!poNoId">
-      <div class="filter-section">
-        <span class="filter-label">PO ID</span>
-        <input type="text" [(ngModel)]="searchPoId" placeholder="Enter PO ID" style="min-width:180px">
-      </div>
+      <input placeholder="PO ID" aria-label="PO ID" type="text" [(ngModel)]="searchPoId" style="min-width:180px">
       <button type="button" class="show-btn" (click)="loadInvoices()">Show Invoices</button>
     </div>
     <div class="header-info" *ngIf="headerData">

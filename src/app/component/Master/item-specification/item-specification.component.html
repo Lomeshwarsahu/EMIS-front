@@ -22,20 +22,16 @@
         type="button"
         class="show-btn"
         (click)="loadGrid()"
-        [disabled]="loading">
-        Show
-      </button>
+        [disabled]="loading">Show Data</button>
 
       <button
         type="button"
         class="clear-btn"
         (click)="selectedCategoryId = 0; searchText = ''; loadGrid()"
-        [disabled]="loading">
-        Clear
-      </button>
+        [disabled]="loading">Clear Filter</button>
     </div>
 
-    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="5" />
+    <app-dme-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="6" />
 
     <div class="table-wrap" *ngIf="!loading">
       <table
@@ -64,18 +60,24 @@
           <td mat-cell *matCellDef="let row">{{ row.Eqpcatname }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="specification">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Specification</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <button
+              *ngIf="row.HasFile"
+              type="button"
+              class="btn-download"
+              (click)="downloadFile(row.ItemId)">
+              View
+            </button>
+            <span *ngIf="!row.HasFile" class="not-uploaded">Not Uploaded</span>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
           <td mat-cell *matCellDef="let row" class="text-center">
             <ng-container *ngIf="editingItemId !== row.ItemId">
-              <button
-                *ngIf="row.HasFile"
-                type="button"
-                class="btn-download"
-                (click)="downloadFile(row.ItemId)">
-                Download
-              </button>
-              <span *ngIf="!row.HasFile" class="not-uploaded">Not Uploaded</span>
               <button
                 type="button"
                 class="btn-edit"

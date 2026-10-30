@@ -1,46 +1,14 @@
-<section class="container-fluid py-4 animate__animated animate__fadeIn">
-    
-    <div class="card p-4 mb-4 shadow-sm text-center bg-gradient bg-light border-0 rounded-3">
-        <h2 class="fw-bold text-primary mb-2 tracking-tight">
-            <i class="bi bi-file-earmark-text-fill me-2"></i>Terms & Conditions of Tenders
-        </h2>
-        <p class="text-muted mb-0 fs-6">
-            Review, edit, and configure regulatory master terms and compliance clauses linked to active tenders.
-        </p>
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Terms & Conditions of Tenders</h2>
+
+  <div class="emis-modal-backdrop" *ngIf="showForm" (click)="onCancelForm()"></div>
+  <div class="emis-modal" *ngIf="showForm" role="dialog" aria-modal="true" [attr.aria-label]="editTermConditionId ? 'Edit Term & Condition' : 'Add New Term & Condition'">
+    <div class="emis-modal-header">
+      <h5>{{ editTermConditionId ? 'Edit Term & Condition' : 'Add New Term & Condition' }}</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="onCancelForm()"></button>
     </div>
-
-    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
-
-        <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center border-bottom gap-3 px-4">
-            <div class="d-flex align-items-center">
-                <h5 class="mb-0 fw-bold text-dark d-flex align-items-center fs-6">
-                    <i class="bi bi-table text-success me-2 fs-5"></i> Active Terms Repositories
-                </h5>
-            </div>
-
-            <div class="d-flex align-items-center flex-wrap gap-2">
-                
-                <div class="input-group input-group-sm" style="min-width: 260px; max-width: 300px;">
-                    <span class="input-group-text bg-light border-end-0 text-muted shadow-none">
-                        <i class="bi bi-search"></i>
-                    </span>
-                    <input type="text" class="form-control border-start-0 shadow-none bg-light"
-                           placeholder="Filter specifications..." (keyup)="applyTextFilter($event)">
-                </div>
-
-                <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold d-inline-flex align-items-center shadow-sm"
-                        (click)="onAddTermCondition()">
-                    <i class="bi bi-plus-circle me-1.5"></i> Add New Term
-                </button>
-
-                <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-semibold d-inline-flex align-items-center shadow-none"
-                        (click)="exporter.exportTable('xlsx')">
-                    <i class="bi bi-file-earmark-spreadsheet me-1.5"></i> Export Excel
-                </button>
-            </div>
-        </div>
-
-        <div class="border-bottom bg-light px-4 py-3" *ngIf="showForm">
+    <div class="emis-modal-body">
+      <div class="border-bottom bg-light px-4 py-3">
             <h6 class="fw-bold mb-3">{{ editTermConditionId ? 'Edit Term & Condition' : 'Add New Term & Condition' }}</h6>
             <div class="row g-3">
                 <div class="col-md-4">
@@ -62,9 +30,18 @@
                 </button>
             </div>
         </div>
+    </div>
+  </div>
 
-        <div class="table-responsive style-scrollbar w-100" style="max-height: 60vh; overflow-y: auto;">
-            <table class="table table-hover align-middle mb-0 text-nowrap w-100" mat-table matTableExporter
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <input type="text" class="toolbar-search" placeholder="Search..." aria-label="Search" (keyup)="applyTextFilter($event)" />
+      <button type="button" class="export-btn" (click)="exporter.exportTable('xlsx')">Export Excel</button>
+      <button type="button" class="add-btn" (click)="onAddTermCondition()">Add New Term</button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="po-grid" mat-table matTableExporter
                 [dataSource]="dataSource" #exporter="matTableExporter" matSort>
 
                 <ng-container matColumnDef="sno">
@@ -114,11 +91,7 @@
                     </td>
                 </tr>
             </table>
-        </div>
-
-        <div class="card-footer bg-white border-top p-0 px-3">
-            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons
-                class="border-0 bg-transparent"></mat-paginator>
-        </div>
     </div>
-</section>
+    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons class="border-0 bg-transparent"></mat-paginator>
+  </div>
+</div>

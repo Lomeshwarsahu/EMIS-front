@@ -62,7 +62,7 @@ import { FacilityReportDTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './poreport-gmf.component.html',
-  styleUrl: './poreport-gmf.component.css',
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './poreport-gmf.component.css'],
 })
 export class POReportGMFComponent {
 purchaseOrderData: any[] = [];

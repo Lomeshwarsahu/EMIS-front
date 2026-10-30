@@ -1,39 +1,26 @@
 <div class="supplier-po-page">
   <h2 class="page-title wide">Performance Certificate — FIN Release (20% Withheld)</h2>
 
-  <!-- Filters -->
-  <div class="filters filters--compact">
-    <label>
-      Release Year
-      <select [(ngModel)]="selectedReleaseYearId">
-        <option [ngValue]="0">Select</option>
+  <div class="datagrid">
+    <!-- Filters top-right, label written inside each field (reference layout) -->
+    <div class="table-toolbar filters">
+      <select aria-label="Release Year" [(ngModel)]="selectedReleaseYearId" [class.is-placeholder]="!selectedReleaseYearId">
+        <option [ngValue]="0">Release Year</option>
         <option *ngFor="let y of releaseYearList" [ngValue]="y.ReleaseYearId || y.releaseYearId">{{ y.ReleaseYearName || y.releaseYearName }}</option>
       </select>
-    </label>
-    <label>
-      Fund
-      <select [(ngModel)]="selectedFundId">
-        <option [ngValue]="0">Select</option>
+      <select aria-label="Fund" [(ngModel)]="selectedFundId" [class.is-placeholder]="!selectedFundId">
+        <option [ngValue]="0">All Funds</option>
         <option *ngFor="let f of fundList" [ngValue]="f.FundId || f.fundId">{{ f.FundName || f.fundName }}</option>
       </select>
-    </label>
-    <button class="show-btn" (click)="loadGrid()">Show</button>
-    <button class="show-btn" (click)="goForChequePreparation()">Go For Cheque Preparation</button>
-  </div>
-
-  <div class="datagrid">
-    <div class="table-toolbar filters filters--compact">
-      <button type="button" class="show-btn" [matMenuTriggerFor]="exportMenu">Export</button>
-      <mat-menu #exportMenu="matMenu">
-        <button mat-menu-item
-          (click)="exporter.exportTable('xlsx', { fileName: 'FINRelease', sheet: 'Release' })">Excel</button>
-      </mat-menu>
-      <input type="text" class="search-input" placeholder="Search…" (keyup)="applyTextFilter($event)" />
+      <button type="button" class="show-btn" (click)="loadGrid()">Show Data</button>
+      <input type="text" class="toolbar-search" placeholder="Search..." aria-label="Search" (keyup)="applyTextFilter($event)" />
+      <button type="button" class="show-btn" (click)="goForChequePreparation()">Go For Cheque Preparation</button>
+      <button type="button" class="export-btn" (click)="exporter.exportTable('xlsx', { fileName: 'FINRelease', sheet: 'Release' })">Export Excel</button>
     </div>
 
     <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="10" />
 
-    <div class="table-wrap" *ngIf="!loading">
+    <div class="table-wrap" [hidden]="loading">
       <table class="it-grid" mat-table matTableExporter [dataSource]="dataSource"
         #exporter="matTableExporter" matSort #sort="matSort">
 
@@ -126,7 +113,7 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
           <td mat-cell *matCellDef="let element" class="text-center">
-            <button class="pill-btn pill-btn--accent" (click)="onAddClick(element)">Add</button>
+            <button class="pill-btn pill-btn--accent add-btn" (click)="onAddClick(element)">Add</button>
           </td>
         </ng-container>
 

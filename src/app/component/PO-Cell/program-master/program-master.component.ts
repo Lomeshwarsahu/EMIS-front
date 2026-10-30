@@ -60,9 +60,20 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTableExporterModule,
   ],
   templateUrl: './program-master.component.html',
-  styleUrl: './program-master.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './program-master.component.css'],
 })
 export class ProgramMasterComponent {
+  /** Add/Edit form is shown as a popup from the toolbar button. */
+  showEntryForm = false;
+
+  openEntryForm(): void {
+    this.showEntryForm = true;
+  }
+
+  closeEntryForm(): void {
+    this.showEntryForm = false;
+  }
+
 
 mappingForm!: FormGroup; 
   showForm: boolean = true; 
@@ -165,6 +176,7 @@ onSubmit() {
     next: (res: any) => {
       this.spinner.hide();
       this.toastr.success(res.message || "Record Successfully Inserted");
+        this.showEntryForm = false;
       this.GetEquipmentIte(); 
       this.mappingForm.reset();
       

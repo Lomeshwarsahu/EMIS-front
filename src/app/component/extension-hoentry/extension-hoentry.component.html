@@ -19,26 +19,26 @@
                             <div class="row align-items-end g-3">
 
                                 <div class="form-group col-md-6 pt-3" style="position: relative;">
-                                    <label for="inputName">Supplier: <span class="text-danger">*</span></label>
+                                    <label for="Supplier">Supplier: <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control dropdown-toggle" id="Supplier"
                                         name="Supplier" [(ngModel)]="Supplier">
 
                                 </div>
                                 <div class="form-group col-md-6  pt-3">
-                                    <label for="inputPassword4">Equipment: <span class="text-danger">*</span></label>
+                                    <label for="Equipment">Equipment: <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="Equipment" name="Equipment"
                                         [(ngModel)]="ItemName">
                                 </div>
                             </div>
                             <div class="row pb-3">
                                 <div class="form-group col-md-6 pt-3">
-                                    <label for="inputnumber">PO Date: <span class="text-danger">*</span></label>
+                                    <label for="PO_Date">PO Date: <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="PO_Date" name="PO_Date"
                                         [(ngModel)]="PoDate">
 
                                 </div>
                                 <div class="form-group col-md-6 pt-3">
-                                    <label for="inputnumber">PO Number: <span class="text-danger">*</span></label>
+                                    <label for="poNumber">PO Number: <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="poNumber" name="poNumber"
                                         [(ngModel)]="PoNo">
 
@@ -46,19 +46,19 @@
                             </div>
                             <div class="row pb-3">
                                 <div class="form-group col-md-6 pt-3">
-                                    <label for="inputnumber">Supply Days: <span class="text-danger">*</span></label>
+                                    <label for="sDays">Supply Days: <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="sDays" name="sDays"
                                         [(ngModel)]="SupplyDays">
 
                                 </div>
                                 <div class="form-group col-md-6 pt-3">
-                                    <label for="inputnumber">PO End Date: <span class="text-danger">*</span></label>
+                                    <label for="poeDate">PO End Date: <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="poeDate" name="poeDate"
                                         [(ngModel)]="PoEndDate">
 
                                 </div>
                                 <!-- <div class="form-group col-md-6 pt-3">
-                                <label for="inputnumber">PO End Date: <span class="text-danger">*</span></label>
+                                <label for="date">PO End Date: <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control" id="date" name="GSTCertificate">
 
                             </div> -->
@@ -234,7 +234,7 @@
 
                                     <div class="export-menu-container m-2">
 
-                                        <button type="button" class="btn border rounded btn-outline-secondary"
+                                        <button type="button" class="btn border rounded export-btn"
                                             mat-button [matMenuTriggerFor]="exportMenu">Export</button>
                                         <mat-menu #exportMenu="matMenu">
                                             <button mat-menu-item

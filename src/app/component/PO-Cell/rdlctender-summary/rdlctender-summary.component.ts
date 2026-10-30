@@ -67,7 +67,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableExporterModule,
   ],
   templateUrl: './rdlctender-summary.component.html',
-  styleUrl: './rdlctender-summary.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './rdlctender-summary.component.css'],
 })
 export class RDLCTenderSummaryComponent {
   // RDLCRport

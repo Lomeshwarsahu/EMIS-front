@@ -1,0 +1,5 @@
+
+/* Header labels centred over every column */
+:host ::ng-deep .mat-mdc-header-cell {
+  text-align: center !important;
+}

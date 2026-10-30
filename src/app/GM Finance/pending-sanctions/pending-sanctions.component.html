@@ -6,7 +6,7 @@
       <label><input type="radio" name="poType" value="All" [(ngModel)]="poType" /> All</label>
       <label><input type="radio" name="poType" value="NP" [(ngModel)]="poType" /> Normal PO</label>
       <label><input type="radio" name="poType" value="CP" [(ngModel)]="poType" /> Covid PO</label>
-      <button type="button" class="show-btn" (click)="show()" [disabled]="loading">Show Details</button>
+      <button type="button" class="show-btn" (click)="show()" [disabled]="loading">Show Data</button>
     </div>
 
     <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />

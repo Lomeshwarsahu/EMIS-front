@@ -149,8 +149,8 @@
                     <input id="sanctionDate" type="date" class="form-control form-control-lg" [(ngModel)]="sanctionDate" name="sanctionDate" />
                 </div>
                 <div class="col-12 col-md-6 col-xl-4">
-                    <label class="form-label" for="budgetId">Budget No</label>
-                    <ng-select [items]="BudgetDropdownList" bindLabel="BudgetName" bindValue="BudgetId"
+                    <label class="form-label" for="budget-no">Budget No</label>
+                    <ng-select labelForId="budget-no" [items]="BudgetDropdownList" bindLabel="BudgetName" bindValue="BudgetId"
                         placeholder="-- Choose Target Budget --" [(ngModel)]="BudgetId"
                         class="budget-select" [clearable]="false" [virtualScroll]="false"
                         (change)="onDirectorateSelectedChange()" name="BudgetId">

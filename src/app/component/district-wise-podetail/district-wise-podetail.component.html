@@ -1,108 +1,24 @@
-<section class="container-fluid">
-    <div class="card">
-        <div class="card p-4 mb-4 shadow-sm text-center bg-light border-0 rounded-3">
-            <!-- Main Heading Centered -->
-            <h2 class="fw-bold text-primary mb-2">District Wise PO Details Report</h2>
+<div class="supplier-po-page">
+  <h2 class="page-title wide">District Wise PO Details Report</h2>
 
-            <!-- Optional small subtitle for clarity -->
-            <p class="text-muted mb-0 fs-6">View detailed  of selected valus and purchase orders</p>
-        </div>
-        <div class="card shadow-lg p-2 border-0 bg-white rounded ">
-            <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-light"
-                style="height: auto; overflow: hidden; position: relative;">
-                <div class="mb-0 Fon-family" style="text-align: justify;">
-                    <form class="p-2">
-                        <div class="card shadow-sm p-3 mt-1">
-                            <div class="row g-3 justify-content-center">
-                                <div class="col-md-6 mx-auto text-center">
-                                    <label class="form-label fw-semibold">Select PO Financial Year</label>
-                                    <!-- appendTo=".form-group" -->
-                                    <ng-select [items]="Yearlist" bindLabel="year" bindValue="financial_year_id"
-                                        class="form-control" appendTo="body" [(ngModel)]="selecteditem"
-                                        name="selecteditem" placeholder="Select year" (change)="onSelectedItem($event)">
-                                    </ng-select>
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <ng-select [items]="Yearlist" bindLabel="year" bindValue="financial_year_id" appendTo="body" [(ngModel)]="selecteditem" name="selecteditem" placeholder="Select year" (change)="onSelectedItem($event)"> </ng-select>
+      <ng-select [items]="Diectoratelist" bindLabel="facility_aut_name" bindValue="facility_aut_id" appendTo="body" name="selectedDiectorate" placeholder="Select Diectorate" (change)="onSelectedDiectorate($event)"> </ng-select>
+      <ng-select [items]="Districtslist" bindLabel="DBStart_Name_En" bindValue="DP_DistrictID" appendTo="body" name="selectedDistricts" placeholder="Select Districts" (change)="onSelectedDistricts($event)"> </ng-select>
+      <label class="date-pill"><span>From</span><input aria-label="From date" type="date"  [(ngModel)]="fromdate" name="form-date " /></label>
+      <label class="date-pill"><span>To</span><input aria-label="To date"  type="date"  [(ngModel)]="todate" name="to-date " /></label>
+      <button type="button" class="show-btn" (click)="Getitemwisedetail()">Show Data</button>
+      <input type="text" class="toolbar-search" placeholder="Search..." aria-label="Search" (keyup)="applyTextFilter($event)" />
+      <button type="button" class="export-btn" (click)="exporter.exportTable('xlsx', { fileName: 'PODetails', sheet: 'PODetails', Props: { Author: 'cgmsc' }})">Export Excel</button>
+    </div>
 
-                                </div>
-                                <div class="col-md-6 mx-auto text-center">
-                                    <label class="form-label fw-semibold">Select Diectorate</label>
-                                    <!-- appendTo=".form-group" -->
-                                    <ng-select [items]="Diectoratelist" bindLabel="facility_aut_name" bindValue="facility_aut_id"
-                                        class="form-control" appendTo="body" 
-                                        name="selectedDiectorate" placeholder="Select Diectorate" (change)="onSelectedDiectorate($event)">
-                                    </ng-select>
-
-                                </div>
-                                <div class="col-md-6 mx-auto text-center">
-                                    <label class="form-label fw-semibold">Select Districts</label>
-                                    <!-- appendTo=".form-group" -->
-                                    <ng-select [items]="Districtslist" bindLabel="DBStart_Name_En" bindValue="DP_DistrictID"
-                                        class="form-control" appendTo="body" 
-                                        name="selectedDistricts" placeholder="Select Districts" (change)="onSelectedDistricts($event)">
-                                    </ng-select>
-
-                                </div>
-                                <div class="col-md-3 mx-auto text-center">
-                                    <label class="form-label fw-semibold">From Date</label>
-                                 
-                                    <input type="date"
-                                        class="form-control"  [(ngModel)]="fromdate"
-                                        name="form-date " placeholder="Enter From Date" />
-                                    
-
-                                </div>
-                                <div class="col-md-3 mx-auto text-center">
-                                    <label class="form-label fw-semibold">To Date</label>
-                                 
-                                    <input  type="date"
-                                        class="form-control"  [(ngModel)]="todate"
-                                        name="to-date " placeholder="Enter To Date" />
-
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-center mt-3">
-                                <button type="submit" class="btn btn-primary"
-                                    (click)=" Getitemwisedetail()">Show</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- data table -->
-        <div class="card shadow-lg p-2 mt-0 pt-0 border-0 bg-white rounded ">
-            <div class="card-body border rounded px-0 pt-2 pb-3 bg-light"
-                style="height: auto; overflow: hidden; position: relative;">
-
-                <div class="container-fluid p-3 m-0">
-                    <div class="row justify-content-center g-4 ">
-
-                        <div class="col-lg-12 mb-2">
-                            <div class=" card row shadow ">
-                                <div class="d-flex justify-content-between align-items-center m-2">
-                                    <div class="filter-field flex-grow-1">
-                                        <input type="text" class="form-control" placeholder="Search"
-                                            (keyup)="applyTextFilter($event)">
-                                    </div>
-
-
-                                    <div class="export-menu-container m-2">
-
-                                        <button type="button" class="btn border rounded btn-outline-secondary"
-                                            mat-button [matMenuTriggerFor]="exportMenu">Export</button>
-                                        <mat-menu #exportMenu="matMenu">
-                                            <button mat-menu-item
-                                                (click)="exporter.exportTable('xlsx', { fileName: 'PODetails', sheet: 'PODetails', Props: { Author: 'cgmsc' }})">Excel</button>
-
-                                        </mat-menu>
-                                    </div>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped border rounded " mat-table
+    <div class="table-wrap">
+      <table class="po-grid" mat-table
                                         matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort
                                         #sort="matSort">
 
-                                        <!-- S.No -->
+                                        
                                         <ng-container matColumnDef="sno">
                                             <th mat-header-cell *matHeaderCellDef> S.No </th>
                                             <td mat-cell *matCellDef="let element; let i = index">
@@ -131,19 +47,7 @@
                                             </td>
                                         </ng-container>
 
-                                        <!-- <ng-container matColumnDef="po_year">
-                                            <th mat-header-cell *matHeaderCellDef>PO Year</th>
-                                            <td mat-cell *matCellDef="let element">
-                                                {{element.po_year}}
-                                            </td>
-                                        </ng-container>
-                                 
-                                        <ng-container matColumnDef="po_no">
-                                            <th mat-header-cell *matHeaderCellDef>PO No</th>
-                                            <td mat-cell *matCellDef="let element">
-                                                {{element.po_no}}
-                                            </td>
-                                        </ng-container> -->
+                                        
                                         <ng-container matColumnDef="po_date">
                                             <th mat-header-cell *matHeaderCellDef>PO Date</th>
                                             <td mat-cell *matCellDef="let element">
@@ -235,14 +139,7 @@
                                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                                     </table>
-                                    <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]"
-                                        showFirstLastButtons></mat-paginator>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</section>
+    <mat-paginator #paginator [pageSizeOptions]="[5,10, 15, 30]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

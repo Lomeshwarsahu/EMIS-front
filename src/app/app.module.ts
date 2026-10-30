@@ -28,6 +28,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { Registration } from './component/auth/registration/registration';
 import { AppSidebarComponent } from './component/layout/app-sidebar/app-sidebar.component';
+import { SupplierPageSkeletonComponent } from './component/Suppliers/supplier-page-skeleton/supplier-page-skeleton.component';
 import { AppSanitizeInputDirective } from './directives/sanitize-input.directive';
 import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { authInterceptor } from './service/authentication/authInterceptor';
@@ -61,6 +62,7 @@ import { restoreSessionFromOtherTabs } from './service/authentication/session-sy
     GoogleMapsModule,
     MatTableExporterModule, MatButtonModule,
     AppSidebarComponent,
+    SupplierPageSkeletonComponent,
     AppSanitizeInputDirective,
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',

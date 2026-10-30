@@ -75,6 +75,7 @@ export class PerformanceCertificateFinComponent implements OnInit {
     this.loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
     this.loadReleaseYears();
     this.loadFunds();
+    this.loadGrid();
   }
 
   loadReleaseYears() {
@@ -92,10 +93,7 @@ export class PerformanceCertificateFinComponent implements OnInit {
   }
 
   loadGrid() {
-    if (!this.selectedReleaseYearId || !this.selectedFundId) {
-      this.toastr.warning('Select Release Year and Fund');
-      return;
-    }
+    // Legacy FIN page lists every pending 20% release; Fund narrows it (0 = all), Release Year is used when saving.
     this.loading = true;
     this.api.get('Performance/get-fin-release-grid', {
       params: { releaseYearId: this.selectedReleaseYearId, fundId: this.selectedFundId }
@@ -229,10 +227,17 @@ export class PerformanceCertificateFinComponent implements OnInit {
       this.toastr.warning('Select at least one row');
       return;
     }
+    // Legacy btnSave: Release Year and Fund (budget) are required here — they are saved with the release.
+    if (!this.selectedReleaseYearId || !this.selectedFundId) {
+      this.toastr.warning('Select Release Year and Fund before Go For Cheque Preparation');
+      return;
+    }
     this.loading = true;
     const payload = {
       poIds: selectedIds,
       userId: this.loginData.user_id,
+      releaseYearId: this.selectedReleaseYearId,
+      fundId: this.selectedFundId,
     };
     this.api.post1('Performance/go-for-cheque-preparation', payload).subscribe({
       next: (res: any) => {

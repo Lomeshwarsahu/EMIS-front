@@ -622,7 +622,7 @@ html[data-theme='dark'] .cdk-overlay-container .mat-datepicker-content {
 }
 
 /* ---------- Duplicate page title (shell header shows it) ---------- */
-.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid > :is(div, header):first-child:has(> :is(h1, h2, h3)):not(:has(form, table, input, select, ng-select, button, img, a, mat-table)),
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid > :is(div, header):first-child:not(.keep-header):has(> :is(h1, h2, h3)):not(:has(form, table, input, select, ng-select, button, img, a, mat-table)),
 .emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid > .card:first-child > .card:first-child:has(> :is(h1, h2, h3)):not(:has(form, table, input, select, ng-select, button, img, a, mat-table)) {
   display: none !important;
 }
@@ -633,6 +633,32 @@ html[data-theme='dark'] .cdk-overlay-container .mat-datepicker-content {
   border: 1px solid var(--emis-border) !important;
   border-radius: 12px !important;
   box-shadow: var(--emis-shadow) !important;
+}
+
+/* No boxes (reference: Indent-PO/Tender-Summary, Opening Stock Summary) — cards that hold filters, forms or
+   tables sit directly on the page: no border, background or shadow. Stat/KPI tiles (no form/table) keep their box. */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card:has(form, table, input, select, ng-select, mat-table),
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card:has(form, table, input, select, ng-select, mat-table) .card,
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card:has(form, table, input, select, ng-select, mat-table) :is(.card-header, .card-body, .card-footer) {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card:has(form, table, input, select, ng-select, mat-table) > .card-body,
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card:has(form, table, input, select, ng-select, mat-table) > .card-header,
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card:has(form, table, input, select, ng-select, mat-table) > .card-footer {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* …and the table keeps the reference's white rounded container */
+.emis-page-content:not(.content-area--login) .page-outlet-wrapper > * > .container-fluid .card:has(form, table, input, select, ng-select, mat-table) :is(.table-responsive, .mat-elevation-z8, .table-container) {
+  background: var(--emis-surface) !important;
+  border: 1px solid var(--emis-border) !important;
+  border-radius: 8px !important;
+  overflow: auto;
 }
 
 /* Remove the thick coloured top strip; supplier cards are plain */

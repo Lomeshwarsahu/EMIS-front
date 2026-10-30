@@ -1101,3 +1101,385 @@ html[data-theme='dark'] table.mat-table tbody tr.mat-mdc-row:hover {
   position: sticky;
   left: 0;
 }
+
+/* Reference toolbar (Indent-PO/Tender-Summary, Opening Stock Summary): every control in
+   .table-toolbar.filters gets the same compact pill shape as the reference <select> (28px, 12px text,
+   white, #e2e8f0 border) — ng-select, date inputs and the search box included. */
+.supplier-po-page .table-toolbar.filters .toolbar-search,
+.supplier-po-page .table-toolbar.filters input[type='date'],
+.supplier-po-page .table-toolbar.filters > input[type='text'] {
+  min-height: 28px;
+  height: 28px;
+  padding: 0 12px;
+  font-size: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #fff;
+  color: #1e293b;
+  outline: none;
+}
+
+.supplier-po-page .table-toolbar.filters .toolbar-search {
+  width: 200px;
+  max-width: 100%;
+}
+
+.supplier-po-page .table-toolbar.filters ng-select {
+  min-width: 170px;
+  max-width: 300px;
+  font-size: 12px;
+}
+
+.supplier-po-page .table-toolbar.filters ng-select .ng-select-container {
+  min-height: 28px !important;
+  height: 28px !important;
+  border-radius: 999px !important;
+  border: 1px solid #e2e8f0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  padding: 0 4px 0 10px;
+}
+
+.supplier-po-page .table-toolbar.filters .toolbar-search:focus,
+.supplier-po-page .table-toolbar.filters input[type='date']:focus,
+.supplier-po-page .table-toolbar.filters ng-select.ng-select-focused .ng-select-container {
+  border-color: #f97316 !important;
+}
+
+html[data-theme='dark'] .supplier-po-page .table-toolbar.filters .toolbar-search,
+html[data-theme='dark'] .supplier-po-page .table-toolbar.filters input[type='date'],
+html[data-theme='dark'] .supplier-po-page .table-toolbar.filters > input[type='text'],
+html[data-theme='dark'] .supplier-po-page .table-toolbar.filters ng-select .ng-select-container {
+  background: #0c0e12 !important;
+  border-color: #262b36 !important;
+  color: #e2e8f0;
+}
+
+/* Entry/action forms kept above the grid: no box (no border, card or shadow) — controls sit on the page
+   like the toolbar. Bootstrap .card wrappers inside are flattened too. */
+.supplier-po-page .entry-card {
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+
+.supplier-po-page .entry-card .card,
+.supplier-po-page .entry-card .card-header,
+.supplier-po-page .entry-card .card-body,
+.supplier-po-page .entry-card .bg-light,
+.supplier-po-page .entry-card .bg-white {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* With an entry form above, the page scrolls instead of squeezing the grid to zero height
+   (the "no data showing" bug on Program Master, Terms & Conditions, RC Extension, etc.). */
+.supplier-po-page:has(> .entry-card) {
+  overflow-y: auto;
+}
+
+.supplier-po-page:has(> .entry-card) > .datagrid {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.supplier-po-page:has(> .entry-card) > .datagrid > .table-wrap {
+  flex: 0 0 auto;
+  min-height: 240px;
+  max-height: 70vh;
+}
+
+.supplier-po-page .table-toolbar .selected-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ea580c;
+}
+
+/* Date filter with its label inside the pill: [From | dd-mm-yyyy] */
+.supplier-po-page .table-toolbar.filters .date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 4px 0 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+
+.supplier-po-page .table-toolbar.filters .date-pill input[type='date'] {
+  border: none !important;
+  height: 26px;
+  min-height: 26px;
+  padding: 0 8px 0 0;
+  background: transparent !important;
+}
+
+html[data-theme='dark'] .supplier-po-page .table-toolbar.filters .date-pill {
+  background: #0c0e12;
+  border-color: #262b36;
+  color: #94a3b8;
+}
+
+/* ---------- Add/Edit popup used on list pages (opened from the toolbar "Add …" button) ---------- */
+.emis-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.emis-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1055;
+  transform: translate(-50%, -50%);
+  width: min(960px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+  overflow: hidden;
+}
+
+.emis-modal.emis-modal--sm {
+  width: min(560px, calc(100vw - 32px));
+}
+
+.emis-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.emis-modal-header h5 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.emis-modal-body {
+  padding: 16px 18px;
+  overflow-y: auto;
+}
+
+/* Bootstrap cards inside the popup are just layout — no nested boxes */
+.emis-modal-body .card,
+.emis-modal-body .card-body {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+html[data-theme='dark'] .emis-modal {
+  background: #0c0e12;
+  color: #e2e8f0;
+}
+
+html[data-theme='dark'] .emis-modal-header {
+  border-color: #262b36;
+}
+
+html[data-theme='dark'] .emis-modal-header h5 {
+  color: #f8fafc;
+}
+
+/* Filters always sit on the RIGHT of the table (reference layout), on every page —
+   overrides page CSS that used space-between / no alignment. */
+.page-outlet-wrapper :is(.table-toolbar, .filters--compact) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end !important;
+  gap: 6px;
+}
+
+.page-outlet-wrapper :is(.table-toolbar, .filters--compact) > * {
+  margin-left: 0 !important;
+}
+
+/* Old (not yet converted) Bootstrap pages: their "search left / export right" bar → everything on the right */
+.page-outlet-wrapper .container-fluid .d-flex.justify-content-between:has(> .filter-field, > .export-menu-container, > .input-group .bi-search) {
+  justify-content: flex-end !important;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.page-outlet-wrapper .container-fluid .d-flex.justify-content-between > .filter-field.flex-grow-1 {
+  flex-grow: 0 !important;
+  width: 240px;
+  max-width: 100%;
+}
+
+/* ---------- Button colours used on every page ----------
+   Export → green.  Add/New → black (light mode) / white (dark mode). */
+.page-outlet-wrapper .export-btn,
+.page-outlet-wrapper .btn-export-excel,
+.page-outlet-wrapper .btn-export {
+  background: #16a34a !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.28);
+}
+
+.page-outlet-wrapper .export-btn:hover:not(:disabled),
+.page-outlet-wrapper .btn-export:hover:not(:disabled) {
+  background: #15803d !important;
+}
+
+.page-outlet-wrapper .add-btn {
+  background: #0f172a !important;
+  border: 1px solid #0f172a !important;
+  color: #fff !important;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.page-outlet-wrapper .add-btn:hover:not(:disabled) {
+  background: #1e293b !important;
+}
+
+.page-outlet-wrapper .table-toolbar .add-btn {
+  min-height: 28px;
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+html[data-theme='dark'] .page-outlet-wrapper .add-btn {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+html[data-theme='dark'] .page-outlet-wrapper .add-btn:hover:not(:disabled) {
+  background: #e2e8f0 !important;
+}
+
+/* Any filter with its label inside the pill: [Label | value ▾] */
+.supplier-po-page .table-toolbar.filters .field-pill select,
+.page-outlet-wrapper .filters--compact .field-pill select {
+  border: none !important;
+  background: transparent !important;
+  min-height: 26px;
+  height: 26px;
+  padding: 0 6px 0 0;
+  font-size: 12px;
+  color: #1e293b;
+  min-width: 0;
+  box-shadow: none !important;
+}
+
+.page-outlet-wrapper .filters--compact .date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 4px 0 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+
+html[data-theme='dark'] .page-outlet-wrapper .field-pill select {
+  color: #e2e8f0;
+}
+
+html[data-theme='dark'] .page-outlet-wrapper .filters--compact .date-pill {
+  background: #0c0e12;
+  border-color: #262b36;
+  color: #94a3b8;
+}
+
+/* ---------- One Show button everywhere (reference: orange pill "Show Data") ---------- */
+.page-outlet-wrapper .show-btn:not(.add-btn):not(.export-btn):not(.clear-btn) {
+  background: #f97316 !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.28);
+}
+
+.page-outlet-wrapper .show-btn:not(.add-btn):not(.export-btn):not(.clear-btn):hover:not(:disabled) {
+  background: #ea580c !important;
+}
+
+.page-outlet-wrapper :is(.table-toolbar, .filters--compact) :is(.show-btn, .export-btn, .add-btn, .clear-btn) {
+  min-height: 28px;
+  height: 28px;
+  padding: 0 14px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+}
+
+html[data-theme='dark'] .page-outlet-wrapper .show-btn:not(.add-btn):not(.export-btn):not(.clear-btn) {
+  background: #2563eb !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+/* Search box in it-page / DME toolbars — same pill as the reference */
+.page-outlet-wrapper .filters--compact .toolbar-search {
+  height: 28px;
+  min-height: 28px;
+  width: 200px;
+  max-width: 100%;
+  padding: 0 12px;
+  font-size: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #fff;
+  color: #1e293b;
+  outline: none;
+}
+
+html[data-theme='dark'] .page-outlet-wrapper .filters--compact .toolbar-search {
+  background: #0c0e12;
+  border-color: #262b36;
+  color: #e2e8f0;
+}
+
+/* ---------- One Clear Filter button everywhere: outlined pill next to Show Data ---------- */
+.page-outlet-wrapper .clear-btn {
+  background: transparent !important;
+  border: 1px solid #f97316 !important;
+  color: #f97316 !important;
+  border-radius: 999px !important;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: none !important;
+}
+
+.page-outlet-wrapper .clear-btn:hover:not(:disabled) {
+  background: rgba(249, 115, 22, 0.1) !important;
+}
+
+html[data-theme='dark'] .page-outlet-wrapper .clear-btn {
+  border-color: #60a5fa !important;
+  color: #60a5fa !important;
+}
+
+html[data-theme='dark'] .page-outlet-wrapper .clear-btn:hover:not(:disabled) {
+  background: rgba(96, 165, 250, 0.12) !important;
+}

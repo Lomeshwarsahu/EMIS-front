@@ -62,11 +62,11 @@ import {EquipmentItemDTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './items-bme.component.html',
-  styleUrl: './items-bme.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './items-bme.component.css'],
 })
 export class ItemsBMEComponent {
 equipmentForm!: FormGroup;
-  showForm: boolean = true; 
+  showForm: boolean = false; 
   Categorylist: any[] = [];
 
 
@@ -196,6 +196,17 @@ equipmentForm!: FormGroup;
   }
   showinput() {
     this.show = true;
+  }
+
+  openForm(): void {
+    this.showForm = true;
+  }
+
+  closeForm(): void {
+    this.showForm = false;
+    this.equipmentForm.reset({
+      Warranty: 'f', AMC: 'f', PrevMaint: 'f', Installation: 'f', CategoryId: ''
+    });
   }
 
   //   'https://localhost:7036/api/BME/Create' \

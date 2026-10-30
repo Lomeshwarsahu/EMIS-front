@@ -52,7 +52,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     MatTableExporterModule,
   ],
   templateUrl: './consolidated-indent-pocell.component.html',
-  styleUrl: './consolidated-indent-pocell.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './consolidated-indent-pocell.component.css'],
     animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', opacity: 0, padding: '0' })),

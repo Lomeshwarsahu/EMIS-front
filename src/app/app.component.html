@@ -1,7 +1,4 @@
 <div class="emis-app-shell">
-  <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="line-scale-party" [fullScreen]="true">
-    <p style="color: white"> Please wait... </p>
-  </ngx-spinner>
 
   <mat-drawer-container
     class="main-container"
@@ -183,6 +180,11 @@
           <main class="page-outlet-wrapper">
             <router-outlet></router-outlet>
           </main>
+
+          <!-- Replaces the old "Please wait..." overlay: any spinner.show() now shows a skeleton over the page -->
+          <div class="page-skeleton-overlay" *ngIf="pageLoading" aria-busy="true" aria-label="Loading">
+            <app-supplier-page-skeleton type="table" [rows]="8" [cols]="6" />
+          </div>
 
           <div class="footer-wrap">
             <footer class="modern-footer">
