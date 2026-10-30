@@ -275,7 +275,7 @@ onCompleteWorkflow() {
       
       // Emulating WebForms: Response.Redirect("Indent_editDHS_PO.aspx?ICID=" + indentId);
       // Angular Router provides parameter arrays mapping smoothly
-      this.router.navigate(['/Indent_editDHS_PO'], { queryParams: { ICID: res.indentConsolidatedId } });
+      this.router.navigate(['/IndentEditDHSPO'], { queryParams: { IndentConsolidationId: res.indentConsolidatedId } });
     },
     error: (err: any) => {
       this.spinner.hide();

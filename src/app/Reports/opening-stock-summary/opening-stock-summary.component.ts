@@ -78,8 +78,9 @@ export class OpeningStockSummaryComponent {
 
   loadData() {
     this.loading = true;
-    const directorateId = this.selectedDirectorate ?? '';
-    this.api.get(`Reports/opening-stock-summary?directorateId=${directorateId}`).subscribe({
+    // No directorate selected: omit the param so the API default applies (blank fails int binding).
+    const query = this.selectedDirectorate ? `?directorateId=${this.selectedDirectorate}` : '';
+    this.api.get(`Reports/opening-stock-summary${query}`).subscribe({
       next: (res: any) => {
         this.dispatchData = (res || []).map(
           (item: OpeningStockSummaryDTO, index: number) => ({

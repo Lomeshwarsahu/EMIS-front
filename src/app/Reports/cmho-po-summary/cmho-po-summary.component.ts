@@ -88,7 +88,7 @@ export class CmhoPoSummaryComponent {
 
   loadData() {
     this.loading = true;
-    const financialYearId = this.selectedYear || '';
+    const financialYearId = this.selectedYear || 0;
     const itemCode = this.selectedItem || '';
 
     this.api.get(`Reports/po-summary?financialYearId=${financialYearId}&directorateId=5&itemCode=${itemCode}`)

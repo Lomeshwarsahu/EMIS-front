@@ -86,8 +86,8 @@ export class PoSummaryDirectorateComponent {
 
   loadData() {
     this.loading = true;
-    const financialYearId = this.selectedYear || '';
-    const directorateId = this.selectedDirectorate || '';
+    const financialYearId = this.selectedYear || 0;
+    const directorateId = this.selectedDirectorate || 0;
 
     this.api.get(`Reports/po-summary?financialYearId=${financialYearId}&directorateId=${directorateId}`)
       .subscribe({

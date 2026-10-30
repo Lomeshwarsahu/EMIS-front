@@ -125,8 +125,8 @@ export class ReportIndentPoDetailsComponent implements OnInit {
 
   loadData() {
     this.loading = true;
-    const financialYearId = this.selectedYear || '';
-    const directorateId = this.selectedDirectorate || '';
+    const financialYearId = this.selectedYear || 0;
+    const directorateId = this.selectedDirectorate || 0;
     const itemCode = this.selectedItem || '';
 
     this.api.get(`Reports/report-indent-po-details?financialYearId=${financialYearId}&directorateId=${directorateId}&itemCode=${itemCode}`)

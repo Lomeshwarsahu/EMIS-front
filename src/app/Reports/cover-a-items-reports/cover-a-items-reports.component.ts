@@ -76,7 +76,7 @@ export class CoverAItemsReportsComponent {
 
   loadData() {
     this.loading = true;
-    const yearId = this.selectedYear || '';
+    const yearId = this.selectedYear || 0;
     this.api.get(`Reports/cover-a-items-reports?financialYearId=${yearId}`).subscribe({
       next: (res: any) => {
         this.dispatchData = (res || []).map((item: any, index: number) => ({

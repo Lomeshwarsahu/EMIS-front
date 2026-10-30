@@ -93,7 +93,7 @@ isEditMode: boolean = false;
           this.loadGstRecordsGrid();
         } else {
           this.toastr.error('Invalid reference parameters context routing.');
-          this.router.navigate(['/Suppliers']);
+          this.router.navigate(['/Supplier']);
         }
       }
     });

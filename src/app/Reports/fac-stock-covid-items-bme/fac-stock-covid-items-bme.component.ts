@@ -111,9 +111,9 @@ export class FacStockCovidItemsBmeComponent implements OnInit {
 
   loadData() {
     this.loading = true;
-    const districtId = this.selectedDistrict || '';
-    const facilityId = this.selectedFacility || '';
-    const itemId = this.selectedItem || '';
+    const districtId = this.selectedDistrict || 0;
+    const facilityId = this.selectedFacility || 0;
+    const itemId = this.selectedItem || 0;
     const statusParam = this.status || 'All';
 
     this.api.get(`Reports/fac-stock-covid?districtId=${districtId}&facilityId=${facilityId}&itemId=${itemId}&status=${statusParam}`)

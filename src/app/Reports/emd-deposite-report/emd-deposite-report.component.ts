@@ -96,8 +96,8 @@ export class EmdDepositeReportComponent {
 
   loadData() {
     this.loading = true;
-    const supplierId = this.selectedSupplierId || '';
-    const tenderId = this.selectedTenderId || '';
+    const supplierId = this.selectedSupplierId || 0;
+    const tenderId = this.selectedTenderId || 0;
     const apiUrl = `Reports/emd-deposite-report?supplierId=${supplierId}&tenderId=${tenderId}`;
 
     this.api.get(apiUrl).subscribe({

@@ -130,7 +130,7 @@ export class BudgetDetailsProvisionalComponent implements OnInit {
           this.loadReceiptRecordsGrid(this.lblBGID);
         } else {
           this.toastr.warning('Missing valid parameters. Routing back to overview ledger.');
-          this.router.navigate(['/EMIS/BudgetEntry']);
+          this.router.navigate(['/BudgentEntry']);
         }
       },
       error: (err) => console.error('Router navigation state trace collapsed:', err)

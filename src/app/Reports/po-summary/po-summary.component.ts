@@ -107,8 +107,8 @@ export class PoSummaryComponent {
 
   loadData() {
     this.loading = true;
-    const financialYearId = this.selectedYear || '';
-    const directorateId = this.selectedDirectorate || '';
+    const financialYearId = this.selectedYear || 0;
+    const directorateId = this.selectedDirectorate || 0;
     const itemCode = this.selectedItem || '';
 
     this.api

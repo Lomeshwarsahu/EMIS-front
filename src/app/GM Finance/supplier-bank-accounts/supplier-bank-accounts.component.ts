@@ -159,7 +159,7 @@ switchTab(tabNumber: number) {
         this.loadBankAccountsGrid();
       } else {
         this.toastr.error('Invalid Parameters reference index routing contexts.');
-        this.router.navigate(['/Suppliers']);
+        this.router.navigate(['/Supplier']);
       }
     });
 
