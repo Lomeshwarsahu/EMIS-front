@@ -76,6 +76,15 @@ export class TermsconditionsComponent {
   dispatchData: IndentConsolidationReportDto[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+  // AddAndEditTermCondition.aspx was never shipped in legacy; Add/Edit runs inline on this page.
+  tenderList: any[] = [];
+  showForm = false;
+  saving = false;
+  editTermConditionId = 0;
+  formTenderId: number | null = null;
+  formTermCondition = '';
+
   constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
@@ -92,6 +101,7 @@ export class TermsconditionsComponent {
 
   ngOnInit() {
     this.Getitemwisedetail();
+    this.GetTenderList();
   }
 // https://localhost:7036/api/POCell/GetTermsConditionsList
   Getitemwisedetail() {
@@ -124,25 +134,70 @@ export class TermsconditionsComponent {
       // throw err;
     }
   }
+
+  // https://localhost:7036/api/POCell/GetTenderList/All
+  GetTenderList() {
+    this.api.get('POCell/GetTenderList/All').subscribe({
+      next: (res: any) => {
+        this.tenderList = res || [];
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
+    });
+  }
+
   applyTextFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  // 2. EMULATING: btnAdd_Click -> Redirect to blank form
+  // 2. EMULATING: btnAdd_Click -> blank form
   onAddTermCondition() {
-    this.router.navigate(['/AddAndEditTermCondition']);
+    this.editTermConditionId = 0;
+    this.formTenderId = null;
+    this.formTermCondition = '';
+    this.showForm = true;
   }
 
-  // 3. EMULATING: gv_RowCommand (Edit Mode) -> Redirect with Query parameters
+  // 3. EMULATING: gv_RowCommand (Edit Mode) -> form prefilled with the row
   onEditTermCondition(element: any) {
-    console.log('Target row selected for modification:', element);
+    this.editTermConditionId = element.TermConditionId;
+    this.formTenderId = element.TenderId;
+    this.formTermCondition = element.TermCondition || '';
+    this.showForm = true;
+  }
 
-    // Redirects directly to: .../AddAndEditTermCondition?mode=edit&termConditionId=235
-    this.router.navigate(['/AddAndEditTermCondition'], {
-      queryParams: {
-        mode: 'edit',
-        termConditionId: element.termConditionId,
+  onCancelForm() {
+    this.showForm = false;
+  }
+
+  // https://localhost:7036/api/POCell/SaveTermCondition
+  onSaveTermCondition() {
+    if (!this.formTenderId) {
+      this.toastr.warning('Please select tender.');
+      return;
+    }
+    if (!this.formTermCondition.trim()) {
+      this.toastr.warning("Term and condition can't be empty.");
+      return;
+    }
+    this.saving = true;
+    const payload = {
+      TermConditionId: this.editTermConditionId,
+      TenderId: this.formTenderId,
+      TermCondition: this.formTermCondition.trim(),
+    };
+    this.api.post('POCell/SaveTermCondition', payload).subscribe({
+      next: (res: any) => {
+        this.saving = false;
+        this.toastr.success(res?.message || 'Saved successfully.');
+        this.showForm = false;
+        this.Getitemwisedetail();
+      },
+      error: (err: any) => {
+        this.saving = false;
+        this.toastr.error(err?.error?.message || 'Error saving term and condition.');
       },
     });
   }

@@ -38,8 +38,8 @@
         </ng-container>
 
         <ng-container matColumnDef="po_id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO ID</th>
-          <td mat-cell *matCellDef="let element">{{ element.po_id || '-' }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PO Number</th>
+          <td mat-cell *matCellDef="let element">{{ element.po_no || element.po_id || '-' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="item_name">

@@ -40,6 +40,29 @@
             </div>
         </div>
 
+        <div class="border-bottom bg-light px-4 py-3" *ngIf="showForm">
+            <h6 class="fw-bold mb-3">{{ editTermConditionId ? 'Edit Term & Condition' : 'Add New Term & Condition' }}</h6>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold small" for="tcTender">Tender No <span class="text-danger">*</span></label>
+                    <ng-select labelForId="tcTender" [items]="tenderList" bindLabel="TenderNo" bindValue="TenderId"
+                        [(ngModel)]="formTenderId" name="formTenderId" placeholder="Select Tender" [clearable]="true">
+                    </ng-select>
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label fw-semibold small" for="tcText">Term & Condition <span class="text-danger">*</span></label>
+                    <textarea id="tcText" class="form-control" rows="3" [(ngModel)]="formTermCondition" name="formTermCondition"
+                        placeholder="Enter term and condition"></textarea>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" (click)="onCancelForm()" [disabled]="saving">Cancel</button>
+                <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold" (click)="onSaveTermCondition()" [disabled]="saving">
+                    {{ saving ? 'Saving...' : (editTermConditionId ? 'Update' : 'Save') }}
+                </button>
+            </div>
+        </div>
+
         <div class="table-responsive style-scrollbar w-100" style="max-height: 60vh; overflow-y: auto;">
             <table class="table table-hover align-middle mb-0 text-nowrap w-100" mat-table matTableExporter
                 [dataSource]="dataSource" #exporter="matTableExporter" matSort>
@@ -64,7 +87,7 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header"> Terms and Clause Specifications </th>
                     <td mat-cell *matCellDef="let element" class="text-dark fw-medium small text-wrap py-3"
                         style="max-width: 450px; min-width: 280px; white-space: normal; line-height: 1.6;">
-                        {{element.termCondition || 'No clause description added yet.'}}
+                        {{element.TermCondition || 'No clause description added yet.'}}
                     </td>
                 </ng-container>
 

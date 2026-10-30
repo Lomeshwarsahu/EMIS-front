@@ -216,7 +216,7 @@ const ROUTE_MAP: Record<string, string> = {
   '/gmfinance/invoicedetail.aspx': '/InvoiceDetail',
   '/gmfinance/tdsdatareport.aspx': '/TDSdataReport',
   '/reports/indent_reportpocell.aspx': '/indents/annual-indent-report',
-  '/reports/indent_rc_po_tender_status.aspx': '/reports/indent-po-tender-status',
+  '/reports/indent_rc_po_tender_status.aspx': '/IndentRCPOTenderStatus',
   '/reports/facilityauthpovalue_pocell.aspx': '/finance/year-wise-po-abstract',
 
   // --- 17. Additional PO Cell & Order Variants ---
@@ -233,7 +233,7 @@ const ROUTE_MAP: Record<string, string> = {
   '/order/supplierdispatchpendingcons_ho.aspx': '/transaction/po-supply-dispatch-report',
   '/order/supplierdispatchpendinginsta_ho.aspx': '/orders/po-installation-report',
   '/order/supplierdispatchpending_ho.aspx': '/transaction/po-supply-dispatch-report',
-  '/order/po_supplyho.aspx': '/orders/po-supply',
+  '/order/po_supplyho.aspx': '/POSupplyHO',
   '/order/po_supply_details.aspx': '/orders/po-supply-sd-detail',
 
   // --- 18. Additional Audit Mappings ---
@@ -280,7 +280,7 @@ const ROUTE_MAP: Record<string, string> = {
   '/reports/facstockcoviditemsbme.aspx': '/stock/covid-stock-report',
   '/reports/reportindentpodetails.aspx': '/reports/eligible-report',
   '/reports/emdrefundreport.aspx': '/reports/emd-refund-report',
-  '/reports/dispatchdetail.aspx': '/transaction/po-supply-dispatch-report',
+  '/reports/dispatchdetail.aspx': '/reports/dispatch-detail',
   '/reports/openingstocksummarydrilldwnstock.aspx': '/stock/covid-stock-report',
   '/reports/posummarydirectorate.aspx': '/reports/po-summary-directorate',
   '/reports/paymentscpreportigm.aspx': '/reports/payments-cpreport-igm',

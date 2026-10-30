@@ -136,10 +136,11 @@ export class DispatchDetailComponent implements OnInit {
 
   loadData() {
     this.loading = true;
-    const directorateId = this.selectedDirectorate || '';
-    const userId = this.selectedUser || '';
+    const itemId = this.selectedItem || 0;
+    const directorateId = this.selectedDirectorate || 0;
+    const userId = this.selectedUser || 0;
 
-    this.api.get(`Reports/dispatch-detail?directorateId=${directorateId}&userId=${userId}`)
+    this.api.get(`Reports/dispatch-detail?itemId=${itemId}&directorateId=${directorateId}&userId=${userId}`)
       .subscribe({
         next: (res: any) => {
           this.reportData = (res || []).map((item: any, index: number) => ({
