@@ -1,0 +1,88 @@
+<div class="supplier-po-page">
+  <h2 class="page-title">Dispatch Pending (PO Date Before 01/01/2021)</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <ng-select
+        class="po-select"
+        aria-label="Pending Dispatch supplier"
+        [items]="suppliers"
+        bindLabel="Label"
+        bindValue="SupplierId"
+        [(ngModel)]="selectedSupplierId"
+        name="supplier"
+        placeholder="Select Pending Dispatch"
+        [clearable]="true"
+        style="min-width: 420px">
+      </ng-select>
+      <button type="button" class="show-btn" (click)="show()" [disabled]="loading">Show</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="11" />
+
+    <div class="table-wrap" *ngIf="!loading && loaded">
+      <table class="po-grid ho-grid">
+        <thead>
+          <tr>
+            <th class="col-sn text-center">S.No</th>
+            <th class="col-po">PO No</th>
+            <th class="col-date">PO Date</th>
+            <th class="col-item">Item Name</th>
+            <th class="col-rate">Basic Rate / GST</th>
+            <th class="col-num text-center">No of Consignee</th>
+            <th class="col-num text-center">Total Qty</th>
+            <th class="col-num">Gross Value</th>
+            <th class="col-num text-center">Qty Dispatched</th>
+            <th class="col-status">Status</th>
+            <th class="col-status">Supply Status</th>
+            <th class="col-status">Supply Installation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows | slice: pager.start : pager.end; let i = index" [ngClass]="rowClass(row)">
+            <td class="text-center">{{ pager.start + i + 1 }}</td>
+            <td>
+              <div class="sub-text">{{ row.OutwardNo }}</div>
+              <div class="strong-text">{{ row.PoNo }}</div>
+            </td>
+            <td>{{ row.PoDate }}</td>
+            <td>
+              <div class="sub-text">{{ row.ItemCode }}</div>
+              <div>{{ row.ItemName }}</div>
+            </td>
+            <td>
+              <div>{{ row.BasicRate ?? '—' }}</div>
+              <div class="sub-text">{{ row.Gst ?? '—' }}% GST</div>
+            </td>
+            <td class="text-center">{{ row.NoOfConsignee }}</td>
+            <td class="text-center">{{ row.Quantity }}</td>
+            <td>{{ row.TotalPoValue ?? '—' }}</td>
+            <td class="text-center">{{ row.DispatchedQty }}</td>
+            <td>{{ row.Status }}</td>
+            <td>
+              <button type="button" class="link-btn" (click)="openConsignees(row)">{{ row.SupplyStatus }}</button>
+            </td>
+            <td>
+              <button
+                *ngIf="row.SupplyStatus === 'Complete Supplied'"
+                type="button"
+                class="link-btn"
+                (click)="openInstallation(row)">
+                Click Here
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="12" class="empty-row">
+              <div class="empty-state">
+                <p>No pending purchase orders for this supplier.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+        [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

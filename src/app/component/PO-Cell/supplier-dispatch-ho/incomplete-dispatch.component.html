@@ -1,0 +1,148 @@
+<div class="supplier-po-page">
+  <h2 class="page-title">Incomplete Supplier Dispatch As Mail/Approval/Letter</h2>
+
+  <div class="po-search">
+    <label for="poSearch" class="strong-text">PO No</label>
+    <input
+      id="poSearch"
+      type="text"
+      [(ngModel)]="searchTerm"
+      name="poSearch"
+      placeholder="Type PO number"
+      (keyup.enter)="search()" />
+    <button type="button" class="show-btn" (click)="search()" [disabled]="searching">
+      {{ searching ? 'Searching...' : 'Search' }}
+    </button>
+  </div>
+
+  <ul class="po-search-results" *ngIf="searchResults.length">
+    <li *ngFor="let option of searchResults">
+      <button type="button" (click)="selectPo(option)">
+        <span class="strong-text">{{ option.PoNo }}</span>
+        <span class="sub-text"> — {{ option.PoDate }} — {{ option.SupplierName }}</span>
+      </button>
+    </li>
+  </ul>
+
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="6" [cols]="8" />
+
+  <ng-container *ngIf="!loading && header">
+    <div class="po-header">
+      <span>Supplier: <strong>{{ header.SupplierName }}</strong></span>
+      <span>PO No: <strong>{{ header.PoNo }}</strong></span>
+      <span>PO Date: <strong>{{ header.PoDate }}</strong></span>
+      <span>Total PO Qty: <strong>{{ header.TotalPoQty }}</strong></span>
+      <span>Item: <strong>{{ header.ItemName }}</strong> <span class="sub-text">{{ header.ItemCode }}</span></span>
+      <span>Directorate: <strong>{{ header.DirectorateName }}</strong></span>
+    </div>
+
+    <div class="datagrid">
+      <div class="table-wrap">
+        <table class="po-grid ho-grid">
+          <thead>
+            <tr>
+              <th class="col-sn text-center">S.No</th>
+              <th class="col-check text-center">Select</th>
+              <th class="col-item">Consignee</th>
+              <th class="col-po">Dispatch No / Date</th>
+              <th class="col-date">Tentative Supply</th>
+              <th class="col-date">Consignee Receipt</th>
+              <th class="col-num text-center">Dispatch Qty</th>
+              <th class="col-status">Dispatch Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let row of rows | slice: pager.start : pager.end; let i = index"
+              [class.supply-complete]="canSelect(row)"
+              [class.row-locked]="!canSelect(row)">
+              <td class="text-center">{{ pager.start + i + 1 }}</td>
+              <td class="text-center">
+                <input
+                  type="checkbox"
+                  [attr.aria-label]="'Select dispatch ' + row.IssueId"
+                  [disabled]="!canSelect(row)"
+                  [(ngModel)]="row.checked"
+                  [name]="'chk-' + row.IssueId" />
+              </td>
+              <td>{{ row.LocationName }}</td>
+              <td>
+                <div>{{ row.DispatchNo || '—' }}</div>
+                <div class="sub-text">{{ row.DispatchDate }}</div>
+              </td>
+              <td>{{ row.TentativeDate || '—' }}</td>
+              <td>{{ row.ReceivedDate }}</td>
+              <td class="text-center">{{ row.Quantity }}</td>
+              <td>
+                <span class="status-chip"
+                  [class.status-chip--done]="row.SupplyStatus === 'Complete'"
+                  [class.status-chip--pending]="row.SupplyStatus !== 'Complete'">
+                  {{ row.SupplyStatus }}
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="!rows.length">
+              <td colspan="8" class="empty-row">No supplier dispatch found for this PO.</td>
+            </tr>
+          </tbody>
+        </table>
+        <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+          [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
+      </div>
+      <p class="sub-text">Green rows are not yet received by the consignee and can be marked incomplete. Pink rows are already received — reverse the receipt/installation first.</p>
+    </div>
+
+    <div class="incomplete-form">
+      <div class="incomplete-form__row">
+        <label for="remark">Remarks</label>
+        <input id="remark" type="text" [(ngModel)]="remark" name="remark" maxlength="200" placeholder="Enter remarks" />
+      </div>
+      <div class="incomplete-form__row">
+        <label for="approvalFile">Upload Mail/Approval Copy/Notesheet (PDF)</label>
+        <input id="approvalFile" type="file" accept=".pdf" (change)="onFileSelected($event)" />
+      </div>
+      <div class="incomplete-form__row">
+        <button type="button" class="show-btn" [disabled]="saving || !hasSelection()" (click)="save()">
+          {{ saving ? 'Saving...' : 'Mark Dispatch Incomplete' }}
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="history-section" *ngIf="history.length">
+    <h3>Incomplete Dispatch History</h3>
+    <div class="table-wrap">
+      <table class="po-grid ho-grid">
+        <thead>
+          <tr>
+            <th class="col-sn text-center">S.No</th>
+            <th class="col-po">PO No</th>
+            <th class="col-date">PO Date</th>
+            <th class="col-item">Supplier</th>
+            <th class="col-item">Consignee</th>
+            <th>Remarks</th>
+            <th class="col-date text-center">Entry Date</th>
+            <th class="col-num text-center">Approval</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of history | slice: historyPager.start : historyPager.end; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ historyPager.start + i + 1 }}</td>
+            <td>{{ row.PoNo }}</td>
+            <td>{{ row.PoDate }}</td>
+            <td>{{ row.SupplierName }}</td>
+            <td>{{ row.Location }}</td>
+            <td>{{ row.Remark || '—' }}</td>
+            <td class="text-center">{{ row.EntryDate }}</td>
+            <td class="text-center">
+              <a *ngIf="row.DocId; else noFile" [href]="fileUrl + row.DocId" target="_blank" rel="noopener">Download</a>
+              <ng-template #noFile>—</ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-paginator [length]="history.length" [pageIndex]="historyPager.index" [pageSize]="historyPager.size"
+        [pageSizeOptions]="historyPager.sizes" (page)="historyPager.onPage($event)" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

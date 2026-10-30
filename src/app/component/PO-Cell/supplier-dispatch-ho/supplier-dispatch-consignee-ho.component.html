@@ -1,0 +1,106 @@
+<div class="supplier-po-page">
+  <h2 class="page-title narrow">{{ title }}</h2>
+
+  <div class="page-toolbar">
+    <button type="button" class="back-btn" (click)="back()">Back to Dispatch Pending</button>
+  </div>
+
+  <div class="empty-state" *ngIf="missingPo">
+    <p>Open this page from Dispatch Pending by clicking a PO's Supply Status.</p>
+  </div>
+
+  <div class="po-header" *ngIf="poNo || poDate">
+    <span>Po Number: <strong>{{ poNo }}</strong></span>
+    <span>Po Date: <strong>{{ poDate }}</strong></span>
+  </div>
+
+  <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="8" />
+
+  <div class="datagrid" *ngIf="!loading && !missingPo">
+    <div class="table-wrap">
+      <table class="po-grid ho-grid--consignee">
+        <thead>
+          <tr>
+            <th class="col-sn text-center">S.No</th>
+            <th class="col-item">Item Name</th>
+            <th class="col-num">Item Code</th>
+            <th class="col-item">Consignee</th>
+            <th class="col-num text-center">Unit Price</th>
+            <th class="col-num text-center">Order Qty</th>
+            <th class="col-num text-center">Total Price</th>
+            <th class="col-num text-center">Dispatched Qty</th>
+            <th class="col-batch">Dispatch Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows | slice: pager.start : pager.end; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ pager.start + i + 1 }}</td>
+            <td>{{ row.ItemName }}</td>
+            <td>{{ row.ItemCode }}</td>
+            <td>{{ row.LocationName }}</td>
+            <td class="text-center">{{ row.UnitPrice ?? '—' }}</td>
+            <td class="text-center">{{ row.Quantity }}</td>
+            <td class="text-center">{{ row.TotalPrice ?? '—' }}</td>
+            <td class="text-center">{{ row.DispatchedQty }}</td>
+            <td>
+              <table class="batch-grid" *ngIf="row.Batches.length; else noBatches">
+                <thead>
+                  <tr>
+                    <th>Dispatch No / Date</th>
+                    <th>Tentative Supply / Consignee Receipt</th>
+                    <th>Dispatch Qty</th>
+                    <th>Consignee Status</th>
+                    <th *ngIf="installationMode">Installation</th>
+                    <th *ngIf="installationMode">Invoice Doc</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let batch of row.Batches">
+                    <td class="text-center">
+                      <div>{{ batch.DispatchNo || '—' }}</div>
+                      <div>{{ batch.DispatchDate }}</div>
+                    </td>
+                    <td class="text-center">
+                      <div>{{ batch.TentativeDate || '—' }}</div>
+                      <div>/Receipt DT: {{ batch.ReceivedDate }}</div>
+                    </td>
+                    <td class="text-center">{{ batch.Quantity }}</td>
+                    <td class="text-center">
+                      <button
+                        *ngIf="batch.SupplyStatus === 'Complete'; else incompleteChip"
+                        type="button"
+                        class="link-btn"
+                        title="Open dispatch report"
+                        (click)="openReport(batch)">
+                        Complete
+                      </button>
+                      <ng-template #incompleteChip>
+                        <span class="status-chip status-chip--pending">Incomplete</span>
+                      </ng-template>
+                    </td>
+                    <td class="text-center" *ngIf="installationMode">
+                      <span class="status-chip"
+                        [class.status-chip--done]="batch.InstallationStatus === 'Complete'"
+                        [class.status-chip--pending]="batch.InstallationStatus !== 'Complete'">
+                        {{ batch.InstallationStatus }}
+                      </span>
+                    </td>
+                    <td class="text-center" *ngIf="installationMode">
+                      {{ batch.HasInvoiceDoc ? 'Uploaded' : 'Not uploaded' }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <ng-template #noBatches>No dispatch yet</ng-template>
+            </td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="9" class="empty-row">No records found.</td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+        [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

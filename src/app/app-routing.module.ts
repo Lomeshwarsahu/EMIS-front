@@ -433,6 +433,37 @@ const routes: Routes = [
     data: { variant: 'igm-mov-bme' },
   },
 
+  //#region PO Cell — HO supplier dispatch (SupplierDispatchPending*_HO, InCompleteDispatch)
+  {
+    path: 'orders/supplier-dispatch-pending-ho',
+    loadComponent: () => import('./component/PO-Cell/supplier-dispatch-ho/supplier-dispatch-pending-ho.component').then(m => m.SupplierDispatchPendingHoComponent),
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUPO', 'TPO', 'AD', 'AU'] },
+  },
+  {
+    path: 'orders/supplier-dispatch-pending-cons-ho',
+    loadComponent: () => import('./component/PO-Cell/supplier-dispatch-ho/supplier-dispatch-consignee-ho.component').then(m => m.SupplierDispatchConsigneeHoComponent),
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUPO', 'TPO', 'AD', 'AU'], mode: 'dispatch' },
+  },
+  {
+    path: 'orders/supplier-dispatch-pending-insta-ho',
+    loadComponent: () => import('./component/PO-Cell/supplier-dispatch-ho/supplier-dispatch-consignee-ho.component').then(m => m.SupplierDispatchConsigneeHoComponent),
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUPO', 'TPO', 'AD', 'AU'], mode: 'installation' },
+  },
+  {
+    path: 'orders/incomplete-dispatch',
+    loadComponent: () => import('./component/PO-Cell/supplier-dispatch-ho/incomplete-dispatch.component').then(m => m.IncompleteDispatchComponent),
+    canActivate: [RouteGuardService],
+    data: { allowedRoles: ['AUPO', 'TPO', 'AD', 'AU'] },
+  },
+  { path: 'SupplierDispatchPending_HO', redirectTo: 'orders/supplier-dispatch-pending-ho', pathMatch: 'full' },
+  { path: 'SupplierDispatchPendingCons_HO', redirectTo: 'orders/supplier-dispatch-pending-cons-ho', pathMatch: 'full' },
+  { path: 'SupplierDispatchPendingInsta_HO', redirectTo: 'orders/supplier-dispatch-pending-insta-ho', pathMatch: 'full' },
+  { path: 'InCompleteDispatch', redirectTo: 'orders/incomplete-dispatch', pathMatch: 'full' },
+  //#endregion
+
   {
     // path: 'ExtensionHODetail',
     path: 'POSupplyHO',
