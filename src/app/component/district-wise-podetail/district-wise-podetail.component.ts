@@ -95,7 +95,11 @@ Diectorateid:any;
     'basicrate',
     'percentage',
     'totalprice',
-   
+    'po_qty',
+    'supply_qty',
+    'receiptQTY',
+    'insqty',
+
     //  'action',
 
 

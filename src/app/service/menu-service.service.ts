@@ -311,7 +311,7 @@ export class MenuServiceService {
             { label: 'Extension Entry', route: '/POSupplyHO' },
             // { label: 'Extension HO Detail', route: '/ExtensionHODetail' },
             { label: 'Purchase Order', route: '/EMSPODashboard' },
-            { label: 'Extension HO Detail', route: '/ExtensionHODetail' },
+            { label: 'Extension HO Detail', route: '/POSupplyHO' },
           ],
         },
         {
@@ -721,7 +721,7 @@ export class MenuServiceService {
           label: 'Orders',
           route: '',
           submenu: [
-            { label: 'Extension HO Detail', route: '/ExtensionHODetail' },
+            { label: 'Extension HO Detail', route: '/POSupplyHO' },
           ],
         },
 

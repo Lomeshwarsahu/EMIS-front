@@ -381,7 +381,7 @@ const routes: Routes = [
   },
   {
     path: 'MasterSupplierDash',
-    loadComponent: () => import('./component/Tender Cell/master-supplier-dash/master-supplier-dash.component').then(m => m.MasterSupplierDashComponent),
+    loadComponent: () => import('./component/BME/mastter-supplier-dash/mastter-supplier-dash.component').then(m => m.MastterSupplierDashComponent),
     canActivate: [RouteGuardService],
   },
   {
@@ -408,12 +408,7 @@ const routes: Routes = [
     canActivate: [RouteGuardService],
     data: { variant: 'igm' },
   },
-  {
-    path: 'FileMRCDashboardFINFile',
-    loadComponent: () => import('./component/file-mrcdashbord/file-mrcdashbord.component').then(m => m.FileMRCDashbordComponent),
-    canActivate: [RouteGuardService],
-    data: { variant: 'fin-file' },
-  },
+
   {
     path: 'FileMRCDashboardFINFile_Ver1',
     loadComponent: () => import('./component/file-mrcdashbord/file-mrcdashbord.component').then(m => m.FileMRCDashbordComponent),
@@ -496,7 +491,7 @@ const routes: Routes = [
 
   {
     path: 'IndentPOSummaryDirwise',
-    loadComponent: () => import('./component/indent-posummary-dirwise/indent-posummary-dirwise.component').then(m => m.IndentPOSummaryDirwiseComponent),
+    loadComponent: () => import('./Reports/indent-po-summary-dirwise/indent-po-summary-dirwise.component').then(m => m.IndentPoSummaryDirwiseComponent),
     canActivate: [RouteGuardService],
   },
 
@@ -1189,7 +1184,7 @@ const routes: Routes = [
   },
   {
     path: 'reports/cover-a-items-reports',
-    loadComponent: () => import('./Reports/cover-a-items-reports/cover-a-items-reports.component').then(m => m.CoverAItemsReportsComponent),
+    loadComponent: () => import('./component/BME/cover-aitems-reports/cover-aitems-reports.component').then(m => m.CoverAitemsReportsComponent),
     canActivate: [RouteGuardService],
   },
   {
@@ -1214,12 +1209,12 @@ const routes: Routes = [
   },
   {
     path: 'reports/complain-report-bme',
-    loadComponent: () => import('./Reports/complain-report-bme/complain-report-bme.component').then(m => m.ComplainReportBmeComponent),
+    loadComponent: () => import('./component/complain-report-bme/complain-report-bme.component').then(m => m.ComplainReportBMEComponent),
     canActivate: [RouteGuardService],
   },
   {
     path: 'reports/district-wise-po-detail',
-    loadComponent: () => import('./Reports/district-wise-po-detail/district-wise-po-detail.component').then(m => m.DistrictWisePoDetailComponent),
+    loadComponent: () => import('./component/district-wise-podetail/district-wise-podetail.component').then(m => m.DistrictWisePODetailComponent),
     canActivate: [RouteGuardService],
   },
   {
@@ -1229,7 +1224,7 @@ const routes: Routes = [
   },
   {
     path: 'reports/po-paid-report',
-    loadComponent: () => import('./Reports/po-paid-report/po-paid-report.component').then(m => m.PoPaidReportComponent),
+    loadComponent: () => import('./component/popaid-report/popaid-report.component').then(m => m.POPaidReportComponent),
     canActivate: [RouteGuardService],
   },
   {
@@ -1242,24 +1237,20 @@ const routes: Routes = [
     loadComponent: () => import('./Reports/tender-status/tender-status.component').then(m => m.TenderStatusComponent),
     canActivate: [RouteGuardService],
   },
-  {
-    path: 'reports/po-summary',
-    loadComponent: () => import('./Reports/po-summary/po-summary.component').then(m => m.PoSummaryComponent),
-    canActivate: [RouteGuardService],
-  },
+
   {
     path: 'reports/po-summary-drilldown-qty',
-    loadComponent: () => import('./Reports/po-summary-drilldown-qty/po-summary-drilldown-qty.component').then(m => m.PoSummaryDrilldownQtyComponent),
+    loadComponent: () => import('./component/posummary-drill-dwn-qty/posummary-drill-dwn-qty.component').then(m => m.POSummaryDrillDwnQtyComponent),
     canActivate: [RouteGuardService],
   },
   {
     path: 'reports/po-summary-drilldown-qty-powise',
-    loadComponent: () => import('./Reports/po-summary-drilldown-qty-powise/po-summary-drilldown-qty-powise.component').then(m => m.PoSummaryDrilldownQtyPowiseComponent),
+    loadComponent: () => import('./component/posummary-drill-dwn-qty-powise/posummary-drill-dwn-qty-powise.component').then(m => m.POSummaryDrillDwnQtyPOWiseComponent),
     canActivate: [RouteGuardService],
   },
   {
     path: 'reports/po-summary-drilldown-qty-reagent',
-    loadComponent: () => import('./Reports/po-summary-drilldown-qty-reagent/po-summary-drilldown-qty-reagent.component').then(m => m.PoSummaryDrilldownQtyReagentComponent),
+    loadComponent: () => import('./component/posummary-drill-dwn-qty-reagent/posummary-drill-dwn-qty-reagent.component').then(m => m.POSummaryDrillDwnQtyReagentComponent),
     canActivate: [RouteGuardService],
   },
   {
@@ -1267,11 +1258,7 @@ const routes: Routes = [
     loadComponent: () => import('./Reports/indent-po-summary-dirwise/indent-po-summary-dirwise.component').then(m => m.IndentPoSummaryDirwiseComponent),
     canActivate: [RouteGuardService],
   },
-  {
-    path: 'reports/cover-a-items-reports',
-    loadComponent: () => import('./Reports/cover-a-items-reports/cover-a-items-reports.component').then(m => m.CoverAItemsReportsComponent),
-    canActivate: [RouteGuardService],
-  },
+
   {
     path: 'reports/payments-cpreport',
     loadComponent: () => import('./Reports/payments-cpreport/payments-cpreport.component').then(m => m.PaymentsCpreportComponent),
@@ -1279,7 +1266,7 @@ const routes: Routes = [
   },
   {
     path: 'reports/po-receipt-summary',
-    loadComponent: () => import('./Reports/po-receipt-summary/po-receipt-summary.component').then(m => m.PoReceiptSummaryComponent),
+    loadComponent: () => import('./component/porecdsummary/porecdsummary.component').then(m => m.PORecdsummaryComponent),
     canActivate: [RouteGuardService],
   },
   {
@@ -1314,11 +1301,7 @@ const routes: Routes = [
     redirectTo: 'reports/eel-specification',
     pathMatch: 'full',
   },
-  {
-    path: 'Itemspecification',
-    redirectTo: 'reports/eel-specification',
-    pathMatch: 'full',
-  },
+
   {
     path: 'cme-eel-suggestion',
     redirectTo: 'masters/cme-eel-suggestion',
@@ -1451,33 +1434,17 @@ const routes: Routes = [
     redirectTo: 'orders/po-installation-report',
     pathMatch: 'full',
   },
-  {
-    path: 'EMSRCDashbord',
-    redirectTo: 'contracts/dashboard',
-    pathMatch: 'full',
-  },
-  { path: 'EMSNEWRC', redirectTo: 'contracts/new-rc', pathMatch: 'full' },
+
+
   // {
   //   path: 'RCDetailReport',
   //   redirectTo: 'contracts/rc-detail-report',
   //   pathMatch: 'full',
   // },
-  { path: 'PlanaTenderD', redirectTo: 'tender/plan', pathMatch: 'full' },
-  {
-    path: 'TenderStatusUpdate',
-    redirectTo: 'tender/evaluation',
-    pathMatch: 'full',
-  },
-  {
-    path: 'AddRTenderItems',
-    redirectTo: 'tender/claim-object',
-    pathMatch: 'full',
-  },
-  {
-    path: 'TendersStatus',
-    redirectTo: 'tender/gem-price-acceptance',
-    pathMatch: 'full',
-  },
+
+
+
+
   {
     path: 'dme-fac-heads',
     redirectTo: 'indents/budget-heads',
@@ -1488,83 +1455,31 @@ const routes: Routes = [
     redirectTo: 'indents/annual-indent',
     pathMatch: 'full',
   },
-  {
-    path: 'IndentFromFacilities',
-    redirectTo: 'indents/from-facilities',
-    pathMatch: 'full',
-  },
+
   {
     path: 'FacilityAuthPOValuePOCell',
     redirectTo: 'finance/year-wise-po-abstract',
     pathMatch: 'full',
   },
-  {
-    path: 'FPOPaidReport',
-    redirectTo: 'finance/po-wise-payment',
-    pathMatch: 'full',
-  },
-  {
-    path: 'POPaidReport',
-    redirectTo: 'reports/po-wise-payment',
-    pathMatch: 'full',
-  },
-  {
-    path: 'ChequeWisePaymentReport',
-    redirectTo: 'finance/cheque-wise-payment',
-    pathMatch: 'full',
-  },
+
+
+
   {
     path: 'facility-complain-store',
     redirectTo: 'complain/facility-store',
     pathMatch: 'full',
   },
-  {
-    path: 'ComplainReportBME',
-    redirectTo: 'complain/report',
-    pathMatch: 'full',
-  },
+
   { path: 'cmc-detail', redirectTo: 'reports/cmc-detail', pathMatch: 'full' },
-  {
-    path: 'POSummaryReport',
-    redirectTo: 'reports/po-summary',
-    pathMatch: 'full',
-  },
-  {
-    path: 'PORecdsummary',
-    redirectTo: 'reports/po-receipts-summary',
-    pathMatch: 'full',
-  },
-  {
-    path: 'TenterStatusItemWise',
-    redirectTo: 'reports/tender-item-status',
-    pathMatch: 'full',
-  },
-  {
-    path: 'POSummaryDrillDwnQtyReagent',
-    redirectTo: 'reports/reagent-po',
-    pathMatch: 'full',
-  },
-  {
-    path: 'MastterSupplierDash',
-    redirectTo: 'masters/supplier',
-    pathMatch: 'full',
-  },
-  { path: 'ItemsBME', redirectTo: 'masters/items', pathMatch: 'full' },
-  {
-    path: 'MapitemsEithType',
-    redirectTo: 'masters/map-items',
-    pathMatch: 'full',
-  },
-  {
-    path: 'MapitemswithTypeUpdate',
-    redirectTo: 'masters/map-items-update',
-    pathMatch: 'full',
-  },
-  {
-    path: 'MapitemswithMainitemTypeRepo',
-    redirectTo: 'masters/map-items-report',
-    pathMatch: 'full',
-  },
+
+
+
+
+
+
+
+
+
 //#region GM Finance
 // 
   {
@@ -1770,11 +1685,7 @@ const routes: Routes = [
     redirectTo: 'reports/equipment-tag-report',
     pathMatch: 'full',
   },
-  {
-    path: 'PerformanceCertificate',
-    loadComponent: () => import('./Performance/performance-certificate/performance-certificate.component').then(m => m.PerformanceCertificateComponent),
-    canActivate: [RouteGuardService],
-  },
+
   {
     path: 'performance/performace20-consignee',
     loadComponent: () => import('./Performance/performace20-consignee/performace20-consignee.component').then(m => m.Performace20ConsigneeComponent),
