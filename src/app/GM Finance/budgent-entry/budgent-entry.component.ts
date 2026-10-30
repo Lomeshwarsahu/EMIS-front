@@ -11,6 +11,8 @@ import {
 import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
+import { SecureFileService } from 'src/app/service/secure-file.service';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/service/api.service';
 import { CollapseModule } from 'src/app/collapse';
@@ -95,7 +97,8 @@ constructor(
     public toastr: ToastrService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private router: Router,private route: ActivatedRoute
+    private router: Router,private route: ActivatedRoute,
+    private secureFile: SecureFileService,
   ) {
     // this.dataSource = new MatTableDataSource<any>([]);
   }
@@ -311,8 +314,16 @@ constructor(
     }
   }
 
-  onDownloadFileStream(bgid: number) {
-    this.toastr.success(`Initiating document binary bundle stream download pipeline for identity ID: ${bgid}`);
+  // Same grid API as Opening Balance: the stored FilePath is served by GMFI/GetFundReceiptFile.
+  onDownloadFileStream(filePath: string) {
+    if (!filePath || filePath.trim() === '') {
+      this.toastr.warning('Document not found for this record!', 'Warning');
+      return;
+    }
+    this.secureFile.openInNewTab(
+      `${environment.apiUrl}/GMFI/GetFundReceiptFile?filePath=${encodeURIComponent(filePath)}`,
+      'FundReceipt.pdf',
+    );
   }
 
   onCancelClearForm(form: any) {

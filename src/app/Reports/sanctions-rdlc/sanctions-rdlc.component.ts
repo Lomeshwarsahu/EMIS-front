@@ -7,6 +7,7 @@ import { MaterialModule } from 'src/app/material-module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { SecureFileService } from 'src/app/service/secure-file.service';
 
 @Component({
   selector: 'app-sanctions-rdlc',
@@ -34,6 +35,7 @@ export class SanctionsRdlcComponent {
     public toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
+    private secureFile: SecureFileService,
   ) {}
 
   ngOnInit() {
@@ -52,7 +54,8 @@ export class SanctionsRdlcComponent {
     this.downloaded = false;
 
     const pdfUrl = `${environment.apiUrl}/Reports/sanctions-rdlc-pdf?sactionId=${this.sanctionId}&poNoId=${this.poNoId}`;
-    window.open(pdfUrl, '_blank');
+    // Fetched with the login token; a plain window.open of the API URL gets 401.
+    this.secureFile.openInNewTab(pdfUrl, `Sanction_${this.sanctionId}.html`);
     this.loading = false;
     this.downloaded = true;
   }

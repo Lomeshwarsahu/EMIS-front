@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ListPager } from 'src/app/helper/list-pager';
 import { ApiService } from 'src/app/service/api.service';
+import { SecureFileService } from 'src/app/service/secure-file.service';
 import { apiErrorMessage } from '../../DME/shared/session.util';
 import { SupplierPageSkeletonComponent } from '../../Suppliers/supplier-page-skeleton/supplier-page-skeleton.component';
 import {
@@ -18,12 +19,21 @@ import {
 
 interface IncompleteDispatchRow extends DispatchBatch {
   checked: boolean;
+  ReceiptId?: number;
+  ReceiptStatus?: string;
+}
+
+interface HistoryRow extends IncompleteDispatchHistory {
+  Category?: string;
 }
 
 /**
  * POCell/InCompleteDispatch.aspx — marks a supplier's completed dispatch back to Incomplete (so the supplier can correct it)
  * against an approval mail/letter PDF. Only dispatches not yet received by the consignee can be reverted.
  * Legacy opened it from the PO dashboard with ?PoNoID=; this page also offers a PO search.
+ *
+ * Route data kind 'receipt' = POCell/InCompleteReceiptInstallation.aspx: the reverse case — only received rows can be
+ * selected, and the facility receipt is either marked Incomplete ('R') or deleted with its installation ('D').
  */
 @Component({
   selector: 'app-incomplete-dispatch',
@@ -36,6 +46,9 @@ export class IncompleteDispatchComponent implements OnInit {
   readonly pager = new ListPager();
   readonly historyPager = new ListPager();
   readonly fileUrl = `${environment.apiUrl}/DMEOrder/po-reallocation/file/`;
+  receiptMode = false;
+  /** Receipt mode only: 'R' = mark receipt incomplete, 'D' = delete receipt and installation. */
+  receiptAction: 'R' | 'D' = 'R';
 
   searchTerm = '';
   searchResults: IncompleteDispatchPoOption[] = [];
@@ -43,7 +56,7 @@ export class IncompleteDispatchComponent implements OnInit {
 
   header: IncompleteDispatchHeader | null = null;
   rows: IncompleteDispatchRow[] = [];
-  history: IncompleteDispatchHistory[] = [];
+  history: HistoryRow[] = [];
   remark = '';
   selectedFile: File | null = null;
   loading = false;
@@ -54,9 +67,21 @@ export class IncompleteDispatchComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly toastr: ToastrService,
+    private readonly secureFile: SecureFileService,
   ) {}
 
+  get apiBase(): string {
+    return this.receiptMode ? 'SupplierDispatchHO/incomplete-receipt' : 'SupplierDispatchHO/incomplete-dispatch';
+  }
+
+  get title(): string {
+    return this.receiptMode
+      ? 'Incomplete Facility Receipt / Installation As Mail/Approval/Letter'
+      : 'Incomplete Supplier Dispatch As Mail/Approval/Letter';
+  }
+
   ngOnInit(): void {
+    this.receiptMode = this.route.snapshot.data['kind'] === 'receipt';
     this.loadHistory();
     this.route.queryParamMap.subscribe((params) => {
       const poId = Number(params.get('PoNoID') || params.get('poId') || 0);
@@ -89,8 +114,15 @@ export class IncompleteDispatchComponent implements OnInit {
     this.router.navigate([], { relativeTo: this.route, queryParams: { PoNoID: option.PoId } });
   }
 
+  // Opened through HttpClient so the login token is sent (a plain link gets 401).
+  openApproval(row: HistoryRow): void {
+    this.secureFile.openInNewTab(this.fileUrl + row.DocId, `IncompleteDispatch_${row.DocId}.pdf`);
+  }
+
+  // Dispatch: only not-yet-received rows; receipt: only received rows.
   canSelect(row: IncompleteDispatchRow): boolean {
-    return row.ReceivedDate === 'Not Receipt';
+    const received = row.ReceivedDate !== 'Not Receipt';
+    return this.receiptMode ? received && !!row.ReceiptId : !received;
   }
 
   hasSelection(): boolean {
@@ -124,14 +156,21 @@ export class IncompleteDispatchComponent implements OnInit {
     const formData = new FormData();
     formData.append('poId', String(this.header.PoId));
     formData.append('remark', this.remark);
-    formData.append('items', JSON.stringify(selected.map((r) => ({ IssueId: r.IssueId, LocationId: r.LocationId }))));
+    formData.append(
+      'items',
+      JSON.stringify(selected.map((r) => ({ IssueId: r.IssueId, LocationId: r.LocationId, ReceiptId: r.ReceiptId ?? 0 }))),
+    );
     formData.append('file', this.selectedFile, this.selectedFile.name);
+    if (this.receiptMode) {
+      formData.append('mode', this.receiptAction);
+      if (this.receiptAction === 'D' && !confirm('Delete the selected facility receipts and their installation details?')) return;
+    }
 
     this.saving = true;
-    this.api.post('SupplierDispatchHO/incomplete-dispatch', formData).subscribe({
+    this.api.post(this.apiBase, formData).subscribe({
       next: (res: any) => {
         this.saving = false;
-        this.toastr.success(res?.message ?? 'Supplier Dispatch has been Incompleted Successfully');
+        this.toastr.success(res?.message ?? 'Saved successfully');
         this.remark = '';
         this.selectedFile = null;
         this.loadPo(this.header!.PoId);
@@ -139,7 +178,7 @@ export class IncompleteDispatchComponent implements OnInit {
       },
       error: (e: any) => {
         this.saving = false;
-        this.toastr.error(apiErrorMessage(e, 'Could not mark the dispatch incomplete.'));
+        this.toastr.error(apiErrorMessage(e, 'Could not save.'));
       },
     });
   }
@@ -157,7 +196,7 @@ export class IncompleteDispatchComponent implements OnInit {
         this.toastr.error(apiErrorMessage(e, 'Could not load PO header.'));
       },
     });
-    this.api.get(`SupplierDispatchHO/incomplete-dispatch/rows?poId=${poId}`).subscribe({
+    this.api.get(`${this.apiBase}/rows?poId=${poId}`).subscribe({
       next: (res: any) => {
         this.pager.reset();
         this.rows = (Array.isArray(res) ? res : []).map((r: DispatchBatch) => ({ ...r, checked: false }));
@@ -167,7 +206,7 @@ export class IncompleteDispatchComponent implements OnInit {
   }
 
   private loadHistory(): void {
-    this.api.get('SupplierDispatchHO/incomplete-dispatch/history').subscribe({
+    this.api.get(`${this.apiBase}/history`).subscribe({
       next: (res: any) => {
         this.historyPager.reset();
         this.history = Array.isArray(res) ? res : [];

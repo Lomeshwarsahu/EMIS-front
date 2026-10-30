@@ -156,12 +156,7 @@
               <td>{{ row.Remark || '—' }}</td>
               <td class="text-center">{{ row.EntryDate || '—' }}</td>
               <td class="text-center">
-                <a
-                  href="{{ downloadUrl }}{{ row.ExtensionId }}"
-                  target="_blank"
-                  rel="noopener">
-                  Download File
-                </a>
+                <button type="button" class="link-btn" (click)="openFile(row.ExtensionId)">Download File</button>
               </td>
             </tr>
           </tbody>

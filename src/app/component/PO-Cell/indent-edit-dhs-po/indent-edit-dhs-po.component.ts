@@ -270,8 +270,31 @@ GetLinkedItems() {
   GetitemFulldetail(id:any){
     
   }
-  onDeleteRow(valu:any){
+  // Legacy gv_RowDeleting: only rows without a final qty (or status 'I') can be removed.
+  canDeleteRow(row: any): boolean {
+    return !Number(row?.FinalQty) || row?.Status === 'I';
+  }
 
+  onDeleteRow(row: any) {
+    if (!this.canDeleteRow(row)) return;
+    if (!confirm(`Remove ${row.ItemName || 'this item'} from the indent?`)) return;
+    this.spinner.show();
+    this.api
+      .post('POCell/DeleteIndentConsolidationItem', {
+        IndentConsolidationId: Number(this.IndentCId),
+        ItemId: row.ItemId,
+      })
+      .subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          this.toastr.success(res?.message || 'Item removed from indent.');
+          this.GetLinkedItems();
+        },
+        error: (err: any) => {
+          this.spinner.hide();
+          this.toastr.error(err?.error?.message || 'Delete not allowed, references found');
+        },
+      });
   }
 
   onAddRow(value: any) {

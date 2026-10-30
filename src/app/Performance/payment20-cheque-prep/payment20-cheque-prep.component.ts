@@ -6,6 +6,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { SecureFileService } from 'src/app/service/secure-file.service';
+import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { MaterialModule } from 'src/app/material-module';
 import { Payment20ChequePrepItem } from 'src/app/Model/models';
@@ -49,6 +51,7 @@ export class Payment20ChequePrepComponent implements OnInit {
     private api: ApiService,
     public toastr: ToastrService,
     private router: Router,
+    private readonly secureFile: SecureFileService,
   ) {
     this.dataSource = new MatTableDataSource<Payment20ChequePrepItem>([]);
   }
@@ -102,31 +105,15 @@ export class Payment20ChequePrepComponent implements OnInit {
         error: (err: any) => this.toastr.error(err.error?.message || 'Update failed'),
       });
   }
-
   showNotesheet(paymentId: number) {
-    this.api.get('Performance/generate-sanction-notesheet', {
-      params: { paymentid: paymentId },
-      responseType: 'blob' as 'json',
-    }).subscribe({
-      next: (res: any) => {
-        const blob = new Blob([res], {
-          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `SanctionNotesheet_${paymentId}.docx`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      },
-      error: () => this.toastr.error('Failed to download notesheet'),
-    });
+    this.secureFile.openInNewTab(
+      `${environment.apiUrl}/Performance/generate-sanction-notesheet?paymentid=${paymentId}`,
+      `SanctionNotesheet_${paymentId}.html`,
+    );
   }
-
+  // Legacy lnkBL_Click -> Payment/PaymentLetter.aspx?Paymentid=&Is20=Y
   showBankLetter(paymentId: number) {
-    this.toastr.info('Bank letter feature will be implemented');
+    this.router.navigate(['/payment-letter'], { queryParams: { Paymentid: paymentId, Is20: 'Y' } });
   }
 
   applyTextFilter(event: Event) {

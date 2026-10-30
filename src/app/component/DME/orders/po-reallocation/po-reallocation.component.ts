@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { SecureFileService } from 'src/app/service/secure-file.service';
 import { environment } from '../../../../../environments/environment';
 import { DmePageSkeletonComponent } from '../../shared/dme-page-skeleton/dme-page-skeleton.component';
 import { apiErrorMessage } from '../../shared/session.util';
@@ -93,7 +94,13 @@ export class PoReallocationComponent implements OnInit {
     private readonly http: HttpClient,
     private readonly route: ActivatedRoute,
     private readonly toastr: ToastrService,
+    private readonly secureFile: SecureFileService,
   ) {}
+
+  // Fetched with the login token; a plain link to the API gets 401.
+  openFile(id: number): void {
+    this.secureFile.openInNewTab(`${this.downloadUrl}${id}`, `POReallocation_${id}.pdf`);
+  }
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params) => {

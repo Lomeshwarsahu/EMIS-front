@@ -93,7 +93,8 @@
         </ul>
       </div>
 
-      <div class="card-body tab-content" id="loginTabsContent" [class.users-loading]="usersLoading" [attr.aria-busy]="usersLoading">
+      <div class="card-body tab-content" id="loginTabsContent" [class.users-loading]="usersLoading"
+        [class.login-busy]="loggingIn || supplierAuthBusy" [attr.aria-busy]="usersLoading || loggingIn || supplierAuthBusy">
         <!--  Admin login -->
         <div class="tab-pane fade show active" id="cgmscl" role="tabpanel" aria-labelledby="cgmscl-tab">
           <form #cgmsclForm="ngForm" (ngSubmit)="cgmsclForm.valid && handleCgmsclLogin1()">
@@ -181,7 +182,7 @@
               </div>
 
               <button type="submit" class="btn btn-successs btn-primary text-white w-100"
-                [disabled]="cgmsclForm.invalid">Login</button>
+                [disabled]="cgmsclForm.invalid || loggingIn">{{ loggingIn ? 'Logging in…' : 'Login' }}</button>
             </ng-container>
 
             <!-- Directorate -->
@@ -237,7 +238,7 @@
                 </div>
               </div>
               <button type="submit" class="btn btn-successs btn-primary text-white w-100"
-                [disabled]="cgmsclForm.invalid">Login</button>
+                [disabled]="cgmsclForm.invalid || loggingIn">{{ loggingIn ? 'Logging in…' : 'Login' }}</button>
             </ng-container>
 
             <!-- CGMSC -->
@@ -294,7 +295,7 @@
               </div>
               
               <button type="submit" class="btn btn-successs btn-primary text-white w-100"
-                [disabled]="cgmsclForm.invalid">Login</button>
+                [disabled]="cgmsclForm.invalid || loggingIn">{{ loggingIn ? 'Logging in…' : 'Login' }}</button>
             </ng-container>
 
           </form>
@@ -354,7 +355,7 @@
               </div>
             </div>
             <button type="submit" class="btn btn-successs btn-primary text-white w-100 mb-3"
-              [disabled]="dmeLoginForm.invalid">Login</button>
+              [disabled]="dmeLoginForm.invalid || loggingIn">{{ loggingIn ? 'Logging in…' : 'Login' }}</button>
           </form>
         </div>
 
@@ -434,7 +435,7 @@
                 </div>
               </div>
               <button type="submit" class="btn btn-successs btn-primary text-white w-100"
-                [disabled]="dhsForm.invalid">Login</button>
+                [disabled]="dhsForm.invalid || loggingIn">{{ loggingIn ? 'Logging in…' : 'Login' }}</button>
             </ng-container>
 
             <!-- CMHO-Store -->
@@ -490,7 +491,7 @@
                 </div>
               </div>
               <button type="submit" class="btn btn-successs btn-primary text-white w-100"
-                [disabled]="dhsForm.invalid">Login</button>
+                [disabled]="dhsForm.invalid || loggingIn">{{ loggingIn ? 'Logging in…' : 'Login' }}</button>
             </ng-container>
           </form>
         </div>

@@ -45,6 +45,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
   private activeUsersKey = '';
   /** true while the current section's user list is loading (shows a skeleton instead of a blank dropdown) */
   usersLoading = false;
+  /** true from Login click until the API answers: the form shows a shimmer skeleton and the buttons are locked */
+  loggingIn = false;
   readonly currentYear = new Date().getFullYear();
   otp: any = '';
   username: any;
@@ -277,6 +279,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   handleLoginFailure(): void {
+    this.loggingIn = false;
     this.invalidLogin = true;
     this.toastr.error('Login Failed', 'Invalid Credentials');
     this.errorMessage = 'Invalid Credentials';
@@ -780,6 +783,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     const password = (this.pwd ?? '').trim();
     const emailFlag = this.EMAIL || '';
 
+    this.loggingIn = true;
     this.loginService
       .executeAuthenticationService1(user_id, password, emailFlag)
       .subscribe({
@@ -905,9 +909,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
               resolvedRole === 'AUGMF'
             ) {
               this.router.navigate(['/welcome']);
-            } else if (resolvedRole === 'QC') {
-              this.router.navigate(['/qc-dashboard']);
             } else {
+              // QC included: its dashboard belongs to the drugs app and has no page in EMS.
               this.router.navigate(['/home']);
             }
           } else {
@@ -916,6 +919,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         },
         error: (e: any) => {
           console.log('error=', e);
+          this.loggingIn = false;
           const msg = e?.error?.message ?? 'Invalid Credentials';
           this.toastr.error(msg, 'Login Failed');
           this.invalidLogin = true;

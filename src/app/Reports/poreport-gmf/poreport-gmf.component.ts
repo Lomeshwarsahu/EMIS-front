@@ -229,8 +229,9 @@ fetchPurchaseOrderGrid() {
       queryParams: { finYrId:this.financial_year_id, directorateId:directorateId,Potype:Potype,Fname:FacilityAutName,year:this.year},
     });
   }
+// Reports/POReportGMF.aspx "Print" -> RdlcPOReport.aspx?PO_ID=
 print(poid:any){
-
+  this.router.navigate(['/orders/po-print'], { queryParams: { poId: poid } });
 }
 
 }

@@ -335,21 +335,9 @@ GetLiveTenderPriceDetails(tenderItemId: any) {
 }
 
 
+// Accepting needs CMC years, negotiation price/date and PDFs; that form lives on the Price Accept page (legacy btnaccepted_Click).
 Acepted(element:any){
-  // curl -X 'POST' \
-  // 'https://localhost:7036/api/BME/AcceptTenderPrice' \
-  // -H 'accept: */*' \
-  // -H 'Content-Type: multipart/form-data' \
-  // -F 'TPriceId=0' \
-  // -F 'NegoPrice=0' \
-  // -F 'NegoDate=2026-05-21T06:53:39.726Z' \
-  // -F 'Cmc1=0' \
-  // -F 'Cmc2=0' \
-  // -F 'Cmc3=0' \
-  // -F 'Cmc4=0' \
-  // -F 'Cmc5=0' \
-  // -F 'FileUploadReagent=string' \
-  // -F 'FileUploadAccessories=string'
+  this.router.navigate(['/TenderItemsPriceGEM'], { queryParams: { tenderId: this.selectedTenderId } });
 }
 rejectItem(element: any) {
   // 1. Row se safely date pick karein

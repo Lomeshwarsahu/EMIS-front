@@ -29,6 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
+import { SecureFileService } from 'src/app/service/secure-file.service';
 declare var bootstrap: any;
 
 @Component({
@@ -105,7 +106,8 @@ export class BudgetDetailsProvisionalComponent implements OnInit {
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private secureFile: SecureFileService,
   ) {}
 
   ngOnInit(): void {
@@ -286,95 +288,41 @@ export class BudgetDetailsProvisionalComponent implements OnInit {
   // 1. VIEW ACTION LINK: Opens the PDF file directly inside a new clean tab browser view layout window
 onViewPdfInNewTab(abgid: number) {
   if (!abgid) return;
-  
-  // Directly point the browser target execution to the API Get Stream location routing path
-  // const viewUrl = `https://localhost:7036/api/GMFI/DownloadFundFile/${abgid}`;
-  // const viewUrl = `http://103.51.8.80/emsapi/api/GMFI/DownloadFundFile/${abgid}`;
-  // const viewUrl = `https://cgmsc.gov.in/emsapi/api/GMFI/DownloadFundFile/${abgid}`;
-    const viewUrl = `${environment.apiUrl}/GMFI/DownloadFundFile/${abgid}`;
-  
-  window.open(viewUrl, '_blank');
+  this.secureFile.openInNewTab(`${environment.apiUrl}/GMFI/DownloadFundFile/${abgid}`, `FundFile_${abgid}.pdf`);
 }
 
 // 2. DOWNLOAD ACTION LINK: Forces download prompt on the client browser viewport
 onForceDownloadPdf(abgid: number) {
   if (!abgid) return;
-  
-  // Passing the forceDownload query string flag to change content headers behavior
-  // const downloadUrl = `https://localhost:7036/api/GMFI/DownloadFundFile/${abgid}?forceDownload=true`;
-  // const downloadUrl = `http://103.51.8.80/emsapi/api/GMFI/DownloadFundFile/${abgid}?forceDownload=true`;
-
-  // const downloadUrl = `https://cgmsc.gov.in/emsapi/api/GMFI/DownloadFundFile/${abgid}?forceDownload=true`;
-  const downloadUrl = `${environment.apiUrl}/GMFI/DownloadFundFile/${abgid}?forceDownload=true`;
-  // Creates temporary ghost element anchor tag to trigger forced file downloads pipelines
-  const anchorLink = document.createElement('a');
-  anchorLink.href = downloadUrl;
-  anchorLink.target = '_self';
-  document.body.appendChild(anchorLink);
-  anchorLink.click();
-  document.body.removeChild(anchorLink);
+  this.secureFile.download(`${environment.apiUrl}/GMFI/DownloadFundFile/${abgid}?forceDownload=true`, `FundFile_${abgid}.pdf`);
 }
 
 
 
 // 1. VIEW PDF METHOD: Ispe click karte hi PDF bina download hue naye tab me khulegi
 onViewRowDocumentInline(rowElement: any) {
-  const targetAbgid = rowElement.Abgid;// || rowElement.Abgid || rowElement.ABGID;
-  
+  const targetAbgid = rowElement.Abgid;
   if (!targetAbgid || targetAbgid <= 0) {
     this.toastr.error('Unable to fetch reference key (ABGID) for this row item.');
     return;
   }
-
-  this.spinner.show();
-  // const targetViewUrl = `https://localhost:7036/api/GMFI/DownloadFundFile/${targetAbgid}?forceDownload=false`;
-  // const targetViewUrl = `http://103.51.8.80/emsapi/api/GMFI/DownloadFundFile/${targetAbgid}?forceDownload=false`;
-  // const targetViewUrl = `https://cgmsc.gov.in/emsapi/api/GMFI/DownloadFundFile/${targetAbgid}?forceDownload=false`;
-  const targetViewUrl = `${environment.apiUrl}/GMFI/DownloadFundFile/${targetAbgid}?forceDownload=false`;
-  // Fetch API ke through raw binary bytes data nikalna
-  fetch(targetViewUrl)
-    .then(response => {
-      if (!response.ok) throw new Error('File streaming connection interrupted.');
-      return response.blob(); // Convert raw data to file blob object
-    })
-    .then(blobData => {
-      this.spinner.hide();
-      
-      // Blob URL generate karna jo browser memory link banata hai
-      const fileBlobUrl = URL.createObjectURL(new Blob([blobData], { type: 'application/pdf' }));
-      
-      // Strict command to open inside a new tab view window
-      const browserViewTab = window.open(fileBlobUrl, '_blank');
-      if (!browserViewTab) {
-        this.toastr.warning('Popup Blocker active! Please allow popups to open the PDF viewer.');
-      }
-    })
-    .catch(error => {
-      this.spinner.hide();
-      console.error(error);
-      this.toastr.error('Error opening inline preview tab window.');
-    });
+  this.secureFile.openInNewTab(
+    `${environment.apiUrl}/GMFI/DownloadFundFile/${targetAbgid}?forceDownload=false`,
+    `FundFile_${targetAbgid}.pdf`,
+  );
 }
 
 // 2. HARD SAVE DOWNLOAD METHOD
 onDownloadRowDocumentFile(rowElement: any) {
-  const targetAbgid = rowElement.Abgid ;//|| rowElement.Abgid || rowElement.Abgid;
-  
+  const targetAbgid = rowElement.Abgid;
   if (!targetAbgid || targetAbgid <= 0) {
     this.toastr.error('Invalid reference parameters allocation.');
     return;
   }
-
-  // const targetDownloadUrl = `https://localhost:7036/api/GMFI/DownloadFundFile/${targetAbgid}?forceDownload=true`;
-  // const targetDownloadUrl = `http://103.51.8.80/emsapi/api/GMFI/DownloadFundFile/${targetAbgid}?forceDownload=true`;
-  // const targetDownloadUrl = `https://cgmsc.gov.in/emsapi/api/GMFI/DownloadFundFile/${targetAbgid}?forceDownload=true`;
-    const targetDownloadUrl = `${environment.apiUrl}/GMFI/DownloadFundFile/${targetAbgid}?forceDownload=true`;
-  const ghostAnchorNode = document.createElement('a');
-  ghostAnchorNode.href = targetDownloadUrl;
-  ghostAnchorNode.target = '_self';
-  document.body.appendChild(ghostAnchorNode);
-  ghostAnchorNode.click();
-  document.body.removeChild(ghostAnchorNode);
+  this.secureFile.download(
+    `${environment.apiUrl}/GMFI/DownloadFundFile/${targetAbgid}?forceDownload=true`,
+    `FundFile_${targetAbgid}.pdf`,
+  );
 }
 
 

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -198,7 +198,7 @@ export class SupplierPoSdDetailComponent implements OnInit {
       next: (res) => {
         this.saving = false;
         this.toastr.success(res?.message ?? 'Successfully Saved.');
-        navigateToPoSupply(this.router, this.returnFilters);
+        this.leavePage();
       },
       error: (err) => {
         this.saving = false;
@@ -272,8 +272,19 @@ export class SupplierPoSdDetailComponent implements OnInit {
   }
 
   goBack(): void {
-    navigateToPoSupply(this.router, this.returnFilters);
+    this.leavePage();
   }
+
+  // HO/BME open this page from the PO dashboard (legacy SDdetailSupplierForBME.aspx); suppliers return to their PO list.
+  private leavePage(): void {
+    if ((localStorage.getItem('roleName') || '').toUpperCase() === 'SUP') {
+      navigateToPoSupply(this.router, this.returnFilters);
+    } else {
+      this.location.back();
+    }
+  }
+
+  private readonly location = inject(Location);
 
   private mapPaymentModes(list: unknown[]): SdPaymentMode[] {
     return list.map((item) => {

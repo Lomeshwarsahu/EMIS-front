@@ -29,6 +29,7 @@ const EXTRA_ROUTE_TITLES: Record<string, string> = {
   '/orders/supplier-dispatch-pending-cons-ho': 'Supplier Dispatch — Consignees',
   '/orders/supplier-dispatch-pending-insta-ho': 'Supplier Dispatch — Installation',
   '/orders/incomplete-dispatch': 'Incomplete Supplier Dispatch',
+  '/orders/incomplete-receipt-installation': 'Incomplete Receipt / Installation',
   '/orders/purchase-order-dashboard': 'Purchase Orders Desk',
   '/orders/purchase-order-receipts': 'Purchase Order Receipts Desk',
   '/orders/po-receipt-entry': 'Receipt / Installation Entry',

@@ -6,6 +6,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { SecureFileService } from 'src/app/service/secure-file.service';
+import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { MaterialModule } from 'src/app/material-module';
 import {
@@ -86,6 +88,7 @@ export class PerformanceCertificateComponent implements OnInit {
     private api: ApiService,
     public toastr: ToastrService,
     private router: Router,
+    private readonly secureFile: SecureFileService,
   ) {
     this.dataSource = new MatTableDataSource<PerformanceGridItem>([]);
     this.forwardDate = new Date().toLocaleDateString('en-GB');
@@ -214,9 +217,12 @@ export class PerformanceCertificateComponent implements OnInit {
   }
 
   // Download performance certificate
+  // Legacy "Download": uploaded certificate PDF from Mongo (PerCertificate).
   downloadPerf(poId: number) {
-    // Legacy used MongoDB for PDF — placeholder for now
-    this.toastr.info('Download feature will be implemented');
+    this.secureFile.download(
+      `${environment.apiUrl}/Performance/perf-certificate-file?poId=${poId}`,
+      `PerfCertificate_${poId}.pdf`,
+    );
   }
 
   // File Forward modal

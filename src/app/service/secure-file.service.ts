@@ -64,6 +64,37 @@ export class SecureFileService {
     });
   }
 
+  /** Same authenticated fetch as openInNewTab, but saves the file instead of showing it. */
+  download(url: string, fallbackFileName = 'document'): void {
+    this.http.get(url, { responseType: 'blob', observe: 'response' }).subscribe({
+      next: async (res) => {
+        const blob = res.body;
+        if (!blob || blob.size === 0) {
+          this.toastr.error('File not found.');
+          return;
+        }
+        if (blob.type.includes('application/json')) {
+          this.toastr.error(await this.readMessage(blob, 'Could not download file.'));
+          return;
+        }
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = this.fileNameFrom(res.headers.get('content-disposition')) || fallbackFileName;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 120_000);
+      },
+      error: async (err: HttpErrorResponse) => {
+        if (err.status === 401) return; // authInterceptor shows "Session expired"
+        const msg =
+          err.error instanceof Blob
+            ? await this.readMessage(err.error, 'Could not download file.')
+            : err.error?.message || 'Could not download file.';
+        this.toastr.error(msg);
+      },
+    });
+  }
+
   private async readMessage(blob: Blob, fallback: string): Promise<string> {
     try {
       return (JSON.parse(await blob.text()) as { message?: string }).message || fallback;

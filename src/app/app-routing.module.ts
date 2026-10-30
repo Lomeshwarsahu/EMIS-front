@@ -301,6 +301,18 @@ const routes: Routes = [
   { path: 'SupplierGSTentry', loadComponent: () => import('./GM Finance/supplier-gstentry/supplier-gstentry.component').then(m => m.SupplierGSTentryComponent) },
   { path: 'BudgetDetailsProvisional', loadComponent: () => import('./GM Finance/budget-details-provisional/budget-details-provisional.component').then(m => m.BudgetDetailsProvisionalComponent) },
   { path: 'Sanction', loadComponent: () => import('./GM Finance/sanction/sanction.component').then(m => m.SanctionComponent) },
+  {
+    path: 'finance/pending-sanctions',
+    loadComponent: () => import('./GM Finance/pending-sanctions/pending-sanctions.component').then(m => m.PendingSanctionsComponent),
+    canActivate: [RouteGuardService],
+    data: { kind: 'TP' },
+  },
+  {
+    path: 'finance/pending-sanctions-site-not-ready',
+    loadComponent: () => import('./GM Finance/pending-sanctions/pending-sanctions.component').then(m => m.PendingSanctionsComponent),
+    canActivate: [RouteGuardService],
+    data: { kind: 'P' },
+  },
   { path: 'CoverAitemsReports', loadComponent: () => import('./component/BME/cover-aitems-reports/cover-aitems-reports.component').then(m => m.CoverAitemsReportsComponent) },
 
   {
@@ -438,30 +450,35 @@ const routes: Routes = [
     path: 'orders/supplier-dispatch-pending-ho',
     loadComponent: () => import('./component/PO-Cell/supplier-dispatch-ho/supplier-dispatch-pending-ho.component').then(m => m.SupplierDispatchPendingHoComponent),
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUPO', 'TPO', 'AD', 'AU'] },
   },
   {
     path: 'orders/supplier-dispatch-pending-cons-ho',
     loadComponent: () => import('./component/PO-Cell/supplier-dispatch-ho/supplier-dispatch-consignee-ho.component').then(m => m.SupplierDispatchConsigneeHoComponent),
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUPO', 'TPO', 'AD', 'AU'], mode: 'dispatch' },
+    data: { mode: 'dispatch' },
   },
   {
     path: 'orders/supplier-dispatch-pending-insta-ho',
     loadComponent: () => import('./component/PO-Cell/supplier-dispatch-ho/supplier-dispatch-consignee-ho.component').then(m => m.SupplierDispatchConsigneeHoComponent),
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUPO', 'TPO', 'AD', 'AU'], mode: 'installation' },
+    data: { mode: 'installation' },
   },
   {
     path: 'orders/incomplete-dispatch',
     loadComponent: () => import('./component/PO-Cell/supplier-dispatch-ho/incomplete-dispatch.component').then(m => m.IncompleteDispatchComponent),
     canActivate: [RouteGuardService],
-    data: { allowedRoles: ['AUPO', 'TPO', 'AD', 'AU'] },
   },
   { path: 'SupplierDispatchPending_HO', redirectTo: 'orders/supplier-dispatch-pending-ho', pathMatch: 'full' },
   { path: 'SupplierDispatchPendingCons_HO', redirectTo: 'orders/supplier-dispatch-pending-cons-ho', pathMatch: 'full' },
   { path: 'SupplierDispatchPendingInsta_HO', redirectTo: 'orders/supplier-dispatch-pending-insta-ho', pathMatch: 'full' },
   { path: 'InCompleteDispatch', redirectTo: 'orders/incomplete-dispatch', pathMatch: 'full' },
+  {
+    path: 'orders/incomplete-receipt-installation',
+    loadComponent: () => import('./component/PO-Cell/supplier-dispatch-ho/incomplete-dispatch.component').then(m => m.IncompleteDispatchComponent),
+    canActivate: [RouteGuardService],
+    data: { kind: 'receipt' },
+  },
+  { path: 'InCompleteReceiptInstallation', redirectTo: 'orders/incomplete-receipt-installation', pathMatch: 'full' },
   //#endregion
 
   {
@@ -907,6 +924,12 @@ const routes: Routes = [
   },
   {
     path: 'finance/year-wise-po-abstract',
+    loadComponent: () => import('./component/facility-auth-povalue-pocell/facility-auth-povalue-pocell.component').then(m => m.FacilityAuthPOValuePOCellComponent),
+    canActivate: [RouteGuardService],
+  },
+  {
+    // Same page under the Reports menu (Reports/FacilityAuthPOValue_POCell.aspx); own path so both menu entries navigate.
+    path: 'reports/year-wise-po-abstract',
     loadComponent: () => import('./component/facility-auth-povalue-pocell/facility-auth-povalue-pocell.component').then(m => m.FacilityAuthPOValuePOCellComponent),
     canActivate: [RouteGuardService],
   },
@@ -1397,8 +1420,15 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    // Order/po_supextapproval.aspx — "Extension Applied By Supplier" (only POs with an extension request)
+    path: 'orders/po-extension-requests',
+    loadComponent: () => import('./component/extension-hodetail/extension-hodetail.component').then(m => m.ExtensionHODetailComponent),
+    canActivate: [RouteGuardService],
+    data: { onlyExtensionRequests: true },
+  },
+  {
     path: 'po_supextapproval',
-    redirectTo: 'ExtensionHODetail?onlyExtensionRequests=true',
+    redirectTo: 'orders/po-extension-requests',
     pathMatch: 'full',
   },
   {

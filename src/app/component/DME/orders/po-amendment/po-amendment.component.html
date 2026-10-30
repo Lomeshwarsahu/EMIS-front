@@ -122,7 +122,7 @@
               <td>{{ row.NastiLetterNo || '—' }}</td>
               <td>{{ row.Remark || '—' }}</td>
               <td class="text-center">
-                <a href="{{ downloadUrl }}{{ row.PoAmmdId }}" target="_blank" rel="noopener">Download File</a>
+                <button type="button" class="link-btn" (click)="openFile(row.PoAmmdId)">Download File</button>
               </td>
             </tr>
           </tbody>

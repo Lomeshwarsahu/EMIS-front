@@ -6,6 +6,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { SecureFileService } from 'src/app/service/secure-file.service';
+import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { MaterialModule } from 'src/app/material-module';
 import { MatTableExporterModule } from 'mat-table-exporter';
@@ -37,6 +39,7 @@ export class EmisPerf20RdlcComponent implements OnInit {
     public toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
+    private readonly secureFile: SecureFileService,
   ) {}
 
   ngOnInit() {
@@ -44,34 +47,16 @@ export class EmisPerf20RdlcComponent implements OnInit {
       this.poNoId = params['PONOID'] ? Number(params['PONOID']) : 0;
     });
   }
-
+  // Printable certificate (HTML from the API; print or "Save as PDF").
   downloadPdf() {
     if (!this.poNoId) {
       this.toastr.warning('Invalid PONOID');
       return;
     }
-    this.downloading = true;
-    this.api.get('Performance/generate-perf20-pdf', {
-      params: { poNoId: this.poNoId },
-      responseType: 'blob' as 'json',
-    }).subscribe({
-      next: (res: any) => {
-        const blob = new Blob([res], { type: 'application/pdf' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Perf20_PONOID_${this.poNoId}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-        this.downloading = false;
-      },
-      error: () => {
-        this.downloading = false;
-        this.toastr.error('Failed to download PDF');
-      },
-    });
+    this.secureFile.openInNewTab(
+      `${environment.apiUrl}/Performance/generate-perf20-pdf?poNoId=${this.poNoId}`,
+      `Perf20_PONOID_${this.poNoId}.html`,
+    );
   }
 
   goBack() {

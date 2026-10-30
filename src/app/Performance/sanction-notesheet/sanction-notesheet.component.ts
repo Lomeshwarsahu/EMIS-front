@@ -6,6 +6,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { SecureFileService } from 'src/app/service/secure-file.service';
+import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/service/api.service';
 import { MaterialModule } from 'src/app/material-module';
 import { MatTableExporterModule } from 'mat-table-exporter';
@@ -37,6 +39,7 @@ export class SanctionNotesheetComponent implements OnInit {
     public toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
+    private readonly secureFile: SecureFileService,
   ) {}
 
   ngOnInit() {
@@ -44,36 +47,15 @@ export class SanctionNotesheetComponent implements OnInit {
       this.paymentId = params['Paymentid'] ? Number(params['Paymentid']) : 0;
     });
   }
-
   generateNotesheet() {
     if (!this.paymentId) {
       this.toastr.warning('Invalid Payment ID');
       return;
     }
-    this.generating = true;
-    this.api.get('Performance/generate-sanction-notesheet', {
-      params: { paymentid: this.paymentId },
-      responseType: 'blob' as 'json',
-    }).subscribe({
-      next: (res: any) => {
-        const blob = new Blob([res], {
-          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `SanctionNotesheet_${this.paymentId}.docx`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-        this.generating = false;
-      },
-      error: () => {
-        this.generating = false;
-        this.toastr.error('Failed to generate notesheet');
-      },
-    });
+    this.secureFile.openInNewTab(
+      `${environment.apiUrl}/Performance/generate-sanction-notesheet?paymentid=${this.paymentId}`,
+      `SanctionNotesheet_${this.paymentId}.html`,
+    );
   }
 
   goBack() {

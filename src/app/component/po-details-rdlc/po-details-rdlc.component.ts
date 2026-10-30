@@ -8,6 +8,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ApiService } from '../../service/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
+import { openPrintWindow } from 'src/app/helper/print-window';
 
 @Component({
   selector: 'app-po-details-rdlc',
@@ -134,7 +135,36 @@ export class PoDetailsRdlcComponent {
     });
   }
 
+  // FileMovement/PODetailsRDLC.aspx rendered an RDLC (Word) from the same two datasets shown here;
+  // there is no API download, so the report is printed from the loaded data.
   downloadReport() {
-    window.open(`/api/PODetailsRDLC/download?poNoId=${this.poNoId}`, '_blank');
+    const ok = openPrintWindow({
+      title: 'PO Details Report',
+      info: [['PO ID', this.poNoId]],
+      sections: [
+        {
+          heading: 'PO Items',
+          columns: [
+            { label: 'Item Code', key: 'itemCode' }, { label: 'Item Name', key: 'itemName' },
+            { label: 'Make', key: 'make' }, { label: 'Model', key: 'model' },
+            { label: 'PO Qty', key: 'poQty' }, { label: 'Rate', key: 'basicRate' },
+            { label: 'Value', key: 'poValue' }, { label: 'Received', key: 'receivedQty' },
+            { label: 'Installed', key: 'installedQty' }, { label: 'Balance', key: 'balanceQty' },
+          ],
+          rows: this.items,
+        },
+        {
+          heading: 'Receipt Details',
+          columns: [
+            { label: 'Location', key: 'locationName' }, { label: 'Invoice No', key: 'invoiceNo' },
+            { label: 'Invoice Date', key: 'invoiceDate' }, { label: 'Qty', key: 'invoiceAbsQty' },
+            { label: 'Received', key: 'recievedDate' }, { label: 'Install Date', key: 'installationDate' },
+            { label: 'Days', key: 'daystaken' }, { label: 'Logo', key: 'logo' },
+          ],
+          rows: this.receipts,
+        },
+      ],
+    });
+    if (!ok) this.toastr.warning('Please allow pop-ups to print the report.');
   }
 }

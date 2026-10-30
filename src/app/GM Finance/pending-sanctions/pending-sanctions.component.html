@@ -1,0 +1,62 @@
+<div class="supplier-po-page">
+  <h2 class="page-title">{{ title }}</h2>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters filters--compact">
+      <label><input type="radio" name="poType" value="All" [(ngModel)]="poType" /> All</label>
+      <label><input type="radio" name="poType" value="NP" [(ngModel)]="poType" /> Normal PO</label>
+      <label><input type="radio" name="poType" value="CP" [(ngModel)]="poType" /> Covid PO</label>
+      <button type="button" class="show-btn" (click)="show()" [disabled]="loading">Show Details</button>
+    </div>
+
+    <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
+
+    <div class="table-wrap" *ngIf="!loading && loaded">
+      <table class="po-grid" style="min-width: 1500px">
+        <thead>
+          <tr>
+            <th class="text-center">S.No</th>
+            <th>Go for Sanction</th>
+            <th>Generate Notesheet</th>
+            <th>Supplier</th>
+            <th>PO Number</th>
+            <th>PO Date</th>
+            <th class="text-center">PO Qty</th>
+            <th class="text-center">Verified Invoices</th>
+            <th class="text-center">Consignees</th>
+            <th>Invoice Gross Amount</th>
+            <th>Gross Amount 50%</th>
+            <th>Directorate</th>
+            <th>Tender Ref</th>
+            <th>Item Name</th>
+            <th>Installation Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows | slice: pager.start : pager.end; let i = index" [class.alt-row]="i % 2 === 1">
+            <td class="text-center">{{ pager.start + i + 1 }}</td>
+            <td><button type="button" class="link-btn" (click)="goForSanction(row)">Go for Sanction</button></td>
+            <td><button type="button" class="link-btn" (click)="openNotesheet(row)">Download</button></td>
+            <td>{{ row.Supplier }}</td>
+            <td>{{ row.PoNo }}<div class="text-xs">{{ row.PoType }}</div></td>
+            <td>{{ row.PoDate }}</td>
+            <td class="text-center">{{ row.PoQty }}</td>
+            <td class="text-center">{{ row.NoOfInvoices }}</td>
+            <td class="text-center">{{ row.NoOfConsignees }}</td>
+            <td>{{ row.Gross | number: '1.0-2' }}</td>
+            <td>{{ row.Gross50 | number: '1.0-2' }}</td>
+            <td>{{ row.Directorate }}</td>
+            <td>{{ row.TenderNo }}</td>
+            <td><div class="text-xs">{{ row.ItemCode }}</div>{{ row.ItemName }}</td>
+            <td><button type="button" class="link-btn" (click)="openInstallationDetails(row)">Download</button></td>
+          </tr>
+          <tr *ngIf="!rows.length">
+            <td colspan="15" class="empty-row">No POs pending for sanction.</td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
+        [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

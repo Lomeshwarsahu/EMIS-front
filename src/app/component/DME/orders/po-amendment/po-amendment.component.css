@@ -107,3 +107,16 @@
 :host-context(html[data-theme='dark']) .realloc-form__row label {
   color: #cbd5e1;
 }
+
+.link-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #003399;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+:host-context(html[data-theme='dark']) .link-btn {
+  color: #93c5fd;
+}

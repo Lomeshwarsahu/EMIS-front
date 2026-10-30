@@ -1,5 +1,5 @@
 <div class="supplier-po-page">
-  <h2 class="page-title">Incomplete Supplier Dispatch As Mail/Approval/Letter</h2>
+  <h2 class="page-title">{{ title }}</h2>
 
   <div class="po-search">
     <label for="poSearch" class="strong-text">PO No</label>
@@ -48,7 +48,7 @@
               <th class="col-date">Tentative Supply</th>
               <th class="col-date">Consignee Receipt</th>
               <th class="col-num text-center">Dispatch Qty</th>
-              <th class="col-status">Dispatch Status</th>
+              <th class="col-status">{{ receiptMode ? 'Receipt Status' : 'Dispatch Status' }}</th>
             </tr>
           </thead>
           <tbody>
@@ -74,10 +74,15 @@
               <td>{{ row.ReceivedDate }}</td>
               <td class="text-center">{{ row.Quantity }}</td>
               <td>
-                <span class="status-chip"
+                <span class="status-chip" *ngIf="!receiptMode"
                   [class.status-chip--done]="row.SupplyStatus === 'Complete'"
                   [class.status-chip--pending]="row.SupplyStatus !== 'Complete'">
                   {{ row.SupplyStatus }}
+                </span>
+                <span class="status-chip" *ngIf="receiptMode && row.ReceiptId"
+                  [class.status-chip--done]="row.ReceiptStatus === 'Installed'"
+                  [class.status-chip--pending]="row.ReceiptStatus !== 'Installed'">
+                  {{ row.ReceiptStatus }}
                 </span>
               </td>
             </tr>
@@ -89,10 +94,16 @@
         <mat-paginator *ngIf="rows.length" [length]="rows.length" [pageIndex]="pager.index" [pageSize]="pager.size"
           [pageSizeOptions]="pager.sizes" (page)="pager.onPage($event)" showFirstLastButtons></mat-paginator>
       </div>
-      <p class="sub-text">Green rows are not yet received by the consignee and can be marked incomplete. Pink rows are already received — reverse the receipt/installation first.</p>
+      <p class="sub-text" *ngIf="!receiptMode">Green rows are not yet received by the consignee and can be marked incomplete. Pink rows are already received — reverse the receipt/installation first.</p>
+      <p class="sub-text" *ngIf="receiptMode">Green rows have a facility receipt and can be reverted. Pink rows are not received yet.</p>
     </div>
 
     <div class="incomplete-form">
+      <div class="incomplete-form__row" *ngIf="receiptMode">
+        <span class="strong-text">Action</span>
+        <label><input type="radio" name="receiptAction" value="R" [(ngModel)]="receiptAction" /> InComplete Facility Receipt</label>
+        <label><input type="radio" name="receiptAction" value="D" [(ngModel)]="receiptAction" /> Delete Facility Receipt and Installation</label>
+      </div>
       <div class="incomplete-form__row">
         <label for="remark">Remarks</label>
         <input id="remark" type="text" [(ngModel)]="remark" name="remark" maxlength="200" placeholder="Enter remarks" />
@@ -103,14 +114,14 @@
       </div>
       <div class="incomplete-form__row">
         <button type="button" class="show-btn" [disabled]="saving || !hasSelection()" (click)="save()">
-          {{ saving ? 'Saving...' : 'Mark Dispatch Incomplete' }}
+          {{ saving ? 'Saving...' : (receiptMode ? 'Submit' : 'Mark Dispatch Incomplete') }}
         </button>
       </div>
     </div>
   </ng-container>
 
   <div class="history-section" *ngIf="history.length">
-    <h3>Incomplete Dispatch History</h3>
+    <h3>{{ receiptMode ? 'Incomplete Receipt / Installation History' : 'Incomplete Dispatch History' }}</h3>
     <div class="table-wrap">
       <table class="po-grid ho-grid">
         <thead>
@@ -120,6 +131,7 @@
             <th class="col-date">PO Date</th>
             <th class="col-item">Supplier</th>
             <th class="col-item">Consignee</th>
+            <th *ngIf="receiptMode">Action</th>
             <th>Remarks</th>
             <th class="col-date text-center">Entry Date</th>
             <th class="col-num text-center">Approval</th>
@@ -132,10 +144,11 @@
             <td>{{ row.PoDate }}</td>
             <td>{{ row.SupplierName }}</td>
             <td>{{ row.Location }}</td>
+            <td *ngIf="receiptMode">{{ row.Category }}</td>
             <td>{{ row.Remark || '—' }}</td>
             <td class="text-center">{{ row.EntryDate }}</td>
             <td class="text-center">
-              <a *ngIf="row.DocId; else noFile" [href]="fileUrl + row.DocId" target="_blank" rel="noopener">Download</a>
+              <button *ngIf="row.DocId; else noFile" type="button" class="link-btn" (click)="openApproval(row)">Download</button>
               <ng-template #noFile>—</ng-template>
             </td>
           </tr>

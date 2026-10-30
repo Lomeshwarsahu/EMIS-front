@@ -102,7 +102,8 @@ export class ExtensionHODetailComponent {
 
   ngOnInit() {
     this.route.queryParamMap.subscribe((params) => {
-      this.onlyExtensionRequests = params.get('onlyExtensionRequests') === 'true';
+      this.onlyExtensionRequests =
+        params.get('onlyExtensionRequests') === 'true' || this.route.snapshot.data['onlyExtensionRequests'] === true;
     });
     // this.GETGetPODetails();
     this.GetSupplierlist();

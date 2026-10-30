@@ -568,6 +568,39 @@ form {
   background: #eef2f7 !important;
 }
 
+/* Login in progress: lock the form and shimmer the fields (same skeleton as the user-list load) */
+.login-busy :is(input, select, ng-select, .ng-select, .captcha-box, .form-check) {
+  pointer-events: none;
+}
+
+.login-busy :is(input:not([type='checkbox']):not([type='radio']), select) {
+  color: transparent !important;
+  border-color: transparent !important;
+  background: linear-gradient(90deg, #eef2f7 0%, #f8fafc 40%, #eef2f7 80%) 0 0 / 200% 100% !important;
+  animation: users-shimmer 1.1s linear infinite;
+}
+
+:host ::ng-deep .login-busy .ng-select .ng-select-container {
+  border-color: transparent !important;
+  background: linear-gradient(90deg, #eef2f7 0%, #f8fafc 40%, #eef2f7 80%) 0 0 / 200% 100% !important;
+  animation: users-shimmer 1.1s linear infinite;
+}
+
+:host ::ng-deep .login-busy .ng-select :is(.ng-value, .ng-placeholder, .ng-arrow-wrapper, .ng-clear-wrapper) {
+  visibility: hidden;
+}
+
+.login-busy .input-group > .input-group-text {
+  color: transparent;
+  background: #eef2f7 !important;
+}
+
+:host-context(html[data-theme='dark']) .login-busy :is(input:not([type='checkbox']):not([type='radio']), select),
+:host-context(html[data-theme='dark']) .login-busy .input-group > .input-group-text,
+:host-context(html[data-theme='dark']) ::ng-deep .login-busy .ng-select .ng-select-container {
+  background: linear-gradient(90deg, #1a1f29 0%, #262b36 40%, #1a1f29 80%) 0 0 / 200% 100% !important;
+}
+
 @keyframes users-shimmer {
   to { background-position: -200% 0; }
 }

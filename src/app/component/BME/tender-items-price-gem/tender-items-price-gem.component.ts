@@ -37,6 +37,12 @@ export class TenderItemsPriceGEMComponent implements OnInit {
 
   ngOnInit(): void {
     this.mode = this.route.snapshot.data['mode'] === 'AR' ? 'AR' : 'GEM';
+    // Opened from Tender Price Entry GEM "Accept" with the tender preselected.
+    const presetTenderId = Number(this.route.snapshot.queryParamMap.get('tenderId') || 0);
+    if (presetTenderId) {
+      this.tenderId = presetTenderId;
+      this.onTenderChange();
+    }
     // Legacy FillCovCTender(): AR -> Get_TendersStatus("3", "COVERC"); GEM -> Get_TendersStatus("3", "GEM")
     const list = this.mode === 'AR' ? 'COVERC' : 'GEM';
     this.api.get(`Tendercell/GetTendersStatus?stid=3&undOBClaim=${list}`).subscribe({
