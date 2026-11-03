@@ -21,7 +21,6 @@ const EXTRA_ROUTE_TITLES: Record<string, string> = {
   '/AddTenderCon': 'Add Conversation With HOD (DHS/DME/Ayush)',
   '/TenderStatusRemark': 'Tender Status',
   '/TenderCoverAObClaimAfterB': 'Finalization of Cover B',
-  '/TenderCoverA': 'Equipment Cell: Cover A Evaluation/Clarification',
   '/TenderCoverAitems': 'Cover A: Bid Items Entry',
   '/CoverAitemsReports': 'List of Items Participated',
   '/TenderDetailsPriceEntryGEM': 'Price Bid Entry',
@@ -117,6 +116,14 @@ export function resolvePageTitle(path: string, menuItems: MenuTitleItem[] = []):
   const raw = path.split('?')[0].split('#')[0].replace(/\/+$/, '') || '/';
   const withSlash = raw.startsWith('/') ? raw : `/${raw}`;
   const withoutSlash = raw.replace(/^\//, '');
+
+  // Legacy TenderCoverA.aspx heading depends on the role: 22 / 12 = Equipment Cell (technical), others = Finance
+  if (withSlash === '/TenderCoverA') {
+    const roleId = sessionStorage.getItem('roleId') || '';
+    return roleId === '22' || roleId === '12'
+      ? 'Equipment Cell: Cover A Evaluation/Clarification'
+      : 'CGMSC Finance : Cover A Evaluation/Clarification';
+  }
 
   if (EXTRA_ROUTE_TITLES[withSlash]) {
     return EXTRA_ROUTE_TITLES[withSlash];

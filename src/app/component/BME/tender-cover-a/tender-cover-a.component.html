@@ -1,15 +1,11 @@
 <div class="supplier-po-page">
   <div class="detail-section wide full-width">
-    <div class="page-header">
-      <button type="button" class="back-btn" (click)="goBack()">Back</button>
-    </div>
-
-    <!-- Legacy TenderCoverA.aspx: pick a tender, then mark each Cover A bidder Eligible / Not Eligible / Clarification -->
+    <!-- Legacy ddlSup + btnSave ("Show") -->
     <div class="detail-form-card section-gap-bottom">
       <table class="detail-form-table">
         <tbody>
           <tr>
-            <td class="label-col">Select Tender</td>
+            <td class="label-col">Select Tender in Cover A</td>
             <td class="value-col">
               <ng-select
                 class="item-select"
@@ -17,11 +13,15 @@
                 [items]="TenderList"
                 bindLabel="Tenderno"
                 bindValue="Tenderid"
-                placeholder="Search & Select Tender"
+                placeholder="---Select Tender---"
                 name="Tenderid"
-                [(ngModel)]="selectedTenderId"
-                (change)="onTenderChange($event)">
+                [(ngModel)]="selectedTenderId">
               </ng-select>
+            </td>
+          </tr>
+          <tr class="form-actions-row">
+            <td colspan="2">
+              <button type="button" class="show-btn" (click)="onShow()">Show</button>
             </td>
           </tr>
         </tbody>
@@ -29,6 +29,7 @@
     </div>
 
     <ng-container *ngIf="show">
+      <!-- Legacy tbTender -->
       <div class="detail-header-card section-gap-bottom">
         <div class="detail-header-grid cols-3">
           <div class="detail-header-item">
@@ -40,12 +41,12 @@
             <span class="value">{{ TenderDetails.TenderDate || '—' }}</span>
           </div>
           <div class="detail-header-item">
-            <span class="label">Cov-A Date</span>
-            <span class="value">{{ TenderDetails.EndDate || '—' }}</span>
-          </div>
-          <div class="detail-header-item">
             <span class="label">Status</span>
             <span class="value">{{ TenderDetails.Status || '—' }}</span>
+          </div>
+          <div class="detail-header-item">
+            <span class="label">Cov-A Date</span>
+            <span class="value">{{ TenderDetails.CoverADate || '—' }}</span>
           </div>
           <div class="detail-header-item">
             <span class="label">Scheme ID</span>
@@ -54,99 +55,67 @@
         </div>
       </div>
 
-      <h3 class="section-title">Cover A Bidders</h3>
+      <!-- Legacy gvAindent1 (all suppliers, ordered by name, no paging) -->
       <div class="datagrid">
         <div class="table-wrap">
-          <table class="po-grid" mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
-            <ng-container matColumnDef="sno">
-              <th mat-header-cell *matHeaderCellDef class="text-center">S.No</th>
-              <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{ element.sno }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="SupplierName">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-start">Supplier</th>
-              <td mat-cell *matCellDef="let element" class="text-start wrap-cell">{{ element.SupplierName }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="ReqEMDAMt">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-end">Required EMD (In Rs)</th>
-              <td mat-cell *matCellDef="let element" class="text-end">{{ element.ReqEMDAMt }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="SubmittedEMDAMT">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-end">Submitted EMD (In Rs)</th>
-              <td mat-cell *matCellDef="let element" class="text-end">{{ element.SubmittedEMDAMT }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="Emd">
-              <th mat-header-cell *matHeaderCellDef class="text-end">EMD Amount</th>
-              <td mat-cell *matCellDef="let element" class="text-end">{{ element.Emd | currency: 'INR' : 'symbol' : '1.0-0' }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="TpAmount">
-              <th mat-header-cell *matHeaderCellDef class="text-end">TP Amount</th>
-              <td mat-cell *matCellDef="let element" class="text-end">{{ element.TpAmount | currency: 'INR' : 'symbol' : '1.0-0' }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="EmdDocType">
-              <th mat-header-cell *matHeaderCellDef class="text-center">EMD Doc Type</th>
-              <td mat-cell *matCellDef="let element" class="text-center">{{ element.DTypeName || element.EmdDocType }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="EmdDocNo">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-start">EMD Doc No</th>
-              <td mat-cell *matCellDef="let element" class="text-start">{{ element.EmdDocNo }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="Remark">
-              <th mat-header-cell *matHeaderCellDef class="text-start">Remark</th>
-              <td mat-cell *matCellDef="let element" class="text-start wrap-cell">{{ element.Remark }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="PItems">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Participated Items</th>
-              <td mat-cell *matCellDef="let element" class="text-center">{{ element.PItems }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="IsEligibleB">
-              <th mat-header-cell *matHeaderCellDef class="text-center">Eligible</th>
-              <td mat-cell *matCellDef="let element" class="text-center">
-                <select class="cell-select" aria-label="Eligibility" [(ngModel)]="element._elig">
-                  <option [ngValue]="null" disabled>Select Status</option>
-                  <option *ngFor="let opt of Eligiblitylist" [ngValue]="opt.id">{{ opt.Eligiblity }}</option>
-                </select>
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="Remarksclarification">
-              <th mat-header-cell *matHeaderCellDef class="text-start">Remarks / Clarification</th>
-              <td mat-cell *matCellDef="let element" class="text-start">
-                <textarea class="cell-textarea" rows="2" aria-label="Remarks / Clarification" [(ngModel)]="element._remarks"></textarea>
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="ADDItems">
-              <th mat-header-cell *matHeaderCellDef class="text-center">Add Items</th>
-              <td mat-cell *matCellDef="let element" class="text-center">
-                <button type="button" class="link-btn-plain" (click)="addItemToTender(element)">Add</button>
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="Action">
-              <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
-              <td mat-cell *matCellDef="let element" class="text-center">
-                <button type="button" class="show-btn small" (click)="updateRowStatus(element)">Update</button>
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-            <tr class="mat-row" *matNoDataRow>
-              <td class="empty-row" [attr.colspan]="displayedColumns.length">No bidders found for this tender.</td>
-            </tr>
+          <table class="po-grid">
+            <thead>
+              <tr>
+                <th class="text-center">S.No</th>
+                <th class="text-start">Supplier</th>
+                <th class="text-end">Required EMD (In Rs)</th>
+                <th class="text-end">Submitted EMD (In Rs)</th>
+                <th class="text-center">EMD Mode</th>
+                <th class="text-center">EMD Doc No</th>
+                <th class="text-end">TP Amount</th>
+                <th class="text-center">Add Items</th>
+                <th class="text-center">Participated Items</th>
+                <th class="text-center">Remark</th>
+                <th class="text-center">Cover A Eligibility</th>
+                <th class="text-center">Remarks/Clarification</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let element of dispatchData; let i = index">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-start wrap-cell">{{ element.SupplierName }}</td>
+                <td class="text-end">{{ element.ReqEMDAMt }}</td>
+                <td class="text-end">{{ element.SubmittedEMDAMT }}</td>
+                <td class="text-center">{{ element.DTypeName }}</td>
+                <td class="text-center">{{ element.EmdDocNo }}</td>
+                <td class="text-end">{{ element.TpAmount }}</td>
+                <td class="text-center">
+                  <button type="button" (click)="addItemToTender(element)">Add Items</button>
+                </td>
+                <td class="text-center">
+                  <button type="button" title="View participated items" (click)="openParticipatedItems(element)">{{ element.PItems }}</button>
+                </td>
+                <td class="text-center wrap-cell">{{ element.Remark }}</td>
+                <td class="text-center">
+                  <select class="cell-select" aria-label="Cover A Eligibility" [(ngModel)]="element._elig">
+                    <option value="0">Select</option>
+                    <option *ngFor="let opt of Eligiblitylist" [value]="opt.id">{{ opt.Eligiblity }}</option>
+                  </select>
+                </td>
+                <td class="text-center">
+                  <textarea class="cell-textarea" rows="2" maxlength="900" aria-label="Remarks/Clarification" [(ngModel)]="element._remarks"></textarea>
+                </td>
+                <td class="text-center">
+                  <!-- Legacy btnaccepted: only while the tender is at Cover A (csid 2) -->
+                  <button *ngIf="isCoverA(element)" type="button" (click)="updateRowStatus(element)">Action</button>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
-        <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+      </div>
+
+      <!-- Legacy btnFreezCovA -->
+      <div class="popup-actions">
+        <button type="button" class="show-btn freeze-btn" (click)="freezeCoverA()" [disabled]="freezing">
+          {{ freezing ? 'Freezing…' : 'Freeze Cov A-Evaluation' }}
+        </button>
       </div>
     </ng-container>
   </div>

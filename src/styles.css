@@ -588,8 +588,8 @@ canvas {
 
 /* Buttons inside tables: no background and no border - coloured text only, light tint on hover / focus.
    Covers the dark .add-btn pills, .show-btn, the coloured .action-btn pills and Bootstrap .btn inside grids. */
-.page-outlet-wrapper table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain),
-.emis-page-content table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain) {
+.page-outlet-wrapper table:not(.detail-form-table):not(.filter-panel) td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain),
+.emis-page-content table:not(.detail-form-table):not(.filter-panel) td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain) {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -599,20 +599,20 @@ canvas {
 }
 
 /* One link-style look for every table button: blue text with a dotted underline reads as "clickable" */
-.page-outlet-wrapper table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain),
-.emis-page-content table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain) {
+.page-outlet-wrapper table:not(.detail-form-table):not(.filter-panel) td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain),
+.emis-page-content table:not(.detail-form-table):not(.filter-panel) td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain) {
   color: #1d4ed8 !important;
   text-decoration: underline dotted;
   text-underline-offset: 3px;
 }
 
-html[data-theme='dark'] .page-outlet-wrapper table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain),
-html[data-theme='dark'] .emis-page-content table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain) {
+html[data-theme='dark'] .page-outlet-wrapper table:not(.detail-form-table):not(.filter-panel) td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain),
+html[data-theme='dark'] .emis-page-content table:not(.detail-form-table):not(.filter-panel) td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain) {
   color: #93c5fd !important;
 }
 
-.page-outlet-wrapper table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain):not(:disabled):is(:hover, :focus-visible),
-.emis-page-content table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain):not(:disabled):is(:hover, :focus-visible) {
+.page-outlet-wrapper table:not(.detail-form-table):not(.filter-panel) td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain):not(:disabled):is(:hover, :focus-visible),
+.emis-page-content table:not(.detail-form-table):not(.filter-panel) td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain):not(:disabled):is(:hover, :focus-visible) {
   background: color-mix(in srgb, currentColor 12%, transparent) !important;
   text-decoration: underline solid;
 }
