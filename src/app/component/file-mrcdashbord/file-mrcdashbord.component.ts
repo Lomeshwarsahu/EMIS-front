@@ -127,9 +127,9 @@ export class FileMRCDashbordComponent {
   variant: string = 'dm';
   config: VariantConfig = VARIANT_MAP['dm'];
 
-  poType = 'All';
-  paymentType = 'All';
-  onlyMyDesk = false;
+  poType = 'NP';
+  paymentType = 'FP';
+  onlyMyDesk = true;
   equipmentType = '0';
   loading = false;
 
@@ -214,6 +214,7 @@ export class FileMRCDashbordComponent {
   }
 
   loadGrid(): void {
+    debugger;
     this.loading = true;
     const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
     const userId = loginData.user_id || 0;

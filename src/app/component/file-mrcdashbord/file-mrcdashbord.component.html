@@ -15,6 +15,9 @@
           <label class="radio-pill" [class.active]="poType === 'CP'">
             <input type="radio" name="poType" value="CP" [(ngModel)]="poType" [disabled]="loading"> Covid PO
           </label>
+          <label class="radio-pill" [class.active]="poType === 'SP'">
+            <input type="radio" name="poType" value="SP" [(ngModel)]="poType" [disabled]="loading">After Site Readiness 
+          </label>
         </div>
       </div>
 
