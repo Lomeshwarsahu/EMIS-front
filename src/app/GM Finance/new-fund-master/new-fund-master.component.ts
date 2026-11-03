@@ -52,7 +52,7 @@ import { ListPager } from 'src/app/helper/list-pager';
     MatTableExporterModule,
   ],
   templateUrl: './new-fund-master.component.html',
-  styleUrl: './new-fund-master.component.css',
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './new-fund-master.component.css'],
 })
 export class NewFundMasterComponent {
   readonly pager = new ListPager();

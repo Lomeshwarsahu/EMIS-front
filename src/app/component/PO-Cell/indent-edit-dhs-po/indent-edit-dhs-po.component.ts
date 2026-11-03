@@ -73,8 +73,7 @@ export class IndentEditDHSPOComponent {
   'FinalQty',
   'FinalQtyI',
   'add',
-  'delete',
-  'Action'
+  'delete'
 ];
  constructor(
     private spinner: NgxSpinnerService,
@@ -267,8 +266,8 @@ GetLinkedItems() {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  GetitemFulldetail(id:any){
-    
+  showSpecification(row: any) {
+    this.toastr.info(row?.ItemDesc || 'No custom specification details available', row?.ItemName || 'Specification');
   }
   // Legacy gv_RowDeleting: only rows without a final qty (or status 'I') can be removed.
   canDeleteRow(row: any): boolean {

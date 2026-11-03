@@ -64,7 +64,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableExporterModule,
   ],
   templateUrl: './consolidated-indent-cgmsc.component.html',
-  styleUrl: './consolidated-indent-cgmsc.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './consolidated-indent-cgmsc.component.css'],
 })
 export class ConsolidatedIndentCGMSCComponent {
 Yearlist: any = {};

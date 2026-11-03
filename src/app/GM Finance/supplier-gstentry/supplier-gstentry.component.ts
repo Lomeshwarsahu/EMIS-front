@@ -51,7 +51,7 @@ import Swal from 'sweetalert2';
     MatTableExporterModule,
   ],
   templateUrl: './supplier-gstentry.component.html',
-  styleUrl: './supplier-gstentry.component.css',
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './supplier-gstentry.component.css'],
 })
 export class SupplierGSTentryComponent {
 

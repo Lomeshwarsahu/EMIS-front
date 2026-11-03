@@ -64,7 +64,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableExporterModule,
   ],
   templateUrl: './item-wise-detail-pocell-by-poid.component.html',
-  styleUrl: './item-wise-detail-pocell-by-poid.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './item-wise-detail-pocell-by-poid.component.css'],
 })
 export class ItemWiseDetailPOCellByPOidComponent {
 

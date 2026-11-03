@@ -29,7 +29,7 @@ import Swal from 'sweetalert2';
     MatOptionModule, MatTableExporterModule,
   ],
   templateUrl: './opening-balance.component.html',
-  styleUrl: './opening-balance.component.css',
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './opening-balance.component.css'],
 })
 export class OpeningBalanceComponent implements OnInit {
 

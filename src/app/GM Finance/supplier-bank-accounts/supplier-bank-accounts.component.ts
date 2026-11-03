@@ -50,7 +50,7 @@ import Swal from 'sweetalert2';
     MatTableExporterModule,
   ],
   templateUrl: './supplier-bank-accounts.component.html',
-  styleUrl: './supplier-bank-accounts.component.css',
+  styleUrls: ['../../component/Suppliers/supplier-po-pages.shared.css', './supplier-bank-accounts.component.css'],
 })
 export class SupplierBankAccountsComponent {
 receivedSupplierName: string = '';

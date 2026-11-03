@@ -63,7 +63,7 @@ standalone: true,
     MatTableExporterModule,
   ],
   templateUrl: './posummary-drill-dwn-qty.component.html',
-  styleUrl: './posummary-drill-dwn-qty.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './posummary-drill-dwn-qty.component.css'],
 })
 export class POSummaryDrillDwnQtyComponent {
   Dname: any;

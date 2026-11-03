@@ -64,7 +64,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableExporterModule,
   ],
   templateUrl: './extension-hoentry.component.html',
-  styleUrl: './extension-hoentry.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './extension-hoentry.component.css'],
 })
 export class ExtensionHOEntryComponent {
   HeaderEX: any = {};

@@ -64,7 +64,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableExporterModule,
   ],
   templateUrl: './item-wise-detail-pocell.component.html',
-  styleUrl: './item-wise-detail-pocell.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './item-wise-detail-pocell.component.css'],
 })
 export class ItemWiseDetailPOCellComponent {
  itemslist: any = {};
@@ -137,8 +137,7 @@ let  directorateId =5 ;
 }
 //https://localhost:7036/api/Reports/itemwisedetail/677
  Getitemwisedetail() {
-    // debugger
-  
+    if (!this.item_id) return;
     try {
       this.spinner.show();
       this.api.get(`Reports/itemwisedetail/${this.item_id}`).subscribe(

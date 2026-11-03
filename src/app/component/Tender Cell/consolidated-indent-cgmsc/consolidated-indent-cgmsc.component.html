@@ -1,216 +1,135 @@
-<section class="container-fluid">
-    <div class="card">
-        <div class="card p-4 mb-4 shadow-sm text-center bg-light border-0 rounded-3">
-            <h2 class="fw-bold text-primary mb-2">Annual Indent</h2>
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Annual Indent</h2>
 
-            <p class="text-muted mb-0 fs-6">View detailed  of selected valus and purchase orders</p>
-        </div>
-        <div class="card shadow-lg p-2 border-0 bg-white rounded ">
-            <div class="card-body border-0 rounded px-0 pt-2 pb-3 bg-light"
-                style="height: auto; overflow: hidden; position: relative;">
-                <div class="mb-0 Fon-family" style="text-align: justify;">
-                    <form class="p-2">
-                        <div class="card shadow-sm p-3 mt-1">
-                            <div class="row g-3 justify-content-center">
-                                <div class="col-md-4 mx-auto text-center">
-                                    <label class="form-label fw-semibold">Select PO Financial Year</label>
-                                    <ng-select [items]="Yearlist" bindLabel="year" bindValue="financial_year_id"
-                                        class="form-control" appendTo="body" [(ngModel)]="selecteditem"
-                                        name="selecteditem" placeholder="Select year" (change)="onSelectedItem($event)">
-                                    </ng-select>
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <ng-select [items]="Yearlist" bindLabel="year" bindValue="financial_year_id" appendTo="body" [(ngModel)]="selecteditem" name="selecteditem" placeholder="Select year" (change)="onSelectedItem($event)"></ng-select>
+      <ng-select [items]="Diectoratelist" bindLabel="facility_aut_name" bindValue="facility_aut_id" appendTo="body" name="selectedDiectorate" placeholder="Select Directorate" (change)="onSelectedDiectorate($event)"></ng-select>
+      <ng-select [items]="dmeInstitueList" bindLabel="UserName" bindValue="UserId" appendTo="body" [(ngModel)]="selectedDME" name="selectedDistricts" placeholder="Select DME" (change)="onSelectedDistricts($event)"></ng-select>
+      <button type="button" class="show-btn" (click)="Getitemwisedetail(0,0)">Show Data</button>
+      <input type="text" class="toolbar-search" placeholder="Search..." aria-label="Filter rows" (keyup)="applyTextFilter($event)" />
+      <button type="button" class="export-btn" (click)="exporter.exportTable('xlsx')">Export Excel</button>
+    </div>
 
-                                </div>
-                                <div class="col-md-4 mx-auto text-center">
-                                    <label class="form-label fw-semibold">Select Diectorate</label>
-                                    <!-- appendTo=".form-group" -->
-                                    <ng-select [items]="Diectoratelist" bindLabel="facility_aut_name" bindValue="facility_aut_id"
-                                        class="form-control" appendTo="body" 
-                                        name="selectedDiectorate" placeholder="Select Diectorate" (change)="onSelectedDiectorate($event)">
-                                    </ng-select>
+    <div class="table-wrap">
+        <table class="po-grid" mat-table matTableExporter
+               [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
 
-                                </div>
-                                <div class="col-md-4 mx-auto text-center">
-                                    <label class="form-label fw-semibold">Select DME Institute</label>
-                                    <ng-select [items]="dmeInstitueList" bindLabel="UserName" bindValue="UserId"
-                                        class="form-control" appendTo="body"  [(ngModel)]="selectedDME"
-                                        name="selectedDistricts" placeholder="Select DME" (change)="onSelectedDistricts($event)">
-                                    </ng-select>
+          <ng-container matColumnDef="sno">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> S.No </th>
+            <td mat-cell *matCellDef="let element; let i = index" class="text-center fw-medium text-muted px-3"> 
+              {{ i + 1 }} 
+            </td>
+          </ng-container>
 
-                                </div>
-                                <!-- <div class="col-md-6 mx-auto text-center">
-                                    <label class="form-label fw-semibold">Select Districts</label>
-                                    <ng-select [items]="Districtslist" bindLabel="DBStart_Name_En" bindValue="DP_DistrictID"
-                                        class="form-control" appendTo="body" 
-                                        name="selectedDistricts" placeholder="Select Districts" (change)="onSelectedDistricts($event)">
-                                    </ng-select>
+          <ng-container matColumnDef="IndentConNo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header px-3"> Indent No </th>
+            <td mat-cell *matCellDef="let element" class="fw-bold text-primary px-3"> 
+              {{element.IndentConNo || '-'}} 
+            </td>
+          </ng-container>
 
-                                </div> -->
-                             
-                            </div>
+          <ng-container matColumnDef="IndentConsolidationId">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header px-3"> Indent Letter No </th>
+            <td mat-cell *matCellDef="let element" class="fw-medium text-dark-emphasis px-3"> 
+              {{element.IndentConsolidationId || '-'}} 
+            </td>
+          </ng-container>
 
-                            <!-- <div class="d-flex justify-content-center mt-3">
-                                <button type="submit" class="show-btn"
-                                    (click)=" Getitemwisedetail()">Show Data</button>
-                            </div> -->
-                             <div class="row">
-                    <div
-                        class="col-12 d-flex flex-wrap justify-content-center pt-3 border-top gap-2 gap-md-3 mt-4 mt-md-5 px-2">
+          <ng-container matColumnDef="ConsolidatedDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Indent Date </th>
+            <td mat-cell *matCellDef="let element" class="text-center text-muted px-3"> 
+              {{element.ConsolidatedDate || '-'}} 
+            </td>
+          </ng-container>
 
-                        <button type="submit"
-                            class="show-btn px-md-5"
-                           (click)=" Getitemwisedetail(0,0)">Show Data</button>
 
-                        <!-- <button type="button"
-                            class="btn btn-outline-secondary px-3 px-md-4 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center"
-                            (click)="onResetFilter(filterForm)">
-                            <i class="bi bi-arrow-counterclockwise me-2"></i> <span>Reset</span>
-                        </button> -->
 
-                        <!-- <button type="button"
-                            class="btn px-3 px-md-4 shadow-sm rounded-pill fw-semibold d-flex align-items-center justify-content-center add-btn"
-                            data-bs-toggle="modal" data-bs-target="#SendModall">
-                            <i class="bi bi-plus-circle-fill me-2"></i> <span>New Indent</span>
-                        </button> -->
+          <ng-container matColumnDef="ProposedQty">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Requested Qty </th>
+            <td mat-cell *matCellDef="let element" class="text-center fw-bold text-secondary px-3"> 
+              {{element.ProposedQty | number}} 
+            </td>
+          </ng-container>
 
-                    </div>
-                </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- data table -->
-         <div class="card shadow-sm border border-light-subtle rounded-3 overflow-hidden m-3">
-  
-  <div class="card-header bg-light border-bottom border-light-subtle d-flex justify-content-between align-items-center py-3 px-4">
-    <h5 class="card-title text-dark fw-bold mb-0 d-flex align-items-center">
-      <i class="bi bi-file-earmark-spreadsheet text-primary me-2"></i> Indent Consolidation Summary
-    </h5>
-    <div class="card-actions">
-      <button class="btn btn-sm rounded-pill px-3 fw-semibold export-btn" (click)="exporter.exportTable('xlsx')">
-        <i class="bi bi-download me-1"></i> Export Excel
-      </button>
+          <ng-container matColumnDef="FinalQty">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Approved Qty </th>
+            <td mat-cell *matCellDef="let element" class="text-center fw-bold text-success px-3"> 
+              {{element.FinalQty | number}} 
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="EStatus">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Status </th>
+            <td mat-cell *matCellDef="let element" class="text-center px-3"> 
+              <span class="badge bg-opacity-10 px-2.5 py-1.5 rounded-2 text-uppercase fw-bold tracking-wide"
+                    [ngClass]="{
+                      'bg-success text-success border border-success-subtle': element.EStatus === 'Completed',
+                      'bg-warning text-warning border border-warning-subtle': element.EStatus === 'Incomplete'
+                    }">
+                <i class="bi me-1" [ngClass]="element.EStatus === 'Completed' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill'"></i>
+                {{element.EStatus || 'Unknown'}}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="UploadStatus">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> File Upload </th>
+            <td mat-cell *matCellDef="let element" class="text-center px-3"> 
+              <span class="badge rounded-pill px-2.5 py-1 fw-medium"
+                    [ngClass]="element.UploadStatus === 'Uploaded' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'">
+                <i class="bi me-1" [ngClass]="element.UploadStatus === 'Uploaded' ? 'bi-cloud-check' : 'bi-cloud-slash'"></i>
+                {{element.UploadStatus || 'Not Uploaded'}}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="EquipmentCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Equipments </th>
+            <td mat-cell *matCellDef="let element" class="text-center px-3"> 
+              <span class="badge rounded-circle bg-dark bg-opacity-10 text-dark fw-bold px-2 py-1">
+                {{element.EquipmentCount || 0}}
+              </span>
+            </td>
+          </ng-container>
+               <ng-container matColumnDef="AddItem">
+            <th mat-header-cell *matHeaderCellDef class="table-header text-center px-3"> Add Item </th>
+            <td mat-cell *matCellDef="let element" class="text-center px-3"> 
+              <button type="button" class="btn btn-sm rounded-pill px-3 fw-semibold shadow-none transition-all add-btn" (click)="GetitemFulldetail(element.IndentConsolidationId)">
+                <i class="bi bi-plus-circle me-1"></i> Add Item
+              </button>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef class="table-header text-center px-3"> Actions </th>
+            <td mat-cell *matCellDef="let element" class="text-center px-3">
+              <button type="button" class="btn btn-sm btn-light border btn-hover-info rounded p-2 d-inline-flex align-items-center justify-content-center"
+                      title="View Full Details">
+                <i class="bi bi-eye text-info fs-6"></i>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-light border-bottom border-light-subtle"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell text-center py-5 text-muted" [attr.colspan]="displayedColumns.length">
+              <div class="d-flex flex-column align-items-center justify-content-center py-4">
+                <i class="bi bi-folder-x fs-1 opacity-40 text-secondary mb-2"></i>
+                <span class="fw-medium text-secondary">No consolidation data grids available matching selected context.</span>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="card-footer bg-white border-top border-light-subtle p-0">
+        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons class="border-0"></mat-paginator>
     </div>
   </div>
 
-  <div class="table-responsive w-100 style-scrollbar" style="max-height: 60vh; overflow-y: auto;">
-    <table class="table table-hover align-middle mb-0 text-nowrap w-100" mat-table matTableExporter
-           [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
-
-      <ng-container matColumnDef="sno">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> S.No </th>
-        <td mat-cell *matCellDef="let element; let i = index" class="text-center fw-medium text-muted px-3"> 
-          {{ i + 1 }} 
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="IndentConNo">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header px-3"> Indent No </th>
-        <td mat-cell *matCellDef="let element" class="fw-bold text-primary px-3"> 
-          {{element.IndentConNo || '-'}} 
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="IndentConsolidationId">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header px-3"> Indent Letter No </th>
-        <td mat-cell *matCellDef="let element" class="fw-medium text-dark-emphasis px-3"> 
-          {{element.IndentConsolidationId || '-'}} 
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="ConsolidatedDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Indent Date </th>
-        <td mat-cell *matCellDef="let element" class="text-center text-muted px-3"> 
-          {{element.ConsolidatedDate || '-'}} 
-        </td>
-      </ng-container>
-
-   
-
-      <ng-container matColumnDef="ProposedQty">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Requested Qty </th>
-        <td mat-cell *matCellDef="let element" class="text-center fw-bold text-secondary px-3"> 
-          {{element.ProposedQty | number}} 
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="FinalQty">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Approved Qty </th>
-        <td mat-cell *matCellDef="let element" class="text-center fw-bold text-success px-3"> 
-          {{element.FinalQty | number}} 
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="EStatus">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Status </th>
-        <td mat-cell *matCellDef="let element" class="text-center px-3"> 
-          <span class="badge bg-opacity-10 px-2.5 py-1.5 rounded-2 text-uppercase fw-bold tracking-wide"
-                [ngClass]="{
-                  'bg-success text-success border border-success-subtle': element.EStatus === 'Completed',
-                  'bg-warning text-warning border border-warning-subtle': element.EStatus === 'Incomplete'
-                }">
-            <i class="bi me-1" [ngClass]="element.EStatus === 'Completed' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill'"></i>
-            {{element.EStatus || 'Unknown'}}
-          </span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="UploadStatus">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> File Upload </th>
-        <td mat-cell *matCellDef="let element" class="text-center px-3"> 
-          <span class="badge rounded-pill px-2.5 py-1 fw-medium"
-                [ngClass]="element.UploadStatus === 'Uploaded' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'">
-            <i class="bi me-1" [ngClass]="element.UploadStatus === 'Uploaded' ? 'bi-cloud-check' : 'bi-cloud-slash'"></i>
-            {{element.UploadStatus || 'Not Uploaded'}}
-          </span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="EquipmentCount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="table-header text-center px-3"> Equipments </th>
-        <td mat-cell *matCellDef="let element" class="text-center px-3"> 
-          <span class="badge rounded-circle bg-dark bg-opacity-10 text-dark fw-bold px-2 py-1">
-            {{element.EquipmentCount || 0}}
-          </span>
-        </td>
-      </ng-container>
-           <ng-container matColumnDef="AddItem">
-        <th mat-header-cell *matHeaderCellDef class="table-header text-center px-3"> Add Item </th>
-        <td mat-cell *matCellDef="let element" class="text-center px-3"> 
-          <button type="button" class="btn btn-sm rounded-pill px-3 fw-semibold shadow-none transition-all add-btn" (click)="GetitemFulldetail(element.IndentConsolidationId)">
-            <i class="bi bi-plus-circle me-1"></i> Add Item
-          </button>
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef class="table-header text-center px-3"> Actions </th>
-        <td mat-cell *matCellDef="let element" class="text-center px-3">
-          <button type="button" class="btn btn-sm btn-light border btn-hover-info rounded p-2 d-inline-flex align-items-center justify-content-center"
-                  title="View Full Details">
-            <i class="bi bi-eye text-info fs-6"></i>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-light border-bottom border-light-subtle"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
-
-      <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell text-center py-5 text-muted" [attr.colspan]="displayedColumns.length">
-          <div class="d-flex flex-column align-items-center justify-content-center py-4">
-            <i class="bi bi-folder-x fs-1 opacity-40 text-secondary mb-2"></i>
-            <span class="fw-medium text-secondary">No consolidation data grids available matching selected context.</span>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </div>
-
-  <div class="card-footer bg-white border-top border-light-subtle p-0">
-    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 30]" showFirstLastButtons class="border-0"></mat-paginator>
-  </div>
-</div>
-        <!-- <div class="card shadow-lg p-2 mt-0 pt-0 border-0 bg-white rounded ">
+  <!-- <div class="card shadow-lg p-2 mt-0 pt-0 border-0 bg-white rounded ">
             <div class="card-body border rounded px-0 pt-2 pb-3 bg-light"
                 style="height: auto; overflow: hidden; position: relative;">
 
@@ -333,9 +252,9 @@
                 </div>
             </div>
         </div> -->
-    </div>
+    
 
-</section>
+
 
 <div class="modal fade rounded" id="SendModall" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-hidden="true">
@@ -537,4 +456,5 @@
 
         </div>
     </div>
+</div>
 </div>

@@ -62,7 +62,7 @@
       MatTableExporterModule,
     ],
   templateUrl: './tenders-status.component.html',
-  styleUrl: './tenders-status.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './tenders-status.component.css'],
 })
 export class TendersStatusComponent {
   selecteditem:any;

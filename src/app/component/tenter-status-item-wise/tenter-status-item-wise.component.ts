@@ -62,7 +62,7 @@ import { TenderAllItemStatusDTO } from 'src/app/Model/models';
     MatTableExporterModule,
   ],
   templateUrl: './tenter-status-item-wise.component.html',
-  styleUrl: './tenter-status-item-wise.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './tenter-status-item-wise.component.css'],
 })
 export class TenterStatusItemWiseComponent {
  itemlist: any[] = [];

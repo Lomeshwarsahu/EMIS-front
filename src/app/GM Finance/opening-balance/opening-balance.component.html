@@ -1,16 +1,7 @@
-<section class="container-fluid bg-light min-vh-100 py-4 px-3">
+<div class="supplier-po-page">
+  <h2 class="page-title wide">Opening Balance / Received Fund</h2>
 
-    <div class="card p-4 mb-4 shadow-sm text-center bg-gradient bg-light border-0 rounded-4">
-        <h2 class="fw-bold text-primary mb-1 tracking-tight">
-            <i class="bi bi-wallet2 me-2"></i>Opening Balance and Received / Unidentified fund Entry 
-        </h2>
-    </div>
-    <!-- <a routerLink="/MainFundHead" class="text-primary fw-bold">
-<i class="bi bi-link-45deg me-1"></i> Go to Main Fund Head OpeningBalance
-</a> -->
-
-<div class="card shadow-sm border-0 rounded-4 mb-4 border-top border-primary border-4 animate__animated animate__fadeIn">
-    <div class="card-body p-4 bg-white">
+  <div class="entry-card">
     <form #receiptEntryForm="ngForm" (ngSubmit)="onSubmitFundReceipt(receiptEntryForm)" novalidate>
             <div class="row g-4">
                 <!-- FIRST COLUMN -->
@@ -263,128 +254,122 @@
                 </div>
             </div>
         </form>
+  </div>
+
+  <div class="datagrid">
+    <div class="table-toolbar filters">
+      <input type="text" class="toolbar-search" placeholder="Search..." aria-label="Filter rows" (keyup)="applyTextFilter($event)" />
     </div>
+
+    <div class="table-wrap">
+                 <table class="po-grid" mat-table [dataSource]="dataSource" matSort #sort="matSort">
+
+          <!-- S.No Column -->
+          <ng-container matColumnDef="sno">
+              <th mat-header-cell *matHeaderCellDef class="grid-header text-center" style="width: 70px;"> S.No </th>
+              <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold small"> {{ i + 1 }} </td>
+          </ng-container>
+
+          <!-- Directorate Column -->
+          <ng-container matColumnDef="UserName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> Directorate </th>
+              <td mat-cell *matCellDef="let element" class="px-3 small text-dark fw-semibold"> {{ element.UserName | uppercase }} </td>
+          </ng-container>
+
+          <!-- College / Institute Column -->
+          <ng-container matColumnDef="FacName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> College / Institute </th>
+              <td mat-cell *matCellDef="let element" class="px-3 small text-secondary"> {{ element.FacName | titlecase }} </td>
+          </ng-container>
+
+          <!-- Fund Head Column -->
+          <ng-container matColumnDef="BudgetName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> Fund Head </th>
+              <td mat-cell *matCellDef="let element" class="px-3 small text-dark fw-medium"> {{ element.BudgetName | uppercase }} </td>
+          </ng-container>
+
+          <!-- Received Date Column -->
+          <ng-container matColumnDef="RecDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Received Date </th>
+              <td mat-cell *matCellDef="let element" class="text-center font-monospace small"> {{ element.RecDate }} </td>
+          </ng-container>
+
+          <!-- Amount Column -->
+          <ng-container matColumnDef="Amount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-end"> Allotted Fund </th>
+              <td mat-cell *matCellDef="let element" class="text-end fw-bold text-primary px-3 small"> {{ element.Amount | currency:'INR':'symbol':'1.0-0' }} </td>
+          </ng-container>
+
+          <!-- Remarks Column -->
+          <ng-container matColumnDef="Remarks">
+              <th mat-header-cell *matHeaderCellDef class="grid-header px-3"> Remarks </th>
+              <td mat-cell *matCellDef="let element" class="text-muted small text-truncate px-3" style="max-width: 140px;" title="{{element.Remarks}}"> {{ element.Remarks || '-' }} </td>
+          </ng-container>
+
+          <!-- RecType Column -->
+          <ng-container matColumnDef="RecType">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Allotment Category </th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                  <span class="badge rounded-pill px-2.5 py-1 small fw-medium" [ngClass]="element.RecType === 'Opening Balance' ? 'bg-indigo-subtle text-indigo border border-indigo' : 'bg-success-subtle text-success border border-success'">
+                      {{ element.RecType }}
+                  </span>
+              </td>
+          </ng-container>
+
+          <!-- Actual Amount Received Column -->
+          <ng-container matColumnDef="ActualAmountReceived">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-end"> Actual Received </th>
+              <!-- Fixed: element.Amount (Capital A) -->
+              <td mat-cell *matCellDef="let element" class="text-end fw-bold px-3 small" [ngClass]="element.ActualAmountReceived === element.Amount ? 'text-success' : 'text-danger'"> 
+                  {{ element.ActualAmountReceived | currency:'INR':'symbol':'1.0-0' }} 
+              </td>
+          </ng-container>
+
+          <!-- Download PDF Column -->
+          <ng-container matColumnDef="download">
+              <th mat-header-cell *matHeaderCellDef class="grid-header text-center"> Document </th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                  <!-- If FilePath is present, show PDF button -->
+                  <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 shadow-none" 
+                          *ngIf="element.FilePath || element.FileName" 
+                          (click)="onDownloadFileStream(element.FilePath)">
+                      <i class="bi bi-file-earmark-pdf-fill me-1"></i> PDF
+                  </button>
+                  <!-- If no file is present, show a dash -->
+                  <span *ngIf="!(element.FilePath || element.FileName)" class="text-muted fw-bold small">-</span>
+              </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="grid-header text-center" style="width: 150px;"> Operations Workflow </th>
+              <td mat-cell *matCellDef="let element" class="text-center py-2 gap-1">
+                  <button type="button" class="btn btn-xs rounded-pill px-2.5 py-1 font-size-11 border shadow-none btn-transition text-nowrap"
+                          [ngClass]="(element.Pentry === 'Provisional' && element.ActualAmountReceived !== element.Amount) ? 'btn-danger text-white border-danger animate__animated animate__pulse animate__infinite' : 'btn-light text-muted border-light-subtle'"
+                          [disabled]="!(element.Pentry === 'Provisional' && element.ActualAmountReceived !== element.Amount)"
+                          (click)="onExecuteActionLink(element)">
+                      <i class="bi me-1" [ngClass]="(element.Pentry === 'Provisional' && element.ActualAmountReceived !== element.Amount) ? 'bi-plus-circle-fill' : 'bi-dash-circle-fill'"></i>
+                      {{ (element.Pentry === 'Provisional' && element.ActualAmountReceived !== element.Amount) ? 'Add Fund' : 'Not Req' }}
+                  </button>
+              </td>
+          </ng-container>
+
+          <!-- Table Rows Mapping -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-light border-bottom"></tr>
+          <!-- Fixed: row.Pentry, row.ActualAmountReceived, row.Amount (Capitalized correctly) -->
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="grid-row-effect"
+              [ngClass]="(row.Pentry === 'Provisional' && row.ActualAmountReceived !== row.Amount) ? 'pink-row-accent' : 'white-row-accent'"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell text-center py-5 text-muted" [attr.colspan]="displayedColumns.length">
+                  <div class="py-4"><i class="bi bi-card-checklist text-secondary opacity-25 fs-1 mb-2 d-block"></i> No budget allocation streams found inside master directories for current indices.</div>
+              </td>
+          </tr>
+      </table>
+              </div>
+
+              <div class="card-footer bg-white border-top p-0 px-3">
+                  <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons class="border-0 bg-transparent"></mat-paginator>
+    </div>
+  </div>
 </div>
-
-    <div class="card shadow-sm border-0 rounded-4 overflow-hidden m-1">
-        <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center border-bottom gap-3 px-4">
-            <h6 class="mb-0 fw-bold text-dark d-flex align-items-center fs-6">
-                <i class="bi bi-layers-half text-success me-2 fs-5"></i>BUDGET DETAILS            </h6>
-            <div class="input-group input-group-sm" style="max-width: 250px;">
-                <span class="input-group-text bg-light border-end-0 text-muted shadow-none"><i class="bi bi-search"></i></span>
-                <input type="text" class="form-control border-start-0 shadow-none bg-light" placeholder="Search entries metrics..." (keyup)="applyTextFilter($event)">
-            </div>
-        </div>
-
-        <div class="table-responsive style-scrollbar w-100" style="max-height: 45vh; overflow-y: auto;">
-           <table class="table align-middle mb-0 text-nowrap w-100 border-0" mat-table [dataSource]="dataSource" matSort #sort="matSort">
-    
-    <!-- S.No Column -->
-    <ng-container matColumnDef="sno">
-        <th mat-header-cell *matHeaderCellDef class="grid-header text-center" style="width: 70px;"> S.No </th>
-        <td mat-cell *matCellDef="let element; let i = index" class="text-center text-muted fw-bold small"> {{ i + 1 }} </td>
-    </ng-container>
-
-    <!-- Directorate Column -->
-    <ng-container matColumnDef="UserName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> Directorate </th>
-        <td mat-cell *matCellDef="let element" class="px-3 small text-dark fw-semibold"> {{ element.UserName | uppercase }} </td>
-    </ng-container>
-
-    <!-- College / Institute Column -->
-    <ng-container matColumnDef="FacName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> College / Institute </th>
-        <td mat-cell *matCellDef="let element" class="px-3 small text-secondary"> {{ element.FacName | titlecase }} </td>
-    </ng-container>
-
-    <!-- Fund Head Column -->
-    <ng-container matColumnDef="BudgetName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header px-3"> Fund Head </th>
-        <td mat-cell *matCellDef="let element" class="px-3 small text-dark fw-medium"> {{ element.BudgetName | uppercase }} </td>
-    </ng-container>
-
-    <!-- Received Date Column -->
-    <ng-container matColumnDef="RecDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Received Date </th>
-        <td mat-cell *matCellDef="let element" class="text-center font-monospace small"> {{ element.RecDate }} </td>
-    </ng-container>
-
-    <!-- Amount Column -->
-    <ng-container matColumnDef="Amount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-end"> Allotted Fund </th>
-        <td mat-cell *matCellDef="let element" class="text-end fw-bold text-primary px-3 small"> {{ element.Amount | currency:'INR':'symbol':'1.0-0' }} </td>
-    </ng-container>
-
-    <!-- Remarks Column -->
-    <ng-container matColumnDef="Remarks">
-        <th mat-header-cell *matHeaderCellDef class="grid-header px-3"> Remarks </th>
-        <td mat-cell *matCellDef="let element" class="text-muted small text-truncate px-3" style="max-width: 140px;" title="{{element.Remarks}}"> {{ element.Remarks || '-' }} </td>
-    </ng-container>
-
-    <!-- RecType Column -->
-    <ng-container matColumnDef="RecType">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-center"> Allotment Category </th>
-        <td mat-cell *matCellDef="let element" class="text-center">
-            <span class="badge rounded-pill px-2.5 py-1 small fw-medium" [ngClass]="element.RecType === 'Opening Balance' ? 'bg-indigo-subtle text-indigo border border-indigo' : 'bg-success-subtle text-success border border-success'">
-                {{ element.RecType }}
-            </span>
-        </td>
-    </ng-container>
-
-    <!-- Actual Amount Received Column -->
-    <ng-container matColumnDef="ActualAmountReceived">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="grid-header text-end"> Actual Received </th>
-        <!-- Fixed: element.Amount (Capital A) -->
-        <td mat-cell *matCellDef="let element" class="text-end fw-bold px-3 small" [ngClass]="element.ActualAmountReceived === element.Amount ? 'text-success' : 'text-danger'"> 
-            {{ element.ActualAmountReceived | currency:'INR':'symbol':'1.0-0' }} 
-        </td>
-    </ng-container>
-
-    <!-- Download PDF Column -->
-    <ng-container matColumnDef="download">
-        <th mat-header-cell *matHeaderCellDef class="grid-header text-center"> Document </th>
-        <td mat-cell *matCellDef="let element" class="text-center">
-            <!-- If FilePath is present, show PDF button -->
-            <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 shadow-none" 
-                    *ngIf="element.FilePath || element.FileName" 
-                    (click)="onDownloadFileStream(element.FilePath)">
-                <i class="bi bi-file-earmark-pdf-fill me-1"></i> PDF
-            </button>
-            <!-- If no file is present, show a dash -->
-            <span *ngIf="!(element.FilePath || element.FileName)" class="text-muted fw-bold small">-</span>
-        </td>
-    </ng-container>
-
-    <!-- Actions Column -->
-    <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef class="grid-header text-center" style="width: 150px;"> Operations Workflow </th>
-        <td mat-cell *matCellDef="let element" class="text-center py-2 gap-1">
-            <button type="button" class="btn btn-xs rounded-pill px-2.5 py-1 font-size-11 border shadow-none btn-transition text-nowrap"
-                    [ngClass]="(element.Pentry === 'Provisional' && element.ActualAmountReceived !== element.Amount) ? 'btn-danger text-white border-danger animate__animated animate__pulse animate__infinite' : 'btn-light text-muted border-light-subtle'"
-                    [disabled]="!(element.Pentry === 'Provisional' && element.ActualAmountReceived !== element.Amount)"
-                    (click)="onExecuteActionLink(element)">
-                <i class="bi me-1" [ngClass]="(element.Pentry === 'Provisional' && element.ActualAmountReceived !== element.Amount) ? 'bi-plus-circle-fill' : 'bi-dash-circle-fill'"></i>
-                {{ (element.Pentry === 'Provisional' && element.ActualAmountReceived !== element.Amount) ? 'Add Fund' : 'Not Req' }}
-            </button>
-        </td>
-    </ng-container>
-
-    <!-- Table Rows Mapping -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-light border-bottom"></tr>
-    <!-- Fixed: row.Pentry, row.ActualAmountReceived, row.Amount (Capitalized correctly) -->
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="grid-row-effect"
-        [ngClass]="(row.Pentry === 'Provisional' && row.ActualAmountReceived !== row.Amount) ? 'pink-row-accent' : 'white-row-accent'"></tr>
-
-    <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell text-center py-5 text-muted" [attr.colspan]="displayedColumns.length">
-            <div class="py-4"><i class="bi bi-card-checklist text-secondary opacity-25 fs-1 mb-2 d-block"></i> No budget allocation streams found inside master directories for current indices.</div>
-        </td>
-    </tr>
-</table>
-        </div>
-
-        <div class="card-footer bg-white border-top p-0 px-3">
-            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons class="border-0 bg-transparent"></mat-paginator>
-        </div>
-    </div>
-</section>

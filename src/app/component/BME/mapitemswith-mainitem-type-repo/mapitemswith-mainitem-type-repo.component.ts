@@ -60,7 +60,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTableExporterModule,
   ],
   templateUrl: './mapitemswith-mainitem-type-repo.component.html',
-  styleUrl: './mapitemswith-mainitem-type-repo.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', './mapitemswith-mainitem-type-repo.component.css'],
 })
 export class MapitemswithMainitemTypeRepoComponent {
 mappingForm!: FormGroup; 

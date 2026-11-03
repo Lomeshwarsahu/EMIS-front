@@ -63,7 +63,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTableExporterModule,
   ],
   templateUrl: './posummary-drill-dwn-qty-powise.component.html',
-  styleUrl: './posummary-drill-dwn-qty-powise.component.css',
+  styleUrls: ['../Suppliers/supplier-po-pages.shared.css', './posummary-drill-dwn-qty-powise.component.css'],
 })
 export class POSummaryDrillDwnQtyPOWiseComponent {
   Fname: any;

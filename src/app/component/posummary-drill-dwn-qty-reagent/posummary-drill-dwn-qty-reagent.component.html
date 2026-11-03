@@ -1,7 +1,7 @@
 <div class="supplier-po-page">
   <h2 class="page-title wide">Item Wise PO Details Report</h2>
 
-  <div class="po-header">
+  <div class="po-header" *ngIf="year != null || Iname != null || Dname != null">
     <span><strong>Financial Year:</strong> {{ year != null ? year : year1 }}</span>
     <span *ngIf="Iname != null"><strong>Item Name:</strong> {{ Iname }}</span>
     <span *ngIf="Dname != null"><strong>Directorate/HOD:</strong> {{ Dname }}</span>

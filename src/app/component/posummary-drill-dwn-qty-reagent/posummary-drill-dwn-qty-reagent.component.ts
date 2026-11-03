@@ -122,11 +122,10 @@ export class POSummaryDrillDwnQtyReagentComponent {
 
     try {
       this.spinner.show();
-      const params = {
-        finYrId: yearid,
-        itemCode: itemCode,
-        directorateId: directorateId,
-      };
+      // Menu "Reagent PO Report" opens without drill-down params: legacy list for the user's directorate.
+      const params: any = yearid || itemCode || directorateId
+        ? { finYrId: yearid, itemCode: itemCode, directorateId: directorateId }
+        : { reagentOnly: true, userId: sessionStorage.getItem('userid') || '' };
       this.api
         .get('Contract/Reports/GetItemWPODetails?', { params })
         .subscribe(
