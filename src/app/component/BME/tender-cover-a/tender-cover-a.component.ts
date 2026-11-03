@@ -51,7 +51,7 @@ import { TenderLinkedItemDto, TenderSupplierParticipationDto } from 'src/app/Mod
     MatTableExporterModule,
   ],
   templateUrl: './tender-cover-a.component.html',
-  styleUrl: './tender-cover-a.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', '../tender-subpage.shared.css', './tender-cover-a.component.css'],
 })
 export class TenderCoverAComponent {
 //#region  lomesh 
@@ -59,9 +59,6 @@ TenderList: any[] = [];
 Eligiblitylist: any[] = []; 
 selectedTenderId: any;
 show:boolean=false;
-selectedStatus:any;
-Remarks:any;
-IsEligibleB:any;
 
 
 
@@ -178,9 +175,12 @@ GetLinkedItems(tid:any) {
       this.spinner.show();
       this.api.get(`BME/GetSupplierParticipationDetails/${tid}/${1}`).subscribe(
         (res: any) => {
-          this.dispatchData = res.map((item: TenderSupplierParticipationDto, index: number) => ({
+          const tech = this.isTechRole();
+          this.dispatchData = (res || []).map((item: TenderSupplierParticipationDto, index: number) => ({
             ...item,
             sno: index + 1,
+            _elig: (tech ? item.IsCovTechEli : item.IsCOVFinEli) || null,
+            _remarks: (tech ? item.CovATechRemarksBefore_OBClM : item.CovAFINRemarksBefore_OBClM) || '',
           }));
           console.log('itemwisedetail=:', this.dispatchData);
           this.dataSource.data = this.dispatchData;
@@ -226,39 +226,62 @@ onStatusChange(item: any) {
   // console.log(item.item_name);
 }
 
-updateRowStatus(element: any) {
-//  debugger;
+// Logged-in user (sessionStorage, with the old localStorage loginData as fallback)
+private currentUser() {
+  let roleId = sessionStorage.getItem('roleId') || '';
+  let userId = sessionStorage.getItem('userid') || '';
   const data = localStorage.getItem('loginData');
-  if (data) {
-   const user = JSON.parse(data);
-   var roleid = user.roleid;
-   var user_id = user.user_id;
-// console.log(user.username); 
-// console.log(user.roleid);   
-// console.log(user.user_id); 
+  if ((!roleId || !userId) && data) {
+    const user = JSON.parse(data);
+    roleId = roleId || String(user.roleid ?? '');
+    userId = userId || String(user.user_id ?? '');
+  }
+  return { roleId, userId };
+}
+
+// UpdateEligibility writes the technical columns for role 22 / 12, the financial columns otherwise
+private isTechRole() {
+  const { roleId } = this.currentUser();
+  return roleId === '22' || roleId === '12';
+}
+
+// Legacy row "Update": saves this row's own Eligible value and remarks
+updateRowStatus(element: any) {
+  const eligibility = element._elig;
+  const remarks = (element._remarks || '').trim();
+  if (!eligibility || eligibility === '0') {
+    this.toastr.warning('Please select a valid eligibility status.');
+    return;
+  }
+  if (eligibility === 'N' && !remarks) {
+    this.toastr.warning('Please Enter Rejection Remark for Not Eligible.');
+    return;
+  }
+  if (eligibility === 'C' && !remarks) {
+    this.toastr.warning('Please Enter Clarification Remarks.');
+    return;
   }
 
-  if (element.IsEligibleB === 'N' && !element.Remark) {
-     alert("Please Enter Rejection Remark");
-     return;
-  }
-
+  const { roleId, userId } = this.currentUser();
   const payload = {
     SchStatusDid: element.SchStatusDid,
-    SchemeId: element.TenderId, 
-    Eligibility: this.IsEligibleB, 
-    Remarks: this.Remarks,
-    RoleId: roleid, 
-    UserId: user_id   
+    SchemeId: element.TenderId,
+    Eligibility: eligibility,
+    Remarks: remarks,
+    RoleId: roleId,
+    UserId: userId,
   };
 
+  this.spinner.show();
   this.api.post1('BME/UpdateEligibility', payload).subscribe({
     next: (res: any) => {
-      // alert(res.message);
-     this.toastr.success(res.message);
+      this.spinner.hide();
+      this.toastr.success(res?.message || 'Updated Successfully');
+      this.GetLinkedItems(element.TenderId);
     },
     error: (err) => {
-      alert(err.error?.message || "Error updating status");
+      this.spinner.hide();
+      this.toastr.error(err.error?.message || 'Error updating status');
     }
   });
 }

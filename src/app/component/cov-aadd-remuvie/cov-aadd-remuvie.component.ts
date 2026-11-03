@@ -22,6 +22,8 @@ export class CovAaddRemuvieComponent implements OnInit {
   MASDOCUMENTTYPEList: any[] = [];
   bidders: any[] = [];
   formData: any = this.emptyForm();
+  // Add Supplier form opens on demand and closes itself after a successful save
+  showForm = false;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -45,6 +47,13 @@ export class CovAaddRemuvieComponent implements OnInit {
   private emptyForm() {
     // Legacy txtTenderProFee defaults to 5000
     return { SupplierId: null, EmdAmount: null, TenderProFee: 5000, DocTypeId: null, EmdDocNo: '', Remarks: '' };
+  }
+
+  toggleForm() {
+    this.showForm = !this.showForm;
+    if (!this.showForm) {
+      this.formData = this.emptyForm();
+    }
   }
 
   // Legacy FillSup(): all suppliers ordered by name
@@ -125,6 +134,7 @@ export class CovAaddRemuvieComponent implements OnInit {
         this.spinner.hide();
         this.toastr.success('Successfully Saved ' + supplierName);
         this.formData = this.emptyForm();
+        this.showForm = false;
         this.GetBidders();
       },
       error: (err: any) => {

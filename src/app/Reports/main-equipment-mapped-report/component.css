@@ -53,7 +53,7 @@
   background: #f1f5f9;
   font-weight: 600;
   color: #334155;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .stock-grid .alt-row td {

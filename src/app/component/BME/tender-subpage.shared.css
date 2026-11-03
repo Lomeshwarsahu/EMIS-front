@@ -200,20 +200,118 @@
   white-space: normal;
 }
 
-.po-grid td {
-  width: 1%;
-  white-space: nowrap;
-}
-
-.po-grid td.wrap-cell {
-  width: auto;
-  white-space: normal;
-  min-width: 180px;
-  word-break: break-word;
-}
 
 .po-grid td.empty-row,
 .po-grid td.reply-cell {
   width: auto;
   white-space: normal;
+}
+
+/* Tighter tables on every Plan a Tender sub-page: less horizontal gap between columns */
+.detail-section .po-grid th {
+  padding: 6px 8px;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.detail-section .po-grid td {
+  padding: 4px 8px;
+}
+
+/* Compact forms on the sub-pages: labels wrap instead of pushing the form off screen */
+.detail-section .detail-form-table td {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.detail-section .detail-form-table .label-col {
+  white-space: normal;
+  padding-right: 12px;
+}
+
+.detail-section .form-actions-row td {
+  padding: 12px !important;
+}
+
+/* 4-column form (label | value | label | value) that always fits the screen width */
+.detail-form-table.cols-4 {
+  table-layout: fixed;
+}
+
+.detail-form-table.cols-4 .label-col {
+  width: 18%;
+}
+
+.detail-form-table.cols-4 .value-col {
+  width: 32%;
+}
+
+.detail-form-table.cols-4 select,
+.detail-form-table.cols-4 textarea,
+.detail-form-table.cols-4 input[type='text'],
+.detail-form-table.cols-4 input[type='number'],
+.detail-form-table.cols-4 input[type='date'] {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
+}
+
+.detail-form-table.cols-4 .item-select {
+  max-width: 100%;
+}
+
+@media (max-width: 900px) {
+  .detail-form-table.cols-4 {
+    table-layout: auto;
+  }
+
+  .detail-form-table.cols-4 tr {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .detail-form-table.cols-4 td.label-col,
+  .detail-form-table.cols-4 td.value-col {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+
+  .detail-form-table.cols-4 td:empty {
+    display: none;
+  }
+}
+
+/* Collapsible "add" form: header row with the toggle button */
+.form-toggle-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.form-toggle-bar .section-title {
+  margin: 0;
+}
+
+.section-gap-bottom {
+  margin-bottom: 12px;
+}
+
+/* Dark mode: ng-select pickers inside the sub-page forms */
+:host-context(html[data-theme='dark']) ::ng-deep .detail-form-table .ng-select .ng-select-container {
+  background: #0c0e12;
+  border-color: #262b36;
+  color: #e2e8f0;
+}
+
+:host-context(html[data-theme='dark']) ::ng-deep .detail-form-table .ng-select .ng-value-label,
+:host-context(html[data-theme='dark']) ::ng-deep .detail-form-table .ng-select .ng-input > input {
+  color: #e2e8f0 !important;
+}
+
+:host-context(html[data-theme='dark']) ::ng-deep .detail-form-table .ng-select .ng-placeholder {
+  color: #64748b;
 }

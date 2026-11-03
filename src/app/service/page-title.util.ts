@@ -21,6 +21,11 @@ const EXTRA_ROUTE_TITLES: Record<string, string> = {
   '/AddTenderCon': 'Add Conversation With HOD (DHS/DME/Ayush)',
   '/TenderStatusRemark': 'Tender Status',
   '/TenderCoverAObClaimAfterB': 'Finalization of Cover B',
+  '/TenderCoverA': 'Equipment Cell: Cover A Evaluation/Clarification',
+  '/TenderCoverAitems': 'Cover A: Bid Items Entry',
+  '/CoverAitemsReports': 'List of Items Participated',
+  '/TenderDetailsPriceEntryGEM': 'Price Bid Entry',
+  '/IndentRCPOTenderStatus': 'Indent/RC/PO Tender Status',
   '/TenderItemsPriceAR': 'Price Accept / Reject',
 
   // DME / Orders

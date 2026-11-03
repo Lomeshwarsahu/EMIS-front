@@ -52,7 +52,7 @@ import Swal from 'sweetalert2';
     MatTableExporterModule,
   ],
   templateUrl: './cover-aitems-reports.component.html',
-  styleUrl: './cover-aitems-reports.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', '../tender-subpage.shared.css', './cover-aitems-reports.component.css'],
 })
 export class CoverAitemsReportsComponent {
 tenderNo: string | null = null;

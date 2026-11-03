@@ -126,11 +126,11 @@ html[data-theme='dark'] {
   font-weight: 600;
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   padding: 8px 10px;
   border: none !important;
   border-bottom: 1px solid var(--emis-head-bg) !important;
-  white-space: nowrap;
+  white-space: normal;
   vertical-align: middle;
   box-shadow: none !important;
 }

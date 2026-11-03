@@ -424,38 +424,77 @@ canvas {
   min-width: 0;
 }
 
-/* Only these containers scroll — not the full page, and maximize vertical height across all pages */
-.page-outlet-wrapper .datagrid,
-.page-outlet-wrapper .table-wrap,
-.page-outlet-wrapper .grid-scroll,
-.page-outlet-wrapper .table-responsive,
-.page-outlet-wrapper .table-container,
-.emis-page-content .datagrid,
-.emis-page-content .table-wrap,
-.emis-page-content .grid-scroll,
-.emis-page-content .table-responsive,
-.emis-page-content .table-container {
+/* ---------------------------------------------------------------------------------------------------------
+   Responsive tables (all pages). Only the table wrapper scrolls, never the page.
+   - Wrapper: the outermost wrapper hugs its table (fit-content, never wider than the page) and is only as tall
+     as its rows (capped to the screen). A wrapper followed by a paginator stays full width so both line up.
+   - Table: fills its wrapper; columns are sized by their content (table-layout: auto, no fixed widths).
+   - Cells: text wraps onto more lines instead of widening the table; short values (codes, dates, numbers)
+     have no spaces so they stay compact. Buttons / badges stay on one line. Long text columns use .wrap-cell.
+   - Sideways scroll appears only when the wrapped content still does not fit.
+   Opt-outs: .table-nowrap (keep a table on single lines), .cell-nowrap (one cell / column), .table-fill (100%).
+   --------------------------------------------------------------------------------------------------------- */
+.page-outlet-wrapper :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container),
+.emis-page-content :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) {
   width: 100%;
   max-width: 100%;
-  flex: 1 1 auto;
-  min-height: max(500px, calc(100vh - 220px));
-  height: 100%;
+  min-width: 0;
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: calc(100vh - 140px);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-.page-outlet-wrapper .datagrid table,
-.page-outlet-wrapper .table-wrap table,
-.page-outlet-wrapper .grid-scroll table,
-.page-outlet-wrapper .table-responsive table,
-.page-outlet-wrapper .table-container table,
-.emis-page-content .datagrid table,
-.emis-page-content .table-wrap table {
+/* Outermost wrapper only: as wide as its content */
+.page-outlet-wrapper
+  :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container):not(
+    :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) *
+  ),
+.emis-page-content
+  :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container):not(
+    :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) *
+  ) {
+  width: fit-content;
+}
+
+/* Wrapper with its paginator as next sibling: keep both full width so they stay aligned */
+.page-outlet-wrapper
+  :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container):not(
+    :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) *
+  ):has(+ mat-paginator),
+.emis-page-content
+  :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container):not(
+    :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) *
+  ):has(+ mat-paginator) {
+  width: 100%;
+}
+
+.page-outlet-wrapper :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) table,
+.emis-page-content :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) table {
   width: auto !important;
+  min-width: 100% !important;
   max-width: none !important;
-  min-width: max-content !important;
   table-layout: auto;
   border-collapse: collapse;
+}
+
+.page-outlet-wrapper :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) table.table-fill,
+.emis-page-content :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) table.table-fill {
+  width: 100% !important;
+}
+
+/* Paginator: aligned with the table box, wraps on small screens, never widens the page */
+.page-outlet-wrapper mat-paginator,
+.emis-page-content mat-paginator {
+  max-width: 100%;
+  flex-shrink: 0;
+}
+
+.page-outlet-wrapper .mat-mdc-paginator-container,
+.emis-page-content .mat-mdc-paginator-container {
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 /* Suppress redundant in-page titles since page title is now globally displayed in the navbar */
@@ -515,22 +554,83 @@ canvas {
   table-layout: fixed;
 }
 
-.page-outlet-wrapper .datagrid th,
-.page-outlet-wrapper .datagrid td,
-.page-outlet-wrapper .table-wrap th,
-.page-outlet-wrapper .table-wrap td,
-.page-outlet-wrapper .grid-scroll th,
-.page-outlet-wrapper .grid-scroll td,
-.page-outlet-wrapper .table-responsive th,
-.page-outlet-wrapper .table-responsive td,
-.emis-page-content .datagrid th,
-.emis-page-content .datagrid td,
-.emis-page-content .table-wrap th,
-.emis-page-content .table-wrap td {
-  white-space: nowrap;
-  word-wrap: normal;
-  overflow-wrap: normal;
+.page-outlet-wrapper :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) :is(th, td),
+.emis-page-content :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) :is(th, td) {
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
   vertical-align: middle;
+  /* Material cells default to overflow: hidden + ellipsis, which lets a column shrink below its words and cut
+     them ("EMD AMOU…"); wrap the text instead */
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* Buttons, badges and form controls inside cells keep their label on one line */
+.page-outlet-wrapper :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) td :is(button, .btn, .badge, a.btn),
+.emis-page-content :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) td :is(button, .btn, .badge, a.btn) {
+  white-space: nowrap;
+}
+
+/* Column headers wrap only between words (never "S.N / O"), whatever a page sets on its cells */
+.page-outlet-wrapper :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) th,
+.emis-page-content :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) th {
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+/* Sortable (mat-sort-header) headers wrap like the rest */
+.page-outlet-wrapper :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) th .mat-sort-header-content,
+.emis-page-content :is(.datagrid, .table-wrap, .grid-scroll, .table-responsive, .table-container) th .mat-sort-header-content {
+  white-space: normal;
+  text-align: inherit;
+}
+
+/* Buttons inside tables: no background and no border - coloured text only, light tint on hover / focus.
+   Covers the dark .add-btn pills, .show-btn, the coloured .action-btn pills and Bootstrap .btn inside grids. */
+.page-outlet-wrapper table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain),
+.emis-page-content table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain) {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+/* One link-style look for every table button: blue text with a dotted underline reads as "clickable" */
+.page-outlet-wrapper table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain),
+.emis-page-content table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain) {
+  color: #1d4ed8 !important;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+
+html[data-theme='dark'] .page-outlet-wrapper table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain),
+html[data-theme='dark'] .emis-page-content table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain) {
+  color: #93c5fd !important;
+}
+
+.page-outlet-wrapper table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain):not(:disabled):is(:hover, :focus-visible),
+.emis-page-content table td :is(button, .btn, a.btn):not(.btn-close):not(.desc-preview):not(.link-btn-plain):not(:disabled):is(:hover, :focus-visible) {
+  background: color-mix(in srgb, currentColor 12%, transparent) !important;
+  text-decoration: underline solid;
+}
+
+/* Long text columns (names, descriptions, remarks): enough room to read, then wrap */
+.page-outlet-wrapper .wrap-cell,
+.emis-page-content .wrap-cell {
+  white-space: normal;
+  min-width: 140px;
+  overflow-wrap: anywhere;
+}
+
+/* Opt-outs */
+.page-outlet-wrapper .table-nowrap :is(th, td),
+.emis-page-content .table-nowrap :is(th, td),
+.page-outlet-wrapper .cell-nowrap,
+.emis-page-content .cell-nowrap {
+  white-space: nowrap;
 }
 
 .page-outlet-wrapper .table-wrap table.emis-full-width-table th,
@@ -539,12 +639,6 @@ canvas {
 .emis-page-content .table-wrap table.emis-full-width-table td {
   white-space: normal;
   word-break: break-word;
-}
-
-.page-outlet-wrapper .datagrid .wrap-cell,
-.page-outlet-wrapper .table-wrap .wrap-cell,
-.emis-page-content .wrap-cell {
-  white-space: normal;
 }
 
 .page-outlet-wrapper .ems-legacy-page {
@@ -1015,10 +1109,10 @@ table.mat-table th.mat-mdc-header-cell,
   background-color: transparent !important;
   color: #ffffff !important;
   font-weight: 700 !important;
-  font-size: 12px !important;
+  font-size: 11.5px !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  padding: 14px 16px !important;
+  letter-spacing: 0.02em !important;
+  padding: 9px 10px !important;
   border: none !important;
 }
 
@@ -1048,7 +1142,7 @@ table.mat-table thead tr.mat-mdc-header-row th:last-child {
 table.pill-table tbody td,
 table.table-orange-header tbody td,
 table.mat-table td.mat-mdc-cell {
-  padding: 12px 16px !important;
+  padding: 7px 10px !important;
   font-size: 13px !important;
   color: #334155;
   border-bottom: 1px solid #f1f5f9 !important;

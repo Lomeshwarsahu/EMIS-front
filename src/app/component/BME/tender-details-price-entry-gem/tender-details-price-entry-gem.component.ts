@@ -55,7 +55,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     MatTableExporterModule,
   ],
   templateUrl: './tender-details-price-entry-gem.component.html',
-  styleUrl: './tender-details-price-entry-gem.component.css',
+  styleUrls: ['../../Suppliers/supplier-po-pages.shared.css', '../tender-subpage.shared.css', './tender-details-price-entry-gem.component.css'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', opacity: 0, padding: '0' })),

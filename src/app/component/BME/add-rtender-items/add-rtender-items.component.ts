@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NgSelectModule } from '@ng-select/ng-select';
+import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/service/api.service';
@@ -24,11 +24,14 @@ export class AddRTenderItemsComponent implements OnInit {
   searched = false;
   linkedItems: any[] = [];
 
+  @ViewChild('itemSelect') itemSelect?: NgSelectComponent;
+
   constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
     public toastr: ToastrService,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -80,7 +83,8 @@ export class AddRTenderItemsComponent implements OnInit {
 
   // Legacy gvMasItems_RowCommand "Add"
   addItemToTender(item: any) {
-    if (!item.emd_amt || Number(item.emd_amt) <= 0) {
+    // EMD 0 is allowed; empty or negative is not
+    if (item.emd_amt === null || item.emd_amt === undefined || item.emd_amt === '' || Number(item.emd_amt) < 0) {
       this.toastr.warning('Please Enter EMD');
       return;
     }
@@ -101,10 +105,12 @@ export class AddRTenderItemsComponent implements OnInit {
       next: (res: any) => {
         this.spinner.hide();
         this.toastr.success(res?.message || 'Saved Successfully');
-        // Legacy clears the search grid after a save (PopulateMasItem("0"))
+        // Legacy clears the search grid after a save (PopulateMasItem("0")): close the entry grid and clear the item
         this.searchItems = [];
         this.searched = false;
         this.item_id = null;
+        this.itemSelect?.clearModel();
+        this.cdr.detectChanges();
         this.GetLinkedItems();
       },
       error: (err: any) => {

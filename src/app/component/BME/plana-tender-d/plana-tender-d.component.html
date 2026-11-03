@@ -1,38 +1,36 @@
 <div class="supplier-po-page">
-
-  <!-- Legend (legacy tender_details_1.aspx row colours) -->
-  <div class="tender-legend">
-    <span class="legend-item"><span class="legend-swatch row-link-items"></span>Link Items in Tender</span>
-    <span class="legend-item"><span class="legend-swatch row-price-pending"></span>Price Not Entered</span>
-    <span class="legend-item"><span class="legend-swatch row-ar-pending"></span>Pending Accept/Reject</span>
-    <span class="legend-item"><span class="legend-swatch row-completed"></span>Tender Completed</span>
-  </div>
-
   <div class="datagrid">
-    <div class="table-toolbar filters filters--compact">
+    <!-- Frequently used controls stay on top; status filter, legend and refresh sit under "Filters" -->
+    <div class="table-toolbar filters filters--compact plan-toolbar">
+      <!-- Search (legacy Panel1: Search By Code / Name / Tender) - searches while typing -->
+      <input
+        type="text"
+        class="toolbar-input"
+        aria-label="Type to Search"
+        placeholder="Type to Search"
+        [(ngModel)]="filterData.searchText"
+        name="SearchText"
+        (ngModelChange)="onSearchInput($event)"
+        (keyup.enter)="onSubmitFilter()">
+      <div class="status-radios" role="radiogroup" aria-label="Search By">
+        <span class="search-label">Search By</span>
+        <label *ngFor="let c of Category" class="status-radio">
+          <input type="radio" name="searchBy" [value]="c.Value" [(ngModel)]="filterData.categoryId" (ngModelChange)="onSearchByChange()">
+          {{ c.C_name }}
+        </label>
+      </div>
+
       <!-- Financial Year -->
       <select
         aria-label="Financial Year"
         class="year-select"
         [(ngModel)]="filterData.financialYearId"
+        (ngModelChange)="onSubmitFilter()"
         name="FinancialYearId">
         <option [ngValue]="0">Select Fin Year</option>
         <option *ngFor="let y of yearlist" [ngValue]="y.financial_year_id">{{ y.year }}</option>
       </select>
 
-      <!-- Status (legacy rbcheck: none selected = all except Cancelled) -->
-      <div class="status-radios" role="radiogroup" aria-label="Tender Status">
-        <label *ngFor="let t of Type" class="status-radio">
-          <input type="radio" name="statusCheck" [value]="t.Value" [(ngModel)]="filterData.typeId">
-          {{ t.T_name }}
-        </label>
-      </div>
-
-      <button type="button" class="show-btn clear-btn" (click)="toggleSearch()">
-        {{ showSearch ? 'Hide Search' : 'Show Search' }}
-      </button>
-
-      <button type="button" class="show-btn" (click)="onSubmitFilter()" [disabled]="loading">{{ loading ? 'Loading…' : 'Show Data' }}</button>
 
       <button
         type="button"
@@ -40,6 +38,18 @@
         data-bs-toggle="modal"
         data-bs-target="#SendModall">
         Generate New Tender
+      </button>
+
+
+      <button
+        type="button"
+        class="show-btn clear-btn filter-toggle"
+        [class.active]="showFilters"
+        [attr.aria-expanded]="showFilters"
+        aria-controls="planFilterPanel"
+        (click)="showFilters = !showFilters">
+        <i class="bi bi-funnel" aria-hidden="true"></i> Filters
+        <span class="filter-count" *ngIf="filterData.typeId" aria-label="1 filter active">1</span>
       </button>
 
       <button
@@ -51,23 +61,30 @@
       </button>
     </div>
 
-    <!-- Search panel (legacy Panel1: Search By Code / Name / Tender) -->
-    <div class="table-toolbar filters filters--compact search-panel" *ngIf="showSearch">
-      <span class="search-label">Search By</span>
-      <div class="status-radios" role="radiogroup" aria-label="Search By">
-        <label *ngFor="let c of Category" class="status-radio">
-          <input type="radio" name="searchBy" [value]="c.Value" [(ngModel)]="filterData.categoryId">
-          {{ c.C_name }}
-        </label>
+    <div class="plan-filter-panel" id="planFilterPanel" *ngIf="showFilters">
+      <div class="filter-row">
+        <span class="search-label">Status</span>
+        <!-- Legacy rbcheck: All = everything except Cancelled -->
+        <div class="status-radios" role="radiogroup" aria-label="Tender Status">
+          <label *ngFor="let t of Type" class="status-radio">
+            <input type="radio" name="statusCheck" [value]="t.Value" [(ngModel)]="filterData.typeId" (ngModelChange)="onSubmitFilter()">
+            {{ t.T_name }}
+          </label>
+        </div>
       </div>
-      <input
-        type="text"
-        class="toolbar-input"
-        aria-label="Type to Search"
-        placeholder="Type to Search"
-        [(ngModel)]="filterData.searchText"
-        name="SearchText"
-        (keyup.enter)="onSubmitFilter()">
+      <div class="filter-row">
+        <span class="search-label">Row colours</span>
+        <!-- Legend (legacy tender_details_1.aspx row colours) -->
+        <div class="tender-legend">
+          <span class="legend-item"><span class="legend-swatch row-link-items"></span>Link Items in Tender</span>
+          <span class="legend-item"><span class="legend-swatch row-price-pending"></span>Price Not Entered</span>
+          <span class="legend-item"><span class="legend-swatch row-ar-pending"></span>Pending Accept/Reject</span>
+          <span class="legend-item"><span class="legend-swatch row-completed"></span>Tender Completed</span>
+        </div>
+      </div>
+      <div class="filter-row filter-row--actions">
+        <button type="button" class="show-btn small" (click)="onSubmitFilter()" [disabled]="loading">{{ loading ? 'Loading…' : 'Show Data' }}</button>
+      </div>
     </div>
 
     <!-- Skeleton Loader -->
@@ -78,7 +95,7 @@
       <table class="po-grid tender-grid" mat-table matTableExporter
         [dataSource]="dataSource" #exporter="matTableExporter" matSort #sort="matSort">
 
-        <ng-container matColumnDef="sno" sticky>
+        <ng-container matColumnDef="sno">
           <th mat-header-cell *matHeaderCellDef class="text-center col-sn">S.no</th>
           <td mat-cell *matCellDef="let element" class="text-center col-sn font-medium">{{ element.sno }}</td>
         </ng-container>
@@ -131,7 +148,7 @@
         <ng-container matColumnDef="UpdateStatus">
           <th mat-header-cell *matHeaderCellDef class="text-center col-action">Update<br>Status</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
-            <button type="button" class="action-btn action-btn--blue" (click)="opennewpage(element.TenderId)">Edit</button>
+            <button type="button" class="action-btn action-btn--blue icon-btn" title="Edit" aria-label="Edit tender status" (click)="opennewpage(element.TenderId)"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
           </td>
         </ng-container>
 
@@ -172,11 +189,18 @@
 
         <ng-container matColumnDef="TenderDescription">
           <th mat-header-cell *matHeaderCellDef class="text-start col-desc">Description</th>
-          <td mat-cell *matCellDef="let element" class="text-start col-desc wrap-cell">{{ element.TenderDescription }}</td>
+          <td mat-cell *matCellDef="let element" class="text-start col-desc wrap-cell">
+            <button
+              type="button"
+              class="desc-preview"
+              *ngIf="element.TenderDescription"
+              title="Click to read the full description"
+              (click)="openDescription(element)">{{ element.TenderDescription }}</button>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="AddnewHOD">
-          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Conversation<br>With HOD(DHS/DME/Ayush)</th>
+          <th mat-header-cell *matHeaderCellDef class="text-center col-action">Add Conversation<br>With HOD(DHS/<wbr>DME/<wbr>Ayush)</th>
           <td mat-cell *matCellDef="let element" class="text-center col-action">
             <button type="button" class="action-btn action-btn--purple add-btn" (click)="OpenAddTenderCon(element.TenderId)">Add New</button>
           </td>
@@ -199,6 +223,17 @@
     </div>
 
     <mat-paginator #paginator *ngIf="dataSource.data.length" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
+
+<!-- Full tender description (opened from the Description column) -->
+<div class="desc-popup-backdrop" *ngIf="descTender" (click)="closeDescription()">
+  <div class="desc-popup" role="dialog" aria-modal="true" aria-labelledby="descPopupTitle" (click)="$event.stopPropagation()">
+    <div class="desc-popup-header">
+      <h5 id="descPopupTitle">{{ descTender.TenderNo }}</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeDescription()"></button>
+    </div>
+    <div class="desc-popup-body">{{ descTender.TenderDescription }}</div>
   </div>
 </div>
 

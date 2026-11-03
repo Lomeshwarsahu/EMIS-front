@@ -383,7 +383,7 @@
   padding: 10px 12px;
   text-align: left;
   border: none;
-  white-space: nowrap;
+  white-space: normal;
   position: sticky;
   top: 0;
   z-index: 2;
@@ -397,7 +397,7 @@
   border: none;
   border-bottom: 1px solid var(--table-row-border);
   vertical-align: middle;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .orders-grid tr.alt-row td {

@@ -1,127 +1,48 @@
-/* Table Header Styling - Dark Blue from Image */
-.custom-participation-table .mat-header-cell {
-    background-color: #00008b !important; /* Dark Blue */
-    color: white !important;
-    font-weight: bold;
-    padding: 12px 8px !important;
-    border: 1px solid #ccc !important;
-    font-size: 14px;
+/* Cover A bid items entry (styles shared with the other Plan a Tender sub-pages) */
+.po-grid tbody tr {
+  cursor: pointer;
 }
 
-/* Table Cell Styling */
-.custom-participation-table .mat-cell {
-    border: 1px solid #ccc !important;
-    padding: 8px !important;
-    font-size: 13px;
-    color: #000;
+.check-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  margin: 0;
 }
 
-/* Zebra Stripes (Odd Rows) */
-.custom-participation-table .mat-row:nth-child(odd) {
-    background-color: #ffffff;
+.toolbar-input {
+  min-width: 200px;
+  height: 30px;
+  padding: 0 12px;
+  font-size: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #1e293b;
+  outline: none;
 }
 
-/* Zebra Stripes (Even Rows) - Gray from Image */
-.custom-participation-table .mat-row:nth-child(even) {
-    background-color: #eeeeee;
+.toolbar-input:focus {
+  border-color: var(--page-accent);
 }
 
-/* Border for the whole table */
-.custom-participation-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-/* Checkbox Style */
-.form-check-input {
-    cursor: pointer;
-    width: 18px;
-    height: 18px;
-}
-
-
-/* Table Header Sticky fix with Color */
-.custom-participation-table .mat-header-cell {
-    background-color: #004085 !important; /* Professional Dark Blue */
-    color: white !important;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #002752 !important;
-}
-
-/* Zebra Stripes & Hover */
-.custom-participation-table .mat-row:nth-child(even) {
-    background-color: #fcfcfc;
-}
-
-.row-hover-effect:hover {
-    background-color: #f1f7ff !important;
-    transition: background-color 0.2s ease;
-}
-
-/* Custom Checkbox Size */
-.custom-check {
-    width: 1.2rem;
-    height: 1.2rem;
-    cursor: pointer;
-    border: 2px solid #dee2e6;
-}
-
-.custom-check:checked {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-}
-
-/* Button Hover Animation */
-.btn-action {
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.btn-action:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .btn-action {
-        width: 100%;
-        margin-bottom: 5px;
-    }
-    .card-header {
-        text-align: center;
-    }
-}
-/* Dark theme — matches the unified EMIS / supplier palette */
-:host-context(html[data-theme='dark']) .custom-participation-table .mat-header-cell {
-  background-color: #2563eb !important;
-  border-color: #1d4ed8 !important;
-}
-
-:host-context(html[data-theme='dark']) .custom-participation-table .mat-cell {
-  color: #e2e8f0;
-  border-color: #262b36 !important;
-}
-
-:host-context(html[data-theme='dark']) .custom-participation-table .mat-row:nth-child(odd) {
+:host-context(html[data-theme='dark']) .toolbar-input {
   background-color: #0c0e12;
+  border-color: #262b36;
+  color: #f1f5f9;
 }
 
-:host-context(html[data-theme='dark']) .custom-participation-table .mat-row:nth-child(even) {
-  background-color: #141820;
+@media (max-width: 720px) {
+  .detail-header-grid.cols-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .form-toggle-bar {
+    flex-wrap: wrap;
+  }
 }
 
-:host-context(html[data-theme='dark']) .row-hover-effect:hover {
-  background-color: #1a2030 !important;
-}
-
-:host-context(html[data-theme='dark']) .custom-check {
-  border-color: #475569;
-}
-
-:host-context(html[data-theme='dark']) .custom-check:checked {
-  background-color: #2563eb;
-  border-color: #2563eb;
+.supplier-cell {
+  grid-column: span 2;
 }

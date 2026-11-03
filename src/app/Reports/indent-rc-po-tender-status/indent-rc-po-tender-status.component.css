@@ -1,0 +1,29 @@
+/* RC status pill: readable text on a light tint (was green text on a solid green background) */
+.rc-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rc-pill--valid {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.rc-pill--invalid {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+:host-context(html[data-theme='dark']) .rc-pill--valid {
+  background: rgba(34, 197, 94, 0.18);
+  color: #86efac;
+}
+
+:host-context(html[data-theme='dark']) .rc-pill--invalid {
+  background: rgba(239, 68, 68, 0.18);
+  color: #fca5a5;
+}

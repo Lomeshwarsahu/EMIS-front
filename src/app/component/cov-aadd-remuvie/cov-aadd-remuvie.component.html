@@ -2,8 +2,15 @@
   <div class="detail-section wide">
     <app-tender-page-header [tenderId]="tenderNo"></app-tender-page-header>
 
-    <div class="detail-form-card">
-      <table class="detail-form-table">
+    <div class="form-toggle-bar">
+      <h3 class="section-title">Participants ({{ bidders.length }})</h3>
+      <button type="button" class="show-btn small add-btn" (click)="toggleForm()">
+        {{ showForm ? 'Close Form' : '+ Add Supplier' }}
+      </button>
+    </div>
+
+    <div class="detail-form-card section-gap-bottom" *ngIf="showForm">
+      <table class="detail-form-table cols-4">
         <tbody>
           <tr>
             <td class="label-col">Select Supplier <span class="req">*</span></td>
@@ -23,7 +30,7 @@
           <tr>
             <td class="label-col">EMD <span class="req">*</span></td>
             <td class="value-col">
-              <input type="number" min="0" aria-label="EMD" [(ngModel)]="formData.EmdAmount" name="emd">
+              <input type="number" min="0" placeholder="0" aria-label="EMD" [(ngModel)]="formData.EmdAmount" name="emd">
             </td>
             <td class="label-col">Tender Processing Fee <span class="req">*</span></td>
             <td class="value-col">
@@ -53,13 +60,13 @@
           <tr class="form-actions-row">
             <td colspan="4">
               <button type="button" class="show-btn" (click)="saveParticipation()">Save</button>
+              <button type="button" class="show-btn secondary-btn" (click)="toggleForm()">Cancel</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <h3 class="section-title section-gap">Participants</h3>
     <div class="datagrid">
       <div class="table-wrap">
         <table class="po-grid">

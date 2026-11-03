@@ -10,6 +10,7 @@
             <td class="label-col">Search Equipment</td>
             <td class="value-col">
               <ng-select
+                #itemSelect
                 class="item-select"
                 appendTo="body"
                 [items]="itemList"
@@ -58,7 +59,7 @@
                 <input type="number" min="0" class="cell-input" aria-label="Tender Qty" [(ngModel)]="item.tender_qty" [name]="'qty' + i">
               </td>
               <td class="text-center">
-                <input type="number" min="0" class="cell-input" aria-label="EMD Amount" [(ngModel)]="item.emd_amt" [name]="'emd' + i">
+                <input type="number" min="0" class="cell-input" aria-label="EMD Amount" placeholder="0" [(ngModel)]="item.emd_amt" [name]="'emd' + i">
               </td>
               <td class="text-center" [class.rc-valid]="item.RCStatus === 'RC Valid'" [class.rc-invalid]="item.RCStatus !== 'RC Valid'">
                 {{ item.RCStatus }}

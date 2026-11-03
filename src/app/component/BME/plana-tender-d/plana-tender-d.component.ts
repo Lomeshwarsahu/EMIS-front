@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ChangeDetectorRef, ViewChild, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, OnInit, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
 import {
   FormBuilder,
   FormsModule,
@@ -23,6 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { SupplierPageSkeletonComponent } from '../../Suppliers/supplier-page-skeleton/supplier-page-skeleton.component';
+import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 
 declare var bootstrap: any;
 
@@ -70,12 +71,14 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
   filterData: any = {
     financialYearId: 19,
     typeId: 0,
-    categoryId: null,
+    categoryId: 'T',
     searchText: '',
   };
 
   yearlist: any = [];
-  showSearch = false;
+  showSearch = true;
+  // Status filter, row-colour legend and Show Data live in this panel
+  showFilters = false;
   dispatchData: any[] = [];
   dataSource!: MatTableDataSource<any>;
   loading = false;
@@ -125,7 +128,24 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource = new MatTableDataSource<any>([]);
   }
 
+  // Search box searches by itself 400 ms after the user stops typing (no Show Data click needed)
+  private searchInput$ = new Subject<string>();
+  private destroy$ = new Subject<void>();
+
+  onSearchInput(text: string) {
+    this.searchInput$.next((text || '').trim());
+  }
+
+  onSearchByChange() {
+    if ((this.filterData.searchText || '').trim()) {
+      this.loadGrid();
+    }
+  }
+
   ngOnInit() {
+    this.searchInput$
+      .pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => this.loadGrid());
     this.Getyear();
     // Legacy: ?tenderid=<id> opens the grid on that tender's financial year, otherwise year 19
     const tenderId = Number(this.route.snapshot.queryParamMap.get('tenderid'));
@@ -162,15 +182,21 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
     document.body.classList.remove('emis-modal-open');
   }
 
-  toggleSearch() {
-    this.showSearch = !this.showSearch;
-    if (!this.showSearch) {
-      this.filterData.categoryId = null;
-      this.filterData.searchText = '';
-    }
+  // Description column shows a two-line preview; a click opens the full text
+  descTender: any = null;
+
+  openDescription(element: any) {
+    this.descTender = element;
+  }
+
+  @HostListener('document:keydown.escape')
+  closeDescription() {
+    this.descTender = null;
   }
 
   // Legacy btnShow_Click: search (Code/Name/Tender + text) across all years, else year + status
@@ -231,9 +257,10 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
         }));
 
         this.dataSource.data = this.dispatchData;
+        // The paginator / sort only exist once the table has rendered (*ngIf), so attach them after that
+        this.cdr.detectChanges();
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        this.cdr.detectChanges();
       },
       error: (err: any) => {
         this.loading = false;

@@ -259,7 +259,7 @@
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.03em;
-  white-space: nowrap;
+  white-space: normal;
   border-bottom: none !important;
   padding: 10px 12px;
 }
@@ -274,7 +274,7 @@
   color: inherit;
   border-bottom: 1px solid var(--table-row-border) !important;
   padding: 10px 12px;
-  white-space: nowrap;
+  white-space: normal;
   background: var(--table-cell-bg);
 }
 

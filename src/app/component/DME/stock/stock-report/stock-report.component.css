@@ -209,7 +209,7 @@
   color: var(--table-head-text);
   padding: 6px 4px;
   text-align: left;
-  white-space: nowrap;
+  white-space: normal;
   font-weight: 700;
 }
 
@@ -218,7 +218,7 @@
   border-bottom: 1px solid var(--table-row-border);
   background: var(--table-cell-bg);
   vertical-align: middle;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .stock-grid tr.alt-row td {
