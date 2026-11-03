@@ -29,6 +29,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import Swal from 'sweetalert2'
+import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-main-fund-head-en',
      standalone: true,
@@ -63,7 +64,7 @@ export class MainFundHeadEnComponent {
 
 
 displayedColumns: string[] = ['expand', 'MHID', 'MainHead_Eng', 'CreatedDate', 'IsActive','editAction'];//'sno', 
-displayedColumns1: string[] = ['expand', 'sno', 'MHID', 'MainHead_Eng', 'CreatedDate', 'IsActive'];
+displayedColumns1: string[] = ['expand', 'sno', 'MHID', 'MainHead_Eng', 'CreatedDate', 'IsActive','editAction'];
 expandedElement: any | null = null;
  formModel:any = {
     MainHead_Eng: '',
@@ -72,7 +73,8 @@ expandedElement: any | null = null;
   };
 
   subHeadFormModel = {
-    MHID: null,            
+    MHID: null, 
+    SHID: null,           
     SubHead_Eng: '',
     SubHead_Hindi: '',
     IsActive: 'Active'
@@ -200,7 +202,7 @@ onSaveMainHead(form: any) {
   // }
 
 
-  onSaveSubHead(form: any) {
+  onSaveSubHead1(form: any) {
     if (form.invalid) {
       return;
     }
@@ -285,8 +287,49 @@ onEnglishChange(text: string) {
     });
   }
 
+  onSubHeadEnglishChange(text: string) {
+    if (!text || text.trim() === '') {
+      this.subHeadFormModel.SubHead_Hindi = '';
+      return;
+    }
 
- 
+    const words = text.split(' ');
+    const acronymMap: { [key: string]: string } = {
+      'a': 'ए', 'b': 'बी', 'c': 'सी', 'd': 'डी', 'e': 'ई', 'f': 'एफ', 'g': 'जी',
+      'h': 'एच', 'i': 'आई', 'j': 'जे', 'k': 'के', 'l': 'एल', 'm': 'एम', 'n': 'एन',
+      'o': 'ओ', 'p': 'पी', 'q': 'क्यू', 'r': 'आर', 's': 'एस', 't': 'टी', 'u': 'यू',
+      'v': 'वी', 'w': 'डब्ल्यू', 'x': 'एक्स', 'y': 'वाई', 'z': 'ज़'
+    };
+
+    const processedWordsPromises = words.map(async (word) => {
+      if (!word) return '';
+
+      // Agar pure uppercase acronym hai
+      if (word === word.toUpperCase() && /^[A-Z0-9]+$/.test(word)) {
+        let spelled = '';
+        for (let char of word.toLowerCase()) {
+          spelled += acronymMap[char] || char;
+        }
+        return spelled;
+      }
+
+      // Backend API call for normal words
+      try {
+        const res: any = await this.api.get(`GMFI/Transliterate?text=${encodeURIComponent(word)}`).toPromise();
+        if (res && res[0] === 'SUCCESS' && res[1] && res[1][0] && res[1][0][1]) {
+          return res[1][0][1][0]; 
+        }
+      } catch (err) {
+        console.error('Transliteration error for word:', word, err);
+      }
+
+      return word; 
+    });
+
+    Promise.all(processedWordsPromises).then((translatedWords) => {
+      this.subHeadFormModel.SubHead_Hindi = translatedWords.join(' ');
+    });
+  }
  
 
 
@@ -381,5 +424,91 @@ onEnglishChange(text: string) {
     });
   }
 
+
+// 1. Edit Button Click par API call karke data form me fill karna aur modal open karna
+  editSubHeadRecord(sub: any) {
+    this.api.get(`GMFI/GetSubHeadByIdShid/${sub.SHID}`).subscribe({
+      next: (res: any) => {
+        if (res) {
+          // SubHeadFormModel mein data assign karna
+          this.subHeadFormModel = {
+            SHID: res.SHID, // Make sure subHeadFormModel mein SHID property ho
+            MHID: res.MHID,
+            SubHead_Eng: res.SubHead_Eng,
+            SubHead_Hindi: res.SubHead_Hindi,
+            IsActive: res.IsActive
+          };
+
+          // Bootstrap Modal ko programmatically open karna
+          const modalElement = document.getElementById('subHeadModal');
+          if (modalElement) {
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+          }
+        }
+      },
+      error: (err) => {
+        console.error("Error fetching SubHead for edit:", err);
+        this.toastr.error('Failed to fetch Sub Head details.');
+      }
+    });
+  }
+
+  // 2. Save / Update SubHead Function (POST vs PUT check)
+  onSaveSubHead(form: any) {
+    // debugger;
+    if (form.invalid) return;
+
+    // Agar SHID maujood hai toh PUT (Update) chalega, nahi toh POST (Save) chalega
+    if (this.subHeadFormModel.SHID) {
+      // --- UPDATE (PUT) API CALL ---
+      this.api.put(`GMFI/UpdateSubHead/${this.subHeadFormModel.SHID}`, this.subHeadFormModel).subscribe({
+        next: (res: any) => {
+          this.toastr.success('Sub Head Updated Successfully');
+          console.log(res);
+          form.resetForm({ IsActive: 'Active' });
+          this.loadReceiptRecordsGrid(0); // Grid reload
+          
+          // Modal close karna
+          if (this.closeModalBtn && this.closeModalBtn.nativeElement) {
+            this.closeModalBtn.nativeElement.click();
+          }
+        },
+        error: (err) => {
+          console.error("Update SubHead error:", err);
+          this.toastr.error(err.error?.message || 'Failed to update Sub Head.');
+        }
+      });
+    } else {
+      // --- SAVE / INSERT (POST) API CALL ---
+      this.api.post('GMFI/SaveSubHead', this.subHeadFormModel).subscribe({
+        next: (res: any) => {
+          this.toastr.success('Sub Head Saved Successfully');
+          console.log(res);
+          form.resetForm({ IsActive: 'Active' });
+          this.loadReceiptRecordsGrid(0); // Grid reload
+          
+          if (this.closeModalBtn && this.closeModalBtn.nativeElement) {
+            this.closeModalBtn.nativeElement.click();
+          }
+        },
+        error: (err) => {
+          console.error("Save SubHead error:", err);
+          this.toastr.error(err.error?.message || 'Failed to save Sub Head.');
+        }
+      });
+    }
+  }
+
+  resetSubHeadForm(form: any) {
+    form.resetForm({ IsActive: 'Active' });
+    this.subHeadFormModel = {
+      SHID: null,
+      MHID: null,
+      SubHead_Eng: '',
+      SubHead_Hindi: '',
+      IsActive: 'Active'
+    };
+  }
 
 }

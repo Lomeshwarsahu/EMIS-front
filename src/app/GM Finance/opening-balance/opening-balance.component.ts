@@ -42,12 +42,12 @@ export class OpeningBalanceComponent implements OnInit {
   Mainfundhead: any[] = [];
   subheadfund: any[] = [];
   
-  displayedColumns: string[] = ['sno', 'UserName', 'FacName', 'BudgetName', 'RecDate', 'Amount', 'Remarks', 'RecType', 'ActualAmountReceived','download', 'actions'];
+  displayedColumns: string[] = ['sno', 'UserName', 'FacName', 'BudgetName', 'RecDate', 'Amount', 'Remarks', 'RecType', 'ActualAmountReceived','download'];//, 'actions'
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sort') sort!: MatSort;
 
-  labelAmountCaption: string = 'Balance Amount/Fund Received Amount';
+  labelAmountCaption: string = 'Balance Amount/Fund Received Amount(In RS.)';
   labelDateCaption: string = 'Opening Balance Date/Fund Date';
   labelFileUploadCaption: string = 'Upload Letter/Receipt/Bank Statement (In PDF)';
 
@@ -76,7 +76,7 @@ const today = new Date();
     this.loadDirectoratesDropdown();
     this.loadBankAccountsDropdown();
     this.loadReceiptRecordsGrid(0);
-    this.loadMainfund();
+    this.loadMainfund(0);
     this.onFundTypeChange(); // Page load par default condition
   }
 
@@ -85,13 +85,13 @@ const today = new Date();
     if (this.formModel.fundType === 'A') {
       this.formModel.receivedDate = '2026-04-01';
       // this.formModel.receivedDate = '2026-04-01';
-      this.labelAmountCaption = 'Balance Amount/Fund Received Amount';
+      this.labelAmountCaption = 'Balance Amount/Fund Received Amount(In RS.)';
       this.labelDateCaption = 'Opening Balance Date/Fund Date';
       this.isDateInputLocked = true;
     } else {
       this.formModel.receivedDate = ''; 
       this.isDateInputLocked = false;
-      this.labelAmountCaption = 'Received Amount';
+      this.labelAmountCaption = 'Received Amount (In RS.)';
       this.labelDateCaption = 'Received Date';
     }
   }
@@ -248,6 +248,8 @@ onBankAccountSelectedChange() {
     }
   }
 
+
+
   loadReceiptRecordsGrid(dirId: number) {
     this.api.get(`GMFI/GetFundReceiptsGridSummary/${dirId}`).subscribe({
       next: (res:any) => {
@@ -259,8 +261,10 @@ onBankAccountSelectedChange() {
     });
   }
 
-  loadMainfund() {
-    this.api.get(`GMFI/GetMainHeads`).subscribe({
+    
+  
+  loadMainfund(id:any) {
+    this.api.get(`GMFI/GetMainHeadById/${id}`).subscribe({
       next: (res: any) => this.Mainfundhead = res,
       error: (err) => console.error(err)
     });
@@ -372,6 +376,123 @@ onDownloadFileStream(filePath: string) {
         error: () => this.toastr.error('Could not open the document.', 'Error'),
       });
   }
+
+
+  amountInWords(value: number | string): string {
+  if (value === null || value === undefined || value === '') {
+    return '';
+  }
+
+  const amount = Number(value);
+
+  if (!Number.isFinite(amount) || amount < 0) {
+    return 'Please enter a valid amount';
+  }
+
+  if (amount > 999999999999) {
+    return 'Amount is too large';
+  }
+
+  if (amount === 0) {
+    return 'Zero Only';
+  }
+
+  const ones = [
+    '', 'One', 'Two', 'Three', 'Four', 'Five',
+    'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+    'Eleven', 'Twelve', 'Thirteen', 'Fourteen',
+    'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen',
+    'Nineteen'
+  ];
+
+  const tens = [
+    '', '', 'Twenty', 'Thirty', 'Forty',
+    'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'
+  ];
+
+  const convert = (num: number): string => {
+    if (num < 20) {
+      return ones[num];
+    }
+
+    if (num < 100) {
+      return tens[Math.floor(num / 10)] +
+        (num % 10 ? ' ' + ones[num % 10] : '');
+    }
+
+    if (num < 1000) {
+      return ones[Math.floor(num / 100)] + ' Hundred' +
+        (num % 100 ? ' ' + convert(num % 100) : '');
+    }
+
+    return '';
+  };
+
+  const integerPart = Math.floor(amount);
+  const paise = Math.round((amount - integerPart) * 100);
+
+  const convertIndian = (num: number): string => {
+    if (num === 0) return '';
+
+    const parts: string[] = [];
+    const groups = [
+      { divisor: 10000000, name: 'Crore' },
+      { divisor: 100000, name: 'Lakh' },
+      { divisor: 1000, name: 'Thousand' }
+    ];
+
+    for (const group of groups) {
+      const count = Math.floor(num / group.divisor);
+
+      if (count > 0) {
+        parts.push(convert(count) + ' ' + group.name);
+        num %= group.divisor;
+      }
+    }
+
+    if (num > 0) {
+      parts.push(convert(num));
+    }
+
+    return parts.join(' ');
+  };
+
+  let result = convertIndian(integerPart) + ' Rupees';
+
+  if (paise > 0) {
+    result += ' and ' + convert(paise) + ' Paise';
+  }
+
+  return result + ' Only';
+}
+
+
+formatDateDDMMYYYY(dateValue: string | Date | null | undefined): string {
+  if (!dateValue) {
+    return '';
+  }
+
+  // Date-only string ko local date ke roop mein parse karein
+  if (typeof dateValue === 'string') {
+    const match = dateValue.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+
+    if (match) {
+      return `${match[3]}-${match[2]}-${match[1]}`;
+    }
+  }
+
+  const date = new Date(dateValue);
+
+  if (isNaN(date.getTime())) {
+    return '';
+  }
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
   // PDF Download Logic
   // onDownloadFileStream(filePath: string) {
   //   if (!filePath || filePath.trim() === '') {
