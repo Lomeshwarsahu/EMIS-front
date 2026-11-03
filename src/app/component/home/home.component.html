@@ -1,3 +1,43 @@
+<!-- Department dashboard (API Dashboard/home), then the menu tiles -->
+<section class="home-dash" *ngIf="dashLoading || dash?.Cards?.length" aria-label="Department summary">
+  <p class="dash-meta" *ngIf="dash">
+    {{ dash.Department }}<ng-container *ngIf="dash.FinancialYear"> · Financial Year {{ dash.FinancialYear }}</ng-container>
+  </p>
+  <p class="dash-meta" *ngIf="dashLoading">Loading summary…</p>
+
+  <div class="dash-panel dash-stats" *ngIf="!dashLoading && dash?.Cards?.length">
+    <button
+      type="button"
+      class="stat"
+      *ngFor="let c of dash.Cards"
+      [class.stat--attention]="needsAttention(c)"
+      [title]="'Open ' + c.Label"
+      (click)="openCard(c)">
+      <span class="stat-label">{{ c.Label }}</span>
+      <span class="stat-value">{{ formatValue(c) }}</span>
+    </button>
+  </div>
+
+  <div class="dash-grid" *ngIf="!dashLoading && charts.length">
+    <div class="dash-panel" *ngFor="let ch of charts">
+      <div class="panel-head">{{ ch.title }}</div>
+
+      <apx-chart
+        [series]="ch.series"
+        [chart]="ch.chart"
+        [xaxis]="ch.xaxis"
+        [yaxis]="ch.yaxis"
+        [colors]="ch.colors"
+        [plotOptions]="ch.plotOptions"
+        [dataLabels]="ch.dataLabels"
+        [legend]="ch.legend"
+        [grid]="ch.grid"
+        [tooltip]="ch.tooltip">
+      </apx-chart>
+    </div>
+  </div>
+</section>
+
 
 
 <div class="container-fluid mt-4">
@@ -25,7 +65,7 @@
       <!-- Submenu Items -->
       <ng-container *ngIf="item.submenu">
         <div class="col-sm-12 col-md-6 col-lg-4" *ngFor="let sub of item.submenu">
-          <div class="card mb-4 shadow-sm" [routerLink]="sub.route" style="cursor: pointer; background-color: #f8f9fa;">
+          <div class="card mb-4 shadow-sm sub-card" [routerLink]="sub.route" style="cursor: pointer; background-color: #f8f9fa;">
             <div class="card-body d-flex flex-column align-items-center text-center">
               <!-- Image Section -->
               <div class="card-icon">

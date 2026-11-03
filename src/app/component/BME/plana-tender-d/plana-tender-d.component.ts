@@ -148,6 +148,11 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(() => this.loadGrid());
     this.Getyear();
     // Legacy: ?tenderid=<id> opens the grid on that tender's financial year, otherwise year 19
+    // Home dashboard cards open the grid on one status (?status=1..6)
+    const status = Number(this.route.snapshot.queryParamMap.get('status'));
+    if (this.Type.some((t) => t.Value === status)) {
+      this.filterData.typeId = status;
+    }
     const tenderId = Number(this.route.snapshot.queryParamMap.get('tenderid'));
     if (tenderId > 0) {
       this.api.get(`BME/GetTenderDetailsById/${tenderId}`).subscribe({

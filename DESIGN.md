@@ -2,16 +2,50 @@
 
 Design reference for the Angular EMS frontend. Supplier PO / dispatch / receipt migration pages set the current standard — new EMS screens should match these patterns before introducing new styles.
 
+Start with **[Project UI flow](#project-ui-flow)** for how a user moves through the app (login → home dashboard → department pages), then the pattern sections below.
+
 ---
 
 ## Design principles
 
 1. **Legacy parity** — Migrated pages mirror ASP.NET WebForms layout (labels, table grids, tab flows). Do not redesign flows unless product asks.
 2. **Readable government forms** — High contrast tables, explicit labels, no icon-only actions for primary work.
-3. **Horizontal scroll, not page scroll** — Wide grids live inside `.table-wrap` / `.datagrid`; the app shell stays fixed width.
+3. **Tables fit their content; scroll only when needed** — Columns size to their data and text wraps. A small table stays compact, a wide one scrolls sideways **inside** `.table-wrap` / `.datagrid` only when the wrapped content still does not fit. The page itself never scrolls sideways. See [Responsive tables](#responsive-tables-global).
 4. **Shared first** — Reuse `supplier-po-pages.shared.css` and existing class names before adding page-specific CSS.
 5. **Standalone supplier components** — New supplier EMS pages use standalone Angular components with `styleUrls` including the shared sheet.
-6. **Keep this doc in sync** — Any UI change (colors, classes, layout, components, navigation behaviour) must update `DESIGN.md` in the **same change** — same session, same PR. Do not merge UI-only diffs without touching this file when patterns shift.
+6. **Look like EMIS, not a template** — Reuse the app's panels, orange (light) / blue (dark) header bars and theme tokens. Avoid generic dashboard decoration: coloured side stripes on every card, "View →" on every tile, rainbow charts, shimmer everywhere.
+7. **Keep this doc in sync** — Any UI change (colors, classes, layout, components, navigation behaviour) must update `DESIGN.md` in the **same change** — same session, same PR. Do not merge UI-only diffs without touching this file when patterns shift.
+
+---
+
+## Project UI flow
+
+### 1. Entry
+
+| Step | Route | Notes |
+|------|-------|-------|
+| Department login | `/login` | Role = `user_type` (`TPO`, `AUPO`, `AUGMF`, `DME`, `SEC1`, …) stored as `roleName`; session in `sessionStorage` |
+| Supplier login | `/supplier-login` | Role `SUP` |
+| Home | `/home` | Department dashboard on top, menu tiles below (see [Home dashboard](#home-dashboard)) |
+
+The shell (sidebar + header) wraps every page except [chromeless routes](#chromeless-routes-no-header--sidebar). The header shows the page title from `service/page-title.util.ts` (route → title; some titles depend on role, e.g. Cover A Evaluation).
+
+### 2. Home dashboard → work pages
+
+Each dashboard figure opens the page that lists those records (with a filter where the page supports one, e.g. Plan a Tender `?status=2`). The menu tiles and sidebar give the full menu for the role.
+
+### 3. Department flows
+
+| Department (roles) | Main flow |
+|--------------------|-----------|
+| **Tender Cell** (`TPO`, `TPOT`, `BME`) | Plan a Tender `/tender/plan` → row actions: Update Status, Add Tender Item, Upload Excel, Add Bidder (Cover A), Add Bid Items, Add Leavy, HOD conversation, Tender Status → Cover A Evaluation `/TenderCoverA` (Show → Action per supplier → Freeze) → Claim-Object `/TenderCoverAObClaim` → Finalization of Cover A / B `/TenderCoverAObClaimAfter`, `/TenderCoverAObClaimAfterB` → Price Bid Entry `/TenderDetailsPriceEntryGEM` → Price Accept / Reject `/TenderItemsPriceAR` |
+| **PO Cell** (`AUPO`) | Indents (consolidated) → PO generation / EMS PO dashboard `/EMSPODashboard` → extensions, pending supply / installation reports |
+| **Finance** (`AUGMF`, `FIN`) | Pending sanctions `/finance/pending-sanctions` → sanction / payments → EMD refund `/emd-refund/tenderwise` → SD release `/emd-refund/sd-release-finance` |
+| **Supplier** (`SUP`) | PO Supply `/orders/po-supply` → Dispatch entry → Receipt / Installation → reports, EMD refund request `/emd-refund/emd-deposit` |
+| **Facility / DME** (`DME`, `FU`, `PRINCIPAL`, `FDA`, `Store`, `Facility`, …) | Annual indent `/indents/annual-indent` → PO dashboard `/orders/purchase-order-dashboard` → PO receipts `/orders/purchase-order-receipts` |
+| **IT** (`SEC1`) | Menus / sub menus / role screens under `/IT/...` |
+
+Full route ↔ role list: `documentation/feature-department-matrix.md`. Legacy parity rule: a migrated page follows the legacy `EMSRole` page's flow (same steps, buttons, checks and messages); only the look changes.
 
 ---
 
@@ -41,6 +75,20 @@ Supplier transaction pages intentionally use **Times New Roman** to match legacy
 | Table header text | `#ffffff` | Supplier grid headers (`.po-grid th`, `.batch-grid th`, `.gst-grid th`) |
 | Border (tables) | `#000` horizontal row lines only | `.po-grid`, `.table-wrap` outer frame |
 | Border (forms) | `#94a3b8` | Inputs, cards, header grids |
+
+### App theme tokens (`src/emis-unified-theme.css`)
+
+Use these in new UI (dashboard, panels, charts) instead of hard-coded hex; they switch with light / dark mode.
+
+| Token | Light | Dark | Usage |
+|-------|-------|------|-------|
+| `--emis-accent` | `#f97316` | `#2563eb` | Primary accent, chart bars, attention values |
+| `--emis-head-bg` / `--emis-head-text` | `#f97316` / `#fff` | `#2563eb` / `#fff` | Table and panel header bars |
+| `--emis-surface` | `#ffffff` | `#0c0e12` | Panels |
+| `--emis-border` | `#e2e8f0` | `#262b36` | Panel / row borders |
+| `--emis-text` / `--emis-text-strong` | `#334155` / `#0f172a` | `#e2e8f0` / `#f8fafc` | Body / figures |
+| `--emis-muted` | `#64748b` | `#94a3b8` | Labels, axis text |
+| `--emis-hover` | `#f8fafc` | `#1a2030` | Hover background |
 
 ### Semantic
 
@@ -232,16 +280,43 @@ Filters should **auto-load** grid data on change where legacy did postback — a
 | Class | Purpose |
 |-------|---------|
 | `.datagrid` | Outer table container |
-| `.table-wrap` | Horizontal scroll + black border |
+| `.table-wrap` | Table box: hugs the table, scrolls sideways only when needed (see Responsive tables) |
 | `.po-grid` | Main grid styling — horizontal row borders only (no vertical column lines) |
 | `.alt-row` | Zebra striping (`#f8fafc`) |
 | `.text-center` | Centered numeric/date cells |
-| `.wrap-cell` | Allow line wrap in dense columns |
+| `.wrap-cell` | Long text column (names, descriptions) — wraps, 140px minimum |
 | `.empty-row` | Centered italic empty state |
+
+### Responsive tables (global)
+
+Rules in `src/styles.css`, applied to every table inside `.datagrid`, `.table-wrap`, `.grid-scroll`, `.table-responsive`, `.table-container`:
+
+| Rule | Behaviour |
+|------|-----------|
+| Width | Outermost wrapper hugs its table (`fit-content`, max 100%); table `min-width: 100%`, `table-layout: auto`. A wrapper followed by `mat-paginator` stays full width so both line up |
+| Height | Wrapper is as tall as its rows, capped at `calc(100vh - 140px)` — no fixed 500px boxes |
+| Cells | `white-space: normal` — text wraps; header text wraps between words only; no `…` truncation |
+| Sideways scroll | Only inside the wrapper, only when wrapped content still does not fit |
+| Header / cell padding | Material headers `9px 10px`, cells `7px 10px` |
+
+Opt-outs and helpers:
+
+| Class | Use |
+|-------|-----|
+| `.wrap-cell` | Long text column (names, descriptions, remarks): `min-width: 140px`, wraps |
+| `.cell-nowrap` | Keep one cell / column on one line |
+| `.table-nowrap` | Keep a whole table on single lines (rare; e.g. PO Receipt Desk `por-grid`) |
+| `.table-fill` | Force a table to 100% width |
+
+Do **not** add `white-space: nowrap` to all cells, fixed percentage widths on every column, `min-width: max-content`, or sticky first columns (S.No is not sticky).
+
+### Buttons inside data tables
+
+Global rule: buttons in data-table cells (`table:not(.detail-form-table):not(.filter-panel) td button`) have **no background and no border** — blue link text (`#1d4ed8`, dark `#93c5fd`) with a dotted underline; hover / keyboard focus adds a light tint and a solid underline. Use short verb labels ("Add Item", "Upload"). Icon-only is allowed for Edit (`bi-pencil-square`) with `title` + `aria-label`. Buttons inside form tables keep their normal `.show-btn` look.
 
 ### Pagination (`mat-paginator`)
 
-Global rule in `src/styles.css` (applies to every page): page-size selector ("Items per page") sits **bottom-left**, range label + first/prev/next/last buttons sit **bottom-right**. Place `<mat-paginator>` directly **below** the table. Do not override `.mat-mdc-paginator-container` alignment per component.
+Global rule in `src/styles.css` (applies to every page): page-size selector ("Items per page") sits **bottom-left**, range label + first/prev/next/last buttons sit **bottom-right**; the bar wraps on small screens and never widens the page. Place `<mat-paginator>` directly **below** the table. Do not override `.mat-mdc-paginator-container` alignment per component. When the table is inside `*ngIf`, attach `dataSource.paginator` / `sort` **after** the table renders (`cdr.detectChanges()` first), otherwise the paginator shows "0 of 0".
 
 - **`mat-table` + `MatTableDataSource`**: add `<mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons>` and connect with a `@ViewChild('paginator') set paginator(p) { this.dataSource.paginator = p ?? null; }` setter (survives `*ngIf`).
 - **Plain `*ngFor` grids**: use `ListPager` (`src/app/helper/list-pager.ts`): `readonly pager = new ListPager();`, `*ngFor="let row of rows | slice: pager.start : pager.end"`, S.No `{{ pager.start + i + 1 }}`, call `this.pager.reset()` wherever the list is reloaded/filtered, and
@@ -371,7 +446,10 @@ Use `.detail-header-card`, `.detail-form-card`, `.detail-form-table` with `.labe
 | `.show-btn.complete-btn` | Green `#198754` | Final completion actions |
 | `.link-btn` | Underlined text | In-table navigation, download |
 | `.back-btn` | Outlined `#1f4e79` | Page header back |
-| `.icon-btn` | Transparent | Print icon buttons |
+| `.icon-btn` | Transparent | Print / edit icon buttons (with `title`) |
+| Table-cell buttons | Link style (see [Buttons inside data tables](#buttons-inside-data-tables)) | Row actions |
+| `.new-tender-btn` | Black `#0f172a` (dark: black + slate border) | Plan a Tender "Generate New Tender" |
+| `.freeze-btn` | Green `#15803d` | Irreversible "Freeze" steps (Cover A evaluation) |
 
 Always disable buttons during `saving` / `uploading` / `loading` and change label text (`Saving...`, `Completing...`).
 
@@ -379,7 +457,7 @@ Always disable buttons during `saving` / `uploading` / `loading` and change labe
 
 ## Loading states
 
-Use the shared skeleton — **not** a bare “Loading…” string on supplier pages.
+Use the shared skeleton — **not** a bare “Loading…” string on supplier pages. (Exception: the home dashboard shows a short "Loading summary…" line.)
 
 ```html
 <app-supplier-page-skeleton *ngIf="loading" type="table" [rows]="8" [cols]="12" />
@@ -454,7 +532,40 @@ New print-only routes must be added to that list. Print views should be self-con
 | `≤ 900px` | Form grids collapse to 1 column |
 | `≤ 576px` | Smaller table font; buttons may wrap |
 
-Wide legacy tables **always** scroll inside `.table-wrap` — never force `width: 100%` with `table-layout: fixed` on `po-grid` unless columns are few.
+Wide tables scroll inside `.table-wrap` only when wrapped content does not fit (see [Responsive tables](#responsive-tables-global)) — never force `width: 100%` with `table-layout: fixed` and percentage columns. Tested widths: 768, 1024, 1280, 1366, 1920px with the 272px sidebar.
+
+---
+
+## Home dashboard
+
+`/home` (`component/home/`) shows a department summary above the menu tiles. Data: `GET api/Dashboard/home?role=&userId=` (`DashboardController`) → `{ Department, FinancialYear, Cards[], Charts[] }`; sections per role are listed in `documentation/dme-ems-migration/changelog.md` (2026-11-03).
+
+| Part | Pattern |
+|------|---------|
+| Meta line | "Department · Financial Year" in muted 12px text |
+| Figures | One `.dash-panel.dash-stats` strip; each `.stat` = uppercase muted label + 22px value, thin dividers, whole cell clickable (opens `Route` + `Query`). Pending / missing work with a value > 0 uses `--emis-accent` (`.stat--attention`). A failed query shows `—` |
+| Charts | `.dash-panel` with `.panel-head` bar (same as table headers). Status breakdowns → horizontal bar chart sorted largest first; year / month series → column chart. One colour (`--emis-accent`), values on bars, tooltip on hover, no legend for single series (ng-apexcharts) |
+| Loading | "Loading summary…" text (no shimmer) |
+
+Do not add per-card colour stripes, "View →" links, donut/rainbow palettes or decorative icons.
+
+---
+
+## Tender Cell pages (Plan a Tender and sub-pages)
+
+Shared CSS: `component/BME/tender-subpage.shared.css` (with `supplier-po-pages.shared.css`). Header block: `app-tender-page-header` (Back to Tender + Tender No / Date / Status / Description).
+
+| Pattern | Class / rule |
+|---------|--------------|
+| Page body | `.detail-section.wide` (1120px; `.full-width` for wide editing grids like Cover A evaluation) |
+| 4-column form | `table.detail-form-table.cols-4` — fixed layout, inputs fill cells, one column below 900px |
+| Collapsible add form | `.form-toggle-bar` (section title + "+ Add …" button); form closes itself after a successful save and the list reloads |
+| Action row under a grid | `.popup-actions` (right-aligned) |
+| Popups | `.desc-popup` (full text of a truncated cell), Esc / backdrop closes |
+
+**Plan a Tender toolbar** (`/tender/plan`): left — search box (searches 400 ms after typing, no Show Data needed), Search By (Code / Name / Tender, default Tender), financial year (reloads on change); right — Generate New Tender (black), **Filters** (status radios, row-colour legend, Show Data), Export Excel. Grid keeps the legacy 16 columns and headings; Description shows two lines and opens the full text on click; tender number in normal text colour; S.No not sticky.
+
+**Cover A Evaluation** (`/TenderCoverA`): legacy flow — select tender → **Show** → tender block + bidder grid (legacy column order) → per-row Eligibility + Remarks → **Action** (only at Cover A) → **Freeze Cov A-Evaluation**. Legacy alert messages are kept.
 
 ---
 
@@ -495,6 +606,9 @@ styleUrls: ['../supplier-po-pages.shared.css', './my-new-page.component.css'],
 - [ ] Toastr on save/error
 - [ ] Back navigation preserves filters where applicable
 - [ ] Print/download opens new tab when user needs PDF
+- [ ] Table fits its content: no blanket `nowrap`, no fixed % column widths; long text columns use `.wrap-cell`
+- [ ] Checked at 1366px and 1024px (no page-level sideways scroll) and in dark mode
+- [ ] Migrated page follows the legacy page's flow (steps, buttons, checks, messages)
 - [ ] **`DESIGN.md` updated** if new classes, colours, layout, or navigation rules were introduced
 
 ---
@@ -557,6 +671,10 @@ Output the diff.
 | Receipt + installation tabs | `po-supply-receipt-entry/po-supply-receipt-entry.component.*` |
 | Report + downloads | `po-supply-installation-report/po-supply-installation-report.component.*` |
 | SD / extension detail form | `supplier-po-sd-detail/`, `supplier-po-apply-extension/` |
+| Big grid + toolbar + Filters panel | `BME/plana-tender-d/` (Plan a Tender) |
+| Legacy-flow evaluation grid (Show → Action → Freeze) | `BME/tender-cover-a/` |
+| Sub-page with header block + collapsible add form | `cov-aadd-remuvie/` (Add Participants) |
+| Department dashboard | `home/` |
 
 ### Source files for tokens
 
@@ -564,7 +682,11 @@ Output the diff.
 |------|------|
 | Design rules + checklist | `EMIS-front/DESIGN.md` |
 | Shared supplier classes | `EMIS-front/src/app/component/Suppliers/supplier-po-pages.shared.css` |
-| Global scroll / legacy row colours | `EMIS-front/src/styles.css` |
+| Global table / scroll rules, table buttons, legacy row colours | `EMIS-front/src/styles.css` |
+| Theme tokens (light / dark) | `EMIS-front/src/emis-unified-theme.css` |
+| Tender Cell sub-page classes | `EMIS-front/src/app/component/BME/tender-subpage.shared.css` |
+| Home dashboard | `EMIS-front/src/app/component/home/` |
+| Page titles | `EMIS-front/src/app/service/page-title.util.ts` |
 | Loading skeleton | `EMIS-front/src/app/component/Suppliers/supplier-page-skeleton/` |
 
 ---

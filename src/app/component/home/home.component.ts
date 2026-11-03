@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ApexAxisChartSeries, ApexChart, ApexStroke, ApexXAxis, ApexFill, ApexPlotOptions, ChartComponent } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexChart, ApexStroke, ApexXAxis, ApexFill, ApexPlotOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
 import { ApiService } from 'src/app/service/api.service';
 import { BasicAuthenticationService } from 'src/app/service/authentication/basic-authentication.service';
 import { MenuServiceService } from 'src/app/service/menu-service.service';
@@ -20,11 +20,16 @@ import { CommonModule, Location } from '@angular/common';
 import { StockStatusModel, whstockoutin,StockOutDetailsmodel,IssuePerDetailModel,WhStockOutInDetailModel} from 'src/app/Model/DashLoginDDL';
 @Component({
     selector: 'app-home',
-    imports: [RouterModule, CommonModule],
+    imports: [RouterModule, CommonModule, NgApexchartsModule],
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+  // Department dashboard (API Dashboard/home)
+  dash: any = null;
+  dashLoading = false;
+  charts: any[] = [];
+
   
  
   title: string = 'welcome';
@@ -212,6 +217,7 @@ this.fullUrl = window.location.href;
  
  
   ngOnInit() {
+    this.loadDashboard();
     this.spinner.show();
     this.GetVendorDetailsID(sessionStorage.getItem('facilityid'));
 
@@ -234,6 +240,107 @@ this.fullUrl = window.location.href;
 
       this.InsertUserPageViewLog();
   
+  }
+
+  // Dashboard for the logged-in department; failures leave the menu tiles working
+  loadDashboard() {
+    const role = this.basicAuthentication.getRole().roleName || '';
+    const userId = Number(sessionStorage.getItem('userid') || 0);
+    this.dashLoading = true;
+    this.api.get(`Dashboard/home?role=${encodeURIComponent(role)}&userId=${userId}`).subscribe({
+      next: (res: any) => {
+        this.dash = res;
+        this.charts = (res?.Charts || []).map((c: any) => this.buildChart(c));
+        this.dashLoading = false;
+      },
+      error: () => {
+        this.dash = null;
+        this.dashLoading = false;
+      },
+    });
+  }
+
+  formatValue(card: any): string {
+    if (card.Value === null || card.Value === undefined) return '—';
+    const n = Number(card.Value);
+    if (card.Format === 'crore') return `₹${n.toLocaleString('en-IN', { maximumFractionDigits: 2 })} Cr`;
+    if (card.Format === 'rupees') return `₹${n.toLocaleString('en-IN')}`;
+    return n.toLocaleString('en-IN');
+  }
+
+  openCard(card: any) {
+    if (card.Route) {
+      this.router.navigate([card.Route], { queryParams: card.Query || {} });
+    }
+  }
+
+  // Pending / missing work is shown in the accent colour when there is something to do
+  needsAttention(card: any) {
+    return (card.Tone === 'warning' || card.Tone === 'danger') && Number(card.Value) > 0;
+  }
+
+  // Status breakdowns (API type "donut") are drawn as a ranked horizontal bar chart; year / month series as columns
+  private buildChart(c: any) {
+    let labels: string[] = c.Labels || [];
+    let values: number[] = (c.Values || []).map((v: any) => Number(v));
+    const horizontal = c.Type === 'donut';
+    if (horizontal) {
+      const ranked = labels.map((label, i) => ({ label, v: values[i] })).sort((x, y) => y.v - x.v);
+      labels = ranked.map((r) => r.label);
+      values = ranked.map((r) => r.v);
+    }
+
+    const css = getComputedStyle(document.documentElement);
+    const accent = css.getPropertyValue('--emis-accent').trim() || '#f97316';
+    const muted = css.getPropertyValue('--emis-muted').trim() || '#64748b';
+    const border = css.getPropertyValue('--emis-border').trim() || '#e2e8f0';
+    const unit = c.Unit || '';
+    return {
+      kind: 'bar',
+      title: c.Title,
+      series: [{ name: unit || 'Count', data: values }],
+      colors: [accent],
+      chart: {
+        type: 'bar',
+        height: 240,
+        toolbar: { show: false },
+        fontFamily: 'inherit',
+        foreColor: muted,
+        background: 'transparent',
+        animations: { enabled: false },
+      },
+      plotOptions: {
+        bar: {
+          horizontal,
+          borderRadius: 3,
+          borderRadiusApplication: 'end',
+          columnWidth: '50%',
+          barHeight: '60%',
+          dataLabels: { position: horizontal ? 'top' : 'top' },
+        },
+      },
+      dataLabels: {
+        enabled: values.length <= 12,
+        offsetX: horizontal ? 22 : 0,
+        offsetY: horizontal ? 0 : -18,
+        style: { fontSize: '11px', fontWeight: 600, colors: [muted] },
+        formatter: (v: number) => Number(v).toLocaleString('en-IN'),
+      },
+      legend: { show: false },
+      grid: { borderColor: border, strokeDashArray: 3, padding: { top: 10, right: horizontal ? 30 : 10 }, xaxis: { lines: { show: horizontal } }, yaxis: { lines: { show: !horizontal } } },
+      xaxis: {
+        categories: labels,
+        axisBorder: { show: false },
+        axisTicks: { show: false },
+        labels: horizontal
+          ? { formatter: (v: any) => Math.round(Number(v)).toLocaleString('en-IN'), style: { fontSize: '11px' } }
+          : { rotate: -45, hideOverlappingLabels: false, trim: false, style: { fontSize: '11px' } },
+      },
+      yaxis: horizontal
+        ? { labels: { maxWidth: 160, style: { fontSize: '12px' } } }
+        : { labels: { formatter: (v: number) => Math.round(v).toLocaleString('en-IN') } },
+      tooltip: { y: { formatter: (v: number) => `${Number(v).toLocaleString('en-IN')} ${unit}` } },
+    };
   }
 
   GetVendorDetailsID(supplierId: any) {
