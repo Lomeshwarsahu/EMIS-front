@@ -1,8 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ApexAxisChartSeries, ApexChart, ApexStroke, ApexXAxis, ApexFill, ApexPlotOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
 import { ApiService } from 'src/app/service/api.service';
 import { BasicAuthenticationService } from 'src/app/service/authentication/basic-authentication.service';
 import { MenuServiceService } from 'src/app/service/menu-service.service';
+import { MenuAccessService } from 'src/app/service/menu-access.service';
 import { fontWeight } from 'html2canvas/dist/types/css/property-descriptors/font-weight';
 import { Router, RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,7 +12,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { style } from '@angular/animations';
-import { Observable, catchError, finalize, forkJoin, map, of, reduce, tap } from 'rxjs';
+import { Observable, Subscription, catchError, finalize, forkJoin, map, of, reduce, tap } from 'rxjs';
 import autoTable from 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
 import jsPDF from 'jspdf';
@@ -24,11 +25,14 @@ import { StockStatusModel, whstockoutin,StockOutDetailsmodel,IssuePerDetailModel
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
   // Department dashboard (API Dashboard/home)
   dash: any = null;
   dashLoading = false;
   charts: any[] = [];
+  // Dashboard figures whose page is in this role's menu (others are hidden)
+  visibleCards: any[] = [];
+  private menuSub?: Subscription;
 
   
  
@@ -191,6 +195,7 @@ export class HomeComponent {
     private dialog: MatDialog,
     private api: ApiService,
     private menuService: MenuServiceService,
+    private menuAccess: MenuAccessService,
     public basicAuthentication: BasicAuthenticationService,
     public router: Router,private location: Location,
   ) {
@@ -217,6 +222,19 @@ this.fullUrl = window.location.href;
  
  
   ngOnInit() {
+    this.menuSub = this.menuAccess.menu$.subscribe((items) => {
+      if (items) {
+        const unwantedLabels = ['EMD Drugs/Consumables', 'IWH Pendings'];
+        this.menuItems = items
+          .filter((item) => !unwantedLabels.includes(item.label))
+          .map((item) => ({
+            ...item,
+            route: item.route || '',
+            submenu: item.submenu?.map((sub) => ({ label: sub.label, route: sub.route || '' })),
+          }));
+      }
+      this.refreshVisibleCards();
+    });
     this.loadDashboard();
     this.spinner.show();
     this.GetVendorDetailsID(sessionStorage.getItem('facilityid'));
@@ -226,7 +244,10 @@ this.fullUrl = window.location.href;
 
     this.role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
     console.log('SE Role:', this.role);
-    this.updateMenu();
+    // Static menu only until the sidebar menu (DB, per role) has loaded
+    if (!this.menuAccess.loaded) {
+      this.updateMenu();
+    }
     //  this.addIconsToMenu();
     this.selectedCategory = this.menuService.getSelectedCategory();
 
@@ -242,6 +263,10 @@ this.fullUrl = window.location.href;
   
   }
 
+  ngOnDestroy() {
+    this.menuSub?.unsubscribe();
+  }
+
   // Dashboard for the logged-in department; failures leave the menu tiles working
   loadDashboard() {
     const role = this.basicAuthentication.getRole().roleName || '';
@@ -250,6 +275,7 @@ this.fullUrl = window.location.href;
     this.api.get(`Dashboard/home?role=${encodeURIComponent(role)}&userId=${userId}`).subscribe({
       next: (res: any) => {
         this.dash = res;
+        this.refreshVisibleCards();
         this.charts = (res?.Charts || []).map((c: any) => this.buildChart(c));
         this.dashLoading = false;
       },
@@ -258,6 +284,12 @@ this.fullUrl = window.location.href;
         this.dashLoading = false;
       },
     });
+  }
+
+  // Only figures that open a page this role can reach (same menu as the sidebar)
+  private refreshVisibleCards() {
+    const cards = this.dash?.Cards || [];
+    this.visibleCards = this.menuAccess.loaded ? cards.filter((c: any) => this.menuAccess.canOpen(c.Route)) : [];
   }
 
   formatValue(card: any): string {
@@ -269,7 +301,7 @@ this.fullUrl = window.location.href;
   }
 
   openCard(card: any) {
-    if (card.Route) {
+    if (card.Route && this.menuAccess.canOpen(card.Route)) {
       this.router.navigate([card.Route], { queryParams: card.Query || {} });
     }
   }

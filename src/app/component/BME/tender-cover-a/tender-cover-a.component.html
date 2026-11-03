@@ -68,7 +68,6 @@
                 <th class="text-center">EMD Mode</th>
                 <th class="text-center">EMD Doc No</th>
                 <th class="text-end">TP Amount</th>
-                <th class="text-center">Add Items</th>
                 <th class="text-center">Participated Items</th>
                 <th class="text-center">Remark</th>
                 <th class="text-center">Cover A Eligibility</th>
@@ -85,9 +84,6 @@
                 <td class="text-center">{{ element.DTypeName }}</td>
                 <td class="text-center">{{ element.EmdDocNo }}</td>
                 <td class="text-end">{{ element.TpAmount }}</td>
-                <td class="text-center">
-                  <button type="button" (click)="addItemToTender(element)">Add Items</button>
-                </td>
                 <td class="text-center">
                   <button type="button" title="View participated items" (click)="openParticipatedItems(element)">{{ element.PItems }}</button>
                 </td>

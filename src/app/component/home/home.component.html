@@ -1,15 +1,15 @@
 <!-- Department dashboard (API Dashboard/home), then the menu tiles -->
-<section class="home-dash" *ngIf="dashLoading || dash?.Cards?.length" aria-label="Department summary">
+<section class="home-dash" *ngIf="dashLoading || visibleCards.length" aria-label="Department summary">
   <p class="dash-meta" *ngIf="dash">
     {{ dash.Department }}<ng-container *ngIf="dash.FinancialYear"> · Financial Year {{ dash.FinancialYear }}</ng-container>
   </p>
   <p class="dash-meta" *ngIf="dashLoading">Loading summary…</p>
 
-  <div class="dash-panel dash-stats" *ngIf="!dashLoading && dash?.Cards?.length">
+  <div class="dash-panel dash-stats" *ngIf="!dashLoading && visibleCards.length">
     <button
       type="button"
       class="stat"
-      *ngFor="let c of dash.Cards"
+      *ngFor="let c of visibleCards"
       [class.stat--attention]="needsAttention(c)"
       [title]="'Open ' + c.Label"
       (click)="openCard(c)">

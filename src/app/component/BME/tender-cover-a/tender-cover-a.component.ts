@@ -195,11 +195,6 @@ export class TenderCoverAComponent implements OnInit {
     return { tid: element.TenderId, sid: element.SupplierId, ssdid: element.SchStatusDid, Sname: element.SupplierName };
   }
 
-  // Legacy "Add Items" -> TenderCoverAitems.aspx?schemeid&supplierId&schstatusdid
-  addItemToTender(element: any) {
-    this.router.navigate(['/TenderCoverAitems'], { queryParams: this.supplierParams(element) });
-  }
-
   // Legacy "Participated Items" count -> CoverAitemsReports.aspx?schemeid&supplierId&schstatusdid
   openParticipatedItems(element: any) {
     this.router.navigate(['/CoverAitemsReports'], { queryParams: this.supplierParams(element) });

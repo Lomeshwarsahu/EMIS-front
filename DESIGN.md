@@ -549,6 +549,8 @@ Wide tables scroll inside `.table-wrap` only when wrapped content does not fit (
 
 Do not add per-card colour stripes, "View →" links, donut/rainbow palettes or decorative icons.
 
+**Access:** the home page only offers pages in the logged-in role's menu (the same DB sidebar tree as the sidebar, `IT/sidebar-tree/{roleId}`, or the static fallback). `MenuAccessService` (`service/menu-access.service.ts`) holds that menu; `app.component` publishes it whenever `menuItems` is set. Menu tiles come from it, and a dashboard figure is shown only when `canOpen(card.Route)` — matched by the page a URL opens (component / lazy import, redirects followed), so route aliases count. Use `canOpen()` for any new home / shortcut link.
+
 ---
 
 ## Tender Cell pages (Plan a Tender and sub-pages)
@@ -565,7 +567,7 @@ Shared CSS: `component/BME/tender-subpage.shared.css` (with `supplier-po-pages.s
 
 **Plan a Tender toolbar** (`/tender/plan`): left — search box (searches 400 ms after typing, no Show Data needed), Search By (Code / Name / Tender, default Tender), financial year (reloads on change); right — Generate New Tender (black), **Filters** (status radios, row-colour legend, Show Data), Export Excel. Grid keeps the legacy 16 columns and headings; Description shows two lines and opens the full text on click; tender number in normal text colour; S.No not sticky.
 
-**Cover A Evaluation** (`/TenderCoverA`): legacy flow — select tender → **Show** → tender block + bidder grid (legacy column order) → per-row Eligibility + Remarks → **Action** (only at Cover A) → **Freeze Cov A-Evaluation**. Legacy alert messages are kept.
+**Cover A Evaluation** (`/TenderCoverA`): legacy flow — select tender → **Show** → tender block + bidder grid (legacy column order, without Add Items) → per-row Eligibility + Remarks → **Action** (only at Cover A) → **Freeze Cov A-Evaluation**. Legacy alert messages are kept.
 
 ---
 

@@ -9,6 +9,7 @@ import { MenuServiceService } from './service/menu-service.service';
 import { BasicAuthenticationService } from './service/authentication/basic-authentication.service';
 import { broadcastLogout } from './service/authentication/session-sync';
 import { RoleMenuService } from './service/role-menu.service';
+import { MenuAccessService } from './service/menu-access.service';
 
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -156,7 +157,15 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     this.closeDrawerOnNavigate();
   }
 
-  menuItems: { label: string; route: string; submenu?: { label: string; route: string }[] }[] = [];
+  // Every assignment also updates MenuAccessService, so pages (home tiles / dashboard) only offer this role's routes
+  private _menuItems: { label: string; route: string; submenu?: { label: string; route: string }[] }[] = [];
+  get menuItems() {
+    return this._menuItems;
+  }
+  set menuItems(items: { label: string; route: string; submenu?: { label: string; route: string }[] }[]) {
+    this._menuItems = items;
+    this.menuAccess?.setMenu(items);
+  }
   expandedMenus: { [key: string]: boolean } = {}; // Track expanded state for each menu item
 
   toggleSubmenu(menuLabel: string): void {
@@ -184,6 +193,7 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
     public readonly themeService: ThemeService,
     private readonly notificationService: NotificationService,
     private readonly roleMenuService: RoleMenuService,
+    private readonly menuAccess: MenuAccessService,
     private readonly spinner: NgxSpinnerService,
   ) {
     this.applyDrawerLayout(window.innerWidth <= 991.98, true);
@@ -499,6 +509,7 @@ export class AppComponent implements OnInit, DoCheck, OnDestroy {
             this.menuItems.unshift({ label: 'Home', route: '/home' });
           }
 
+          this.menuAccess.setMenu(this.menuItems);
           this.expandActiveParentMenu();
           this.updatePageHeading(this.router.url);
           this.cdr.markForCheck();
