@@ -36,7 +36,8 @@ export class TenderCoverAObClaimComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Legacy FillCovATender(): Get_TendersStatus("2", "Under Prep") -> Cover A tenders with tech + finance evaluation done
+    // Legacy FillCovATender(): Get_TendersStatus("2", "Under Prep") -> Cover A tenders with tech + finance evaluation done,
+    // or (changed from legacy) frozen by either role on Evaluation A
     this.api.get('Tendercell/GetTendersStatus?stid=2&undOBClaim=Under%20Prep').subscribe({
       next: (res: any) => (this.tenderList = res || []),
       error: () => (this.tenderList = []),

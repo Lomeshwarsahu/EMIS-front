@@ -16,7 +16,7 @@
                 [(ngModel)]="tenderId"
                 name="tender">
               </ng-select>
-              <span class="hint">Cover A tenders where technical and finance evaluation is done.</span>
+              <span class="hint">Cover A tenders where technical and finance evaluation is done, or Cover A evaluation is frozen.</span>
             </td>
           </tr>
           <tr class="form-actions-row">
@@ -64,9 +64,9 @@
                 <td class="text-start wrap-cell">{{ b.SupplierName }}</td>
                 <td class="text-end">{{ b.ReqEmd }}</td>
                 <td class="text-end" [class.rc-invalid]="b.SubmittedEmd < b.ReqEmd">{{ b.SubmittedEmd }}</td>
-                <td class="text-center">{{ b.TechEli }}</td>
+                <td class="text-center">{{ b.TechEli || 'Pending' }}</td>
                 <td class="text-start wrap-cell">{{ b.TechRemarks }}</td>
-                <td class="text-center">{{ b.FinEli }}</td>
+                <td class="text-center">{{ b.FinEli || 'Pending' }}</td>
                 <td class="text-start wrap-cell">{{ b.FinRemarks }}</td>
                 <td class="text-center">
                   <button type="button" class="link-btn-plain" (click)="openParticipatedItems(b)">{{ b.PItems }}</button>

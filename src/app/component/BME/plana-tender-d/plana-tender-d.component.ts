@@ -103,18 +103,22 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
     'AddLeavy',
     'TenderDescription',
     'AddnewHOD',
-    'actions',
   ];
 
-  newTender1: any = {
-    tenderNo: '',
-    description: '',
-    tenderDate: '',
-    finYearId: '',
-    isGemTender: false,
-    gemBidNo: '',
-    tenderValue: 0,
-  };
+  newTender1: any = this.emptyTender();
+
+  private emptyTender() {
+    return {
+      tenderNo: '',
+      description: '',
+      tenderDate: '',
+      finYearId: '',
+      isGemTender: false,
+      isDirectPurchase: false,
+      tenderValue: 0,
+      tenderValueUnit: 'Cr',
+    };
+  }
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -368,12 +372,6 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  OpenTenderStatusRemark(tender_no: any) {
-    this.router.navigate(['/TenderStatusRemark'], {
-      queryParams: { tender_no: tender_no },
-    });
-  }
-
   OpenAddLeavy(tender_no: any) {
     this.router.navigate(['/AddLeavy'], {
       queryParams: { tender_no: tender_no },
@@ -412,14 +410,16 @@ export class PlanaTenderDComponent implements OnInit, AfterViewInit, OnDestroy {
       TenderDate: this.newTender1.tenderDate,
       FinancialYearId: this.newTender1.finYearId,
       IsGemTender: this.newTender1.isGemTender,
-      GemBidNo: this.newTender1.gemBidNo || null,
-      TenderValue: this.newTender1.tenderValue,
+      IsDirectPurchase: this.newTender1.isDirectPurchase,
+      // tValue is stored in crore; a value entered in lakh is converted (1 Cr = 100 Lakh)
+      TenderValue:
+        this.newTender1.tenderValueUnit === 'L' ? Number(this.newTender1.tenderValue) / 100 : this.newTender1.tenderValue,
     };
     this.api.post1('BME/SaveTender', payload).subscribe({
       next: (res: any) => {
         this.spinner.hide();
         this.toastr.success(res.message);
-        form.resetForm();
+        form.resetForm(this.emptyTender());
         this.closeModal();
         this.loadGrid();
       },
