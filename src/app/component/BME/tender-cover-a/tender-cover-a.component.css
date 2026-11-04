@@ -3,6 +3,23 @@
   max-width: none;
 }
 
+/* Tender dropdown: long "Tender No ,OpenDT-dd/mm/yyyy" labels wrap instead of being cut off with "…" */
+.item-select {
+  max-width: 800px;
+}
+
+:host ::ng-deep .item-select.ng-select-single .ng-select-container {
+  height: auto;
+  min-height: 34px;
+}
+
+:host ::ng-deep .item-select .ng-select-container .ng-value {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  padding: 6px 0;
+}
+
 /* Cover A evaluation: in-row Eligible dropdown and remarks box (rest comes from the shared tender styles) */
 .cell-select,
 .cell-textarea {
