@@ -1,10 +1,23 @@
 .custom-link {
-    cursor: pointer;          /* Fixes the mouse hover pointer issue */
-    color: inherit;           /* Keeps text color consistent, or use your preferred color like #0d6efd */
-    text-decoration: none;    /* Ensures no underline by default */
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--accent, #0d6efd);
+  font-weight: 600;
+  text-decoration: none;
 }
 
 .custom-link:hover {
-    text-decoration: underline; 
-    color: #1100ff;
+  text-decoration: underline;
+}
+
+.popup-sub {
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+
+textarea.cell-input {
+  min-width: 160px;
+  resize: vertical;
 }
